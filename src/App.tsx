@@ -1,4 +1,4 @@
-function App() {
+const App = () => {
   return (
    <h1>Metis Web</h1>
   );
