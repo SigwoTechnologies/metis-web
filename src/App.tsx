@@ -1,12 +1,7 @@
 import { Main } from './common/components/layout/main/Main';
 
 const App = () => {
-  return (
-    <>
-      <h1>Metis Web</h1>
-      <Main />
-    </>
-  );
+  return <Main />;
 };
 
 export default App;
