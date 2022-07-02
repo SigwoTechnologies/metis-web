@@ -1,7 +1,7 @@
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 
-export const Main = () => {
+export default function Main() {
   return (
     <Box height="100vh">
       <Container maxWidth="xl" component="main">
@@ -9,4 +9,4 @@ export const Main = () => {
       </Container>
     </Box>
   );
-};
+}

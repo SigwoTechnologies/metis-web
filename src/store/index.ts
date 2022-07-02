@@ -5,9 +5,7 @@ const combinedReducer = combineReducers({
   ui: uiReducer,
 });
 
-const rootReducer = (state: any, action: any) => {
-  return combinedReducer(state, action);
-};
+const rootReducer = (state: any, action: any) => combinedReducer(state, action);
 
 export const store = configureStore({
   reducer: rootReducer,

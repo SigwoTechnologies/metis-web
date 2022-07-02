@@ -1,7 +1,5 @@
-import { Main } from './common/components/layout/main/Main';
+import Main from './common/components/layout/main/Main';
 
-const App = () => {
+export default function App() {
   return <Main />;
-};
-
-export default App;
+}

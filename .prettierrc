@@ -2,6 +2,7 @@
   "singleQuote": true,
   "useTabs": false,
   "arrowParens": "always",
+  "bracketSameLine": false,
   "bracketSpacing": true,
   "embeddedLanguageFormatting": "auto",
   "htmlWhitespaceSensitivity": "css",
@@ -13,5 +14,6 @@
   "requirePragma": false,
   "semi": true,
   "tabWidth": 2,
-  "trailingComma": "es5"
+  "trailingComma": "es5",
+  "vueIndentScriptAndStyle": false
 }
