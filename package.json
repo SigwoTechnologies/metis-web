@@ -37,12 +37,6 @@
     "type:check": "tsc",
     "validate": "run-p lint type:check format:check"
   },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
-  },
   "browserslist": {
     "production": [
       ">0.2%",
