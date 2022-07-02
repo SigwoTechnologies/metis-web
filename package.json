@@ -35,7 +35,8 @@
     "format:fix": "prettier . --ignore-path .gitignore --write",
     "lint": "eslint . --ext .ts --ext .tsx",
     "type:check": "tsc",
-    "validate": "run-p lint type:check format:check"
+    "validate": "run-p lint type:check format:check",
+    "prepare": "husky install"
   },
   "browserslist": {
     "production": [
@@ -50,6 +51,8 @@
     ]
   },
   "devDependencies": {
+    "@commitlint/cli": "^17.0.3",
+    "@commitlint/config-conventional": "^17.0.3",
     "@typescript-eslint/eslint-plugin": "^5.30.0",
     "@typescript-eslint/parser": "^5.30.0",
     "eslint": "^8.18.0",
@@ -61,6 +64,8 @@
     "eslint-plugin-react": "^7.30.1",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-security": "^1.5.0",
+    "husky": "^8.0.0",
+    "lint-staged": "^13.0.3",
     "npm-run-all": "^4.1.5",
     "prettier": "^2.7.1"
   }
