@@ -6,9 +6,9 @@ export const themeOptions: ThemeOptions = {
   palette: {
     mode: 'dark',
     primary: {
-      main: '#4cb600',
-      light: '#6FC433',
-      dark: '#357F00',
+      main: '#61da0c',
+      light: '#7ee146',
+      dark: '#32b400',
       contrastText: '#000000',
     },
     secondary: {
@@ -83,10 +83,11 @@ export const themeOptions: ThemeOptions = {
   },
   typography: {
     fontFamily: '"Helvetica", "Arial", sans-serif',
+    fontSize: 16,
   },
   spacing: 8,
   shape: {
-    borderRadius: 4,
+    borderRadius: 8,
   },
 };
 
