@@ -5,6 +5,7 @@ import { StyledEngineProvider } from '@mui/material/styles';
 import { Provider as ReduxProvider } from 'react-redux';
 import { store } from './store';
 import App from './App';
+import ThemeProvider from './theme/ThemeProvider';
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 root.render(
@@ -12,7 +13,9 @@ root.render(
     <CssBaseline />
     <StyledEngineProvider injectFirst>
       <ReduxProvider store={store}>
-        <App />
+        <ThemeProvider>
+          <App />
+        </ThemeProvider>
       </ReduxProvider>
     </StyledEngineProvider>
   </React.StrictMode>
