@@ -1,5 +1,7 @@
-import Login from './pages/login/Login';
+// import Login from './pages/login/Login';
 
-const App = () => <Login />;
+import Main from './common/components/layout/main/Main';
+
+const App = () => <Main />;
 
 export default App;
