@@ -3,9 +3,24 @@ import { createStyles, makeStyles } from '@mui/styles';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
-    main: {
-      padding: theme.spacing(1),
-      color: theme.palette.secondary.main,
+    wrapper: {
+      backgroundColor: theme.palette.background.default,
+    },
+    container: {
+      height: '100%',
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'center',
+      alignItems: 'center',
+      textAlign: 'center',
+    },
+    grid: {
+      height: '100vh',
+    },
+    gridRow: {
+      display: 'flex',
+      flexDirection: 'column',
+      maxHeight: '100%',
     },
   })
 );

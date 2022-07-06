@@ -19,13 +19,10 @@ export const themeOptions: ThemeOptions = {
     },
     background: {
       default: '#000000',
-      paper: '#3c3c3c',
+      paper: '#000000',
     },
     text: {
       primary: '#FFFFFF',
-      //   light: '#6FC433',
-      //   dark: '#357F00',
-      //   contrastText: '#000000',
     },
     error: {
       main: '#f95849',
@@ -78,7 +75,7 @@ export const themeOptions: ThemeOptions = {
     teal2: '#8FDFDA',
     teal3: '#BBEDED',
     teal4: '#DDF6F6',
-    black1: '#000000',
+    black1: 'rgba(60, 60, 60, 0.3)',
     white1: '#FFFFFF',
   },
   typography: {
@@ -88,6 +85,15 @@ export const themeOptions: ThemeOptions = {
   spacing: 8,
   shape: {
     borderRadius: 8,
+  },
+  components: {
+    MuiPaper: {
+      styleOverrides: {
+        root: {
+          backgroundImage: 'none',
+        },
+      },
+    },
   },
 };
 
