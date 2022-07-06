@@ -1,6 +1,6 @@
 // import Login from './pages/login/Login';
 
-import Main from './common/components/layout/Main';
+import Main from './layout/Main';
 
 const App = () => <Main />;
 
