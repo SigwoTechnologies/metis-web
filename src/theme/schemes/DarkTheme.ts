@@ -75,7 +75,7 @@ export const themeOptions: ThemeOptions = {
     teal2: '#8FDFDA',
     teal3: '#BBEDED',
     teal4: '#DDF6F6',
-    black1: '#000000',
+    black1: 'rgba(60, 60, 60, 0.3)',
     white1: '#FFFFFF',
   },
   typography: {

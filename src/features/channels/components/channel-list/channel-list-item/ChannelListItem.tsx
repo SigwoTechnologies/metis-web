@@ -10,12 +10,12 @@ import useStyles from './ChannelListItem.styles';
 
 type Props = {
   name: string;
-  description: string;
+  message: string;
   date: string;
   avatar?: string;
 };
 
-const ChannelListItem = ({ name, description, date, avatar = name }: Props) => {
+const ChannelListItem = ({ name, message, date, avatar = name }: Props) => {
   const classes = useStyles();
 
   return (
@@ -46,7 +46,7 @@ const ChannelListItem = ({ name, description, date, avatar = name }: Props) => {
         }
         secondary={
           <Typography component="span" variant="caption" color="text.secondary">
-            {description}
+            {message}
           </Typography>
         }
       />

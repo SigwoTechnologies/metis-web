@@ -6,7 +6,7 @@ import Input from '@mui/material/Input';
 import SearchIcon from '@mui/icons-material/Search';
 
 const ChannelList = () => (
-  <FormControl sx={{ mt: 5 }} variant="standard" fullWidth>
+  <FormControl variant="standard" fullWidth>
     <InputLabel>Search</InputLabel>
     <Input
       endAdornment={

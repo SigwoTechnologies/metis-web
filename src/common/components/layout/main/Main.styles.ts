@@ -17,9 +17,6 @@ const useStyles = makeStyles((theme: Theme) =>
     grid: {
       height: '100vh',
     },
-    column: {
-      height: '100%',
-    },
   })
 );
 
