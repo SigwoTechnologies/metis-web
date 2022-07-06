@@ -4,7 +4,8 @@ import Typography from '@mui/material/Typography';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
 import ListItemButton from '@mui/material/ListItemButton';
 import Box from '@mui/material/Box';
-import CheckIcon from '@mui/icons-material/Check';
+import DoneIcon from '@mui/icons-material/Done';
+import DoneAllIcon from '@mui/icons-material/DoneAll';
 
 import useStyles from './ChannelListItem.styles';
 
@@ -12,10 +13,11 @@ type Props = {
   name: string;
   message: string;
   date: string;
+  isRead: boolean;
   avatar?: string;
 };
 
-const ChannelListItem = ({ name, message, date, avatar = name }: Props) => {
+const ChannelListItem = ({ name, message, date, isRead, avatar = name }: Props) => {
   const classes = useStyles();
 
   return (
@@ -33,8 +35,11 @@ const ChannelListItem = ({ name, message, date, avatar = name }: Props) => {
             </Box>
             <Box className={classes.channelDescription}>
               <Box display="flex">
-                <CheckIcon fontSize="small" color="primary" />
-                <CheckIcon fontSize="small" sx={{ ml: '-1.7rem' }} color="primary" />
+                {isRead ? (
+                  <DoneAllIcon fontSize="small" color="primary" />
+                ) : (
+                  <DoneIcon fontSize="small" color="primary" />
+                )}
               </Box>
               <Box>
                 <Typography component="span" variant="caption" color="text.primary">

@@ -17,6 +17,11 @@ const useStyles = makeStyles((theme: Theme) =>
     grid: {
       height: '100vh',
     },
+    gridRow: {
+      display: 'flex',
+      flexDirection: 'column',
+      maxHeight: '100%',
+    },
   })
 );
 

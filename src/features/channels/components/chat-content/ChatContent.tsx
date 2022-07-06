@@ -1,23 +1,10 @@
-import Box from '@mui/material/Box';
-
 import PompAvatar from 'src/assets/images/avatars/pomp.jpg';
 import ReneAvatar from 'src/assets/images/avatars/rene.jpg';
 import Message from './message/Message';
 
 const ChatContent = () => (
-  <Box
-    sx={{
-      display: 'flex',
-      flexDirection: 'column',
-    }}
-  >
-    <Message
-      name="Pompilio Fiore"
-      message="Good morning"
-      date="27/06/2022"
-      color="#A36300"
-      avatar={PompAvatar}
-    />
+  <>
+    <Message name="Pompilio Fiore" message="Good morning" date="27/06/2022" color="#A36300" />
     <Message
       name="Rene Reyes"
       message="Good morning"
@@ -39,7 +26,7 @@ const ChatContent = () => (
       color="#44C553"
       avatar={ReneAvatar}
     />
-  </Box>
+  </>
 );
 
 export default ChatContent;
