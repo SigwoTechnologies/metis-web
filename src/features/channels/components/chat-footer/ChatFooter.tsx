@@ -5,10 +5,15 @@ import AttachFileIcon from '@mui/icons-material/AttachFile';
 import VideocamOutlinedIcon from '@mui/icons-material/VideocamOutlined';
 import SendIcon from '@mui/icons-material/Send';
 import FilledInput from '@mui/material/FilledInput';
+import useStyles from './ChatFooter.styles';
 
-const ChatFooter = () => (
-  <FormControl variant="standard" fullWidth>
-    <FilledInput
+
+
+const ChatFooter = () => {
+  const classes = useStyles();
+  return (
+  <FormControl variant="standard" fullWidth >
+    <FilledInput 
       sx={{ displat: 'flex', justifyContent: 'center', alignItems: 'center' }}
       startAdornment={
         <InputAdornment position="start">
@@ -20,6 +25,9 @@ const ChatFooter = () => (
           </IconButton>
         </InputAdornment>
       }
+
+      inputProps={{ className: classes.footerInputStyle}}
+
       endAdornment={
         <InputAdornment position="end">
           <IconButton aria-label="send message" edge="start" size="medium" sx={{ padding: 1.5 }}>
@@ -28,7 +36,8 @@ const ChatFooter = () => (
         </InputAdornment>
       }
     />
+    
   </FormControl>
-);
+)};
 
 export default ChatFooter;
