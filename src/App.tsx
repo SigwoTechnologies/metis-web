@@ -1,7 +1,10 @@
-// import Login from './pages/login/Login';
+import { useRoutes } from 'react-router-dom';
 
-import Main from './layout/Main';
+import routes from './common/router/router';
 
-const App = () => <Main />;
+const App = () => {
+  const content = useRoutes(routes);
+  return content;
+};
 
 export default App;
