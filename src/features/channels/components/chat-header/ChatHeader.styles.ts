@@ -32,6 +32,14 @@ const useStyles = makeStyles(() =>
       width: '4rem',
       height: '4rem',
     },
+    button: {
+      width: '100%',
+      marginBottom: '1rem',
+    },
+    textField: {
+      width: '100%',
+      marginBottom: '1rem',
+    },
   })
 );
 
