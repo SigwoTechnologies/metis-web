@@ -25,7 +25,16 @@ const ChatContent = () => (
       date="10:33 PM"
       color="#44C553"
       avatar={ReneAvatar}
-    />
+    >
+      <Message
+        name="Martin"
+        message="How is it going? good how are you? "
+        date="10:32 PM"
+        color="#A36300"
+        avatar={PompAvatar}
+        isChildren
+      />
+    </Message>
   </>
 );
 
