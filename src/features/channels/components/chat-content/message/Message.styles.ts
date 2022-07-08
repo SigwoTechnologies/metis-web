@@ -41,6 +41,19 @@ const useStyles = makeStyles((theme: Theme) =>
       right: 0,
       bottom: 0,
     },
+    reply: {
+      width: '100%',
+      '& > div > div:nth-child(1)': {
+        maxWidth: '100%',
+        borderLeft: `0.2rem solid ${theme.colors.blue1}`,
+        marginBottom: '0.5rem',
+        borderTopLeftRadius: 0,
+        borderBottomLeftRadius: 0,
+        textOverflow: 'ellipsis',
+        whiteSpace: 'nowrap',
+        overflow: 'hidden',
+      },
+    },
   })
 );
 
