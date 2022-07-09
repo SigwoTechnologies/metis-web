@@ -1,7 +1,7 @@
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
-import SquareGroup from '../../assets/images/misc/square-group.png';
+import SquareGroup from '@/assets/images/misc/square-group.png';
 import useStyles from './Login.styles';
 
 const Login = () => {

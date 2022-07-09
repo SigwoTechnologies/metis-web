@@ -1,5 +1,5 @@
-import PompAvatar from '../../../../assets/images/avatars/pomp.jpg';
-import ReneAvatar from '../../../../assets/images/avatars/rene.jpg';
+import PompAvatar from '@/assets/images/avatars/pomp.jpg';
+import ReneAvatar from '@/assets/images/avatars/rene.jpg';
 import Message from './message/Message';
 
 const ChatContent = () => (
