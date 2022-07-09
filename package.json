@@ -26,8 +26,6 @@
     "build": "tsc && vite build",
     "preview": "vite preview",
     "test": "react-scripts test",
-    "test:staged": "react-scripts test --bail --findRelatedTests --watchAll=false",
-    "eject": "react-scripts eject",
     "format:check": "prettier . --ignore-path .gitignore --check",
     "format:fix": "prettier . --ignore-path .gitignore --write",
     "lint": "eslint . --ext .ts --ext .tsx",
@@ -81,8 +79,7 @@
     "*.{ts,tsx,scss}": [
       "prettier --write",
       "eslint --cache --fix",
-      "bash -c tsc --noEmit",
-      "yarn run test:staged"
+      "bash -c tsc --noEmit"
     ]
   }
 }
