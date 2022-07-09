@@ -1,6 +1,6 @@
-import PompAvatar from 'src/assets/images/avatars/pomp.jpg';
-import ReneAvatar from 'src/assets/images/avatars/rene.jpg';
-import BugAvatar from 'src/assets/images/avatars/bug.jpg';
+import PompAvatar from '../../../../assets/images/avatars/pomp.jpg';
+import ReneAvatar from '../../../../assets/images/avatars/rene.jpg';
+import BugAvatar from '../../../../assets/images/avatars/bug.jpg';
 
 import ChannelListItem from './channel-list-item/ChannelListItem';
 

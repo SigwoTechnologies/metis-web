@@ -1,11 +1,11 @@
-import ChatHeader from 'src/features/channels/components/chat-header/ChatHeader';
-import ChatContent from 'src/features/channels/components/chat-content/ChatContent';
-import ChatFooter from 'src/features/channels/components/chat-footer/ChatFooter';
-import HeaderSection from 'src/layout/sections/HeaderSection';
-import MainSection from 'src/layout/sections/MainSection';
-import FooterSection from 'src/layout/sections/FooterSection';
-import Spinner from 'src/common/components/ui/Spinner';
 import { useState, useEffect } from 'react';
+import ChatHeader from '../../features/channels/components/chat-header/ChatHeader';
+import ChatContent from '../../features/channels/components/chat-content/ChatContent';
+import ChatFooter from '../../features/channels/components/chat-footer/ChatFooter';
+import HeaderSection from '../../layout/sections/HeaderSection';
+import MainSection from '../../layout/sections/MainSection';
+import FooterSection from '../../layout/sections/FooterSection';
+import Spinner from '../../common/components/ui/Spinner';
 
 const ChatContainer = () => {
   const [loading, setLoading] = useState(true);
