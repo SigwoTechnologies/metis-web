@@ -2,11 +2,10 @@ import { createStyles, makeStyles } from '@mui/styles';
 
 const useStyles = makeStyles(() =>
   createStyles({
-    container: {
-      height: '100%',
+    iconContainer: {
       display: 'flex',
       justifyContent: 'center',
-      alignItems: 'center',
+      alignItems: 'end',
     },
   })
 );

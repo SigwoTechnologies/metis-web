@@ -1,25 +1,33 @@
-import Typography from '@mui/material/Typography';
+import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
+import { Button, TextField } from '@mui/material';
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
-import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
+import Typography from '@mui/material/Typography';
+import { useState } from 'react';
 import BugAvatar from 'src/assets/images/avatars/bug.jpg';
 import ReneAvatar from 'src/assets/images/avatars/rene.jpg';
 import Modal from 'src/common/components/ui/Modal';
-import { Button, TextField } from '@mui/material';
-import { useState } from 'react';
+import Notification from 'src/common/components/ui/Notification';
 import useStyles from './ChatHeader.styles';
 
 const ChatHeader = () => {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
+  const [notification, setNotification] = useState(false);
 
   const closeModal = () => {
     setOpen(false);
   };
 
+  const openNotification = (): void => {
+    closeModal();
+    setNotification(true);
+  };
+
   return (
     <>
+      <Notification type="success" isOpen={notification} onClose={() => setNotification(false)} />
       <Modal onClose={closeModal} open={open}>
         <p>
           To invite another user to join this channel enter their Alias or Account ID and click
@@ -30,7 +38,7 @@ const ChatHeader = () => {
           label="Enter or Account ID here"
           variant="standard"
         />
-        <Button className={classes.button} variant="contained">
+        <Button onClick={openNotification} className={classes.button} variant="contained">
           Invite
         </Button>
         <Button color="error" onClick={closeModal} className={classes.button}>
