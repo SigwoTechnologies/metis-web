@@ -1,8 +1,8 @@
-const { REACT_APP_API_URL_SAMPLE } = process.env;
+const { REACT_APP_METIS_API_URL } = process.env;
 
 const appConfig = {
   api: {
-    baseUrl: REACT_APP_API_URL_SAMPLE,
+    baseUrl: REACT_APP_METIS_API_URL,
   },
 };
 

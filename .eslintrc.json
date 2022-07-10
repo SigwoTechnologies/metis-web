@@ -43,6 +43,7 @@
     "quotes": ["error", "single"],
     "no-duplicate-imports": "error",
     "react/require-default-props": "off",
+    "no-param-reassign": ["error", { "props": true, "ignorePropertyModificationsFor": ["state"] }],
     "react/jsx-filename-extension": [
       "error",
       {

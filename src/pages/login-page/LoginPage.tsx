@@ -2,9 +2,9 @@ import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 import SquareGroup from 'src/assets/images/misc/square-group.png';
-import useStyles from './Login.styles';
+import useStyles from './LoginPage.styles';
 
-const Login = () => {
+const LoginPage = () => {
   const classes = useStyles();
 
   return (
@@ -21,4 +21,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default LoginPage;
