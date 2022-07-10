@@ -1,45 +1,36 @@
+import { useEffect } from 'react';
+import { useAppDispatch, useAppSelector } from 'src/store/hooks';
+
 import PompAvatar from 'src/assets/images/avatars/pomp.jpg';
 import ReneAvatar from 'src/assets/images/avatars/rene.jpg';
 import BugAvatar from 'src/assets/images/avatars/bug.jpg';
-
 import ChannelListItem from './channel-list-item/ChannelListItem';
 
-const ChannelList = () => (
-  <>
-    <ChannelListItem
-      name="Metis Group"
-      message="Rene Reyes: Hey @sigwo! The new version is deployed.."
-      date="08:34 AM"
-      isRead
-      avatar={ReneAvatar}
-    />
-    <ChannelListItem
-      name="Pompilio"
-      message="Please send me an update asap!"
-      date="03:45 PM"
-      isRead
-      avatar={PompAvatar}
-    />
-    <ChannelListItem
-      name="Metis bug report"
-      message="Pompilio: The landing page crashed.."
-      date="07/02/2022"
-      isRead={false}
-      avatar={BugAvatar}
-    />
-    <ChannelListItem
-      name="Metis Dev team"
-      date="07/01/2022"
-      isRead={false}
-      message="sigwo[I won't DM you]: Metis web rocks!"
-    />
-    <ChannelListItem
-      name="Jupiter Lovers"
-      message="@sigwo created the channel"
-      date="06/30/2022"
-      isRead
-    />
-  </>
-);
+import { selectState } from '../../store/channel.slice';
+import { findByUser } from '../../store/channel.actions';
+
+const ChannelList = () => {
+  const dispatch = useAppDispatch();
+  const { channels } = useAppSelector(selectState);
+
+  useEffect(() => {
+    dispatch(findByUser());
+  }, []);
+
+  return (
+    <>
+      {channels.map((channel) => (
+        <ChannelListItem
+          key={channel.name}
+          name={channel.name}
+          message={`${channel.name} says: visit my page!: ${channel.url}`}
+          date="08:34 AM"
+          isRead
+          avatar={channel.url}
+        />
+      ))}
+    </>
+  );
+};
 
 export default ChannelList;
