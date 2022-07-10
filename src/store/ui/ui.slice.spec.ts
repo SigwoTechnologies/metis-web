@@ -1,8 +1,8 @@
 import { AnyAction } from '@reduxjs/toolkit';
-import { uiReducer } from '../../../store/ui/ui.slice';
+import { uiReducer, UiState } from './ui.slice';
 
-describe('Catalogs Slice', () => {
-  let initialState: unknown;
+describe('Ui Slice', () => {
+  let initialState: UiState;
 
   beforeAll(() => {
     initialState = {
@@ -15,6 +15,7 @@ describe('Catalogs Slice', () => {
       const expected = initialState;
 
       const actual = uiReducer(undefined, {} as AnyAction);
+
       expect(actual).toEqual(expected);
     });
   });

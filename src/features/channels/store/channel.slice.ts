@@ -3,7 +3,7 @@ import type { RootState } from 'src/store/types';
 import { Channel } from '../types/channel';
 import { findByUser } from './channel.actions';
 
-type ChannelState = {
+export type ChannelState = {
   isLoading: boolean;
   channels: Channel[];
 };
@@ -21,6 +21,9 @@ const slice = createSlice({
     });
     builder.addCase(findByUser.fulfilled, (state, { payload }) => {
       state.channels = payload;
+      state.isLoading = false;
+    });
+    builder.addCase(findByUser.rejected, (state) => {
       state.isLoading = false;
     });
   },
