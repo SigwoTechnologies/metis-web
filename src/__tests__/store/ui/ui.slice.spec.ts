@@ -1,3 +1,4 @@
+import { AnyAction } from '@reduxjs/toolkit';
 import { uiReducer } from '../../../store/ui/ui.slice';
 
 describe('Catalogs Slice', () => {
@@ -13,7 +14,7 @@ describe('Catalogs Slice', () => {
     it('should return the initial state', () => {
       const expected = initialState;
 
-      const actual = uiReducer(undefined, {} as any);
+      const actual = uiReducer(undefined, {} as AnyAction);
       expect(actual).toEqual(expected);
     });
   });

@@ -1,4 +1,4 @@
-import { configureStore, combineReducers } from '@reduxjs/toolkit';
+import { configureStore, combineReducers, CombinedState, AnyAction } from '@reduxjs/toolkit';
 import { channelReducer } from 'src/features/channels/store/channel.slice';
 import { uiReducer } from './ui/ui.slice';
 
@@ -7,7 +7,8 @@ const combinedReducer = combineReducers({
   ui: uiReducer,
 });
 
-const rootReducer = (state: any, action: any) => combinedReducer(state, action);
+const rootReducer = (state: CombinedState<any>, action: AnyAction) =>
+  combinedReducer(state, action);
 
 const store = configureStore({
   reducer: rootReducer,
