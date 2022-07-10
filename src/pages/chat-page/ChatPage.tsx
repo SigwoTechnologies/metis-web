@@ -7,7 +7,7 @@ import FooterSection from 'src/layout/sections/FooterSection';
 import Spinner from 'src/common/components/ui/Spinner';
 import { useState, useEffect } from 'react';
 
-const ChatContainer = () => {
+const ChatPage = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -30,4 +30,4 @@ const ChatContainer = () => {
   );
 };
 
-export default ChatContainer;
+export default ChatPage;
