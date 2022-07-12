@@ -6,6 +6,7 @@ export type UiState = {
   toast: ToastState;
 };
 
+// TODO: Move this type into a separate file
 export type ToastState = {
   text: string;
   open: boolean;
@@ -37,7 +38,7 @@ export const slice = createSlice({
       state.toast.open = true;
     },
     hideToast: (state) => {
-      state.toast.open = false;
+      state.toast = initialState.toast;
     },
   },
 });
