@@ -1,10 +1,14 @@
 import { Alert, Snackbar } from '@mui/material';
 import React from 'react';
 import { useAppDispatch, useAppSelector } from 'src/store/hooks';
-import { hideToast } from 'src/store/ui/toast.slice';
+import { hideToast } from 'src/store/ui/ui.slice';
 
-const Toast = () => {
-  const { open, text, type } = useAppSelector((state) => state.toast);
+type Props = {
+  delay?: number;
+};
+
+const Toast = ({ delay = 6000 }: Props) => {
+  const { open, text, type } = useAppSelector((state) => state.ui.toast);
   const dispatch = useAppDispatch();
 
   const handleClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
@@ -16,8 +20,8 @@ const Toast = () => {
   };
 
   return (
-    <Snackbar open={open} onClose={handleClose}>
-      <Alert onClose={handleClose} severity={type} sx={{ width: '100%' }}>
+    <Snackbar open={open} onClose={handleClose} autoHideDuration={delay}>
+      <Alert onClose={handleClose} severity={type}>
         {text}
       </Alert>
     </Snackbar>

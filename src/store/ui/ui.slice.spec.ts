@@ -7,6 +7,11 @@ describe('Ui Slice', () => {
   beforeAll(() => {
     initialState = {
       isLoading: false,
+      toast: {
+        text: '',
+        open: false,
+        type: 'success',
+      },
     };
   });
 
