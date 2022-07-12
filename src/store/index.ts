@@ -1,10 +1,12 @@
 import { configureStore, combineReducers, CombinedState, AnyAction } from '@reduxjs/toolkit';
 import { channelReducer } from 'src/features/channels/store/channel.slice';
+import toastReducer from './ui/toast.slice';
 import { uiReducer } from './ui/ui.slice';
 
 const combinedReducer = combineReducers({
   channel: channelReducer,
   ui: uiReducer,
+  toast: toastReducer,
 });
 
 const rootReducer = (state: CombinedState<any>, action: AnyAction) =>
