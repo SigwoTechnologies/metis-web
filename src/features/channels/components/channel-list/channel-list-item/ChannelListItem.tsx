@@ -19,7 +19,15 @@ type Props = {
   selected?: boolean;
 };
 
-const ChannelListItem = ({ name, message, date, isRead, avatar = name, onClick, selected = false }: Props) => {
+const ChannelListItem = ({
+  name,
+  message,
+  date,
+  isRead,
+  avatar = name,
+  onClick,
+  selected = false,
+}: Props) => {
   const classes = useStyles();
 
   return (

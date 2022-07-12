@@ -10,7 +10,7 @@ import { findByUser } from '../../store/channel.actions';
 const ChannelList = () => {
   const dispatch = useAppDispatch();
   const { channels, isLoading } = useAppSelector(selectState);
-  const [selected, setSelected] = useState(0);
+  const [selected, setSelected] = useState('');
 
   useEffect(() => {
     dispatch(findByUser());
@@ -26,17 +26,10 @@ const ChannelList = () => {
           date="08:34 AM"
           isRead
           avatar={channel.url}
-          onClick={() => setSelected(channel.id)}
-          selected={selected === channel.id}
+          onClick={() => setSelected(channel.name)}
+          selected={selected === channel.name}
         />
-
-
-        
       ))}
-
-
-
-
     </Spinner>
   );
 };

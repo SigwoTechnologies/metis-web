@@ -38,12 +38,10 @@ describe('Channel Slice', () => {
     describe('and the response is successfull', () => {
       const channels: Channel[] = [
         {
-          id: 1,
           name: 'channel 1',
           url: 'url 1',
         },
         {
-          id: 2,
           name: 'channel 2',
           url: 'url 2',
         },
