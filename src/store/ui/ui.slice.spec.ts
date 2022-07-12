@@ -1,5 +1,5 @@
 import { AnyAction } from '@reduxjs/toolkit';
-import { openToast, uiReducer, UiState } from './ui.slice';
+import { openToast, uiReducer, UiState, hideToast } from './ui.slice';
 
 describe('Ui Slice', () => {
   let initialState: UiState;
@@ -38,6 +38,16 @@ describe('Ui Slice', () => {
       );
 
       expect(actual.toast).toEqual(expected.toast);
+    });
+  });
+
+  describe('When Toast is hidden', () => {
+    it('should set the state.toast back to the initial state', () => {
+      const expected = initialState.toast;
+
+      const actual = uiReducer(initialState, hideToast());
+
+      expect(actual.toast).toEqual(expected);
     });
   });
 });
