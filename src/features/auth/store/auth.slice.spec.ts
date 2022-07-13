@@ -30,7 +30,7 @@ describe('Auth Slice', () => {
         expected.isLoading = true;
 
         const actual = authReducer(
-          undefined,
+          initialState,
           login.pending('', { password: 'dummy', passphrase: 'dummy' })
         );
 
@@ -44,7 +44,7 @@ describe('Auth Slice', () => {
         expected.isLoggedIn = true;
 
         const actual = authReducer(
-          undefined,
+          initialState,
           login.fulfilled(true, '', { password: 'dummy', passphrase: 'dummy' })
         );
 
@@ -56,7 +56,7 @@ describe('Auth Slice', () => {
         const expected = initialState;
 
         const actual = authReducer(
-          undefined,
+          initialState,
           login.rejected(null, '', { password: 'dummy', passphrase: 'dummy' })
         );
 
