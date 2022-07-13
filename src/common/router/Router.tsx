@@ -1,8 +1,10 @@
 import { lazy } from 'react';
-import { RouteObject } from 'react-router-dom';
+import { Navigate, RouteObject } from 'react-router-dom';
 
 import Main from 'src/layout/Main';
+import AuthRoute from './auth-route/AuthRoute';
 import Loader from './loader/Loader';
+import NonAuthRoute from './non-auth-route/NonAuthRoute';
 
 const Login = Loader(lazy(() => import('src/pages/login-page/LoginPage')));
 const ChatContainer = Loader(lazy(() => import('src/pages/chat-page/ChatPage')));
@@ -11,16 +13,35 @@ const Status404 = Loader(lazy(() => import('src/pages/error-pages/Status404')));
 const routes: RouteObject[] = [
   {
     path: '/',
-    element: <Main />,
+    element: <Navigate to="/main" replace />,
+  },
+  {
+    path: '/main',
+    element: (
+      <AuthRoute>
+        <Main />
+      </AuthRoute>
+    ),
+    children: [{ index: true, element: <ChatContainer /> }],
+  },
+  {
+    path: 'auth',
     children: [
+      { index: true, element: <Navigate to="/auth/login" replace /> },
       {
-        path: '/',
-        element: <ChatContainer />,
+        path: 'login',
+        element: (
+          <NonAuthRoute>
+            <Login />
+          </NonAuthRoute>
+        ),
       },
     ],
   },
-  { path: 'login', element: <Login /> },
-  { path: '*', element: <Status404 /> },
+  {
+    path: '*',
+    element: <Status404 />,
+  },
 ];
 
 export default routes;
