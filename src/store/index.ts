@@ -1,4 +1,4 @@
-import { configureStore, combineReducers, CombinedState, AnyAction } from '@reduxjs/toolkit';
+import { AnyAction, CombinedState, combineReducers, configureStore } from '@reduxjs/toolkit';
 import { authReducer } from 'src/features/auth/store/auth.slice';
 import { channelReducer } from 'src/features/channels/store/channel.slice';
 import { uiReducer } from './ui/ui.slice';
