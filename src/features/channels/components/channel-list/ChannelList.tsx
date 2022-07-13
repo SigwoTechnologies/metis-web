@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from 'src/store/hooks';
 
 import Spinner from 'src/common/components/ui/spinner/Spinner';
@@ -10,6 +10,7 @@ import { findByUser } from '../../store/channel.actions';
 const ChannelList = () => {
   const dispatch = useAppDispatch();
   const { channels, isLoading } = useAppSelector(selectState);
+  const [selected, setSelected] = useState('');
 
   useEffect(() => {
     dispatch(findByUser());
@@ -25,6 +26,8 @@ const ChannelList = () => {
           date="08:34 AM"
           isRead
           avatar={channel.url}
+          onClick={() => setSelected(channel.name)}
+          selected={selected === channel.name}
         />
       ))}
     </Spinner>

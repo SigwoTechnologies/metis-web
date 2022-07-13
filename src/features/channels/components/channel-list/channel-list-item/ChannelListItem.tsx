@@ -15,13 +15,23 @@ type Props = {
   date: string;
   isRead: boolean;
   avatar?: string;
+  onClick?: () => void;
+  selected?: boolean;
 };
 
-const ChannelListItem = ({ name, message, date, isRead, avatar = name }: Props) => {
+const ChannelListItem = ({
+  name,
+  message,
+  date,
+  isRead,
+  avatar = name,
+  onClick,
+  selected = false,
+}: Props) => {
   const classes = useStyles();
 
   return (
-    <ListItemButton alignItems="flex-start">
+    <ListItemButton onClick={onClick} alignItems="flex-start" selected={selected}>
       <ListItemAvatar>
         <Avatar alt={name} src={avatar} className={classes.avatar} />
       </ListItemAvatar>
