@@ -7,8 +7,11 @@ const useStyles = makeStyles((theme: Theme) =>
       display: 'flex',
       marginTop: '1.5rem',
     },
+    userContainer: {
+      alignSelf: 'end',
+      justifyContent: 'end',
+    },
     avatarContainer: {
-      width: '10%',
       display: 'flex',
       justifyContent: 'center',
     },
@@ -26,6 +29,9 @@ const useStyles = makeStyles((theme: Theme) =>
       minWidth: '30%',
       borderRadius: '0.5rem',
       position: 'relative',
+    },
+    usermessage: {
+      backgroundColor: theme.colors.blue1,
     },
     message: {
       display: 'flex',
