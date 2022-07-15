@@ -50,7 +50,7 @@ const Message = ({
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
       >
-        {!isChildren && (
+        {!isChildren && !isYours && (
           <Box className={classes.replyButton} style={style} onClick={handleReplyClick}>
             Reply
           </Box>
