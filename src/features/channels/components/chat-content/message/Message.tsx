@@ -26,6 +26,7 @@ const Message = ({
 }: Props) => {
   const classes = useStyles();
   const [style, setStyle] = useState({ display: 'none' });
+  const isYours = name === 'Rene Reyes';
 
   const handleReplyClick = () => {
     // TODO: Add reply message to the chat text box here
@@ -35,18 +36,21 @@ const Message = ({
   const handleMouseLeave = () => setStyle({ display: 'none' });
 
   return (
-    <Box className={classes.container}>
+    <Box className={isYours ? `${classes.userContainer} ${classes.container}` : classes.container}>
       {!isChildren && (
         <Box className={classes.avatarContainer}>
           <Avatar alt="pomp" src={avatar} className={classes.avatar} />
         </Box>
       )}
+
       <Box
-        className={classes.messageContainer}
+        className={
+          isYours ? `${classes.messageContainer} ${classes.usermessage}` : classes.messageContainer
+        }
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
       >
-        {!isChildren && (
+        {!isChildren && !isYours && (
           <Box className={classes.replyButton} style={style} onClick={handleReplyClick}>
             Reply
           </Box>

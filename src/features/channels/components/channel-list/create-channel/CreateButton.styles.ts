@@ -6,8 +6,8 @@ const useStyles = makeStyles(() =>
       width: '4.68rem',
       height: '4.69rem',
       position: 'absolute',
-      bottom: '2.18rem',
-      right: 0,
+      top: '-0.5rem',
+      right: '-0.5rem',
       '&:hover': {
         cursor: 'pointer',
       },
