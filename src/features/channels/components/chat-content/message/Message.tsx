@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
@@ -25,15 +25,36 @@ const Message = ({
   isChildren = false,
 }: Props) => {
   const classes = useStyles();
+  const [style, setStyle] = useState({ display: 'none' });
+  const isYours = name === 'Rene Reyes';
+
+  const handleReplyClick = () => {
+    // TODO: Add reply message to the chat text box here
+  };
+
+  const handleMouseEnter = () => setStyle({ display: 'block' });
+  const handleMouseLeave = () => setStyle({ display: 'none' });
 
   return (
-    <Box className={classes.container}>
+    <Box className={isYours ? `${classes.userContainer} ${classes.container}` : classes.container}>
       {!isChildren && (
         <Box className={classes.avatarContainer}>
           <Avatar alt="pomp" src={avatar} className={classes.avatar} />
         </Box>
       )}
-      <Box className={classes.messageContainer}>
+
+      <Box
+        className={
+          isYours ? `${classes.messageContainer} ${classes.usermessage}` : classes.messageContainer
+        }
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
+      >
+        {!isChildren && !isYours && (
+          <Box className={classes.replyButton} style={style} onClick={handleReplyClick}>
+            Reply
+          </Box>
+        )}
         <Typography variant="body2" fontWeight="bold" sx={{ color }}>
           {name}
         </Typography>

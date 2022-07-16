@@ -1,8 +1,10 @@
-const { REACT_APP_API_URL_SAMPLE } = process.env;
+const { VITE_METIS_API_URL } = import.meta.env;
+
+console.log('VITE_METIS_API_URL', VITE_METIS_API_URL);
 
 const appConfig = {
   api: {
-    baseUrl: REACT_APP_API_URL_SAMPLE,
+    baseUrl: VITE_METIS_API_URL,
   },
 };
 

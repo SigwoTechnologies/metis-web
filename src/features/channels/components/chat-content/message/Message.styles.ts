@@ -6,9 +6,14 @@ const useStyles = makeStyles((theme: Theme) =>
     container: {
       display: 'flex',
       marginTop: '1.5rem',
+      gap: '0.75rem',
+    },
+    userContainer: {
+      alignSelf: 'end',
+      justifyContent: 'end',
+      flexDirection: 'row-reverse',
     },
     avatarContainer: {
-      width: '10%',
       display: 'flex',
       justifyContent: 'center',
     },
@@ -25,6 +30,10 @@ const useStyles = makeStyles((theme: Theme) =>
       maxWidth: '80%',
       minWidth: '30%',
       borderRadius: '0.5rem',
+      position: 'relative',
+    },
+    usermessage: {
+      backgroundColor: theme.colors.blue1,
     },
     message: {
       display: 'flex',
@@ -52,6 +61,16 @@ const useStyles = makeStyles((theme: Theme) =>
         textOverflow: 'ellipsis',
         whiteSpace: 'nowrap',
         overflow: 'hidden',
+      },
+    },
+    replyButton: {
+      fontSize: '0.85rem',
+      position: 'absolute',
+      top: '0.5rem',
+      right: '0.7rem',
+      '&:hover': {
+        cursor: 'pointer',
+        textDecoration: 'underline',
       },
     },
   })

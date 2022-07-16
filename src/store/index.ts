@@ -1,16 +1,20 @@
-import { configureStore, combineReducers } from '@reduxjs/toolkit';
+import { AnyAction, CombinedState, combineReducers, configureStore } from '@reduxjs/toolkit';
+import { authReducer } from '@/features/auth/store/auth.slice';
+import { channelReducer } from '@/features/channels/store/channel.slice';
 import { uiReducer } from './ui/ui.slice';
 
 const combinedReducer = combineReducers({
+  auth: authReducer,
+  channel: channelReducer,
   ui: uiReducer,
 });
 
-const rootReducer = (state: any, action: any) => combinedReducer(state, action);
+const rootReducer = (state: CombinedState<any>, action: AnyAction) =>
+  combinedReducer(state, action);
 
-export const store = configureStore({
+const store = configureStore({
   reducer: rootReducer,
   devTools: true, // IMPORTANT: turn dev tools off on prod!
 });
 
-export type RootState = ReturnType<typeof store.getState>;
-export type AppDispatch = typeof store.dispatch;
+export default store;
