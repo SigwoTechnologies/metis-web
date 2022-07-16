@@ -22,16 +22,16 @@ const useStyles = makeStyles(() =>
       width: '4rem',
       height: '4rem',
     },
-    account: {
-      width: '10%',
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-    },
-    accountAvatar: {
-      width: '4rem',
-      height: '4rem',
-    },
+    // account: {
+    //   width: '10%',
+    //   display: 'flex',
+    //   justifyContent: 'center',
+    //   alignItems: 'center',
+    // },
+    // accountAvatar: {
+    //   width: '4rem',
+    //   height: '4rem',
+    // },
     button: {
       width: '100%',
       marginBottom: '1rem',

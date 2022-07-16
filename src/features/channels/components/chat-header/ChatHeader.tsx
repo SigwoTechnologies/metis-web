@@ -6,7 +6,6 @@ import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import { useState } from 'react';
 import BugAvatar from 'src/assets/images/avatars/bug.jpg';
-import ReneAvatar from 'src/assets/images/avatars/rene.jpg';
 import Modal from 'src/common/components/ui/Modal';
 import Notification from 'src/common/components/ui/Notification';
 import useStyles from './ChatHeader.styles';
@@ -55,9 +54,9 @@ const ChatHeader = () => {
             <MoreHorizIcon />
           </IconButton>
         </Box>
-        <Box className={classes.account}>
+        {/* <Box className={classes.account}>
           <Avatar alt="Channel Avatar" src={ReneAvatar} className={classes.accountAvatar} />
-        </Box>
+        </Box> */}
       </Box>
     </>
   );

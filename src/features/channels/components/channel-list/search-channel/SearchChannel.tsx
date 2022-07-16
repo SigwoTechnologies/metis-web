@@ -1,5 +1,7 @@
+import ReneAvatar from 'src/assets/images/avatars/rene.jpg';
 import SearchIcon from '@mui/icons-material/Search';
 import {
+  Avatar,
   Box,
   Container,
   Divider,
@@ -30,6 +32,9 @@ const ChannelList = () => {
     <>
       <Drawer anchor="left" open={drawer} onClose={() => setDrawer(false)}>
         <Box sx={{ width: 250 }} role="presentation">
+          <Box className={styles.account}>
+            <Avatar alt="Channel Avatar" src={ReneAvatar} className={styles.accountAvatar} />
+          </Box>
           <List>
             {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
               <ListItem key={text} disablePadding>
