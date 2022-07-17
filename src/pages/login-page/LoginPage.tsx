@@ -1,10 +1,10 @@
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
-import SquareGroup from 'src/assets/images/misc/square-group.png';
-import { useAppDispatch } from 'src/store/hooks';
+import SquareGroup from '@/assets/images/misc/square-group.png';
+import { useAppDispatch } from '@/store/hooks';
 
-import { login } from 'src/features/auth/store/auth.actions';
+import { login } from '@/features/auth/store/auth.actions';
 import useStyles from './LoginPage.styles';
 
 const LoginPage = () => {

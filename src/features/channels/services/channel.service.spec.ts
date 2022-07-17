@@ -1,4 +1,4 @@
-import httpService from 'src/common/services/http.service';
+import httpService from '@/common/services/http.service';
 import channelService from './channel.service';
 
 describe('Channel Service', () => {

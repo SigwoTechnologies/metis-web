@@ -1,4 +1,4 @@
-import httpService from 'src/common/services/http.service';
+import httpService from '@/common/services/http.service';
 import { Channel } from '../types/channel';
 
 // TODO: Define the correct url, dummy for demonstration

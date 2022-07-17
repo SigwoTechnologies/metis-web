@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
-import PompAvatar from 'src/assets/images/avatars/pomp.jpg';
-import ReneAvatar from 'src/assets/images/avatars/rene.jpg';
-import Spinner from 'src/common/components/ui/spinner/Spinner';
+import PompAvatar from '@/assets/images/avatars/pomp.jpg';
+import ReneAvatar from '@/assets/images/avatars/rene.jpg';
+import Spinner from '@/common/components/ui/spinner/Spinner';
 import useStyles from './ChatContent.styles';
 import Message from './message/Message';
 

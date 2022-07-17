@@ -1,6 +1,6 @@
 import { Navigate, useLocation } from 'react-router-dom';
-import { useAppSelector } from 'src/store/hooks';
-import { selectState } from 'src/features/auth/store/auth.slice';
+import { useAppSelector } from '@/store/hooks';
+import { selectState } from '@/features/auth/store/auth.slice';
 
 const AuthRoute = ({ children }: { children: JSX.Element }) => {
   const location = useLocation();

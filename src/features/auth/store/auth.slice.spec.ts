@@ -1,6 +1,6 @@
 import { AnyAction } from '@reduxjs/toolkit';
-import { authReducer, AuthState, selectState } from 'src/features/auth/store/auth.slice';
-import store from 'src/store';
+import { authReducer, AuthState, selectState } from '@/features/auth/store/auth.slice';
+import store from '@/store';
 import { login } from './auth.actions';
 
 describe('Auth Slice', () => {

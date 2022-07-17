@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
-import { useAppDispatch, useAppSelector } from 'src/store/hooks';
+import { useAppDispatch, useAppSelector } from '@/store/hooks';
 
-import Spinner from 'src/common/components/ui/spinner/Spinner';
+import Spinner from '@/common/components/ui/spinner/Spinner';
 import ChannelListItem from './channel-list-item/ChannelListItem';
 
 import { selectState } from '../../store/channel.slice';
