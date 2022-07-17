@@ -1,7 +1,7 @@
 import { Alert, Snackbar } from '@mui/material';
 import React from 'react';
-import { useAppDispatch, useAppSelector } from 'src/store/hooks';
-import { hideToast } from 'src/store/ui/ui.slice';
+import { useAppDispatch, useAppSelector } from '@/store/hooks';
+import { hideToast } from '@/store/ui/ui.slice';
 
 type Props = {
   delay?: number;

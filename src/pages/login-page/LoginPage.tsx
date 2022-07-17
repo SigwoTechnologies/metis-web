@@ -2,10 +2,11 @@ import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
-import SquareGroup from 'src/assets/images/misc/square-group.png';
+import SquareGroup from '@/assets/images/misc/square-group.png';
 import { useAppDispatch } from 'src/store/hooks';
 import { login } from 'src/features/auth/store/auth.actions';
 import useMetamask from 'src/features/auth/hooks/useMetamask';
+
 import useStyles from './LoginPage.styles';
 
 // TODO:

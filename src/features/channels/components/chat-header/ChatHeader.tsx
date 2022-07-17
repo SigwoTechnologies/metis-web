@@ -5,10 +5,10 @@ import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import { useState } from 'react';
-import BugAvatar from 'src/assets/images/avatars/bug.jpg';
-import ReneAvatar from 'src/assets/images/avatars/rene.jpg';
-import Modal from 'src/common/components/ui/Modal';
-import Notification from 'src/common/components/ui/Notification';
+import BugAvatar from '@/assets/images/avatars/bug.jpg';
+import ReneAvatar from '@/assets/images/avatars/rene.jpg';
+import Modal from '@/common/components/ui/Modal';
+import Notification from '@/common/components/ui/Notification';
 import useStyles from './ChatHeader.styles';
 
 const ChatHeader = () => {

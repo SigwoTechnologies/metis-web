@@ -1,5 +1,5 @@
 import { AnyAction } from '@reduxjs/toolkit';
-import store from 'src/store';
+import store from '@/store';
 import { Channel } from '../types/channel';
 import { findByUser } from './channel.actions';
 import { channelReducer, ChannelState, selectState } from './channel.slice';

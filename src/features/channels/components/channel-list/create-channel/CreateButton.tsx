@@ -1,5 +1,5 @@
 import Box from '@mui/material/Box';
-import PlusButton from 'src/assets/images/misc/plus-button.png';
+import PlusButton from '@/assets/images/misc/plus-button.png';
 
 import useStyles from './CreateButton.styles';
 
