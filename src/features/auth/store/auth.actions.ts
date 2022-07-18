@@ -1,6 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { ErrorResponse } from '@/common/types/error-response';
-import BusinessError from '@/common/exceptions/business-error';
+import { ErrorResponse } from '@metis/common/types/error-response';
+import BusinessError from '@metis/common/exceptions/business-error';
 import authService from '../services/auth.service';
 
 export const login = createAsyncThunk<boolean, string, { rejectValue: ErrorResponse }>(

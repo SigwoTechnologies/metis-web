@@ -1,12 +1,12 @@
 import { useEffect } from 'react';
-import { useAppDispatch } from '@/store/hooks';
-import { login } from '@/features/auth/store/auth.actions';
+import { useAppDispatch } from '@metis/store/hooks';
+import { login } from '@metis/features/auth/store/auth.actions';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
-import SquareGroup from '@/assets/images/misc/square-group.png';
-import useMetamask from '@/features/auth/hooks/useMetamask';
+import SquareGroup from '@metis/assets/images/misc/square-group.png';
+import useMetamask from '@metis/features/auth/hooks/useMetamask';
 import useStyles from './LoginPage.styles';
 
 const LoginPage = () => {

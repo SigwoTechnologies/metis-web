@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import type { RootState } from '@/store/types';
+import type { RootState } from '@metis/store/types';
 import { Channel } from '../types/channel';
 import { findByUser } from './channel.actions';
 

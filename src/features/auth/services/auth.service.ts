@@ -1,5 +1,5 @@
-import BusinessError from '@/common/exceptions/business-error';
-import httpService from '@/common/services/http.service';
+import BusinessError from '@metis/common/exceptions/business-error';
+import httpService from '@metis/common/services/http.service';
 import { AliasResponse } from '../types/alias-response';
 import { ChallengeResponse } from '../types/challenge-response';
 import { ValidateSignatureResponse } from '../types/validate-signature-response';
