@@ -1,25 +1,12 @@
 import { useEffect, useState } from 'react';
-import { ethers } from 'ethers';
 
 const useMetamask = () => {
   const [errorMessage, setErrorMessage] = useState('');
   const [account, setAccount] = useState('');
-  const [balance, setBalance] = useState('');
 
   // TODO: reserach if we can create jup accounts with testnet in metamatask (eth testnet => jupiter)
 
-  const accountsChanged = async (newAccount: string) => {
-    setAccount(newAccount);
-    try {
-      const response = await window.ethereum.request({
-        method: 'eth_getBalance',
-        params: [newAccount.toString(), 'latest'],
-      });
-      setBalance(ethers.utils.formatEther(response));
-    } catch (err) {
-      setErrorMessage('There was a problem connecting to MetaMask');
-    }
-  };
+  const accountsChanged = async (newAccount: string) => setAccount(newAccount);
 
   const connect = async () => {
     if (window.ethereum) {
@@ -40,7 +27,6 @@ const useMetamask = () => {
   const chainChanged = () => {
     setErrorMessage('');
     setAccount('');
-    setBalance('');
   };
 
   useEffect(() => {
@@ -52,7 +38,7 @@ const useMetamask = () => {
 
   return {
     account,
-    balance,
+
     errorMessage,
     connect,
   };

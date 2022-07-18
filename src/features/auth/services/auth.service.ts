@@ -1,42 +1,74 @@
-import CustomError from '@/common/exceptions/business-error';
+import BusinessError from '@/common/exceptions/business-error';
 import httpService from '@/common/services/http.service';
+import { AliasResponse } from '../types/alias-response';
+import { ChallengeResponse } from '../types/challenge-response';
+import { ValidateSignatureResponse } from '../types/validate-signature-response';
+import { getBufferString } from '../utils/auth.utils';
 
 const endpoint = '/v1/api/crypto';
 
-type ChallengeResponse = {
-  challengeDigest: string;
-};
-const getChallenge = async (ethAddress: string): Promise<string> => {
+const getChallenge = async (address: string): Promise<string> => {
   try {
     const { data } = await httpService.get<ChallengeResponse>(
-      `${endpoint}/create-chall2enge/${ethAddress}`
+      `${endpoint}/create-challenge/${address}`
     );
     return data.challengeDigest;
-  } catch (err) {
-    throw new CustomError('Hey whats up error!', 'some_error', '456');
+  } catch (err: unknown) {
+    // TODO: Log the error in a log service
+    // TODO: Create codes enums and a better error response message
+    throw new BusinessError('An error has occured while signing in', 'challenge');
   }
 };
 
-type ValidateSignatureResponse = {
-  verified: boolean;
-};
-const validateSignature = async (message: string, signature: string) => {
-  const payload = {
-    challengeDigest: message,
-    signature,
-  };
+const getChallengeMessage = (challenge: string) => getBufferString(challenge);
 
-  const { data } = await httpService.post<ValidateSignatureResponse>(
-    `${endpoint}/verify-signature`,
-    payload
-  );
-  return data.verified;
+const signMessage = async (message: string, address: string): Promise<string> => {
+  try {
+    return await window.ethereum.request({
+      method: 'personal_sign',
+      params: [message, address],
+    });
+  } catch (err) {
+    throw new BusinessError(
+      'An error has occured while signing your message. Please try again.',
+      'sign_message'
+    );
+  }
+};
+const validateSignature = async (message: string, signature: string): Promise<boolean> => {
+  try {
+    const payload = { challengeDigest: message, signature };
+    const { data } = await httpService.post<ValidateSignatureResponse>(
+      `${endpoint}/verify-signature`,
+      payload
+    );
+
+    return data.verified;
+  } catch (err: unknown) {
+    // TODO: Log the error in a log service
+    throw new BusinessError(
+      'An error has occurred while validating your identity',
+      'validate_signature'
+    );
+  }
 };
 
-const getAlias = async (ethAddress: string) => {
-  const response = await httpService.get(`${endpoint}/get-alias/${ethAddress}`);
-  console.log('getAlias|response', response);
-  return response;
+const getAlias = async (address: string) => {
+  try {
+    const { data } = await httpService.get<AliasResponse>(`${endpoint}/get-alias/${address}`);
+
+    // TODO: Validate if the api can return undefined/null response
+    if (data?.message.toLocaleLowerCase() === 'no available alias') return '';
+
+    // TODO: What type of response does the api returns here?
+    return data.message;
+  } catch (err: unknown) {
+    // TODO: Log the error in a log service
+    throw new BusinessError(
+      'An error has occurred while while trying to connect to Metis servers',
+      'get_alias'
+    );
+  }
 };
 
 const createAccount = async (
@@ -44,13 +76,28 @@ const createAccount = async (
   password: string,
   blockchainAccountAddress: string
 ) => {
-  const response = await httpService.post(`${endpoint}/create/account`, {
-    passphrase,
-    password,
-    blockchainAccountAddress,
-  });
-  console.log('response', response);
-  return response;
+  try {
+    const response = await httpService.post(`${endpoint}/create/account`, {
+      passphrase,
+      password,
+      blockchainAccountAddress,
+    });
+    console.log('response', response);
+    return response;
+  } catch (err: unknown) {
+    // TODO: Log the error in a log service
+    throw new BusinessError(
+      'An error has occured while creating your new account',
+      'create_account'
+    );
+  }
 };
 
-export default { getChallenge, validateSignature, getAlias, createAccount };
+export default {
+  getChallenge,
+  getChallengeMessage,
+  signMessage,
+  validateSignature,
+  getAlias,
+  createAccount,
+};
