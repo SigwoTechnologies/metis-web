@@ -9,7 +9,7 @@ export default defineConfig({
   plugins: [eslintPlugin(), react(), EnvironmentPlugin('all')],
   resolve: {
     alias: {
-      '@': fileURLToPath(new URL('./src', import.meta.url)),
+      '@metis': fileURLToPath(new URL('./src', import.meta.url)),
     },
   },
 });

@@ -1,14 +1,14 @@
 import { lazy } from 'react';
 import { Navigate, RouteObject } from 'react-router-dom';
 
-import Main from '@/layout/Main';
+import Main from '@metis/layout/Main';
 import AuthRoute from './auth-route/AuthRoute';
 import Loader from './loader/Loader';
 import NonAuthRoute from './non-auth-route/NonAuthRoute';
 
-const Login = Loader(lazy(() => import('@/pages/login-page/LoginPage')));
-const ChatContainer = Loader(lazy(() => import('@/pages/chat-page/ChatPage')));
-const Status404 = Loader(lazy(() => import('@/pages/error-pages/Status404')));
+const Login = Loader(lazy(() => import('@metis/pages/login-page/LoginPage')));
+const ChatContainer = Loader(lazy(() => import('@metis/pages/chat-page/ChatPage')));
+const Status404 = Loader(lazy(() => import('@metis/pages/error-pages/Status404')));
 
 const routes: RouteObject[] = [
   {

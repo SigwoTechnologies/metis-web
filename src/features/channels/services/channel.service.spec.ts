@@ -1,4 +1,4 @@
-import httpService from '@/common/services/http.service';
+import httpService from '@metis/common/services/http.service';
 import channelService from './channel.service';
 
 describe('Channel Service', () => {

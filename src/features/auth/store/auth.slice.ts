@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import type { RootState } from '@/store/types';
+import type { RootState } from '@metis/store/types';
 import { login } from './auth.actions';
 
 export type AuthState = {
