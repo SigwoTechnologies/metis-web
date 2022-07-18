@@ -18,7 +18,7 @@
     "jsx": "react-jsx",
     "strictBindCallApply": false,
     "paths": {
-      "@/*": ["./src/*"]
+      "@metis/*": ["./src/*"]
     }
   },
   "include": ["src"],
