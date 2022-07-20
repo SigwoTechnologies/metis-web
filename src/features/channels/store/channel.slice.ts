@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { RootState } from '@metis/store/types';
 import { Channel } from '../types/channel';
-import { findByUser } from './channel.actions';
+import { findChannels } from './channel.actions';
 
 export type ChannelState = {
   isLoading: boolean;
@@ -16,14 +16,14 @@ const slice = createSlice({
   } as ChannelState,
   reducers: {},
   extraReducers: (builder) => {
-    builder.addCase(findByUser.pending, (state) => {
+    builder.addCase(findChannels.pending, (state) => {
       state.isLoading = true;
     });
-    builder.addCase(findByUser.fulfilled, (state, { payload }) => {
+    builder.addCase(findChannels.fulfilled, (state, { payload }) => {
       state.channels = payload;
       state.isLoading = false;
     });
-    builder.addCase(findByUser.rejected, (state) => {
+    builder.addCase(findChannels.rejected, (state) => {
       state.isLoading = false;
     });
   },
