@@ -1,14 +1,15 @@
 import { Alert, Snackbar } from '@mui/material';
 import React from 'react';
 import { useAppDispatch, useAppSelector } from '@metis/store/hooks';
-import { hideToast } from '@metis/store/ui/ui.slice';
+import { hideToast, selectToast } from '@metis/store/ui/ui.slice';
 
 type Props = {
   delay?: number;
 };
 
 const Toast = ({ delay = 6000 }: Props) => {
-  const { open, text, type } = useAppSelector((state) => state.ui.toast);
+  const { open, text, type } = useAppSelector(selectToast);
+
   const dispatch = useAppDispatch();
 
   const handleClose = (event?: React.SyntheticEvent | Event, reason?: string) => {

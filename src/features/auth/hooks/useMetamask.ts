@@ -1,47 +1,43 @@
 import { useEffect, useState } from 'react';
+import { useAppDispatch } from '@metis/store/hooks';
+import { openToast } from '@metis/store/ui/ui.slice';
+import metamaskService from '@metis/common/services/metamask.service';
 
 const useMetamask = () => {
-  const [errorMessage, setErrorMessage] = useState('');
+  const dispatch = useAppDispatch();
   const [account, setAccount] = useState('');
 
-  // TODO: reserach if we can create jup accounts with testnet in metamatask (eth testnet => jupiter)
-
+  // TODO: Add a prompt to warn the user when is a creating a testnet account
   const accountsChanged = async (newAccount: string) => setAccount(newAccount);
 
   const connect = async () => {
-    if (window.ethereum) {
+    if (metamaskService.ethereum) {
       try {
-        const res = await window.ethereum.request({
-          method: 'eth_requestAccounts',
-        });
+        const accounts = await metamaskService.requestAccounts();
 
-        await accountsChanged(res[0]);
+        await accountsChanged(accounts[0]);
       } catch (err) {
-        setErrorMessage('There was a problem connecting to MetaMask');
+        dispatch(openToast({ text: 'There was a problem connecting to MetaMask', type: 'error' }));
       }
     } else {
-      setErrorMessage('Install MetaMask');
+      dispatch(openToast({ text: 'Install MetaMask', type: 'error' }));
     }
   };
 
-  const chainChanged = () => {
-    setErrorMessage('');
-    setAccount('');
-  };
+  const chainChanged = () => setAccount('');
 
   useEffect(() => {
-    if (window.ethereum) {
-      window.ethereum.on('accountsChanged', accountsChanged);
-      window.ethereum.on('chainChanged', chainChanged);
+    if (metamaskService.ethereum) {
+      metamaskService.on('accountsChanged', accountsChanged);
+      metamaskService.on('chainChanged', chainChanged);
     }
+    return () => {
+      metamaskService.removeListener('accountsChanged', accountsChanged);
+      metamaskService.removeListener('chainChanged', chainChanged);
+    };
   }, []);
 
-  return {
-    account,
-
-    errorMessage,
-    connect,
-  };
+  return { account, connect };
 };
 
 export default useMetamask;

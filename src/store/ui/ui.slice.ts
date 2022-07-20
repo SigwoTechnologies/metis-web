@@ -1,5 +1,6 @@
 import { AlertColor } from '@mui/material';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import type { RootState } from '../types';
 
 export type UiState = {
   isLoading: boolean;
@@ -44,4 +45,5 @@ export const slice = createSlice({
 });
 
 export const { openToast, hideToast } = slice.actions;
+export const selectToast = (state: RootState) => state.ui.toast;
 export const uiReducer = slice.reducer;
