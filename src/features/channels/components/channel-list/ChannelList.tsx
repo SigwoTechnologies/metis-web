@@ -5,7 +5,7 @@ import Spinner from '@metis/common/components/ui/spinner/Spinner';
 import ChannelListItem from './channel-list-item/ChannelListItem';
 
 import { selectState } from '../../store/channel.slice';
-import { findByUser } from '../../store/channel.actions';
+import { findChannels } from '../../store/channel.actions';
 
 const ChannelList = () => {
   const dispatch = useAppDispatch();
@@ -13,21 +13,20 @@ const ChannelList = () => {
   const [selected, setSelected] = useState('');
 
   useEffect(() => {
-    dispatch(findByUser());
+    dispatch(findChannels());
   }, []);
 
   return (
     <Spinner isLoading={isLoading}>
       {channels.map((channel) => (
         <ChannelListItem
-          key={channel.name}
-          name={channel.name}
-          message={`${channel.name} says: visit my page!: ${channel.url}`}
+          key={channel.channelName}
+          name={channel.channelName}
+          message={`${channel.channelName} says: visit my page!`}
           date="08:34 AM"
           isRead
-          avatar={channel.url}
-          onClick={() => setSelected(channel.name)}
-          selected={selected === channel.name}
+          onClick={() => setSelected(channel.channelName)}
+          selected={selected === channel.channelName}
         />
       ))}
     </Spinner>

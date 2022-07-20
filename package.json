@@ -24,7 +24,7 @@
     "build": "tsc && vite build",
     "preview": "vite preview",
     "test": "jest",
-    "test:staged": "jest --bail --findRelatedTests --watchAll=false",
+    "test:staged": "jest --bail --findRelatedTests --watchAll=false --passWithNoTests",
     "format:check": "prettier . --ignore-path .gitignore --check",
     "format:fix": "prettier . --ignore-path .gitignore --write",
     "lint": "eslint . --ext .ts --ext .tsx",
