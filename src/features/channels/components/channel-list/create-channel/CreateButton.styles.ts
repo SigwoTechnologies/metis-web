@@ -12,6 +12,20 @@ const useStyles = makeStyles(() =>
         cursor: 'pointer',
       },
     },
+    button: {
+      width: '100%',
+      marginBottom: '1rem',
+    },
+    drawerContainer: {
+      display: 'flex',
+      justifyContent: 'center',
+      alignContent: 'center',
+      height: '100%',
+    },
+    textField: {
+      width: '100%',
+      marginBottom: '2rem',
+    },
   })
 );
 
