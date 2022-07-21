@@ -3,9 +3,8 @@ import { createStyles, makeStyles } from '@mui/styles';
 const useStyles = makeStyles(() =>
   createStyles({
     header: {
-      height: '7rem',
+      height: '3.7rem',
       position: 'relative',
-      paddingTop: '2rem',
     },
     main: {
       flex: 1,
@@ -15,8 +14,10 @@ const useStyles = makeStyles(() =>
       paddingBottom: '1.5rem',
     },
     footer: {
-      height: '5rem',
+      height: '3.7rem',
       position: 'relative',
+      display: 'flex',
+      alignItems: 'flex-end',
     },
   })
 );

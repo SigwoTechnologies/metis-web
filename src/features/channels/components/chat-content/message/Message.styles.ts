@@ -32,9 +32,6 @@ const useStyles = makeStyles((theme: Theme) =>
       borderRadius: '0.5rem',
       position: 'relative',
     },
-    usermessage: {
-      backgroundColor: theme.colors.blue1,
-    },
     message: {
       display: 'flex',
       flexDirection: 'column',

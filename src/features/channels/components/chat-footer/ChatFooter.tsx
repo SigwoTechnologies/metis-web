@@ -12,7 +12,7 @@ const ChatFooter = () => {
   return (
     <FormControl variant="standard" fullWidth>
       <FilledInput
-        sx={{ displat: 'flex', justifyContent: 'center', alignItems: 'center' }}
+        className={classes.button}
         startAdornment={
           <InputAdornment position="start">
             <IconButton aria-label="send message" edge="start" size="medium" sx={{ p: 1.5 }}>
