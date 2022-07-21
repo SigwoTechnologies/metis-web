@@ -1,6 +1,6 @@
 import { AnyAction } from '@reduxjs/toolkit';
-import { authReducer, AuthState, selectState } from 'src/features/auth/store/auth.slice';
-import store from 'src/store';
+import { authReducer, AuthState, selectState } from '@metis/features/auth/store/auth.slice';
+import store from '@metis/store';
 import { login } from './auth.actions';
 
 describe('Auth Slice', () => {

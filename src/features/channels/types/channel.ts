@@ -1,4 +1,7 @@
 export type Channel = {
-  name: string;
-  url: string;
+  channelAddress: string;
+  channelPublicKey: string;
+  channelName: string;
+  createdBy: string;
+  createdAt: number;
 };

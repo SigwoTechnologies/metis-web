@@ -1,7 +1,7 @@
 import { AnyAction } from '@reduxjs/toolkit';
-import store from 'src/store';
+import store from '@metis/store';
 import { Channel } from '../types/channel';
-import { findByUser } from './channel.actions';
+import { findChannels } from './channel.actions';
 import { channelReducer, ChannelState, selectState } from './channel.slice';
 
 describe('Channel Slice', () => {
@@ -24,13 +24,13 @@ describe('Channel Slice', () => {
     });
   });
 
-  describe('When findByUser function is called', () => {
+  describe('When findChannels function is called', () => {
     describe('and the response is pending', () => {
       it('should set the isLoading flag to true', () => {
         const expected = initialState;
         expected.isLoading = true;
 
-        const actual = channelReducer(undefined, findByUser.pending(''));
+        const actual = channelReducer(undefined, findChannels.pending(''));
 
         expect(actual).toEqual(initialState);
       });
@@ -38,12 +38,11 @@ describe('Channel Slice', () => {
     describe('and the response is successfull', () => {
       const channels: Channel[] = [
         {
-          name: 'channel 1',
-          url: 'url 1',
-        },
-        {
-          name: 'channel 2',
-          url: 'url 2',
+          channelAddress: 'JUP-VHVJ-WEBM-N5NR-3CV33',
+          channelPublicKey: '19d206b972aa2a7b5756a1797bd0901e2352d327e0906ebec717402ce54cb059',
+          channelName: 'testing',
+          createdBy: 'JUP-5FX8-JXLL-GLAV-7MG6P',
+          createdAt: 1656711221005,
         },
       ];
 
@@ -51,7 +50,7 @@ describe('Channel Slice', () => {
         const expected = initialState;
         expected.channels = channels;
 
-        const actual = channelReducer(undefined, findByUser.fulfilled(channels, ''));
+        const actual = channelReducer(undefined, findChannels.fulfilled(channels, ''));
 
         expect(actual).toEqual(expected);
       });
@@ -60,7 +59,7 @@ describe('Channel Slice', () => {
       it('should set the isLoading flag to false', () => {
         const expected = initialState;
 
-        const actual = channelReducer(undefined, findByUser.rejected(null, ''));
+        const actual = channelReducer(undefined, findChannels.rejected(null, ''));
 
         expect(actual).toEqual(expected);
       });

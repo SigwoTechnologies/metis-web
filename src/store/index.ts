@@ -1,6 +1,6 @@
 import { AnyAction, CombinedState, combineReducers, configureStore } from '@reduxjs/toolkit';
-import { authReducer } from 'src/features/auth/store/auth.slice';
-import { channelReducer } from 'src/features/channels/store/channel.slice';
+import { authReducer } from '@metis/features/auth/store/auth.slice';
+import { channelReducer } from '@metis/features/channels/store/channel.slice';
 import { uiReducer } from './ui/ui.slice';
 
 const combinedReducer = combineReducers({
