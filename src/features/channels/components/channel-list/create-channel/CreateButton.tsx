@@ -1,10 +1,25 @@
 import PlusButton from '@metis/assets/images/misc/plus-button.png';
 import Box from '@mui/material/Box';
 
+import { yupResolver } from '@hookform/resolvers/yup';
+import Form from '@metis/common/components/ui/Form/Form';
+import TextInput from '@metis/common/components/ui/TextInput/TextInput';
 import CloseIcon from '@mui/icons-material/Close';
-import { Button, Drawer, IconButton, TextField } from '@mui/material';
+import { Button, Drawer, IconButton } from '@mui/material';
 import { useState } from 'react';
+import * as yup from 'yup';
 import useStyles from './CreateButton.styles';
+
+type ChannelDTO = {
+  channelName: string;
+};
+
+const schema = yup.object({
+  channelName: yup
+    .string()
+    .required('This field is required')
+    .max(25, 'The channel name can\'t have more than 25 characters'),
+});
 
 const CreateButton = () => {
   const classes = useStyles();
@@ -12,6 +27,11 @@ const CreateButton = () => {
 
   const closeDrawer = () => {
     setOpenCreate(false);
+  };
+
+  const createChannel = (data: ChannelDTO) => {
+    // console.log(errors.channelName?.message);
+    console.log(data);
   };
 
   return (
@@ -41,10 +61,24 @@ const CreateButton = () => {
           >
             <CloseIcon />
           </IconButton>
-          <TextField className={classes.textField} label="Channel name here" variant="standard" />
-          <Button className={classes.button} variant="contained">
-            Invite
-          </Button>
+          <Form<ChannelDTO> onSubmit={createChannel} form={{ resolver: yupResolver(schema) }}>
+            <TextInput label="Channel name here" name="channelName" />
+            <Button type="submit" className={classes.button} variant="contained">
+              Create new channel
+            </Button>
+          </Form>
+          {/* <form onSubmit={handleSubmit(createChannel)}>
+            <TextField
+              className={classes.textField}
+              label="Channel name here"
+              variant="standard"
+              {...register('channelName')}
+            />
+            <p>{errors.channelName?.message}</p>
+            <Button type="submit" className={classes.button} variant="contained">
+              Create new channel
+            </Button>
+          </form> */}
         </Box>
       </Drawer>
       <Box
