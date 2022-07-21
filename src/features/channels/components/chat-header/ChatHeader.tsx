@@ -1,14 +1,15 @@
+import { useState } from 'react';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
-import { Button, TextField } from '@mui/material';
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
+import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
-import { useState } from 'react';
+
 import BugAvatar from '@metis/assets/images/avatars/bug.jpg';
 import Modal from '@metis/common/components/ui/Modal';
 import Notification from '@metis/common/components/ui/Notification';
-import ReneAvatar from '@metis/assets/images/avatars/rene.jpg';
 import useStyles from './ChatHeader.styles';
 
 const ChatHeader = () => {
@@ -54,9 +55,6 @@ const ChatHeader = () => {
           <IconButton onClick={() => setOpen(true)} aria-label="channel settings" size="large">
             <MoreHorizIcon />
           </IconButton>
-        </Box>
-        <Box className={classes.account}>
-          <Avatar alt="Channel Avatar" src={ReneAvatar} className={classes.accountAvatar} />
         </Box>
       </Box>
     </>
