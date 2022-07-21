@@ -1,4 +1,3 @@
 export type Credential = {
-  password: string;
-  passphrase: string;
+  access_token: string;
 };
