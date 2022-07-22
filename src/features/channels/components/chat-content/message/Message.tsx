@@ -44,7 +44,7 @@ const Message = ({
           </Box>
 
           <Box
-            className={isYours ? `${classes.messageContainer}` : classes.messageContainer}
+            className={classes.messageContainer}
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
           >
