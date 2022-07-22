@@ -1,16 +1,21 @@
-import InputAdornment from '@mui/material/InputAdornment';
-import IconButton from '@mui/material/IconButton/IconButton';
-import FormControl from '@mui/material/FormControl';
 import AttachFileIcon from '@mui/icons-material/AttachFile';
-import VideocamOutlinedIcon from '@mui/icons-material/VideocamOutlined';
 import SendIcon from '@mui/icons-material/Send';
+import VideocamOutlinedIcon from '@mui/icons-material/VideocamOutlined';
+import { Box } from '@mui/material';
 import FilledInput from '@mui/material/FilledInput';
+import FormControl from '@mui/material/FormControl';
+import IconButton from '@mui/material/IconButton/IconButton';
+import InputAdornment from '@mui/material/InputAdornment';
+import MessageReply from '../chat-content/message-reply/MessageReply';
 import useStyles from './ChatFooter.styles';
 
 const ChatFooter = () => {
   const classes = useStyles();
   return (
     <FormControl variant="standard" fullWidth>
+      <Box className={classes.replyContainer}>
+        <MessageReply name="Jose Theis" message="Epale mis panas" />
+      </Box>
       <FilledInput
         className={classes.button}
         startAdornment={

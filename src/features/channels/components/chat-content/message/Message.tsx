@@ -55,7 +55,7 @@ const Message = ({
             <Box className={classes.replyButton} style={style} onClick={handleReplyClick}>
               Reply
             </Box>
-            <Typography variant="body2" fontWeight="bold" sx={{ color }}>
+            <Typography variant="body2" fontWeight="bold" sx={{ color, marginBottom: '0.5rem' }}>
               {name}
             </Typography>
             {children && <Box className={classes.reply}>{children}</Box>}

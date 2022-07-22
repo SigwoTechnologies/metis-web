@@ -44,14 +44,11 @@ const useStyles = makeStyles((theme: Theme) =>
       justifyContent: 'space-between',
       textAlign: 'justify',
       textJustify: 'inter-word',
-      minHeight: '2.8rem',
       position: 'relative',
       width: '100%',
     },
     date: {
-      position: 'absolute',
-      right: 0,
-      bottom: 0,
+      textAlign: 'right',
     },
     replyContainer: {
       marginBottom: '0.5rem',
