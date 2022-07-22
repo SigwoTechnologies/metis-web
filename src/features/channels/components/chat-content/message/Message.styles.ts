@@ -34,6 +34,10 @@ const useStyles = makeStyles((theme: Theme) =>
       borderRadius: '0.5rem',
       position: 'relative',
     },
+    userMessageContainer: {
+      // TODO: add this color to the theme
+      backgroundColor: '#145b91 !important',
+    },
     message: {
       display: 'flex',
       flexDirection: 'column',
