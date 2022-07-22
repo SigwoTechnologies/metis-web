@@ -1,14 +1,15 @@
 import { createStyles, makeStyles } from '@mui/styles';
+import { Theme } from '@mui/material/styles';
 
-const useStyles = makeStyles(() =>
+const useStyles = makeStyles((theme: Theme) =>
   createStyles({
-    header: {
-      paddingLeft: '1rem',
-    },
     titleContainer: {
+      paddingLeft: '1rem',
       display: 'flex',
       justifyContent: 'space-between',
       alignItems: 'center',
+      height: '100%',
+      backgroundColor: theme.colors.black1,
     },
     avatar: {
       width: '2.8rem',

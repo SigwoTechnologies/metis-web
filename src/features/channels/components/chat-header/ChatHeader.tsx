@@ -46,18 +46,16 @@ const ChatHeader = () => {
           Cancel
         </Button>
       </Modal>
-      <Box className={classes.header}>
-        <Box className={classes.titleContainer}>
-          <Box display="flex" justifyContent="center" alignItems="center">
-            <Avatar alt="Channel Avatar" src={BugAvatar} className={classes.avatar} />
-            <Typography variant="body1" sx={{ ml: '1rem' }}>
-              Metis bugs report
-            </Typography>
-          </Box>
-          <IconButton onClick={() => setOpen(true)} aria-label="channel settings" size="large">
-            <MoreHorizIcon />
-          </IconButton>
+      <Box className={classes.titleContainer}>
+        <Box display="flex" justifyContent="center" alignItems="center">
+          <Avatar alt="Channel Avatar" src={BugAvatar} className={classes.avatar} />
+          <Typography variant="body1" sx={{ ml: '1rem' }}>
+            Metis bugs report
+          </Typography>
         </Box>
+        <IconButton onClick={() => setOpen(true)} aria-label="channel settings" size="large">
+          <MoreHorizIcon />
+        </IconButton>
       </Box>
     </>
   );

@@ -3,7 +3,7 @@ import { createStyles, makeStyles } from '@mui/styles';
 const useStyles = makeStyles(() =>
   createStyles({
     header: {
-      height: '3.7rem',
+      height: '5rem',
       position: 'relative',
     },
     main: {
