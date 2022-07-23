@@ -1,4 +1,6 @@
+import useToggle from '@metis/common/hooks/useToggle';
 import AttachFileIcon from '@mui/icons-material/AttachFile';
+import CloseIcon from '@mui/icons-material/Close';
 import SendIcon from '@mui/icons-material/Send';
 import VideocamOutlinedIcon from '@mui/icons-material/VideocamOutlined';
 import { Box } from '@mui/material';
@@ -11,11 +13,20 @@ import useStyles from './ChatFooter.styles';
 
 const ChatFooter = () => {
   const classes = useStyles();
+  const [openReply, setOpenReply] = useToggle(true);
+
   return (
     <FormControl variant="standard" fullWidth>
-      <Box className={classes.replyContainer}>
-        <MessageReply name="Jose Theis" message="Epale mis panas" />
-      </Box>
+      {openReply && (
+        <Box className={classes.replyContainer}>
+          <MessageReply name="Jose Theis" message="Epale mis panas" />
+          <div className={classes.closeButtonContainer}>
+            <IconButton className={classes.closeButton} onClick={setOpenReply}>
+              <CloseIcon />
+            </IconButton>
+          </div>
+        </Box>
+      )}
       <FilledInput
         className={classes.button}
         startAdornment={
