@@ -9,7 +9,9 @@ const useStyles = makeStyles((theme: Theme) =>
       gap: '0.75rem',
     },
     userContainer: {
-      alignSelf: 'end',
+      display: 'flex',
+      marginTop: '1.5rem',
+      gap: '0.75rem',
       justifyContent: 'end',
       flexDirection: 'row-reverse',
     },
@@ -28,12 +30,9 @@ const useStyles = makeStyles((theme: Theme) =>
       backgroundColor: theme.colors.black1,
       padding: '0.5rem 0.7rem',
       maxWidth: '80%',
-      minWidth: '30%',
+      minWidth: '25%',
       borderRadius: '0.5rem',
       position: 'relative',
-    },
-    usermessage: {
-      backgroundColor: theme.colors.blue1,
     },
     message: {
       display: 'flex',
@@ -49,6 +48,10 @@ const useStyles = makeStyles((theme: Theme) =>
       position: 'absolute',
       right: 0,
       bottom: 0,
+    },
+    replyContainer: {
+      marginBottom: '0.5rem',
+      marginTop: '0.5rem',
     },
     reply: {
       width: '100%',
@@ -73,6 +76,24 @@ const useStyles = makeStyles((theme: Theme) =>
         textDecoration: 'underline',
       },
     },
+    // speechBubble: {
+    //   position: 'relative',
+    //   background: '#00aabb',
+    //   borderRadius: '.4em',
+    //   '&:after': {
+    //     content: '',
+    //     position: 'absolute',
+    //     right: 0,
+    //     top: '50%',
+    //     width: 0,
+    //     height: 0,
+    //     border: '20px solid transparent',
+    //     borderLeftColor: '#00aabb',
+    //     borderRight: 0,
+    //     marginTop: '-20px',
+    //     marginRight: '-20px'
+    //   }
+    // }
   })
 );
 
