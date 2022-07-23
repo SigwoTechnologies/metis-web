@@ -19,7 +19,7 @@ const ChatFooter = () => {
     <FormControl variant="standard" fullWidth>
       {openReply && (
         <Box className={classes.replyContainer}>
-          <MessageReply name="Jose Theis" message="Epale mis panas" />
+          <MessageReply name="Pompilio Fiore" message="How is it going?" />
           <div className={classes.closeButtonContainer}>
             <IconButton className={classes.closeButton} onClick={setOpenReply}>
               <CloseIcon />
