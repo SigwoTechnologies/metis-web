@@ -7,6 +7,7 @@ import Container from '@mui/material/Container';
 import Divider from '@mui/material/Divider';
 import Drawer from '@mui/material/Drawer';
 import Grid from '@mui/material/Grid';
+import { StylesProvider } from '@mui/styles';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
@@ -21,6 +22,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import MailIcon from '@mui/icons-material/Mail';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
 import useStyles from './SearchChannel.styles';
+import './styles.css';
 
 const ChannelList = () => {
   const [drawer, setDrawer] = useState(false);
@@ -67,15 +69,18 @@ const ChannelList = () => {
           <Grid item xs={10}>
             <FormControl variant="standard" fullWidth>
               <InputLabel>Search</InputLabel>
-              <Input
-                endAdornment={
-                  <InputAdornment position="end">
-                    <IconButton aria-label="search in channels">
-                      <SearchIcon />
-                    </IconButton>
-                  </InputAdornment>
-                }
-              />
+              <StylesProvider injectFirst>
+                <Input
+                  disableUnderline
+                  endAdornment={
+                    <InputAdornment position="end">
+                      <IconButton aria-label="search in channels">
+                        <SearchIcon />
+                      </IconButton>
+                    </InputAdornment>
+                  }
+                />
+              </StylesProvider>
             </FormControl>
           </Grid>
         </Grid>
