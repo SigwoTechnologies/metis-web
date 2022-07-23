@@ -7,3 +7,6 @@
     border-radius: 15px;
     height: 2.7rem;
 }
+.MuiInput-input {
+    padding-left: 0.7rem;
+}
