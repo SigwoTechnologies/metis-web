@@ -1,4 +1,3 @@
-import useToggle from '@metis/common/hooks/useToggle';
 import AttachFileIcon from '@mui/icons-material/AttachFile';
 import CloseIcon from '@mui/icons-material/Close';
 import SendIcon from '@mui/icons-material/Send';
@@ -8,20 +7,27 @@ import FilledInput from '@mui/material/FilledInput';
 import FormControl from '@mui/material/FormControl';
 import IconButton from '@mui/material/IconButton/IconButton';
 import InputAdornment from '@mui/material/InputAdornment';
+import { useContext } from 'react';
 import MessageReply from '../chat-content/message-reply/MessageReply';
+import {
+  messageReplyContext,
+  MessageReplyContextType,
+} from '../message-reply-provider/MessageReplyProvider';
 import useStyles from './ChatFooter.styles';
 
 const ChatFooter = () => {
   const classes = useStyles();
-  const [openReply, setOpenReply] = useToggle(true);
+  const { active, reply, discardReply } = useContext(
+    messageReplyContext
+  ) as MessageReplyContextType;
 
   return (
     <FormControl variant="standard" fullWidth>
-      {openReply && (
+      {active && (
         <Box className={classes.replyContainer}>
-          <MessageReply name="Pompilio Fiore" message="How is it going?" />
+          <MessageReply name={reply.name} message={reply.message} />
           <div className={classes.closeButtonContainer}>
-            <IconButton className={classes.closeButton} onClick={setOpenReply}>
+            <IconButton className={classes.closeButton} onClick={discardReply}>
               <CloseIcon />
             </IconButton>
           </div>

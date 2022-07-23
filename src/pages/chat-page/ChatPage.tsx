@@ -4,18 +4,21 @@ import ChatFooter from '@metis/features/channels/components/chat-footer/ChatFoot
 import HeaderSection from '@metis/layout/sections/HeaderSection';
 import MainSection from '@metis/layout/sections/MainSection';
 import FooterSection from '@metis/layout/sections/FooterSection';
+import MessageReplyProvider from '@metis/features/channels/components/message-reply-provider/MessageReplyProvider';
 
 const ChatPage = () => (
   <>
     <HeaderSection>
       <ChatHeader />
     </HeaderSection>
-    <MainSection>
-      <ChatContent />
-    </MainSection>
-    <FooterSection>
-      <ChatFooter />
-    </FooterSection>
+    <MessageReplyProvider>
+      <MainSection>
+        <ChatContent />
+      </MainSection>
+      <FooterSection>
+        <ChatFooter />
+      </FooterSection>
+    </MessageReplyProvider>
   </>
 );
 

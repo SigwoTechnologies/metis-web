@@ -1,9 +1,13 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 
 import useStyles from './Message.styles';
+import {
+  messageReplyContext,
+  MessageReplyContextType,
+} from '../../message-reply-provider/MessageReplyProvider';
 
 type Props = {
   name: string;
@@ -27,9 +31,13 @@ const Message = ({
   const classes = useStyles();
   const [style, setStyle] = useState({ display: 'none' });
   const isYours = name === 'Rene Reyes';
+  const { updateReply } = useContext(messageReplyContext) as MessageReplyContextType;
 
   const handleReplyClick = () => {
-    // TODO: Add reply message to the chat text box here
+    updateReply({
+      name,
+      message,
+    });
   };
 
   const handleMouseEnter = () => setStyle({ display: 'block' });
