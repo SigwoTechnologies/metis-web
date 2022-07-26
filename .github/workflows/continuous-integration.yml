@@ -3,8 +3,23 @@ name: Continuous Integration
 on: [pull_request]
 
 jobs:
+  check:
+    name: 🔎 Check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+
+      - name: Install Dependencies
+        run: yarn
+
+      - name: Format
+        run: yarn format:check
+
+      - name: Lint
+        run: yarn lint
+
   test:
-    name: Test
+    name: 🧪 Test
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
@@ -16,7 +31,7 @@ jobs:
         run: yarn test --watchAll=false
 
   build:
-    name: Build
+    name: 👷🏼‍♂️ Build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
