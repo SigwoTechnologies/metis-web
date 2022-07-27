@@ -62,7 +62,8 @@
         "namedComponents": "arrow-function",
         "unnamedComponents": "arrow-function"
       }
-    ]
+    ],
+    "class-methods-use-this": "off"
   },
   "settings": {
     "import/resolver": {

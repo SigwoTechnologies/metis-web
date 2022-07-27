@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react';
 import { useAppDispatch } from '@metis/store/hooks';
 import { openToast } from '@metis/store/ui/ui.slice';
-import metamaskService from '@metis/common/services/metamask.service';
+
+// TODO: Make sure that only metamask provider is supported by the app (avoid overrides)
+// ref: https://docs.metamask.io/guide/ethereum-provider.html#using-the-provider
 
 const useMetamask = () => {
   const dispatch = useAppDispatch();
@@ -11,9 +13,11 @@ const useMetamask = () => {
   const accountsChanged = async (newAccount: string) => setAccount(newAccount);
 
   const connect = async () => {
-    if (metamaskService.ethereum) {
+    if (window.ethereum) {
       try {
-        const accounts = await metamaskService.requestAccounts();
+        const accounts = await window.ethereum.request({
+          method: 'eth_requestAccounts',
+        });
 
         await accountsChanged(accounts[0]);
       } catch (err) {
@@ -27,13 +31,15 @@ const useMetamask = () => {
   const chainChanged = () => setAccount('');
 
   useEffect(() => {
-    if (metamaskService.ethereum) {
-      metamaskService.on('accountsChanged', accountsChanged);
-      metamaskService.on('chainChanged', chainChanged);
+    if (window.ethereum) {
+      window.ethereum.on('accountsChanged', accountsChanged);
+      window.ethereum.on('chainChanged', chainChanged);
     }
     return () => {
-      metamaskService.removeListener('accountsChanged', accountsChanged);
-      metamaskService.removeListener('chainChanged', chainChanged);
+      if (window.ethereum) {
+        window.ethereum.removeListener('accountsChanged', accountsChanged);
+        window.ethereum.removeListener('chainChanged', chainChanged);
+      }
     };
   }, []);
 
