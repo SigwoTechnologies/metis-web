@@ -61,7 +61,7 @@ const slice = createSlice({
       state.isLoading = true;
     });
     builder.addCase(createChannel.fulfilled, (state, { payload }) => {
-      state.channels = [payload, ...state.channels];
+      state.channels.unshift(payload);
       state.isLoading = false;
     });
     builder.addCase(createChannel.rejected, (state) => {
