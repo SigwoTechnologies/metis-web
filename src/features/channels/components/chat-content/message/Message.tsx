@@ -1,3 +1,5 @@
+import { updateReply } from '@metis/features/channels/store/channel.slice';
+import { useAppDispatch } from '@metis/store/hooks';
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
@@ -22,13 +24,15 @@ const Message = ({ name, message, date, color, children, avatar = name }: Props)
   const classes = useStyles();
   const [style, setStyle] = useState({ display: 'none' });
   const isYours = name === 'Rene Reyes';
-  const { updateReply } = useContext(messageReplyContext) as MessageReplyContextType;
+  const dispatch = useAppDispatch();
 
   const handleReplyClick = () => {
-    updateReply({
-      name,
-      message,
-    });
+    dispatch(
+      updateReply({
+        name,
+        message,
+      })
+    );
   };
 
   const handleMouseEnter = () => setStyle({ display: 'block' });

@@ -11,7 +11,6 @@ const useStyles = makeStyles(() =>
       overflowY: 'auto',
       overflowX: 'hidden',
       position: 'relative',
-      paddingBottom: '1.5rem',
     },
     footer: {
       height: '3.7rem',
