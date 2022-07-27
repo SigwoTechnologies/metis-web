@@ -77,24 +77,6 @@ const useStyles = makeStyles((theme: Theme) =>
         textDecoration: 'underline',
       },
     },
-    // speechBubble: {
-    //   position: 'relative',
-    //   background: '#00aabb',
-    //   borderRadius: '.4em',
-    //   '&:after': {
-    //     content: '',
-    //     position: 'absolute',
-    //     right: 0,
-    //     top: '50%',
-    //     width: 0,
-    //     height: 0,
-    //     border: '20px solid transparent',
-    //     borderLeftColor: '#00aabb',
-    //     borderRight: 0,
-    //     marginTop: '-20px',
-    //     marginRight: '-20px'
-    //   }
-    // }
   })
 );
 

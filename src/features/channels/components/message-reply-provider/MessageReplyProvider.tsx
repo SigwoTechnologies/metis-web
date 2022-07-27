@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-shadow */
 import { createContext, ReactElement, useMemo, useState } from 'react';
 
 type ReplyType = {
@@ -26,8 +25,8 @@ export default ({ children }: props) => {
   });
   const [active, setActive] = useState(false);
 
-  const updateReply = (reply: ReplyType) => {
-    setReply(reply);
+  const updateReply = (newReply: ReplyType) => {
+    setReply(newReply);
     setActive(true);
   };
 
