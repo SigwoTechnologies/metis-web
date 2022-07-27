@@ -25,7 +25,7 @@ const ChatFooter = () => {
     <FormControl variant="standard" fullWidth>
       {active && (
         <Box className={classes.replyContainer}>
-          <MessageReply name={reply.name} message={reply.message} />
+          <MessageReply name={reply.name} message={reply.message} color="#A36300" />
           <div className={classes.closeButtonContainer}>
             <IconButton className={classes.closeButton} onClick={discardReply}>
               <CloseIcon />
