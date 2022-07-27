@@ -1,6 +1,6 @@
 import { Box, Typography } from '@mui/material';
 import React from 'react';
-import useStyles from '../message/Message.styles';
+import useStyles from './MessageReply.styles';
 
 type props = {
   name: string;
