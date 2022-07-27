@@ -9,7 +9,9 @@ const useStyles = makeStyles((theme: Theme) =>
       gap: '0.75rem',
     },
     userContainer: {
-      alignSelf: 'end',
+      display: 'flex',
+      marginTop: '1.5rem',
+      gap: '0.75rem',
       justifyContent: 'end',
       flexDirection: 'row-reverse',
     },
@@ -28,12 +30,13 @@ const useStyles = makeStyles((theme: Theme) =>
       backgroundColor: theme.colors.black1,
       padding: '0.5rem 0.7rem',
       maxWidth: '80%',
-      minWidth: '30%',
+      minWidth: '25%',
       borderRadius: '0.5rem',
       position: 'relative',
     },
-    usermessage: {
-      backgroundColor: theme.colors.blue1,
+    userMessageContainer: {
+      // TODO: add this color to the theme
+      backgroundColor: '#145b91 !important',
     },
     message: {
       display: 'flex',
@@ -41,14 +44,15 @@ const useStyles = makeStyles((theme: Theme) =>
       justifyContent: 'space-between',
       textAlign: 'justify',
       textJustify: 'inter-word',
-      minHeight: '2.8rem',
       position: 'relative',
       width: '100%',
     },
     date: {
-      position: 'absolute',
-      right: 0,
-      bottom: 0,
+      textAlign: 'right',
+    },
+    replyContainer: {
+      marginBottom: '0.5rem',
+      marginTop: '0.5rem',
     },
     reply: {
       width: '100%',

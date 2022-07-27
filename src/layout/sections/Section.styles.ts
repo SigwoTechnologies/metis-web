@@ -3,20 +3,20 @@ import { createStyles, makeStyles } from '@mui/styles';
 const useStyles = makeStyles(() =>
   createStyles({
     header: {
-      height: '7rem',
+      height: '5rem',
       position: 'relative',
-      paddingTop: '2rem',
     },
     main: {
       flex: 1,
       overflowY: 'auto',
       overflowX: 'hidden',
       position: 'relative',
-      paddingBottom: '1.5rem',
     },
     footer: {
-      height: '5rem',
+      height: '3.7rem',
       position: 'relative',
+      display: 'flex',
+      alignItems: 'flex-end',
     },
   })
 );
