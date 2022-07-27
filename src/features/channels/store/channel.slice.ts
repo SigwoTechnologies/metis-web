@@ -14,17 +14,6 @@ type ReplyPayload = {
   message: string;
 };
 
-type Reply = {
-  active: boolean;
-  name: string;
-  message: string;
-};
-
-type ReplyPayload = {
-  name: string;
-  message: string;
-};
-
 export type ChannelState = {
   isLoading: boolean;
   channels: Channel[];
