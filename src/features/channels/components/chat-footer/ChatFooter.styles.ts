@@ -14,7 +14,7 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     replyContainer: {
       display: 'flex',
-      backgroundColor: theme.colors.black1,
+      backgroundColor: theme.palette.grey[900],
       gap: '0.5rem',
       padding: '0 1rem 0 1rem',
     },

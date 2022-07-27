@@ -6,16 +6,17 @@ type props = {
   name: string;
   message: string;
   date?: string;
+  color: string;
 };
 
-const MessageReply: React.FC<props> = ({ name, message, date }) => {
+const MessageReply: React.FC<props> = ({ name, message, date, color }) => {
   const classes = useStyles();
 
   return (
     <Box className={classes.reply}>
       <Box className={classes.replyContainer}>
         <Box className={classes.messageContainer}>
-          <Typography variant="body2" fontWeight="bold" sx={{ color: '#44C553' }}>
+          <Typography variant="body2" fontWeight="bold" sx={{ color }}>
             {name}
           </Typography>
           <Box className={classes.message}>

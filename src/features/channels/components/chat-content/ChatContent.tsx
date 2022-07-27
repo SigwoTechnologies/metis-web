@@ -4,6 +4,7 @@ import ReneAvatar from '@metis/assets/images/avatars/rene.jpg';
 import Spinner from '@metis/common/components/ui/spinner/Spinner';
 import useStyles from './ChatContent.styles';
 import Message from './message/Message';
+import MessageReply from './message-reply/MessageReply';
 
 const ChatContent = () => {
   // TODO: Remove this dummy loading state
@@ -41,13 +42,11 @@ const ChatContent = () => {
           color="#44C553"
           avatar={ReneAvatar}
         >
-          <Message
+          <MessageReply
             name="Martin"
             message="How is it going? good how are you? "
             date="10:32 PM"
             color="#A36300"
-            avatar={PompAvatar}
-            isChildren
           />
         </Message>
       </div>

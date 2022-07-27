@@ -1,13 +1,13 @@
-import React, { useContext, useState } from 'react';
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
+import React, { useContext, useState } from 'react';
 
-import useStyles from './Message.styles';
 import {
   messageReplyContext,
   MessageReplyContextType,
 } from '../../message-reply-provider/MessageReplyProvider';
+import useStyles from './Message.styles';
 
 type Props = {
   name: string;
@@ -15,19 +15,10 @@ type Props = {
   date: string;
   color: string;
   avatar?: string;
-  children?: React.ReactNode;
-  isChildren?: boolean;
+  children?: React.ReactElement;
 };
 
-const Message = ({
-  name,
-  message,
-  date,
-  color,
-  children,
-  avatar = name,
-  isChildren = false,
-}: Props) => {
+const Message = ({ name, message, date, color, children, avatar = name }: Props) => {
   const classes = useStyles();
   const [style, setStyle] = useState({ display: 'none' });
   const isYours = name === 'Rene Reyes';
@@ -44,58 +35,35 @@ const Message = ({
   const handleMouseLeave = () => setStyle({ display: 'none' });
 
   return (
-    <>
-      {!isChildren && (
-        <Box className={isYours ? classes.userContainer : classes.container}>
-          <Box className={classes.avatarContainer}>
-            <Avatar alt="pomp" src={avatar} className={classes.avatar} />
-          </Box>
+    <Box className={isYours ? classes.userContainer : classes.container}>
+      <Box className={classes.avatarContainer}>
+        <Avatar alt="pomp" src={avatar} className={classes.avatar} />
+      </Box>
 
-          <Box
-            className={
-              isYours
-                ? `${classes.messageContainer} ${classes.userMessageContainer}`
-                : classes.messageContainer
-            }
-            onMouseEnter={handleMouseEnter}
-            onMouseLeave={handleMouseLeave}
-          >
-            <Box className={classes.replyButton} style={style} onClick={handleReplyClick}>
-              Reply
-            </Box>
-            <Typography variant="body2" fontWeight="bold" sx={{ color, marginBottom: '0.5rem' }}>
-              {name}
-            </Typography>
-            {children && <Box className={classes.reply}>{children}</Box>}
-            <Box className={classes.message}>
-              <Typography variant="body2">{message}</Typography>
-              <Typography variant="caption" className={classes.date}>
-                {date}
-              </Typography>
-            </Box>
-          </Box>
+      <Box
+        className={
+          isYours
+            ? `${classes.messageContainer} ${classes.userMessageContainer}`
+            : classes.messageContainer
+        }
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
+      >
+        <Box className={classes.replyButton} style={style} onClick={handleReplyClick}>
+          Reply
         </Box>
-      )}
-      {isChildren && (
-        <Box className={classes.replyContainer}>
-          <Box
-            className={isYours ? `${classes.messageContainer}` : classes.messageContainer}
-            onMouseEnter={handleMouseEnter}
-            onMouseLeave={handleMouseLeave}
-          >
-            <Typography variant="body2" fontWeight="bold" sx={{ color }}>
-              {name}
-            </Typography>
-            <Box className={classes.message}>
-              <Typography variant="body2">{message}</Typography>
-              <Typography variant="caption" className={classes.date}>
-                {date}
-              </Typography>
-            </Box>
-          </Box>
+        <Typography variant="body2" fontWeight="bold" sx={{ color, marginBottom: '0.5rem' }}>
+          {name}
+        </Typography>
+        {children}
+        <Box className={classes.message}>
+          <Typography variant="body2">{message}</Typography>
+          <Typography variant="caption" className={classes.date}>
+            {date}
+          </Typography>
         </Box>
-      )}
-    </>
+      </Box>
+    </Box>
   );
 };
 
