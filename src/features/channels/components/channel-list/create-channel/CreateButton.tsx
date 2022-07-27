@@ -4,15 +4,15 @@ import Box from '@mui/material/Box';
 import { yupResolver } from '@hookform/resolvers/yup';
 import Form from '@metis/common/components/ui/Form/Form';
 import TextInput from '@metis/common/components/ui/TextInput/TextInput';
+import { createChannel } from '@metis/features/channels/store/channel.actions';
+import { ChannelDTO } from '@metis/features/channels/types/channelDTO';
+import { useAppDispatch } from '@metis/store/hooks';
+import { openToast } from '@metis/store/ui/ui.slice';
 import CloseIcon from '@mui/icons-material/Close';
 import { Button, Drawer, IconButton } from '@mui/material';
 import { useState } from 'react';
 import * as yup from 'yup';
 import useStyles from './CreateButton.styles';
-
-type ChannelDTO = {
-  channelName: string;
-};
 
 const schema = yup.object({
   channelName: yup
@@ -24,14 +24,16 @@ const schema = yup.object({
 const CreateButton = () => {
   const classes = useStyles();
   const [openCreate, setOpenCreate] = useState(false);
+  const dispatch = useAppDispatch();
 
   const closeDrawer = () => {
     setOpenCreate(false);
   };
 
-  const createChannel = (data: ChannelDTO) => {
-    // console.log(errors.channelName?.message);
-    console.log(data);
+  const createNewChannel = (data: ChannelDTO) => {
+    dispatch(createChannel(data));
+    dispatch(openToast({ text: 'Channel created sucessfully', type: 'success' }));
+    closeDrawer();
   };
 
   return (
@@ -61,7 +63,7 @@ const CreateButton = () => {
           >
             <CloseIcon />
           </IconButton>
-          <Form<ChannelDTO> onSubmit={createChannel} form={{ resolver: yupResolver(schema) }}>
+          <Form<ChannelDTO> onSubmit={createNewChannel} form={{ resolver: yupResolver(schema) }}>
             <TextInput label="Channel name here" name="channelName" />
             <Button type="submit" className={classes.button} variant="contained">
               Create new channel
