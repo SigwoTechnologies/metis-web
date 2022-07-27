@@ -8,7 +8,11 @@ type Props = {
 
 const FooterSection = ({ children }: Props) => {
   const classes = useStyles();
-  return <Paper className={classes.footer}>{children}</Paper>;
+  return (
+    <Paper className={classes.footer} square>
+      {children}
+    </Paper>
+  );
 };
 
 export default FooterSection;

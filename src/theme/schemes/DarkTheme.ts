@@ -18,8 +18,8 @@ export const themeOptions: ThemeOptions = {
       contrastText: '#000000',
     },
     background: {
-      default: '#000000',
-      paper: '#000000',
+      default: '#181818',
+      paper: '#181818',
     },
     text: {
       primary: '#FFFFFF',
@@ -91,6 +91,8 @@ export const themeOptions: ThemeOptions = {
       styleOverrides: {
         root: {
           backgroundImage: 'none',
+          borderLeft: '1px solid #212121',
+          borderRight: '1px solid #212121',
         },
       },
     },
