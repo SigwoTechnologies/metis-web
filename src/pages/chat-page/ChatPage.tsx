@@ -11,6 +11,7 @@ const ChatPage = () => (
       <ChatHeader />
     </HeaderSection>
     <MainSection>
+      hola
       <ChatContent />
     </MainSection>
     <FooterSection>
