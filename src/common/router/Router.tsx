@@ -1,6 +1,7 @@
 import { lazy } from 'react';
 import { Navigate, RouteObject } from 'react-router-dom';
 
+import EmptyStateChannel from '@metis/features/channels/components/empty-state-channel/EmptyStateChannel';
 import Main from '@metis/layout/Main';
 import AuthRoute from './auth-route/AuthRoute';
 import Loader from './loader/Loader';
@@ -22,7 +23,10 @@ const routes: RouteObject[] = [
         <Main />
       </AuthRoute>
     ),
-    children: [{ index: true, element: <ChatContainer /> }],
+    children: [
+      { index: true, element: <EmptyStateChannel /> },
+      { path: ':channelName', element: <ChatContainer /> },
+    ],
   },
   {
     path: 'auth',
