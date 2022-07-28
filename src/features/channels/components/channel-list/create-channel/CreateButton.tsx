@@ -18,7 +18,7 @@ const schema = yup.object({
   channelName: yup
     .string()
     .required('This field is required')
-    .max(25, 'The channel name can\'t have more than 25 characters'),
+    .max(25, "The channel name can't have more than 25 characters"),
 });
 
 const CreateButton = () => {
