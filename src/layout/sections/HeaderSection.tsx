@@ -8,7 +8,11 @@ type Props = {
 
 const HeaderSection = ({ children }: Props) => {
   const classes = useStyles();
-  return <Paper className={classes.header}>{children}</Paper>;
+  return (
+    <Paper className={classes.header} square>
+      {children}
+    </Paper>
+  );
 };
 
 export default HeaderSection;

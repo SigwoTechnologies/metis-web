@@ -11,6 +11,11 @@ describe('Channel Slice', () => {
     initialState = {
       isLoading: false,
       channels: [],
+      reply: {
+        active: false,
+        name: '',
+        message: '',
+      },
     };
   });
 
