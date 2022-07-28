@@ -1,3 +1,4 @@
+/* eslint-disable quotes */
 import PlusButton from '@metis/assets/images/misc/plus-button.png';
 import Box from '@mui/material/Box';
 
