@@ -1,3 +1,4 @@
+import { ListItemText } from '@mui/material';
 import { createStyles, makeStyles } from '@mui/styles';
 
 const useStyles = makeStyles(() =>
@@ -16,6 +17,20 @@ const useStyles = makeStyles(() =>
       width: '3rem',
       height: '3rem',
       justifyContent: 'flex-start',
+    },
+    termPosition: {
+      display: 'flex',
+      justifyContent: 'flex-start',
+    },
+    term: {
+      size: '2rem',
+      padding: '0.5rem',
+    },
+    drawerLetters: {
+      fontSize: '0.5rem !important',
+    },
+    upperGroup: {
+      flexGrow: 1,
     },
   })
 );
