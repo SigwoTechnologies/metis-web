@@ -1,3 +1,4 @@
+/* eslint-disable quotes */
 import PlusButton from '@metis/assets/images/misc/plus-button.png';
 import Box from '@mui/material/Box';
 
@@ -18,7 +19,7 @@ const schema = yup.object({
   channelName: yup
     .string()
     .required('This field is required')
-    .max(25, 'The channel name can\'t have more than 25 characters'),
+    .max(25, "The channel name can't have more than 25 characters"),
 });
 
 const CreateButton = () => {
@@ -39,28 +40,8 @@ const CreateButton = () => {
   return (
     <>
       <Drawer anchor="left" open={openCreate} onClose={closeDrawer}>
-        <Box
-          sx={{
-            display: 'flex',
-            justifyContent: 'center',
-            alignContent: 'center',
-            width: 400,
-            height: '100%',
-            flexDirection: 'column',
-            padding: '0 1rem 0 1rem',
-          }}
-          role="presentation"
-        >
-          <IconButton
-            aria-label="close"
-            onClick={closeDrawer}
-            sx={{
-              position: 'absolute',
-              right: 8,
-              top: 8,
-              color: (theme) => theme.palette.grey[500],
-            }}
-          >
+        <Box role="presentation" className={classes.drawerContainer}>
+          <IconButton aria-label="close" onClick={closeDrawer} className={classes.closeButton}>
             <CloseIcon />
           </IconButton>
           <Form<ChannelDTO> onSubmit={createNewChannel} form={{ resolver: yupResolver(schema) }}>
@@ -69,18 +50,6 @@ const CreateButton = () => {
               Create new channel
             </Button>
           </Form>
-          {/* <form onSubmit={handleSubmit(createChannel)}>
-            <TextField
-              className={classes.textField}
-              label="Channel name here"
-              variant="standard"
-              {...register('channelName')}
-            />
-            <p>{errors.channelName?.message}</p>
-            <Button type="submit" className={classes.button} variant="contained">
-              Create new channel
-            </Button>
-          </form> */}
         </Box>
       </Drawer>
       <Box

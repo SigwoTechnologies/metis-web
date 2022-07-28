@@ -5,42 +5,9 @@ type props<T> = {
   form?: UseFormProps<T>;
   children: ReactElement | ReactElement[];
   onSubmit: SubmitHandler<T>;
-  // schema?: any;
 };
 
-// const useYupValidationResolver = (validationSchema) =>
-//   useCallback(
-//     async (data) => {
-//       try {
-//         const values = await validationSchema.validate(data, {
-//           abortEarly: false,
-//         });
-
-//         return {
-//           values,
-//           errors: {},
-//         };
-//       } catch (errors) {
-//         return {
-//           values: {},
-//           errors: errors.inner.reduce(
-//             (allErrors, currentError) => ({
-//               ...allErrors,
-//               [currentError.path]: {
-//                 type: currentError.type ?? 'validation',
-//                 message: currentError.message,
-//               },
-//             }),
-//             {}
-//           ),
-//         };
-//       }
-//     },
-//     [validationSchema]
-//   );
-
 export default <T,>({ form, children, onSubmit }: props<T>) => {
-  // const resolver = useYupValidationResolver(schema);
   const methods = useForm<T>(form);
   const {
     handleSubmit,
