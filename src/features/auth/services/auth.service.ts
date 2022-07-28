@@ -1,11 +1,12 @@
 import BusinessError from '@metis/common/exceptions/business-error';
 import httpService from '@metis/common/services/http.service';
-import { AliasResponse } from '../types/alias-response';
-import { ChallengeResponse } from '../types/challenge-response';
-import { ValidateSignatureResponse } from '../types/validate-signature-response';
-import { getBufferString } from '../utils/auth.utils';
+import IAuthService from './interfaces/auth-service.interface';
+import AliasResponse from '../types/alias-response';
+import ChallengeResponse from '../types/challenge-response';
+import ValidateSignatureResponse from '../types/validate-signature-response';
+import getBufferString from '../utils/auth.utils';
 
-export default class AuthService {
+export default class AuthService implements IAuthService {
   private endpoint: string;
 
   constructor() {

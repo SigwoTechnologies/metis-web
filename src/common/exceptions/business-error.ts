@@ -1,4 +1,4 @@
-import { ErrorResponse } from '../types/error-response';
+import ErrorResponse from '../types/error-response';
 
 class BusinessError extends Error {
   private msg: string;

@@ -2,19 +2,20 @@ import { encrypt } from '@metamask/eth-sig-util';
 import { Buffer } from 'buffer';
 import { bufferToHex } from 'ethereumjs-util';
 import BusinessError from '@metis/common/exceptions/business-error';
+import IMetaMaskService from './interfaces/metamask-service.interface';
 
-export default class MetaMaskService {
+export default class MetaMaskService implements IMetaMaskService {
   private ethereum: any;
 
   constructor() {
     this.ethereum = window.ethereum;
   }
 
-  on(event: string, callback: unknown) {
+  on(event: string, callback: unknown): void {
     this.ethereum.on(event, callback);
   }
 
-  removeListener(event: string, callback: unknown) {
+  removeListener(event: string, callback: unknown): void {
     this.ethereum.removeListener('accountsChanged', callback);
   }
 
@@ -49,7 +50,11 @@ export default class MetaMaskService {
     }
   }
 
-  async encryptMessage(message: string, publicKey: string, version = 'x25519-xsalsa20-poly1305') {
+  async encryptMessage(
+    message: string,
+    publicKey: string,
+    version = 'x25519-xsalsa20-poly1305'
+  ): Promise<string> {
     try {
       const encrypted = encrypt({
         publicKey,

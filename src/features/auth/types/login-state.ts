@@ -1,22 +1,6 @@
 import { Key, PrivateKey } from 'openpgp';
-
-export enum LoginFlow {
-  Unset,
-  NewAccount,
-  ExistingAccountSameDevice,
-  ExistingAccountDifferentDevice,
-  LegacyAccount,
-}
-
-export enum LoginError {
-  InvalidSignature,
-  RequiredAddress,
-  RequiredChallenge,
-  RequiredChallengeMessage,
-  RequiredPassword,
-  RequiredPassphrase,
-  DifferentFlow,
-}
+import LoginError from '../enums/login-error.enum';
+import LoginFlow from '../enums/login-flow.enum';
 
 type LoginState = {
   address: string;

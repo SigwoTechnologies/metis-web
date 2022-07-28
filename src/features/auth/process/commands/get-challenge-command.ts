@@ -1,21 +1,23 @@
 import BusinessError from '@metis/common/exceptions/business-error';
-import LoginState, { LoginError, LoginFlow } from '../../types/login-state';
-import AuthReceiver from '../receivers/auth-receiver';
+import LoginError from '../../enums/login-error.enum';
+import LoginFlow from '../../enums/login-flow.enum';
+import IAuthService from '../../services/interfaces/auth-service.interface';
+import LoginState from '../../types/login-state';
 import ICommand from './command.interface';
 
 export default class GetChallengeCommand implements ICommand<LoginState> {
-  private receiver: AuthReceiver;
+  private authService: IAuthService;
 
-  constructor(_receiver: AuthReceiver) {
-    this.receiver = _receiver;
+  constructor(_authService: IAuthService) {
+    this.authService = _authService;
   }
 
   async execute(state: LoginState): Promise<LoginState> {
     if (!state.address) return { ...state, error: LoginError.RequiredAddress };
 
     try {
-      state.challenge = await this.receiver.getChallenge(state.address);
-      state.challengeMessage = this.receiver.getChallengeMessage(state.challenge);
+      state.challenge = await this.authService.getChallenge(state.address);
+      state.challengeMessage = this.authService.getChallengeMessage(state.challenge);
 
       return state;
     } catch (err: unknown) {

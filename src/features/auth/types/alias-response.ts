@@ -1,3 +1,5 @@
-export type AliasResponse = {
+type AliasResponse = {
   message: string;
 };
+
+export default AliasResponse;

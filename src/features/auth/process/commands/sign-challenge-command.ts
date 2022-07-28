@@ -1,16 +1,17 @@
-import LoginState, { LoginError } from '../../types/login-state';
-import AuthReceiver from '../receivers/auth-receiver';
-import MetaMaskReceiver from '../receivers/metamask-receiver';
+import LoginError from '../../enums/login-error.enum';
+import IAuthService from '../../services/interfaces/auth-service.interface';
+import IMetaMaskService from '../../services/interfaces/metamask-service.interface';
+import LoginState from '../../types/login-state';
 import ICommand from './command.interface';
 
 export default class SignChallengeCommand implements ICommand<LoginState> {
-  private authReceiver: AuthReceiver;
+  private authService: IAuthService;
 
-  private metaMaskReceiver: MetaMaskReceiver;
+  private metaMaskService: IMetaMaskService;
 
-  constructor(_authReceiver: AuthReceiver, _metaMaskReceiver: MetaMaskReceiver) {
-    this.authReceiver = _authReceiver;
-    this.metaMaskReceiver = _metaMaskReceiver;
+  constructor(_authService: IAuthService, _metaMaskService: IMetaMaskService) {
+    this.authService = _authService;
+    this.metaMaskService = _metaMaskService;
   }
 
   async execute(state: LoginState): Promise<LoginState> {
@@ -18,12 +19,10 @@ export default class SignChallengeCommand implements ICommand<LoginState> {
     if (!state.challenge) return { ...state, error: LoginError.RequiredChallenge };
     if (!state.challengeMessage) return { ...state, error: LoginError.RequiredChallengeMessage };
 
-    const signature = await this.metaMaskReceiver.sign(state.challengeMessage, state.address);
-
-    const isValid = await this.authReceiver.validateSignature(state.challenge, signature);
+    const signature = await this.metaMaskService.signMessage(state.challengeMessage, state.address);
+    const isValid = await this.authService.validateSignature(state.challenge, signature);
 
     if (!isValid) return { ...state, error: LoginError.InvalidSignature };
-
     return state;
   }
 }

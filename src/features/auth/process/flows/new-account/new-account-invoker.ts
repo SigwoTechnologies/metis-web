@@ -2,45 +2,14 @@ import LoginState from '@metis/features/auth/types/login-state';
 import ICommand from '../../commands/command.interface';
 
 export default class NewAccountInvoker {
-  private state: LoginState;
-
-  private onGetChallenge!: ICommand<LoginState>;
-
-  private onGenerateCredentials!: ICommand<LoginState>;
-
-  private onGenerateKeys!: ICommand<LoginState>;
-
-  private onEncryptWithMetaMask!: ICommand<LoginState>;
-
-  private onSignChallenge!: ICommand<LoginState>;
-
-  get State(): LoginState {
-    return this.state;
-  }
-
-  constructor(_state: LoginState) {
-    this.state = _state;
-  }
-
-  public setOnGetChallenge(command: ICommand<LoginState>): void {
-    this.onGetChallenge = command;
-  }
-
-  public setOnGenerateCredentials(command: ICommand<LoginState>): void {
-    this.onGenerateCredentials = command;
-  }
-
-  public setOnGenerateKeys(command: ICommand<LoginState>): void {
-    this.onGenerateKeys = command;
-  }
-
-  public setOnEncryptWithMetaMask(command: ICommand<LoginState>): void {
-    this.onEncryptWithMetaMask = command;
-  }
-
-  public setOnSignChallenge(command: ICommand<LoginState>): void {
-    this.onSignChallenge = command;
-  }
+  constructor(
+    private state: LoginState,
+    private onGetChallenge: ICommand<LoginState>,
+    private onGenerateCredentials: ICommand<LoginState>,
+    private onGenerateKeys: ICommand<LoginState>,
+    private onEncryptWithMetaMask: ICommand<LoginState>,
+    private onSignChallenge: ICommand<LoginState>
+  ) {}
 
   async execute() {
     // eslint-disable-next-line no-debugger

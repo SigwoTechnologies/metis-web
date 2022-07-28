@@ -1,4 +1,4 @@
-export type ErrorResponse = {
+type ErrorResponse = {
   /**
    * The name that identifies the type of exception that has occured.
    */
@@ -12,3 +12,5 @@ export type ErrorResponse = {
    */
   code: string;
 };
+
+export default ErrorResponse;

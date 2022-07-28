@@ -14,8 +14,9 @@ import {
   decrypt,
   PrivateKey,
 } from 'openpgp';
+import IEncryptionService from './interfaces/encryption-service.interface';
 
-export default class EncryiptionService {
+export default class EncryiptionService implements IEncryptionService {
   async generateKeyPairs(address: string, passphrase: string) {
     return generateKey({
       userIDs: [{ name: address }],
@@ -32,7 +33,7 @@ export default class EncryiptionService {
     });
   }
 
-  async createMsg(text: string) {
+  async createMsg(text: string): Promise<Message<string>> {
     return createMessage({ text });
   }
 

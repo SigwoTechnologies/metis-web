@@ -1,3 +1,5 @@
-export type ChallengeResponse = {
+type ChallengeResponse = {
   challengeDigest: string;
 };
+
+export default ChallengeResponse;

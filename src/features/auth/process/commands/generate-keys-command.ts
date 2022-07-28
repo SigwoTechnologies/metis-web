@@ -1,25 +1,34 @@
-import LoginState, { LoginError } from '../../types/login-state';
-import EncryptionReceiver from '../receivers/encryption-receiver';
+import { enums } from 'openpgp';
 import ICommand from './command.interface';
+import LoginState from '../../types/login-state';
+import LoginError from '../../enums/login-error.enum';
+import IEncryptionService from '../../services/interfaces/encryption-service.interface';
 
 export default class GenerateKeysCommand implements ICommand<LoginState> {
-  private receiver: EncryptionReceiver;
+  private encryptionService: IEncryptionService;
 
-  constructor(_receiver: EncryptionReceiver) {
-    this.receiver = _receiver;
+  constructor(_encryptionService: IEncryptionService) {
+    this.encryptionService = _encryptionService;
   }
 
   async execute(state: LoginState): Promise<LoginState> {
     if (!state.address) return { ...state, error: LoginError.RequiredAddress };
     if (!state.passphrase) return { ...state, error: LoginError.RequiredPassphrase };
 
-    const { privateKeyArmored, publicKeyArmored } = await this.receiver.generateKeyPairs(
-      state.address,
-      state.passphrase
-    );
+    const { privateKey: privateKeyArmored, publicKey: publicKeyArmored } =
+      await this.encryptionService.generateKeyPairs(state.address, state.passphrase);
 
-    state.privateKey = await this.receiver.generatePrivateKey(state.passphrase, privateKeyArmored);
-    state.publicKey = await this.receiver.generatePublicKey(publicKeyArmored);
+    const config = {
+      preferredHashAlgorithm: enums.hash.sha256,
+      preferredSymmetricAlgorithm: enums.symmetric.aes128,
+    };
+
+    state.privateKey = await this.encryptionService.decryptPrivateKey(
+      state.passphrase,
+      privateKeyArmored,
+      config
+    );
+    state.publicKey = await this.encryptionService.read(publicKeyArmored);
 
     return state;
   }
