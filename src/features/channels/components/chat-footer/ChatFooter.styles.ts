@@ -12,6 +12,24 @@ const useStyles = makeStyles((theme: Theme) =>
       alignItems: 'center',
       borderRadius: 0,
     },
+    replyContainer: {
+      display: 'flex',
+      backgroundColor: theme.palette.grey[900],
+      gap: '0.5rem',
+      justifyContent: 'space-around',
+    },
+    replyColumn: {
+      width: '90%',
+    },
+    closeButtonContainer: {
+      position: 'relative',
+    },
+    closeButton: {
+      top: '50%',
+      left: '50%',
+      transform: 'translate(-50%, -50%)',
+      color: theme.palette.grey[500],
+    },
   })
 );
 

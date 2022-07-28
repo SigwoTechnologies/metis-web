@@ -13,10 +13,9 @@ const useStyles = makeStyles(() =>
       position: 'relative',
     },
     footer: {
-      height: '3.7rem',
       position: 'relative',
       display: 'flex',
-      alignItems: 'flex-end',
+      flexDirection: 'column',
     },
   })
 );

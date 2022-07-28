@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import type { RootState } from '@metis/store/types';
 import { Channel } from '../types/channel';
-import { findChannels } from './channel.actions';
+import { findChannels, createChannel } from './channel.actions';
 
 type Reply = {
   active: boolean;
@@ -53,6 +53,18 @@ const slice = createSlice({
       state.isLoading = false;
     });
     builder.addCase(findChannels.rejected, (state) => {
+      state.isLoading = false;
+    });
+
+    // Create Channel ----------------------------------------------------------
+    builder.addCase(createChannel.pending, (state) => {
+      state.isLoading = true;
+    });
+    builder.addCase(createChannel.fulfilled, (state, { payload }) => {
+      state.channels.unshift(payload);
+      state.isLoading = false;
+    });
+    builder.addCase(createChannel.rejected, (state) => {
       state.isLoading = false;
     });
   },
