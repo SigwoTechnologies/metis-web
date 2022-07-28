@@ -17,12 +17,14 @@ type ReplyPayload = {
 export type ChannelState = {
   isLoading: boolean;
   channels: Channel[];
+  selectedChannel: string;
   reply: Reply;
 };
 
 const initialState: ChannelState = {
   isLoading: false,
   channels: [],
+  selectedChannel: '',
   reply: {
     active: false,
     name: '',
@@ -34,6 +36,9 @@ const slice = createSlice({
   name: 'channel',
   initialState,
   reducers: {
+    selectChannel: (state: ChannelState, { payload }) => {
+      state.selectedChannel = payload;
+    },
     updateReply: (state: ChannelState, action: PayloadAction<ReplyPayload>) => {
       const { name, message } = action.payload;
       state.reply.name = name;
@@ -71,5 +76,5 @@ const slice = createSlice({
 });
 
 export const selectState = (state: RootState) => state.channel;
-export const { updateReply, discardReply } = slice.actions;
+export const { updateReply, discardReply, selectChannel } = slice.actions;
 export const channelReducer = slice.reducer;
