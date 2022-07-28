@@ -1,3 +1,4 @@
+/* eslint-disable quotes */
 import PlusButton from '@metis/assets/images/misc/plus-button.png';
 import Box from '@mui/material/Box';
 
@@ -18,7 +19,7 @@ const schema = yup.object({
   channelName: yup
     .string()
     .required('This field is required')
-    .max(25, 'The channel name can\'t have more than 25 characters'),
+    .max(25, "The channel name can't have more than 25 characters"),
 });
 
 const CreateButton = () => {

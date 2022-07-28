@@ -1,12 +1,12 @@
 .MuiInputLabel-root {
-    display: none;
+  display: none;
 }
 .MuiInput-root {
-    background-color: #363537;
-    border: 3px solid #727E8B;
-    border-radius: 15px;
-    height: 2.7rem;
+  background-color: #363537;
+  border: 3px solid #727e8b;
+  border-radius: 15px;
+  height: 2.7rem;
 }
 .MuiInput-input {
-    padding-left: 0.7rem;
+  padding-left: 0.7rem;
 }
