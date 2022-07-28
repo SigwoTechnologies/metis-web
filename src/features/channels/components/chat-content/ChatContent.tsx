@@ -1,14 +1,15 @@
-import { useEffect, useState } from 'react';
 import PompAvatar from '@metis/assets/images/avatars/pomp.jpg';
 import ReneAvatar from '@metis/assets/images/avatars/rene.jpg';
 import Spinner from '@metis/common/components/ui/spinner/Spinner';
+import { useEffect, useState } from 'react';
 import useStyles from './ChatContent.styles';
+import MessageReply from './message-reply/MessageReply';
 import Message from './message/Message';
 
 const ChatContent = () => {
   // TODO: Remove this dummy loading state
   const [loading, setLoading] = useState(true);
-  const styles = useStyles();
+  const classes = useStyles();
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -18,7 +19,7 @@ const ChatContent = () => {
   }, []);
   return (
     <Spinner isLoading={loading}>
-      <div className={styles.container}>
+      <div className={classes.container}>
         <Message name="Pompilio Fiore" message="Good morning" date="27/06/2022" color="#A36300" />
         <Message
           name="Rene Reyes"
@@ -41,13 +42,11 @@ const ChatContent = () => {
           color="#44C553"
           avatar={ReneAvatar}
         >
-          <Message
+          <MessageReply
             name="Martin"
             message="How is it going? good how are you? "
             date="10:32 PM"
             color="#A36300"
-            avatar={PompAvatar}
-            isChildren
           />
         </Message>
       </div>

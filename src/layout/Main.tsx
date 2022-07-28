@@ -32,7 +32,7 @@ const Main = () => {
       <Toast />
       <Box height="100vh" className={classes.wrapper}>
         <Container maxWidth="xl" component="main" className={classes.container}>
-          <Grid container columnSpacing={5} className={classes.grid}>
+          <Grid container columnSpacing={0} className={classes.grid}>
             <Grid item xs={12} md={4} className={classes.gridRow}>
               <LeftColumn />
             </Grid>

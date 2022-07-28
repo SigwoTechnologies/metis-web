@@ -3,6 +3,7 @@ import { Channel } from '@metis/features/channels/types/channel';
 import channelService from '../services/channel.service';
 
 export const findChannels = createAsyncThunk('channels/findChannels', channelService.findChannels);
+export const createChannel = createAsyncThunk('channels/createChannel', channelService.create);
 
 function hasStringJsonStructure(str: string | null) {
   if (!str) return false;
@@ -32,4 +33,4 @@ export const hideChannel = (channel: Channel) => {
   }
 };
 
-export default { findChannels, hideChannel, getHiddenChannels };
+export default { findChannels, createChannel, hideChannel, getHiddenChannels };
