@@ -5,7 +5,7 @@ import LoginError from '../../enums/login-error.enum';
 import IEncryptionService from '../../services/interfaces/encryption-service.interface';
 
 export default class GenerateKeysCommand implements ICommand<LoginState> {
-  private encryptionService: IEncryptionService;
+  private readonly encryptionService: IEncryptionService;
 
   constructor(_encryptionService: IEncryptionService) {
     this.encryptionService = _encryptionService;

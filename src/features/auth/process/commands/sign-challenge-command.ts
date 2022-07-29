@@ -5,9 +5,9 @@ import LoginState from '../../types/login-state';
 import ICommand from './command.interface';
 
 export default class SignChallengeCommand implements ICommand<LoginState> {
-  private authService: IAuthService;
+  private readonly authService: IAuthService;
 
-  private metaMaskService: IMetaMaskService;
+  private readonly metaMaskService: IMetaMaskService;
 
   constructor(_authService: IAuthService, _metaMaskService: IMetaMaskService) {
     this.authService = _authService;
@@ -23,6 +23,7 @@ export default class SignChallengeCommand implements ICommand<LoginState> {
     const isValid = await this.authService.validateSignature(state.challenge, signature);
 
     if (!isValid) return { ...state, error: LoginError.InvalidSignature };
+
     return state;
   }
 }

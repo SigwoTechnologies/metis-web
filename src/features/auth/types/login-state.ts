@@ -6,7 +6,7 @@ type LoginState = {
   address: string;
   challenge: string;
   challengeMessage: string;
-  error: LoginError;
+  error: LoginError | null;
   flow: LoginFlow;
   passphrase: string;
   password: string;
