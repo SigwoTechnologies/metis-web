@@ -1,6 +1,6 @@
 const appConfig = {
   api: {
-    baseUrl: process.env.VITE_METIS_API_URL,
+    baseUrl: import.meta.env.VITE_METIS_API_URL,
   },
 };
 

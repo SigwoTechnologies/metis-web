@@ -1,10 +1,13 @@
 import BusinessError from '@metis/common/exceptions/business-error';
 import httpService from '@metis/common/services/http.service';
+import constants from '@metis/common/configuration/constants';
+import localStorageService from '@metis/common/services/local-storage.service';
 import IAuthService from './interfaces/auth-service.interface';
 import AliasResponse from '../types/alias-response';
 import ChallengeResponse from '../types/challenge-response';
 import ValidateSignatureResponse from '../types/validate-signature-response';
 import getBufferString from '../utils/auth.utils';
+import Credential from '../types/credential';
 
 export default class AuthService implements IAuthService {
   private endpoint: string;
@@ -88,5 +91,23 @@ export default class AuthService implements IAuthService {
         'create_account'
       );
     }
+  }
+
+  getLoggedInUserCredentials(): Credential | undefined {
+    const storedCredentials =
+      sessionStorage.getItem(constants.CREDENTIALS) ||
+      localStorageService.getItem(constants.CREDENTIALS);
+
+    if (!storedCredentials) return undefined;
+
+    const credentials = JSON.parse(storedCredentials) as Credential;
+    return credentials;
+  }
+
+  getToken(): string | undefined {
+    const credentials = this.getLoggedInUserCredentials();
+
+    if (!credentials) return undefined;
+    return credentials.access_token;
   }
 }

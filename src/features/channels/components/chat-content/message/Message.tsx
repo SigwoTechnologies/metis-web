@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
+import { updateReply } from '@metis/features/channels/store/channel.slice';
+import { useAppDispatch } from '@metis/store/hooks';
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
+import React, { useState } from 'react';
 
 import useStyles from './Message.styles';
 
@@ -11,54 +13,49 @@ type Props = {
   date: string;
   color: string;
   avatar?: string;
-  children?: React.ReactNode;
-  isChildren?: boolean;
+  children?: React.ReactElement;
 };
 
-const Message = ({
-  name,
-  message,
-  date,
-  color,
-  children,
-  avatar = name,
-  isChildren = false,
-}: Props) => {
+const Message = ({ name, message, date, color, children, avatar = name }: Props) => {
   const classes = useStyles();
   const [style, setStyle] = useState({ display: 'none' });
   const isYours = name === 'Rene Reyes';
+  const dispatch = useAppDispatch();
 
   const handleReplyClick = () => {
-    // TODO: Add reply message to the chat text box here
+    dispatch(
+      updateReply({
+        name,
+        message,
+      })
+    );
   };
 
   const handleMouseEnter = () => setStyle({ display: 'block' });
   const handleMouseLeave = () => setStyle({ display: 'none' });
 
   return (
-    <Box className={isYours ? `${classes.userContainer} ${classes.container}` : classes.container}>
-      {!isChildren && (
-        <Box className={classes.avatarContainer}>
-          <Avatar alt="pomp" src={avatar} className={classes.avatar} />
-        </Box>
-      )}
+    <Box className={isYours ? classes.userContainer : classes.container}>
+      <Box className={classes.avatarContainer}>
+        <Avatar alt="pomp" src={avatar} className={classes.avatar} />
+      </Box>
 
       <Box
         className={
-          isYours ? `${classes.messageContainer} ${classes.usermessage}` : classes.messageContainer
+          isYours
+            ? `${classes.messageContainer} ${classes.userMessageContainer}`
+            : classes.messageContainer
         }
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
       >
-        {!isChildren && !isYours && (
-          <Box className={classes.replyButton} style={style} onClick={handleReplyClick}>
-            Reply
-          </Box>
-        )}
-        <Typography variant="body2" fontWeight="bold" sx={{ color }}>
+        <Box className={classes.replyButton} style={style} onClick={handleReplyClick}>
+          Reply
+        </Box>
+        <Typography variant="body2" fontWeight="bold" sx={{ color, marginBottom: '0.5rem' }}>
           {name}
         </Typography>
-        {children && <Box className={classes.reply}>{children}</Box>}
+        {children}
         <Box className={classes.message}>
           <Typography variant="body2">{message}</Typography>
           <Typography variant="caption" className={classes.date}>

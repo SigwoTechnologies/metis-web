@@ -2,10 +2,9 @@ import { createStyles, makeStyles } from '@mui/styles';
 
 const useStyles = makeStyles(() =>
   createStyles({
-    container: {
-      display: 'flex',
-      flexDirection: 'column',
-      padding: '1rem',
+    textField: {
+      width: '100%',
+      marginBottom: '1.5rem',
     },
   })
 );

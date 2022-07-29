@@ -1,33 +1,39 @@
-import { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '@metis/store/hooks';
+import { useEffect } from 'react';
 
 import Spinner from '@metis/common/components/ui/spinner/Spinner';
+import { useNavigate } from 'react-router-dom';
 import ChannelListItem from './channel-list-item/ChannelListItem';
 
-import { selectState } from '../../store/channel.slice';
-import { findByUser } from '../../store/channel.actions';
+import { findChannels } from '../../store/channel.actions';
+import { selectChannel, selectState } from '../../store/channel.slice';
+import { Channel } from '../../types/channel';
 
 const ChannelList = () => {
   const dispatch = useAppDispatch();
-  const { channels, isLoading } = useAppSelector(selectState);
-  const [selected, setSelected] = useState('');
+  const { channels, isLoading, selectedChannel } = useAppSelector(selectState);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    dispatch(findByUser());
+    dispatch(findChannels());
   }, []);
+
+  const selectNewChannel = (channel: Channel) => {
+    dispatch(selectChannel(channel.channelName));
+    navigate(`/main/${channel.channelName}`);
+  };
 
   return (
     <Spinner isLoading={isLoading}>
       {channels.map((channel) => (
         <ChannelListItem
-          key={channel.name}
-          name={channel.name}
-          message={`${channel.name} says: visit my page!: ${channel.url}`}
+          key={channel.channelName}
+          name={channel.channelName}
+          message={`${channel.channelName} says: visit my page!`}
           date="08:34 AM"
           isRead
-          avatar={channel.url}
-          onClick={() => setSelected(channel.name)}
-          selected={selected === channel.name}
+          onClick={() => selectNewChannel(channel)}
+          selected={selectedChannel === channel.channelName}
         />
       ))}
     </Spinner>

@@ -1,4 +1,4 @@
-export const getItem = <T>(key: string) => {
+const getItem = <T>(key: string) => {
   try {
     const item = window.localStorage.getItem(key);
     return item ? (JSON.parse(item) as T) : null;
@@ -8,7 +8,7 @@ export const getItem = <T>(key: string) => {
   }
 };
 
-export const setItem = <T>(key: string, value: T) => {
+const setItem = <T>(key: string, value: T) => {
   try {
     localStorage.setItem(key, JSON.stringify(value));
   } catch (error) {
@@ -16,6 +16,8 @@ export const setItem = <T>(key: string, value: T) => {
   }
 };
 
-export const removeItem = (key: string) => {
+const removeItem = (key: string) => {
   localStorage.removeItem(key);
 };
+
+export default { getItem, setItem, removeItem };

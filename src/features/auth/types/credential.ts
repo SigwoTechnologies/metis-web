@@ -1,4 +1,5 @@
-export type Credential = {
-  password: string;
-  passphrase: string;
+type Credential = {
+  access_token: string;
 };
+
+export default Credential;

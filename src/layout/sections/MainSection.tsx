@@ -8,7 +8,11 @@ type Props = {
 
 const MainSection = ({ children }: Props) => {
   const classes = useStyles();
-  return <Paper className={classes.main}>{children}</Paper>;
+  return (
+    <Paper className={classes.main} square>
+      {children}
+    </Paper>
+  );
 };
 
 export default MainSection;
