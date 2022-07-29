@@ -1,4 +1,5 @@
 import httpService from '@metis/common/services/http.service';
+import { useAppSelector } from '@metis/store/hooks';
 import { Channel } from '../types/channel';
 import { ChannelDTO } from '../types/channelDTO';
 
@@ -20,8 +21,18 @@ const create = async (channel: ChannelDTO): Promise<Channel> => {
   }
 };
 
+type InviteToChannel = {
+  inviteeAddressOrAlias: string;
+  channelAddress: string;
+};
+
+const inviteToChannel = async (payload: InviteToChannel): Promise<Channel> => {
+  const response = await httpService.post('/v1/api/channel/invite', payload);
+  return response.data;
+};
+
 const findOne = () => {};
 const update = () => {};
 const remove = () => {};
 
-export default { findAll, findChannels, findOne, create, update, remove };
+export default { findAll, findChannels, findOne, create, update, remove, inviteToChannel };
