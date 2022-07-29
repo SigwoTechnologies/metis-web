@@ -1,5 +1,6 @@
 import { Dialog } from '@mui/material';
 import CheckIcon from '@mui/icons-material/Check';
+import CloseIcon from '@mui/icons-material/Close';
 import React, { useEffect, useState } from 'react';
 import useStyles from './Notification.styles';
 
@@ -7,9 +8,10 @@ type props = {
   isOpen: boolean;
   onClose: () => void;
   type: 'success' | 'error';
+  message: string;
 };
 
-const Notification: React.FC<props> = ({ isOpen, onClose, type }) => {
+const Notification: React.FC<props> = ({ isOpen, onClose, type, message }) => {
   const [open, setOpen] = useState(false);
   const styles = useStyles();
 
@@ -38,8 +40,13 @@ const Notification: React.FC<props> = ({ isOpen, onClose, type }) => {
         },
       }}
     >
-      {type === 'success' && <CheckIcon color="success" className={styles.icon} />}
-      <p className={styles.text}>Invite sent!</p>
+      {
+        {
+          success: <CheckIcon color="success" className={styles.icon} />,
+          error: <CloseIcon color="error" className={styles.icon} />,
+        }[type]
+      }
+      <p className={styles.text}>{message}</p>
     </Dialog>
   );
 };

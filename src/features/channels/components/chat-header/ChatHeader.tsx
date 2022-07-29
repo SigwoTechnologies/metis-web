@@ -1,24 +1,22 @@
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
-import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import React, { useState } from 'react';
 
 import BugAvatar from '@metis/assets/images/avatars/bug.jpg';
-import Modal from '@metis/common/components/ui/Modal';
+import { useAppSelector } from '@metis/store/hooks';
 import { Menu, MenuItem } from '@mui/material';
-import { useParams } from 'react-router-dom';
-import useStyles from './ChatHeader.styles';
 import InviteUserModal from '../invite-user-modal/InviteUserModal';
+import useStyles from './ChatHeader.styles';
+import { selectState } from '../../store/channel.slice';
 
 const ChatHeader = () => {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
-  const { channelName } = useParams();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const { selectedChannel } = useAppSelector(selectState);
 
   const menu = Boolean(anchorEl);
   const openMenu = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -56,7 +54,7 @@ const ChatHeader = () => {
         <Box display="flex" justifyContent="center" alignItems="center">
           <Avatar alt="Channel Avatar" src={BugAvatar} className={classes.avatar} />
           <Typography variant="body1" sx={{ ml: '1rem' }}>
-            {channelName}
+            {selectedChannel.channelName}
           </Typography>
         </Box>
         <IconButton onClick={openMenu} aria-label="channel settings" size="large">
