@@ -33,6 +33,8 @@ const Notification: React.FC<props> = ({ isOpen, onClose, type }) => {
         style: {
           backgroundColor: 'transparent',
           boxShadow: 'none',
+          borderLeft: 0,
+          borderRight: 0,
         },
       }}
     >
