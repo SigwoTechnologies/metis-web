@@ -96,6 +96,24 @@ export const themeOptions: ThemeOptions = {
         },
       },
     },
+    MuiInputLabel: {
+      styleOverrides: {
+        root: {
+          display: 'none',
+        },
+      },
+    },
+    MuiInput: {
+      styleOverrides: {
+        root: {
+          backgroundColor: '#363537',
+          height: '2.7rem',
+        },
+        input: {
+          paddingLeft: '0.7rem',
+        },
+      },
+    },
   },
 };
 
