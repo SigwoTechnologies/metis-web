@@ -38,7 +38,7 @@ export const slice = createSlice({
       state.toast.open = true;
     },
     hideToast: (state) => {
-      state.toast = initialState.toast;
+      state.toast.open = false;
     },
   },
 });
