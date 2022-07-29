@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import type { RootState } from '@metis/store/types';
+import { channel } from 'diagnostics_channel';
 import { Channel } from '../types/channel';
 import { findChannels, createChannel } from './channel.actions';
 
@@ -37,7 +38,10 @@ const slice = createSlice({
   initialState,
   reducers: {
     selectChannel: (state: ChannelState, { payload }) => {
-      state.selectedChannel = payload;
+      const channelNameExist = state.channels.some(
+        (element: Channel) => element.channelName === payload
+      );
+      if (channelNameExist) state.selectedChannel = payload;
     },
     updateReply: (state: ChannelState, action: PayloadAction<ReplyPayload>) => {
       const { name, message } = action.payload;

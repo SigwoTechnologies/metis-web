@@ -2,7 +2,7 @@ import { AnyAction } from '@reduxjs/toolkit';
 import store from '@metis/store';
 import { Channel } from '../types/channel';
 import { findChannels } from './channel.actions';
-import { channelReducer, ChannelState, selectState } from './channel.slice';
+import { channelReducer, ChannelState, selectChannel, selectState } from './channel.slice';
 
 describe('Channel Slice', () => {
   let initialState: ChannelState;
@@ -69,6 +69,32 @@ describe('Channel Slice', () => {
 
         expect(actual).toEqual(expected);
       });
+    });
+  });
+
+  describe('When selectChannel is called', () => {
+    it('should check if the channel list contains a channel with the selected channelName', () => {
+      const expected = initialState;
+
+      const actual = channelReducer(initialState, selectChannel('hello'));
+
+      expect(actual).toEqual(expected);
+    });
+
+    it('should set the selectedChannel to the passed value', () => {
+      const expected = initialState;
+      expected.selectedChannel = 'testing';
+      expected.channels.push({
+        channelAddress: 'JUP-VHVJ-WEBM-N5NR-3CV33',
+        channelPublicKey: '19d206b972aa2a7b5756a1797bd0901e2352d327e0906ebec717402ce54cb059',
+        channelName: 'testing',
+        createdBy: 'JUP-5FX8-JXLL-GLAV-7MG6P',
+        createdAt: 1656711221005,
+      });
+
+      const actual = channelReducer(initialState, selectChannel('testing'));
+
+      expect(actual.selectedChannel).toEqual(expected.selectedChannel);
     });
   });
 
