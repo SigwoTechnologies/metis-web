@@ -3,12 +3,8 @@ import { useAppDispatch } from '@metis/store/hooks';
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 
-import {
-  messageReplyContext,
-  MessageReplyContextType,
-} from '../../message-reply-provider/MessageReplyProvider';
 import useStyles from './Message.styles';
 
 type Props = {
