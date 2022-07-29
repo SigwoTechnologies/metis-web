@@ -4,6 +4,7 @@ import Notification from '@metis/common/components/ui/Notification';
 import TextInput from '@metis/common/components/ui/TextInput/TextInput';
 import { useAppDispatch, useAppSelector } from '@metis/store/hooks';
 import { openToast } from '@metis/store/ui/ui.slice';
+import { LoadingButton } from '@mui/lab';
 import { Button } from '@mui/material';
 import React, { useState } from 'react';
 import channelService from '../../services/channel.service';
@@ -21,6 +22,7 @@ type AliasOrId = {
 
 const InviteUserModal: React.FC<Props> = ({ closeModal, open }) => {
   const classes = useStyles();
+  const [loading, setLoading] = useState(false);
   const [notification, setNotification] = useState(false);
   const {
     selectedChannel: { channelAddress },
@@ -33,10 +35,12 @@ const InviteUserModal: React.FC<Props> = ({ closeModal, open }) => {
   };
 
   const onSubmit = ({ inviteeAddressOrAlias }: AliasOrId) => {
+    setLoading(true);
     channelService
       .inviteToChannel({ inviteeAddressOrAlias, channelAddress })
       .then(() => openNotification())
       .catch((error) => {
+        setLoading(false);
         const { message } = error.response.data;
         dispatch(
           openToast({ text: message || 'Something went wrong, please try again.', type: 'error' })
@@ -60,9 +64,14 @@ const InviteUserModal: React.FC<Props> = ({ closeModal, open }) => {
         </p>
         <Form onSubmit={onSubmit}>
           <TextInput name="inviteeAddressOrAlias" label="Enter alias or Account ID here" />
-          <Button type="submit" className={classes.button} variant="contained">
+          <LoadingButton
+            loading={loading}
+            type="submit"
+            className={classes.button}
+            variant="contained"
+          >
             Invite
-          </Button>
+          </LoadingButton>
           <Button color="error" onClick={closeModal} className={classes.button}>
             Cancel
           </Button>
