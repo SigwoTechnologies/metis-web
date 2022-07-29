@@ -7,16 +7,9 @@ import MessageReply from './message-reply/MessageReply';
 import Message from './message/Message';
 
 const ChatContent = () => {
-  // TODO: Remove this dummy loading state
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const classes = useStyles();
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setLoading(false);
-    }, 2000);
-    return () => clearTimeout(timer);
-  }, []);
   return (
     <Spinner isLoading={loading}>
       <div className={classes.container}>

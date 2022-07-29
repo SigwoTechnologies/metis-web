@@ -1,4 +1,3 @@
-import { ListItemText } from '@mui/material';
 import { createStyles, makeStyles } from '@mui/styles';
 
 const useStyles = makeStyles(() =>
@@ -31,6 +30,9 @@ const useStyles = makeStyles(() =>
     },
     upperGroup: {
       flexGrow: 1,
+    },
+    inputText: {
+      borderRadius: '1rem',
     },
   })
 );
