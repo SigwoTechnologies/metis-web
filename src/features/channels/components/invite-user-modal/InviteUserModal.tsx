@@ -1,3 +1,4 @@
+import { yupResolver } from '@hookform/resolvers/yup';
 import Form from '@metis/common/components/ui/Form/Form';
 import Modal from '@metis/common/components/ui/Modal';
 import Notification from '@metis/common/components/ui/Notification';
@@ -7,6 +8,7 @@ import { openToast } from '@metis/store/ui/ui.slice';
 import { LoadingButton } from '@mui/lab';
 import { Button } from '@mui/material';
 import React, { useState } from 'react';
+import * as yup from 'yup';
 import channelService from '../../services/channel.service';
 import { selectState } from '../../store/channel.slice';
 import useStyles from './InviteUserModal.styles';
@@ -19,6 +21,10 @@ type Props = {
 type AliasOrId = {
   inviteeAddressOrAlias: string;
 };
+
+const schema = yup.object({
+  inviteeAddressOrAlias: yup.string().required('This field is required'),
+});
 
 const InviteUserModal: React.FC<Props> = ({ closeModal, open }) => {
   const classes = useStyles();
@@ -62,7 +68,7 @@ const InviteUserModal: React.FC<Props> = ({ closeModal, open }) => {
           To invite another user to join this channel enter their Alias or Account ID and click
           &quot;invite&quot;
         </p>
-        <Form onSubmit={onSubmit}>
+        <Form onSubmit={onSubmit} form={{ resolver: yupResolver(schema) }}>
           <TextInput name="inviteeAddressOrAlias" label="Enter alias or Account ID here" />
           <LoadingButton
             loading={loading}
