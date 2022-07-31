@@ -27,10 +27,6 @@ const ChatHeader = () => {
     setAnchorEl(null);
   };
 
-  const closeModal = () => {
-    setOpen(false);
-  };
-
   const openInviteUserModal = () => {
     closeMenu();
     setOpen(true);
@@ -49,7 +45,7 @@ const ChatHeader = () => {
       >
         <MenuItem onClick={openInviteUserModal}>Invite user</MenuItem>
       </Menu>
-      <InviteUserModal closeModal={closeModal} open={open} />
+      <InviteUserModal closeModal={() => setOpen(false)} open={open} />
       <Box className={classes.titleContainer}>
         <Box display="flex" justifyContent="center" alignItems="center">
           <Avatar alt="Channel Avatar" src={BugAvatar} className={classes.avatar} />
