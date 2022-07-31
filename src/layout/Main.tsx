@@ -1,12 +1,13 @@
-import { useLayoutEffect } from 'react';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
+import { useLayoutEffect } from 'react';
 
 import Toast from '@metis/common/components/ui/Toast/Toast';
-import authService from '@metis/features/auth/services/auth.service';
 import useHttp from '@metis/common/hooks/useHttp';
+import authService from '@metis/features/auth/services/auth.service';
 
+import Notification from '@metis/common/components/ui/Notification';
 import LeftColumn from './columns/LeftColumn';
 import RightColumn from './columns/RightColumn';
 import useStyles from './Main.styles';
@@ -30,6 +31,7 @@ const Main = () => {
   return (
     <>
       <Toast />
+      <Notification />
       <Box height="100vh" className={classes.wrapper}>
         <Container maxWidth="xl" component="main" className={classes.container}>
           <Grid container columnSpacing={0} className={classes.grid}>
