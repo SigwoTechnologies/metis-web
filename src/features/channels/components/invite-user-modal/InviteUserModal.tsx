@@ -4,6 +4,7 @@ import Modal from '@metis/common/components/ui/Modal';
 import TextInput from '@metis/common/components/ui/TextInput/TextInput';
 import { useAppDispatch, useAppSelector } from '@metis/store/hooks';
 import { openNotification } from '@metis/store/ui/ui.slice';
+import PeopleIcon from '@mui/icons-material/People';
 import { LoadingButton } from '@mui/lab';
 import { Button } from '@mui/material';
 import React, { useState } from 'react';
@@ -51,6 +52,9 @@ const InviteUserModal: React.FC<Props> = ({ closeModal, open }) => {
 
   return (
     <Modal onClose={closeModal} open={open}>
+      <div className={classes.iconContainer}>
+        <PeopleIcon className={classes.icon} color="primary" />
+      </div>
       <p>
         To invite another user to join this channel enter their Alias or Account ID and click
         &quot;invite&quot;
