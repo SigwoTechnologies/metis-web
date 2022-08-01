@@ -10,7 +10,7 @@ import channelService from '@metis/features/channels/services/channel.service';
 import { createChannel, finishChannelCreation } from '@metis/features/channels/store/channel.slice';
 import { Channel } from '@metis/features/channels/types/channel';
 import { ChannelDTO } from '@metis/features/channels/types/channelDTO';
-import { useAppDispatch } from '@metis/store/hooks';
+import { useAppDispatch, useAppSelector } from '@metis/store/hooks';
 import { openToast } from '@metis/store/ui/ui.slice';
 import CloseIcon from '@mui/icons-material/Close';
 import { LoadingButton } from '@mui/lab';
@@ -30,6 +30,7 @@ const CreateButton = () => {
   const classes = useStyles();
   const [openCreate, setOpenCreate] = useState(false);
   const dispatch = useAppDispatch();
+  const { newChannelAddress } = useAppSelector((state) => state.channel);
   const [loading, setLoading] = useState(false);
 
   const closeDrawer = () => {
@@ -37,6 +38,11 @@ const CreateButton = () => {
   };
 
   const createNewChannel = (data: ChannelDTO) => {
+    if (newChannelAddress) {
+      dispatch(openToast({ type: 'error', text: 'A new channel is already being created' }));
+      return;
+    }
+
     setLoading(true);
     channelService
       .create(data)
