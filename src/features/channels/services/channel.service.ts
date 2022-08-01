@@ -1,8 +1,8 @@
+/* eslint-disable quotes */
 import httpService from '@metis/common/services/http.service';
 import { Channel } from '../types/channel';
 import { ChannelDTO } from '../types/channelDTO';
 
-// TODO: Define the correct url, dummy for demonstration
 const findAll = () => {};
 
 const findChannels = async () => {
@@ -11,13 +11,8 @@ const findChannels = async () => {
 };
 
 const create = async (channel: ChannelDTO): Promise<Channel> => {
-  try {
-    const response = await httpService.post('/v1/api/channel', channel);
-    return response.data;
-  } catch (error: any) {
-    console.log(error.response);
-    return error.response;
-  }
+  const response = await httpService.post('/v1/api/channel', channel);
+  return response.data;
 };
 
 const findOne = () => {};

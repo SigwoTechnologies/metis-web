@@ -1,37 +1,45 @@
-import ListItemText from '@mui/material/ListItemText';
 import Avatar from '@mui/material/Avatar';
-import Typography from '@mui/material/Typography';
+import Box from '@mui/material/Box';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
 import ListItemButton from '@mui/material/ListItemButton';
-import Box from '@mui/material/Box';
-import DoneIcon from '@mui/icons-material/Done';
-import DoneAllIcon from '@mui/icons-material/DoneAll';
+import ListItemText from '@mui/material/ListItemText';
+import Typography from '@mui/material/Typography';
 
+import { Channel } from '@metis/features/channels/types/channel';
+import { useAppSelector } from '@metis/store/hooks';
+import { CircularProgress } from '@mui/material';
 import useStyles from './ChannelListItem.styles';
 
 type Props = {
+  channel: Channel;
   name: string;
   message: string;
   date: string;
-  isRead: boolean;
   avatar?: string;
   onClick?: () => void;
   selected?: boolean;
 };
 
 const ChannelListItem = ({
+  channel,
   name,
   message,
   date,
-  isRead,
   avatar = name,
   onClick,
   selected = false,
 }: Props) => {
   const classes = useStyles();
+  const { newChannelAddress } = useAppSelector((state) => state.channel);
+  const isNewChannel = channel.channelAddress === newChannelAddress;
 
   return (
-    <ListItemButton onClick={onClick} alignItems="flex-start" selected={selected}>
+    <ListItemButton
+      onClick={onClick}
+      disabled={isNewChannel}
+      alignItems="flex-start"
+      selected={selected}
+    >
       <ListItemAvatar>
         <Avatar alt={name} src={avatar} className={classes.avatar} />
       </ListItemAvatar>
@@ -40,16 +48,18 @@ const ChannelListItem = ({
           <Box display="flex" justifyContent="space-between">
             <Box className={classes.channelName}>
               <Typography component="span" variant="caption" color="text.primary">
-                {name}
+                {channel.channelName}
               </Typography>
             </Box>
             <Box className={classes.channelDescription}>
               <Box display="flex">
-                {isRead ? (
+                {/* TODO: enable this */}
+                {/* {isRead ? (
                   <DoneAllIcon fontSize="small" color="primary" />
                 ) : (
                   <DoneIcon fontSize="small" color="primary" />
-                )}
+                )} */}
+                {isNewChannel && <CircularProgress size="1.4285714285714284rem" />}
               </Box>
               <Box>
                 <Typography component="span" variant="caption" color="text.primary">

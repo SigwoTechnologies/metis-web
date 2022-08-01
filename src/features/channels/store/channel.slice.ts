@@ -1,8 +1,8 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import type { RootState } from '@metis/store/types';
-import { channel } from 'diagnostics_channel';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { Channel } from '../types/channel';
-import { findChannels, createChannel } from './channel.actions';
+// eslint-disable-next-line import/no-cycle
+import { findChannels } from './channel.actions';
 
 type Reply = {
   active: boolean;
@@ -20,6 +20,7 @@ export type ChannelState = {
   channels: Channel[];
   selectedChannel: string;
   reply: Reply;
+  newChannelAddress: string;
 };
 
 const initialState: ChannelState = {
@@ -31,6 +32,7 @@ const initialState: ChannelState = {
     name: '',
     message: '',
   },
+  newChannelAddress: '',
 };
 
 const slice = createSlice({
@@ -42,6 +44,17 @@ const slice = createSlice({
         (element: Channel) => element.channelName === payload
       );
       if (channelNameExist) state.selectedChannel = payload;
+    },
+    createChannel: (state: ChannelState, { payload }) => {
+      state.channels.unshift(payload);
+      state.newChannelAddress = payload.channelAddress;
+    },
+    finishChannelCreation: (state: ChannelState, { payload }) => {
+      const { isSuccessful } = payload;
+
+      state.newChannelAddress = '';
+
+      if (!isSuccessful) state.channels.shift();
     },
     updateReply: (state: ChannelState, action: PayloadAction<ReplyPayload>) => {
       const { name, message } = action.payload;
@@ -64,21 +77,10 @@ const slice = createSlice({
     builder.addCase(findChannels.rejected, (state) => {
       state.isLoading = false;
     });
-
-    // Create Channel ----------------------------------------------------------
-    builder.addCase(createChannel.pending, (state) => {
-      state.isLoading = true;
-    });
-    builder.addCase(createChannel.fulfilled, (state, { payload }) => {
-      state.channels.unshift(payload);
-      state.isLoading = false;
-    });
-    builder.addCase(createChannel.rejected, (state) => {
-      state.isLoading = false;
-    });
   },
 });
 
 export const selectState = (state: RootState) => state.channel;
-export const { updateReply, discardReply, selectChannel } = slice.actions;
+export const { updateReply, discardReply, selectChannel, createChannel, finishChannelCreation } =
+  slice.actions;
 export const channelReducer = slice.reducer;

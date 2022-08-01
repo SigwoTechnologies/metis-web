@@ -27,11 +27,11 @@ const ChannelList = () => {
     <Spinner isLoading={isLoading}>
       {channels.map((channel) => (
         <ChannelListItem
+          channel={channel}
           key={channel.channelName}
           name={channel.channelName}
           message={`${channel.channelName} says: visit my page!`}
           date="08:34 AM"
-          isRead
           onClick={() => selectNewChannel(channel)}
           selected={selectedChannel === channel.channelName}
         />
