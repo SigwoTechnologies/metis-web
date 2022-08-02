@@ -11,8 +11,10 @@ type FailedChannelCreation = { jobId: number; channelAddress: string };
 export default () => {
   // TODO: change this hardcoded value with real values
   const channelSocket = connect({
-    room: 'JUP-5FX8-JXLL-GLAV-7MG6P', // address of the current user
-    user: 'jonadev3000', // alias of the current user
+    query: {
+      room: 'JUP-5FX8-JXLL-GLAV-7MG6P', // address of the current user
+      user: 'jonadev3000', // alias of the current user
+    },
   }).socket('/channels');
 
   channelSocket.connect();

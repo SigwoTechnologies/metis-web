@@ -2,18 +2,18 @@ import { Manager } from 'socket.io-client';
 import appConfig from '../configuration/app.config';
 
 type props = {
-  room: string;
-  user: string;
+  url?: string;
+  query?: {
+    room: string;
+    user: string;
+  };
 };
 
-const connect = ({ room, user }: props) =>
-  new Manager(appConfig.api.baseUrl, {
+const connect = ({ query, url = appConfig.api.baseUrl }: props) =>
+  new Manager(url, {
     autoConnect: false,
     forceNew: true,
-    query: {
-      room,
-      user,
-    },
+    query,
   });
 
 export default connect;
