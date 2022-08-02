@@ -6,12 +6,13 @@ import ListItemText from '@mui/material/ListItemText';
 import Typography from '@mui/material/Typography';
 
 import { Channel } from '@metis/features/channels/types/channel';
+import { NewChannel } from '@metis/features/channels/types/newChannel';
 import { useAppSelector } from '@metis/store/hooks';
 import { CircularProgress } from '@mui/material';
 import useStyles from './ChannelListItem.styles';
 
 type Props = {
-  channel: Channel;
+  channel: Channel | NewChannel;
   name: string;
   message: string;
   date: string;
@@ -30,8 +31,10 @@ const ChannelListItem = ({
   selected = false,
 }: Props) => {
   const classes = useStyles();
-  const { newChannelAddress } = useAppSelector((state) => state.channel);
-  const isNewChannel = channel.channelAddress === newChannelAddress;
+  const { pendingChannels } = useAppSelector((state) => state.channel);
+  const isNewChannel = pendingChannels
+    .map((newChannel) => newChannel.channelAddress)
+    .includes(channel.channelAddress);
 
   return (
     <ListItemButton

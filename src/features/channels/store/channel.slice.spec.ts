@@ -17,7 +17,7 @@ describe('Channel Slice', () => {
         name: '',
         message: '',
       },
-      newChannelAddress: '',
+      pendingChannels: [],
     };
   });
 

@@ -30,7 +30,6 @@ const CreateButton = () => {
   const classes = useStyles();
   const [openCreate, setOpenCreate] = useState(false);
   const dispatch = useAppDispatch();
-  const { newChannelAddress } = useAppSelector((state) => state.channel);
   const [loading, setLoading] = useState(false);
 
   const closeDrawer = () => {
@@ -38,11 +37,6 @@ const CreateButton = () => {
   };
 
   const createNewChannel = (data: ChannelDTO) => {
-    if (newChannelAddress) {
-      dispatch(openToast({ type: 'error', text: 'A new channel is already being created' }));
-      return;
-    }
-
     setLoading(true);
     channelService
       .create(data)
@@ -53,13 +47,14 @@ const CreateButton = () => {
       })
       .then(() => {
         const { onChannelCreated, onChannelCreationFailed } = useChannelSocket();
-        onChannelCreated(() => {
+        onChannelCreated(({ jobId }) => {
           dispatch(openToast({ type: 'success', text: 'Channel created succesfully' }));
-          dispatch(finishChannelCreation({ isSuccessful: true }));
+          dispatch(finishChannelCreation({ isSuccessful: true, jobId }));
         });
-        onChannelCreationFailed(() => {
+        onChannelCreationFailed((failedData) => {
+          const jobId = typeof failedData === 'number' ? failedData : failedData.jobId;
           dispatch(openToast({ type: 'error', text: "The channel couldn't be created" }));
-          dispatch(finishChannelCreation({ isSuccessful: false }));
+          dispatch(finishChannelCreation({ isSuccessful: false, jobId }));
         });
       })
       .catch(() => {

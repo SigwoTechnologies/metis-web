@@ -8,6 +8,7 @@ import ChannelListItem from './channel-list-item/ChannelListItem';
 import { findChannels } from '../../store/channel.actions';
 import { selectChannel, selectState } from '../../store/channel.slice';
 import { Channel } from '../../types/channel';
+import { NewChannel } from '../../types/newChannel';
 
 const ChannelList = () => {
   const dispatch = useAppDispatch();
@@ -18,7 +19,7 @@ const ChannelList = () => {
     dispatch(findChannels());
   }, []);
 
-  const selectNewChannel = (channel: Channel) => {
+  const selectNewChannel = (channel: Channel | NewChannel) => {
     dispatch(selectChannel(channel.channelName));
     navigate(`/main/${channel.channelName}`);
   };

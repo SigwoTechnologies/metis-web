@@ -1,6 +1,7 @@
 import type { RootState } from '@metis/store/types';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { Channel } from '../types/channel';
+import { NewChannel } from '../types/newChannel';
 // eslint-disable-next-line import/no-cycle
 import { findChannels } from './channel.actions';
 
@@ -17,10 +18,10 @@ type ReplyPayload = {
 
 export type ChannelState = {
   isLoading: boolean;
-  channels: Channel[];
+  channels: Array<Channel | NewChannel>;
   selectedChannel: string;
   reply: Reply;
-  newChannelAddress: string;
+  pendingChannels: NewChannel[];
 };
 
 const initialState: ChannelState = {
@@ -32,7 +33,7 @@ const initialState: ChannelState = {
     name: '',
     message: '',
   },
-  newChannelAddress: '',
+  pendingChannels: [],
 };
 
 const slice = createSlice({
@@ -40,21 +41,31 @@ const slice = createSlice({
   initialState,
   reducers: {
     selectChannel: (state: ChannelState, { payload }) => {
-      const channelNameExist = state.channels.some(
-        (element: Channel) => element.channelName === payload
-      );
+      const channelNameExist = state.channels.some((element) => element.channelName === payload);
       if (channelNameExist) state.selectedChannel = payload;
     },
     createChannel: (state: ChannelState, { payload }) => {
       state.channels.unshift(payload);
-      state.newChannelAddress = payload.channelAddress;
+      state.pendingChannels.push(payload);
     },
+    // TODO: Make a better implementation of this
     finishChannelCreation: (state: ChannelState, { payload }) => {
-      const { isSuccessful } = payload;
+      const { isSuccessful, jobId } = payload;
 
-      state.newChannelAddress = '';
+      // Doesn't matter if it was successful or not
+      // either way we remove it from the pendingChannels array
+      const channelIndexToBeRemoved = state.pendingChannels.findIndex(
+        (channel) => channel.job.id === jobId
+      );
+      const channelAddressToBeRemoved =
+        state.pendingChannels[channelIndexToBeRemoved].channelAddress;
+      state.pendingChannels.splice(channelIndexToBeRemoved, 1);
 
-      if (!isSuccessful) state.channels.shift();
+      if (!isSuccessful) {
+        state.channels = state.channels.filter(
+          (channel) => channel.channelAddress !== channelAddressToBeRemoved
+        );
+      }
     },
     updateReply: (state: ChannelState, action: PayloadAction<ReplyPayload>) => {
       const { name, message } = action.payload;
