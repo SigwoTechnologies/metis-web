@@ -12,6 +12,11 @@ describe('Ui Slice', () => {
         open: false,
         type: 'success',
       },
+      notification: {
+        text: '',
+        open: false,
+        type: 'success',
+      },
     };
   });
 

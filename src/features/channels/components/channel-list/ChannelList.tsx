@@ -19,8 +19,8 @@ const ChannelList = () => {
   }, []);
 
   const selectNewChannel = (channel: Channel) => {
-    dispatch(selectChannel(channel.channelName));
-    navigate(`/main/${channel.channelName}`);
+    dispatch(selectChannel(channel));
+    navigate(`/main/${channel.channelAddress}`);
   };
 
   return (
@@ -33,7 +33,7 @@ const ChannelList = () => {
           date="08:34 AM"
           isRead
           onClick={() => selectNewChannel(channel)}
-          selected={selectedChannel === channel.channelName}
+          selected={selectedChannel.channelAddress === channel.channelAddress}
         />
       ))}
     </Spinner>
