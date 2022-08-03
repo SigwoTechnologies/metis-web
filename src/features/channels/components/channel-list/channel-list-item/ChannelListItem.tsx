@@ -18,7 +18,6 @@ type Props = {
   avatar?: string;
   onClick?: () => void;
   selected?: boolean;
-  onHideChannel?: () => void;
 };
 
 const ChannelListItem = ({
@@ -29,7 +28,6 @@ const ChannelListItem = ({
   avatar = name,
   onClick,
   selected = false,
-  onHideChannel,
 }: Props) => {
   const classes = useStyles();
 
@@ -70,9 +68,6 @@ const ChannelListItem = ({
           }
         />
       </ListItemButton>
-      <Box display="flex">
-        <VisibilityOffIcon fontSize="small" color="primary" onClick={onHideChannel} />
-      </Box>
     </Box>
   );
 };
