@@ -20,8 +20,18 @@ const create = async (channel: ChannelDTO): Promise<Channel> => {
   }
 };
 
+export type InviteToChannel = {
+  inviteeAddressOrAlias: string;
+  channelAddress: string;
+};
+
+const inviteToSelectedChannel = async (payload: InviteToChannel): Promise<Channel> => {
+  const response = await httpService.post('/v1/api/channel/invite', payload);
+  return response.data;
+};
+
 const findOne = () => {};
 const update = () => {};
 const remove = () => {};
 
-export default { findAll, findChannels, findOne, create, update, remove };
+export default { findAll, findChannels, findOne, create, update, remove, inviteToSelectedChannel };

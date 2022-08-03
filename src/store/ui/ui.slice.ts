@@ -4,6 +4,11 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 export type UiState = {
   isLoading: boolean;
   toast: ToastState;
+  notification: {
+    text: string;
+    open: boolean;
+    type: 'success' | 'error';
+  };
 };
 
 // TODO: Move this type into a separate file
@@ -16,6 +21,11 @@ export type ToastState = {
 const initialState: UiState = {
   isLoading: false,
   toast: {
+    text: '',
+    open: false,
+    type: 'success',
+  },
+  notification: {
     text: '',
     open: false,
     type: 'success',
@@ -38,10 +48,19 @@ export const slice = createSlice({
       state.toast.open = true;
     },
     hideToast: (state) => {
-      state.toast = initialState.toast;
+      state.toast.open = false;
+    },
+    openNotification: (state, { payload }) => {
+      const { type, text } = payload;
+      state.notification.text = text;
+      state.notification.type = type;
+      state.notification.open = true;
+    },
+    hideNotification: (state) => {
+      state.notification.open = false;
     },
   },
 });
 
-export const { openToast, hideToast } = slice.actions;
+export const { openToast, hideToast, openNotification, hideNotification } = slice.actions;
 export const uiReducer = slice.reducer;
