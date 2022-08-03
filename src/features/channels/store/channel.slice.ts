@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import type { RootState } from '@metis/store/types';
 import { Channel } from '../types/channel';
-import { findChannels, createChannel } from './channel.actions';
+import { findChannels, createChannel, getHiddenChannels } from './channel.actions';
 
 type Reply = {
   active: boolean;
@@ -43,6 +43,16 @@ const slice = createSlice({
     discardReply: (state: ChannelState) => {
       state.reply = initialState.reply;
     },
+    getChannelList: (state: ChannelState) => {
+      const hiddenChannels = getHiddenChannels();
+
+      state.channels = state.channels.filter((c) => {
+        const hiddenChannel = hiddenChannels.find(
+          (hc: Channel) => hc?.channelAddress === c.channelAddress
+        );
+        return !hiddenChannel;
+      });
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(findChannels.pending, (state) => {
@@ -71,5 +81,5 @@ const slice = createSlice({
 });
 
 export const selectState = (state: RootState) => state.channel;
-export const { updateReply, discardReply } = slice.actions;
+export const { updateReply, discardReply, getChannelList } = slice.actions;
 export const channelReducer = slice.reducer;

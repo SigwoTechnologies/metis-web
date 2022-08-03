@@ -3,45 +3,28 @@ import { useAppDispatch, useAppSelector } from '@metis/store/hooks';
 import { Channel } from '@metis/features/channels/types/channel';
 
 import Spinner from '@metis/common/components/ui/spinner/Spinner';
+import { getChannelList , selectState } from '@metis/features/channels/store/channel.slice';
 import ChannelListItem from './channel-list-item/ChannelListItem';
 
-import { selectState } from '../../store/channel.slice';
-import { findChannels, getHiddenChannels, hideChannel } from '../../store/channel.actions';
+import { findChannels, hideChannel } from '../../store/channel.actions';
 
 const ChannelList = () => {
-  const channelInitialState: Channel[] = [];
   const dispatch = useAppDispatch();
   const { channels, isLoading } = useAppSelector(selectState);
   const [selected, setSelected] = useState('');
-  const [currentChannels, setChannels] = useState(channelInitialState);
-
-  const getChannelList = () => {
-    const hiddenChannels = getHiddenChannels();
-
-    return channels.filter((c) => {
-      const hiddenChannel = hiddenChannels.find(
-        (hc: Channel) => hc?.channelAddress === c.channelAddress
-      );
-      return !hiddenChannel;
-    });
-  };
 
   useEffect(() => {
     dispatch(findChannels());
-  }, []);
-
-  useEffect(() => {
-    setChannels(getChannelList());
+    dispatch(getChannelList());
   }, []);
 
   const onHideChannel = (channel: Channel) => {
     hideChannel(channel);
-    setChannels(getChannelList());
   };
 
   return (
     <Spinner isLoading={isLoading}>
-      {currentChannels.map((channel) => (
+      {channels.map((channel) => (
         <ChannelListItem
           key={channel.channelName}
           name={channel.channelName}
