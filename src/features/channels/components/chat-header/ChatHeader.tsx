@@ -6,17 +6,20 @@ import Typography from '@mui/material/Typography';
 import React, { useState } from 'react';
 
 import BugAvatar from '@metis/assets/images/avatars/bug.jpg';
-import { useAppSelector } from '@metis/store/hooks';
+import { useAppDispatch, useAppSelector } from '@metis/store/hooks';
 import { Menu, MenuItem } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
+import { hideChannel as hideChannelAction, selectState } from '../../store/channel.slice';
 import InviteUserModal from '../invite-user-modal/InviteUserModal';
 import useStyles from './ChatHeader.styles';
-import { selectState } from '../../store/channel.slice';
 
 const ChatHeader = () => {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const { selectedChannel } = useAppSelector(selectState);
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   const menu = Boolean(anchorEl);
   const openMenu = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -32,6 +35,12 @@ const ChatHeader = () => {
     setOpen(true);
   };
 
+  const hideChannel = () => {
+    dispatch(hideChannelAction(selectedChannel));
+    navigate('/main');
+    closeMenu();
+  };
+
   return (
     <>
       <Menu
@@ -44,6 +53,7 @@ const ChatHeader = () => {
         }}
       >
         <MenuItem onClick={openInviteUserModal}>Invite user</MenuItem>
+        <MenuItem onClick={hideChannel}>Hide channel</MenuItem>
       </Menu>
       <InviteUserModal closeModal={() => setOpen(false)} open={open} />
       <Box className={classes.titleContainer}>

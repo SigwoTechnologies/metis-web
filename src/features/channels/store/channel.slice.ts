@@ -1,8 +1,12 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import type { RootState } from '@metis/store/types';
-import { channel } from 'diagnostics_channel';
 import { Channel } from '../types/channel';
-import { findChannels, createChannel } from './channel.actions';
+import {
+  findChannels,
+  createChannel,
+  getHiddenChannels,
+  localStorageKeyHiddenChannel,
+} from './channel.actions';
 
 type Reply = {
   active: boolean;
@@ -18,6 +22,7 @@ type ReplyPayload = {
 export type ChannelState = {
   isLoading: boolean;
   channels: Channel[];
+  hiddenChannels: Channel[];
   selectedChannel: Channel;
   reply: Reply;
 };
@@ -25,6 +30,7 @@ export type ChannelState = {
 const initialState: ChannelState = {
   isLoading: false,
   channels: [],
+  hiddenChannels: [],
   selectedChannel: {
     channelAddress: '',
     channelPublicKey: '',
@@ -58,12 +64,25 @@ const slice = createSlice({
     discardReply: (state: ChannelState) => {
       state.reply = initialState.reply;
     },
+    hideChannel: (state: ChannelState, { payload }) => {
+      const isChannelAlreadyHidden = state.hiddenChannels.find(
+        (chc: Channel) => chc?.channelAddress === payload.channelAddress
+      );
+
+      if (!isChannelAlreadyHidden) {
+        state.hiddenChannels.push(payload);
+        state.selectedChannel = initialState.selectedChannel;
+        localStorage.setItem(localStorageKeyHiddenChannel, JSON.stringify(state.hiddenChannels));
+      }
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(findChannels.pending, (state) => {
       state.isLoading = true;
     });
     builder.addCase(findChannels.fulfilled, (state, { payload }) => {
+      const hiddenChannels = getHiddenChannels();
+      state.hiddenChannels = hiddenChannels;
       state.channels = payload;
       state.isLoading = false;
     });
@@ -86,5 +105,5 @@ const slice = createSlice({
 });
 
 export const selectState = (state: RootState) => state.channel;
-export const { updateReply, discardReply, selectChannel } = slice.actions;
+export const { updateReply, discardReply, selectChannel, hideChannel } = slice.actions;
 export const channelReducer = slice.reducer;

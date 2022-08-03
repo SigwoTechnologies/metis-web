@@ -6,6 +6,7 @@ import ListItemButton from '@mui/material/ListItemButton';
 import Box from '@mui/material/Box';
 import DoneIcon from '@mui/icons-material/Done';
 import DoneAllIcon from '@mui/icons-material/DoneAll';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 
 import useStyles from './ChannelListItem.styles';
 
@@ -31,41 +32,43 @@ const ChannelListItem = ({
   const classes = useStyles();
 
   return (
-    <ListItemButton onClick={onClick} alignItems="flex-start" selected={selected}>
-      <ListItemAvatar>
-        <Avatar alt={name} src={avatar} className={classes.avatar} />
-      </ListItemAvatar>
-      <ListItemText
-        primary={
-          <Box display="flex" justifyContent="space-between">
-            <Box className={classes.channelName}>
-              <Typography component="span" variant="caption" color="text.primary">
-                {name}
-              </Typography>
-            </Box>
-            <Box className={classes.channelDescription}>
-              <Box display="flex">
-                {isRead ? (
-                  <DoneAllIcon fontSize="small" color="primary" />
-                ) : (
-                  <DoneIcon fontSize="small" color="primary" />
-                )}
-              </Box>
-              <Box>
+    <Box display="flex" alignItems="center">
+      <ListItemButton onClick={onClick} alignItems="flex-start" selected={selected}>
+        <ListItemAvatar>
+          <Avatar alt={name} src={avatar} className={classes.avatar} />
+        </ListItemAvatar>
+        <ListItemText
+          primary={
+            <Box display="flex" justifyContent="space-between">
+              <Box className={classes.channelName}>
                 <Typography component="span" variant="caption" color="text.primary">
-                  {date}
+                  {name}
                 </Typography>
               </Box>
+              <Box className={classes.channelDescription}>
+                <Box display="flex">
+                  {isRead ? (
+                    <DoneAllIcon fontSize="small" color="primary" />
+                  ) : (
+                    <DoneIcon fontSize="small" color="primary" />
+                  )}
+                </Box>
+                <Box>
+                  <Typography component="span" variant="caption" color="text.primary">
+                    {date}
+                  </Typography>
+                </Box>
+              </Box>
             </Box>
-          </Box>
-        }
-        secondary={
-          <Typography component="span" variant="caption" color="text.secondary">
-            {message}
-          </Typography>
-        }
-      />
-    </ListItemButton>
+          }
+          secondary={
+            <Typography component="span" variant="caption" color="text.secondary">
+              {message}
+            </Typography>
+          }
+        />
+      </ListItemButton>
+    </Box>
   );
 };
 
