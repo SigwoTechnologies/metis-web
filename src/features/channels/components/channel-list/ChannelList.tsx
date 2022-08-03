@@ -20,8 +20,8 @@ const ChannelList = () => {
   }, []);
 
   const selectNewChannel = (channel: Channel | NewChannel) => {
-    dispatch(selectChannel(channel.channelName));
-    navigate(`/main/${channel.channelName}`);
+    dispatch(selectChannel(channel.channelAddress));
+    navigate(`/main/${channel.channelAddress}`);
   };
 
   return (

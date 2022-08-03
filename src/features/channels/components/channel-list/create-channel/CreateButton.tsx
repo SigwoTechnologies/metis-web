@@ -47,8 +47,10 @@ const CreateButton = () => {
       })
       .then(() => {
         const { onChannelCreated, onChannelCreationFailed } = useChannelSocket();
-        onChannelCreated(({ jobId }) => {
-          dispatch(openToast({ type: 'success', text: 'Channel created succesfully' }));
+        onChannelCreated(({ jobId, channelName }) => {
+          dispatch(
+            openToast({ type: 'success', text: `Channel '${channelName}' was created succesfully` })
+          );
           dispatch(finishChannelCreation({ isSuccessful: true, jobId }));
         });
         onChannelCreationFailed((failedData) => {

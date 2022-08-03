@@ -19,7 +19,7 @@ type ReplyPayload = {
 export type ChannelState = {
   isLoading: boolean;
   channels: Array<Channel | NewChannel>;
-  selectedChannel: string;
+  selectedChannel: Channel | NewChannel;
   reply: Reply;
   pendingChannels: NewChannel[];
 };
@@ -47,9 +47,11 @@ const slice = createSlice({
   initialState,
   reducers: {
     selectChannel: (state: ChannelState, { payload }) => {
-      const channelNameExist = state.channels.some((element) => element.channelName === payload);
+      const selectedChannelOrUndefined = state.channels.find(
+        (element) => element.channelAddress === payload
+      );
 
-      if (channelNameExist) state.selectedChannel = payload;
+      if (selectedChannelOrUndefined) state.selectedChannel = selectedChannelOrUndefined;
     },
     createChannel: (state: ChannelState, { payload }) => {
       state.channels.unshift(payload);
