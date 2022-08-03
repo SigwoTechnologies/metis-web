@@ -1,4 +1,5 @@
 import httpService from '@metis/common/services/http.service';
+import { AxiosError } from 'axios';
 import { Channel } from '../types/channel';
 import { ChannelDTO } from '../types/channelDTO';
 
@@ -20,8 +21,20 @@ const create = async (channel: ChannelDTO): Promise<Channel> => {
   }
 };
 
+const getMutedChannelAddresses = async () => {
+  try {
+    const response = await httpService.get('/v1/api/pn/mute-channels');
+    const { mutedChannelAddressList } = response.data;
+    return mutedChannelAddressList;
+  } catch (error) {
+    const err = error as AxiosError;
+    console.log(err.response);
+    return err.response;
+  }
+};
+
 const findOne = () => {};
 const update = () => {};
 const remove = () => {};
 
-export default { findAll, findChannels, findOne, create, update, remove };
+export default { findAll, findChannels, findOne, create, update, remove, getMutedChannelAddresses };

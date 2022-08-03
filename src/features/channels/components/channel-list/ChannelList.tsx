@@ -5,7 +5,7 @@ import Spinner from '@metis/common/components/ui/spinner/Spinner';
 import { useNavigate } from 'react-router-dom';
 import ChannelListItem from './channel-list-item/ChannelListItem';
 
-import { findChannels } from '../../store/channel.actions';
+import { findChannels, getMutedChannelAddresses } from '../../store/channel.actions';
 import { selectChannel, selectState } from '../../store/channel.slice';
 import { Channel } from '../../types/channel';
 
@@ -16,6 +16,7 @@ const ChannelList = () => {
 
   useEffect(() => {
     dispatch(findChannels());
+    dispatch(getMutedChannelAddresses());
   }, []);
 
   const selectNewChannel = (channel: Channel) => {

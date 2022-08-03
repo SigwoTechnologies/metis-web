@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import type { RootState } from '@metis/store/types';
 import { channel } from 'diagnostics_channel';
 import { Channel } from '../types/channel';
-import { findChannels, createChannel } from './channel.actions';
+import { findChannels, createChannel, getMutedChannelAddresses } from './channel.actions';
 
 type Reply = {
   active: boolean;
@@ -20,6 +20,7 @@ export type ChannelState = {
   channels: Channel[];
   selectedChannel: string;
   reply: Reply;
+  mutedChannels: string[];
 };
 
 const initialState: ChannelState = {
@@ -31,6 +32,7 @@ const initialState: ChannelState = {
     name: '',
     message: '',
   },
+  mutedChannels: [],
 };
 
 const slice = createSlice({
@@ -74,6 +76,17 @@ const slice = createSlice({
       state.isLoading = false;
     });
     builder.addCase(createChannel.rejected, (state) => {
+      state.isLoading = false;
+    });
+
+    // Get muted channels ----------------------------------------------------------
+    builder.addCase(getMutedChannelAddresses.pending, (state) => {
+      state.isLoading = true;
+    });
+    builder.addCase(getMutedChannelAddresses.fulfilled, (state, { payload }) => {
+      state.mutedChannels = payload;
+    });
+    builder.addCase(getMutedChannelAddresses.rejected, (state) => {
       state.isLoading = false;
     });
   },
