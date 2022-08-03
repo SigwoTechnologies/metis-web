@@ -2,7 +2,12 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import type { RootState } from '@metis/store/types';
 import { channel } from 'diagnostics_channel';
 import { Channel } from '../types/channel';
-import { findChannels, createChannel, getMutedChannelAddresses } from './channel.actions';
+import {
+  findChannels,
+  createChannel,
+  getMutedChannelAddresses,
+  toggleMuteChannel,
+} from './channel.actions';
 
 type Reply = {
   active: boolean;
@@ -94,6 +99,11 @@ const slice = createSlice({
     });
     builder.addCase(getMutedChannelAddresses.rejected, (state) => {
       state.isLoading = false;
+    });
+
+    // Mute or unmute channel -------------------------------------------------------
+    builder.addCase(toggleMuteChannel.fulfilled, (state, { payload }) => {
+      state.mutedChannels = payload;
     });
   },
 });

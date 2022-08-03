@@ -7,5 +7,9 @@ export const getMutedChannelAddresses = createAsyncThunk(
   'channels/getMutedChannelAddresses',
   channelService.getMutedChannelAddresses
 );
+export const toggleMuteChannel = createAsyncThunk(
+  'channels/toggleMuteChannel',
+  channelService.toggleMuteChannel
+);
 
-export default { findChannels, createChannel };
+export default { findChannels, createChannel, getMutedChannelAddresses, toggleMuteChannel };

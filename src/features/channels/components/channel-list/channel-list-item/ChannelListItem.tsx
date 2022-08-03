@@ -1,15 +1,19 @@
-import ListItemText from '@mui/material/ListItemText';
-import Avatar from '@mui/material/Avatar';
-import Typography from '@mui/material/Typography';
-import ListItemAvatar from '@mui/material/ListItemAvatar';
-import ListItemButton from '@mui/material/ListItemButton';
-import Box from '@mui/material/Box';
 import DoneIcon from '@mui/icons-material/Done';
 import DoneAllIcon from '@mui/icons-material/DoneAll';
+import VolumeOffIcon from '@mui/icons-material/VolumeOff';
+import Avatar from '@mui/material/Avatar';
+import Box from '@mui/material/Box';
+import ListItemAvatar from '@mui/material/ListItemAvatar';
+import ListItemButton from '@mui/material/ListItemButton';
+import ListItemText from '@mui/material/ListItemText';
+import Typography from '@mui/material/Typography';
 
+import { Channel } from '@metis/features/channels/types/channel';
+import { useAppSelector } from '@metis/store/hooks';
 import useStyles from './ChannelListItem.styles';
 
 type Props = {
+  channel: Channel;
   name: string;
   message: string;
   date: string;
@@ -20,6 +24,7 @@ type Props = {
 };
 
 const ChannelListItem = ({
+  channel,
   name,
   message,
   date,
@@ -29,6 +34,8 @@ const ChannelListItem = ({
   selected = false,
 }: Props) => {
   const classes = useStyles();
+  const { mutedChannels } = useAppSelector((state) => state.channel);
+  const isMuted = mutedChannels.includes(channel.channelAddress);
 
   return (
     <ListItemButton onClick={onClick} alignItems="flex-start" selected={selected}>
@@ -60,9 +67,12 @@ const ChannelListItem = ({
           </Box>
         }
         secondary={
-          <Typography component="span" variant="caption" color="text.secondary">
-            {message}
-          </Typography>
+          <Box display="flex">
+            <Typography noWrap paragraph variant="caption" color="text.secondary">
+              {message}
+            </Typography>
+            {isMuted && <VolumeOffIcon className={classes.mutedIcon} fontSize="small" />}
+          </Box>
         }
       />
     </ListItemButton>
