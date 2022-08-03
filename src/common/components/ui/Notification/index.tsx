@@ -1,43 +1,46 @@
-import { Dialog } from '@mui/material';
+import { useAppDispatch, useAppSelector } from '@metis/store/hooks';
+import { hideNotification } from '@metis/store/ui/ui.slice';
 import CheckIcon from '@mui/icons-material/Check';
-import React, { useEffect, useState } from 'react';
+import CloseIcon from '@mui/icons-material/Close';
+import { Dialog } from '@mui/material';
+import React, { useEffect } from 'react';
 import useStyles from './Notification.styles';
 
-type props = {
-  isOpen: boolean;
-  onClose: () => void;
-  type: 'success' | 'error';
-};
-
-const Notification: React.FC<props> = ({ isOpen, onClose, type }) => {
-  const [open, setOpen] = useState(false);
+const Notification: React.FC = () => {
+  const { open, type, text } = useAppSelector((state) => state.ui.notification);
+  const dispatch = useAppDispatch();
   const styles = useStyles();
 
   useEffect(() => {
-    if (isOpen) {
-      setOpen(isOpen);
+    if (open) {
       const timer = setTimeout(() => {
-        setOpen(false);
-        onClose();
+        dispatch(hideNotification());
       }, 2000);
       return () => clearTimeout(timer);
     }
     return undefined;
-  }, [isOpen]);
+  }, [open]);
 
   return (
     <Dialog
       open={open}
-      onClose={() => setOpen(false)}
+      onClose={() => dispatch(hideNotification())}
       PaperProps={{
         style: {
           backgroundColor: 'transparent',
           boxShadow: 'none',
+          borderLeft: 0,
+          borderRight: 0,
         },
       }}
     >
-      {type === 'success' && <CheckIcon color="success" className={styles.icon} />}
-      <p className={styles.text}>Invite sent!</p>
+      {
+        {
+          success: <CheckIcon color="success" className={styles.icon} />,
+          error: <CloseIcon color="error" className={styles.icon} />,
+        }[type]
+      }
+      <p className={styles.text}>{text}</p>
     </Dialog>
   );
 };

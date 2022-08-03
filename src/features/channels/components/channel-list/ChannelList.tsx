@@ -34,7 +34,7 @@ const ChannelList = () => {
           message={`${channel.channelName} says: visit my page!`}
           date="08:34 AM"
           onClick={() => selectNewChannel(channel)}
-          selected={selectedChannel === channel.channelName}
+          selected={selectedChannel.channelAddress === channel.channelAddress}
         />
       ))}
     </Spinner>

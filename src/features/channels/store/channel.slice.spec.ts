@@ -11,7 +11,13 @@ describe('Channel Slice', () => {
     initialState = {
       isLoading: false,
       channels: [],
-      selectedChannel: '',
+      selectedChannel: {
+        channelAddress: '',
+        channelPublicKey: '',
+        channelName: '',
+        createdBy: '',
+        createdAt: 0,
+      },
       reply: {
         active: false,
         name: '',
@@ -83,17 +89,18 @@ describe('Channel Slice', () => {
     });
 
     it('should set the selectedChannel to the passed value', () => {
-      const expected = initialState;
-      expected.selectedChannel = 'testing';
-      expected.channels.push({
+      const testingChannel = {
         channelAddress: 'JUP-VHVJ-WEBM-N5NR-3CV33',
         channelPublicKey: '19d206b972aa2a7b5756a1797bd0901e2352d327e0906ebec717402ce54cb059',
         channelName: 'testing',
         createdBy: 'JUP-5FX8-JXLL-GLAV-7MG6P',
         createdAt: 1656711221005,
-      });
+      };
+      const expected = initialState;
+      expected.selectedChannel = testingChannel;
+      expected.channels.push(testingChannel);
 
-      const actual = channelReducer(initialState, selectChannel('testing'));
+      const actual = channelReducer(initialState, selectChannel(testingChannel));
 
       expect(actual.selectedChannel).toEqual(expected.selectedChannel);
     });
