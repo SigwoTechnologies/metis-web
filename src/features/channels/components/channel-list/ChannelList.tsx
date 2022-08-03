@@ -1,7 +1,7 @@
 import { useAppDispatch, useAppSelector } from '@metis/store/hooks';
-import { useEffect } from 'react';
 
 import Spinner from '@metis/common/components/ui/spinner/Spinner';
+import useOnMount from '@metis/common/hooks/useOnMount';
 import { useNavigate } from 'react-router-dom';
 import ChannelListItem from './channel-list-item/ChannelListItem';
 
@@ -14,10 +14,10 @@ const ChannelList = () => {
   const { channels, isLoading, selectedChannel } = useAppSelector(selectState);
   const navigate = useNavigate();
 
-  useEffect(() => {
+  useOnMount(() => {
     dispatch(findChannels());
     dispatch(getMutedChannelAddresses());
-  }, []);
+  });
 
   const selectNewChannel = (channel: Channel) => {
     dispatch(selectChannel(channel));
@@ -28,6 +28,7 @@ const ChannelList = () => {
     <Spinner isLoading={isLoading}>
       {channels.map((channel) => (
         <ChannelListItem
+          channel={channel}
           key={channel.channelName}
           name={channel.channelName}
           message={`${channel.channelName} says: visit my page!`}
