@@ -23,6 +23,7 @@ describe('Channel Slice', () => {
         name: '',
         message: '',
       },
+      mutedChannels: [],
     };
   });
 
