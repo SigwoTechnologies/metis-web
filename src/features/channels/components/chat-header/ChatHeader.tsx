@@ -3,12 +3,13 @@ import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
 import BugAvatar from '@metis/assets/images/avatars/bug.jpg';
+import Modal from '@metis/common/components/ui/Modal';
 import { useAppDispatch, useAppSelector } from '@metis/store/hooks';
-import { openToast } from '@metis/store/ui/ui.slice';
-import { CircularProgress, Menu, MenuItem } from '@mui/material';
+import { LoadingButton } from '@mui/lab';
+import { Button, CircularProgress, Menu, MenuItem } from '@mui/material';
 import { toggleMuteChannel } from '../../store/channel.actions';
 import { selectState } from '../../store/channel.slice';
 import InviteUserModal from '../invite-user-modal/InviteUserModal';
@@ -17,6 +18,7 @@ import useStyles from './ChatHeader.styles';
 const ChatHeader = () => {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
+  const [muteModalOpen, setMuteModalOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const { selectedChannel, mutedChannels } = useAppSelector(selectState);
@@ -37,7 +39,19 @@ const ChatHeader = () => {
     setOpen(true);
   };
 
-  const muteChannel = () => {};
+  const openMuteModal = () => {
+    setMuteModalOpen(true);
+    closeMenu();
+  };
+
+  const muteChannel = () => {
+    setLoading(true);
+    dispatch(toggleMuteChannel(selectedChannel.channelAddress)).then(() => {
+      setMuteModalOpen(false);
+      setLoading(false);
+    });
+  };
+
   const unmuteChannel = () => {
     setLoading(true);
     dispatch(toggleMuteChannel(selectedChannel.channelAddress)).then(() => {
@@ -70,12 +84,26 @@ const ChatHeader = () => {
             )}
           </MenuItem>
         )}
-        {!isMuted && (
-          <MenuItem onClick={() => dispatch(toggleMuteChannel(selectedChannel.channelAddress))}>
-            Mute channel
-          </MenuItem>
-        )}
+        {!isMuted && <MenuItem onClick={openMuteModal}>Mute channel</MenuItem>}
       </Menu>
+      <Modal open={muteModalOpen} onClose={() => setMuteModalOpen(false)}>
+        <Typography
+          component="p"
+          variant="h5"
+          sx={{ mb: '1rem' }}
+        >{`Mute ${selectedChannel.channelName}?`}</Typography>
+        <Typography component="p" variant="body2" sx={{ mb: '1rem' }}>
+          You won&apos;t receive notifications from this channel. Do you want to proceed?
+        </Typography>
+        <Box display="flex" justifyContent="center" gap="1rem">
+          <Button variant="outlined" color="error" onClick={() => setMuteModalOpen(false)}>
+            cancel
+          </Button>
+          <LoadingButton loading={loading} variant="contained" onClick={muteChannel}>
+            confirm
+          </LoadingButton>
+        </Box>
+      </Modal>
       <InviteUserModal closeModal={() => setOpen(false)} open={open} />
       <Box className={classes.titleContainer}>
         <Box display="flex" justifyContent="center" alignItems="center">
