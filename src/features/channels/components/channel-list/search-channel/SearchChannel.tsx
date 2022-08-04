@@ -98,7 +98,7 @@ const ChannelList = () => {
                 {hiddenChannel.map(
                   (channel) =>
                     !channel.visible && (
-                      <Box>
+                      <Box key={channel.channelName}>
                         <Divider />
                         <Box className={styles.cardContainer}>
                           <CardContent>{channel.channelName}</CardContent>
