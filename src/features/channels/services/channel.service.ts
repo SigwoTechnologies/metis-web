@@ -4,9 +4,19 @@ import { AxiosError } from 'axios';
 import { Channel } from '../types/channel';
 import { ChannelDTO } from '../types/channelDTO';
 
-const findChannels = async () => {
-  const response = await httpService.get<Channel[]>('/v1/api/channels');
-  return response.data;
+type ErrorMessage = {
+  message: string;
+};
+
+const findChannels = async (args: null, { dispatch, rejectWithValue }: any) => {
+  try {
+    const response = await httpService.get<Channel[]>('/v1/api/channels');
+    return response.data;
+  } catch (error) {
+    const err = error as AxiosError;
+    dispatch(openToast({ type: 'error', text: 'There was a problem getting the channels' }));
+    return rejectWithValue(err.response);
+  }
 };
 
 const create = async (channel: ChannelDTO): Promise<Channel> => {
@@ -29,15 +39,15 @@ const inviteToSelectedChannel = async (payload: InviteToChannel): Promise<Channe
   return response.data;
 };
 
-const getMutedChannelAddresses = async () => {
+const getMutedChannelAddresses = async (args: null, { dispatch, rejectWithValue }: any) => {
   try {
     const response = await httpService.get('/v1/api/pn/mute-channels');
     const { mutedChannelAddressList } = response.data;
     return mutedChannelAddressList;
   } catch (error) {
     const err = error as AxiosError;
-    console.log(err.response);
-    return err.response;
+    dispatch(openToast({ type: 'error', text: 'There was a problem getting the muted channels' }));
+    return rejectWithValue(err.response);
   }
 };
 

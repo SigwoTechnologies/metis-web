@@ -44,7 +44,7 @@ describe('Channel Slice', () => {
         const expected = initialState;
         expected.isLoading = true;
 
-        const actual = channelReducer(undefined, findChannels.pending(''));
+        const actual = channelReducer(undefined, findChannels.pending('', null));
 
         expect(actual).toEqual(initialState);
       });
@@ -74,7 +74,7 @@ describe('Channel Slice', () => {
       it('should set the isLoading flag to false', () => {
         const expected = initialState;
 
-        const actual = channelReducer(undefined, findChannels.rejected(null, ''));
+        const actual = channelReducer(undefined, findChannels.rejected(null, '', null));
 
         expect(actual).toEqual(expected);
       });
