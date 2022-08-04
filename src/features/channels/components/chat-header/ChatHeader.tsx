@@ -8,6 +8,7 @@ import React, { useState } from 'react';
 import BugAvatar from '@metis/assets/images/avatars/bug.jpg';
 import Modal from '@metis/common/components/ui/Modal';
 import { useAppDispatch, useAppSelector } from '@metis/store/hooks';
+import { openToast } from '@metis/store/ui/ui.slice';
 import { LoadingButton } from '@mui/lab';
 import { Button, CircularProgress, Menu, MenuItem } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
@@ -43,6 +44,7 @@ const ChatHeader = () => {
 
   const hideChannel = () => {
     dispatch(hideChannelAction(selectedChannel));
+    dispatch(openToast({ type: 'info', text: 'The channel was hidden successfully' }));
     navigate('/main');
     closeMenu();
   };
