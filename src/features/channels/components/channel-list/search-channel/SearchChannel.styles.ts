@@ -34,6 +34,13 @@ const useStyles = makeStyles(() =>
     inputText: {
       borderRadius: '1rem',
     },
+    cardContainer: {
+      display: 'flex',
+      justifyContent: 'space-between',
+    },
+    actionContainer: {
+      justifyContent: 'flex-end',
+    },
   })
 );
 
