@@ -1,9 +1,9 @@
 import { AlertColor } from '@mui/material';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { toast } from 'react-toastify';
 
 export type UiState = {
   isLoading: boolean;
-  toast: ToastState;
   notification: {
     text: string;
     open: boolean;
@@ -20,11 +20,6 @@ export type ToastState = {
 
 const initialState: UiState = {
   isLoading: false,
-  toast: {
-    text: '',
-    open: false,
-    type: 'success',
-  },
   notification: {
     text: '',
     open: false,
@@ -41,14 +36,11 @@ export const slice = createSlice({
   name: 'ui',
   initialState,
   reducers: {
-    openToast: (state, action: PayloadAction<ToastPayload>) => {
-      const { type, text } = action.payload;
-      state.toast.text = text;
-      state.toast.type = type;
-      state.toast.open = true;
-    },
-    hideToast: (state) => {
-      state.toast.open = false;
+    openToast: (state, { payload }: PayloadAction<ToastPayload>) => {
+      const { type, text } = payload;
+      toast[type](text, {
+        theme: 'colored',
+      });
     },
     openNotification: (state, { payload }) => {
       const { type, text } = payload;
@@ -62,5 +54,5 @@ export const slice = createSlice({
   },
 });
 
-export const { openToast, hideToast, openNotification, hideNotification } = slice.actions;
+export const { openToast, openNotification, hideNotification } = slice.actions;
 export const uiReducer = slice.reducer;
