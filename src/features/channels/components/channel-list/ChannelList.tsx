@@ -8,6 +8,7 @@ import ChannelListItem from './channel-list-item/ChannelListItem';
 
 import { findChannels, getMutedChannelAddresses } from '../../store/channel.actions';
 import { selectChannel, selectState } from '../../store/channel.slice';
+import { NewChannel } from '../../types/newChannel';
 
 const ChannelList = () => {
   const dispatch = useAppDispatch();
@@ -20,8 +21,8 @@ const ChannelList = () => {
     dispatch(getMutedChannelAddresses(null));
   });
 
-  const selectNewChannel = (channel: Channel) => {
-    dispatch(selectChannel(channel));
+  const selectNewChannel = (channel: Channel | NewChannel) => {
+    dispatch(selectChannel(channel.channelAddress));
     navigate(`/main/${channel.channelAddress}`);
   };
 
@@ -36,7 +37,6 @@ const ChannelList = () => {
               name={channel.channelName}
               message="Lorem ipsum dolor, sit amet consectetur adipisicing elit. Sed voluptate delectus sapiente nihil quas esse aliquid architecto. Perferendis libero harum, numquam non assumenda, corrupti consectetur eos iusto dolorem voluptas soluta."
               date="08:34 AM"
-              isRead
               onClick={() => selectNewChannel(channel)}
               selected={selectedChannel.channelAddress === channel.channelAddress}
             />

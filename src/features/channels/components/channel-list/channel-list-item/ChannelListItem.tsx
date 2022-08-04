@@ -1,5 +1,3 @@
-import DoneIcon from '@mui/icons-material/Done';
-import DoneAllIcon from '@mui/icons-material/DoneAll';
 import VolumeOffIcon from '@mui/icons-material/VolumeOff';
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
@@ -9,15 +7,16 @@ import ListItemText from '@mui/material/ListItemText';
 import Typography from '@mui/material/Typography';
 
 import { Channel } from '@metis/features/channels/types/channel';
+import { NewChannel } from '@metis/features/channels/types/newChannel';
 import { useAppSelector } from '@metis/store/hooks';
+import { CircularProgress } from '@mui/material';
 import useStyles from './ChannelListItem.styles';
 
 type Props = {
-  channel: Channel;
+  channel: Channel | NewChannel;
   name: string;
   message: string;
   date: string;
-  isRead: boolean;
   avatar?: string;
   onClick?: () => void;
   selected?: boolean;
@@ -28,19 +27,22 @@ const ChannelListItem = ({
   name,
   message,
   date,
-  isRead,
   avatar = name,
   onClick,
   selected = false,
 }: Props) => {
   const classes = useStyles();
-  const { mutedChannels } = useAppSelector((state) => state.channel);
+  const { mutedChannels, pendingChannels } = useAppSelector((state) => state.channel);
+  const isNewChannel = pendingChannels
+    .map((newChannel) => newChannel.channelAddress)
+    .includes(channel.channelAddress);
   const isMuted = mutedChannels.includes(channel.channelAddress);
 
   return (
     <Box display="flex" alignItems="center">
       <ListItemButton
         className={classes.listItemButton}
+        disabled={isNewChannel}
         onClick={onClick}
         alignItems="flex-start"
         selected={selected}
@@ -59,11 +61,13 @@ const ChannelListItem = ({
               </Box>
               <Box className={classes.channelDescription}>
                 <Box display="flex">
-                  {isRead ? (
-                    <DoneAllIcon fontSize="small" color="primary" />
-                  ) : (
-                    <DoneIcon fontSize="small" color="primary" />
-                  )}
+                  {/* TODO: enable this */}
+                  {/* {isRead ? (
+                  <DoneAllIcon fontSize="small" color="primary" />
+                ) : (
+                  <DoneIcon fontSize="small" color="primary" />
+                )} */}
+                  {isNewChannel && <CircularProgress size="1.4285714285714284rem" />}
                 </Box>
                 <Box>
                   <Typography component="span" variant="caption" color="text.primary">

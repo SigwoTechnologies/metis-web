@@ -25,6 +25,7 @@ describe('Channel Slice', () => {
         message: '',
       },
       mutedChannels: [],
+      pendingChannels: [],
     };
   });
 
