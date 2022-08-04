@@ -6,6 +6,8 @@ import {
   createChannel,
   getHiddenChannels,
   localStorageKeyHiddenChannel,
+  getMutedChannelAddresses,
+  toggleMuteChannel,
 } from './channel.actions';
 
 type Reply = {
@@ -25,6 +27,7 @@ export type ChannelState = {
   hiddenChannels: Channel[];
   selectedChannel: Channel;
   reply: Reply;
+  mutedChannels: string[];
 };
 
 const initialState: ChannelState = {
@@ -43,6 +46,7 @@ const initialState: ChannelState = {
     name: '',
     message: '',
   },
+  mutedChannels: [],
 };
 
 const slice = createSlice({
@@ -100,6 +104,22 @@ const slice = createSlice({
     });
     builder.addCase(createChannel.rejected, (state) => {
       state.isLoading = false;
+    });
+
+    // Get muted channels ----------------------------------------------------------
+    builder.addCase(getMutedChannelAddresses.pending, (state) => {
+      state.isLoading = true;
+    });
+    builder.addCase(getMutedChannelAddresses.fulfilled, (state, { payload }) => {
+      state.mutedChannels = payload;
+    });
+    builder.addCase(getMutedChannelAddresses.rejected, (state) => {
+      state.isLoading = false;
+    });
+
+    // Mute or unmute channel -------------------------------------------------------
+    builder.addCase(toggleMuteChannel.fulfilled, (state, { payload }) => {
+      state.mutedChannels = payload;
     });
   },
 });

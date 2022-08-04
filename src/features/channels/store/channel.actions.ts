@@ -6,10 +6,24 @@ export const localStorageKeyHiddenChannel = '@hiddenChannels';
 
 export const findChannels = createAsyncThunk('channels/findChannels', channelService.findChannels);
 export const createChannel = createAsyncThunk('channels/createChannel', channelService.create);
+export const getMutedChannelAddresses = createAsyncThunk(
+  'channels/getMutedChannelAddresses',
+  channelService.getMutedChannelAddresses
+);
+export const toggleMuteChannel = createAsyncThunk(
+  'channels/toggleMuteChannel',
+  channelService.toggleMuteChannel
+);
 
 export const getHiddenChannels = () => {
   const hiddenChannels = localStorage.getItem(localStorageKeyHiddenChannel);
   return hasStringJsonStructure(hiddenChannels) ? JSON.parse(<string>hiddenChannels) : [];
 };
 
-export default { findChannels, createChannel, getHiddenChannels };
+export default {
+  findChannels,
+  createChannel,
+  getMutedChannelAddresses,
+  toggleMuteChannel,
+  getHiddenChannels,
+};
