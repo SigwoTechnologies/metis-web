@@ -16,8 +16,8 @@ const ChannelList = () => {
   const navigate = useNavigate();
 
   useOnMount(() => {
-    dispatch(findChannels());
-    dispatch(getMutedChannelAddresses());
+    dispatch(findChannels(null));
+    dispatch(getMutedChannelAddresses(null));
   });
 
   const selectNewChannel = (channel: Channel) => {

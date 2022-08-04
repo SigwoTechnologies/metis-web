@@ -39,11 +39,17 @@ const ChannelListItem = ({
 
   return (
     <Box display="flex" alignItems="center">
-      <ListItemButton onClick={onClick} alignItems="flex-start" selected={selected}>
+      <ListItemButton
+        className={classes.listItemButton}
+        onClick={onClick}
+        alignItems="flex-start"
+        selected={selected}
+      >
         <ListItemAvatar>
           <Avatar alt={name} src={avatar} className={classes.avatar} />
         </ListItemAvatar>
         <ListItemText
+          disableTypography
           primary={
             <Box display="flex" justifyContent="space-between">
               <Box className={classes.channelName}>
@@ -69,7 +75,7 @@ const ChannelListItem = ({
           }
           secondary={
             <Box display="flex">
-              <Typography noWrap paragraph variant="caption" color="text.secondary">
+              <Typography noWrap component="span" variant="caption" color="text.secondary">
                 {message}
               </Typography>
               {isMuted && <VolumeOffIcon className={classes.mutedIcon} fontSize="small" />}

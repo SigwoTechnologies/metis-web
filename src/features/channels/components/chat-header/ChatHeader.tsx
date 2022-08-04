@@ -97,7 +97,6 @@ const ChatHeader = () => {
       </Menu>
       <Modal open={muteModalOpen} onClose={() => setMuteModalOpen(false)}>
         <Typography
-          component="p"
           variant="h5"
           sx={{ mb: '1rem' }}
         >{`Mute ${selectedChannel.channelName}?`}</Typography>

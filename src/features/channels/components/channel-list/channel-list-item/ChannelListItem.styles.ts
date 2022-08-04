@@ -20,6 +20,9 @@ const useStyles = makeStyles(() =>
     mutedIcon: {
       marginLeft: '1rem',
     },
+    listItemButton: {
+      padding: '1rem',
+    },
   })
 );
 
