@@ -32,6 +32,13 @@ const useStyles = makeStyles(() =>
     upperGroup: {
       flexGrow: 1,
     },
+    cardContainer: {
+      display: 'flex',
+      justifyContent: 'space-between',
+    },
+    actionContainer: {
+      justifyContent: 'flex-end',
+    },
   })
 );
 
