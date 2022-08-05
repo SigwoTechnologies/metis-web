@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useAppDispatch, useAppSelector } from '@metis/store/hooks';
 import ReneAvatar from '@metis/assets/images/avatars/rene.jpg';
 import SearchIcon from '@mui/icons-material/Search';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
@@ -32,29 +33,21 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import Switch from '@mui/material/Switch';
 import Typography from '@mui/material/Typography';
 import VisibilityIcon from '@mui/icons-material/Visibility';
+import ChannelListItem from '../channel-list-item/ChannelListItem';
+import { createChannel as createChannelF, selectState } from '../../../store/channel.slice';
 import useStyles from './SearchChannel.styles';
 
 const ChannelList = () => {
   const [drawer, setDrawer] = useState(false);
   const [open, setOpen] = useState(false);
   const styles = useStyles();
+  const dispatch = useAppDispatch();
+  const { channels, isLoading, selectedChannel, hiddenChannels } = useAppSelector(selectState);
+  const hiddenChannelsAddreses = hiddenChannels.map((channel) => channel.channelAddress);
+
   const closeModal = () => {
     setOpen(false);
   };
-  const hiddenChannel = [
-    {
-      channelName: 'America Group Channel',
-      visible: false,
-    },
-    {
-      channelName: 'Jose Group Channel',
-      visible: false,
-    },
-    {
-      channelName: 'Jas Group Channel',
-      visible: true,
-    },
-  ];
 
   return (
     <>
@@ -95,14 +88,27 @@ const ChannelList = () => {
 
             <Modal open={open} onClose={closeModal} title="Hidden Channels">
               <Card sx={{ minWidth: 400 }}>
-                {hiddenChannel.map(
+                {channels.map(
                   (channel) =>
-                    !channel.visible && (
+                    hiddenChannelsAddreses.includes(channel.channelAddress) && (
                       <Box key={channel.channelName}>
                         <Divider />
                         <Box className={styles.cardContainer}>
-                          <CardContent>{channel.channelName}</CardContent>
-                          <CardActions className={styles.actionContainer}>
+                          <CardContent>
+                            <ChannelListItem
+                              channel={channel}
+                              key={channel.channelName}
+                              name={channel.channelName}
+                              message="Lorem ipsum dolor, sit amet consectetur adipisicing elit. Sed voluptate delectus sapiente nihil quas esse aliquid architecto. Perferendis libero harum, numquam non assumenda, corrupti consectetur eos iusto dolorem voluptas soluta."
+                              date="08:34 AM"
+                              onClick={() => alert('hello')}
+                              selected={selectedChannel.channelAddress === channel.channelAddress}
+                            />
+                          </CardContent>
+                          <CardActions
+                            className={styles.actionContainer}
+                            onClick={() => alert('hello')}
+                          >
                             <VisibilityIcon />
                           </CardActions>
                         </Box>
