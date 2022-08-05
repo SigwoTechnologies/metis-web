@@ -6,6 +6,7 @@ import {
   Avatar,
   Badge,
   Box,
+  CircularProgress,
   IconButton,
   ListItem,
   ListItemAvatar,
@@ -15,19 +16,25 @@ import {
 type Props = {
   invite: Invite;
   acceptInvite: () => void;
+  loading: boolean;
 };
 
-const InviteListItem = ({ invite, acceptInvite }: Props) => (
+const InviteListItem = ({ invite, acceptInvite, loading }: Props) => (
   <ListItem
     secondaryAction={
-      <Box display="flex" gap="0.3rem">
-        <IconButton onClick={acceptInvite} color="success">
-          <DoneIcon />
-        </IconButton>
-        <IconButton color="error">
-          <CloseIcon />
-        </IconButton>
-      </Box>
+      <>
+        {!loading && (
+          <Box display="flex" gap="0.3rem">
+            <IconButton onClick={acceptInvite} color="success">
+              <DoneIcon />
+            </IconButton>
+            <IconButton color="error">
+              <CloseIcon />
+            </IconButton>
+          </Box>
+        )}
+        {loading && <CircularProgress size="1em" />}
+      </>
     }
   >
     <ListItemAvatar>

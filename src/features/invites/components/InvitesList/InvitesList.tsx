@@ -8,6 +8,7 @@ import {
   Accordion,
   AccordionDetails,
   AccordionSummary,
+  Badge,
   Box,
   List,
   Typography,
@@ -18,9 +19,11 @@ import InviteListItem from './InviteListItem/InviteListItem';
 
 const InvitesList = () => {
   const [invites, setInvites] = useState<Invite[]>([]);
+  const [loading, setLoading] = useState(false);
   const dispatch = useAppDispatch();
 
   const acceptInvite = (channelAddress: string) => {
+    setLoading(true);
     inviteService
       .acceptInvite(channelAddress)
       .then(() => {
@@ -29,7 +32,10 @@ const InvitesList = () => {
         setInvites(updatedInvites);
         dispatch(findChannels(null));
       })
-      .catch(() => dispatch(openToast({ type: 'error', text: 'Invite declined' })));
+      .catch(() =>
+        dispatch(openToast({ type: 'error', text: 'There was a problem accepting the invite' }))
+      )
+      .finally(() => setLoading(false));
   };
 
   useOnMount(() => {
@@ -52,13 +58,26 @@ const InvitesList = () => {
           id="panel1a-header"
         >
           <Box display="flex" gap="1rem">
-            <InboxIcon />
+            {invites.length > 0 && (
+              <Badge
+                color="error"
+                badgeContent={invites.length}
+                anchorOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+                }}
+              >
+                <InboxIcon />
+              </Badge>
+            )}
+            {invites.length === 0 && <InboxIcon />}
             <Typography>Invites</Typography>
           </Box>
         </AccordionSummary>
         <AccordionDetails>
           {invites.map((invite) => (
             <InviteListItem
+              loading={loading}
               acceptInvite={() => acceptInvite(invite.channelAddress)}
               key={invite.invitationId}
               invite={invite}
