@@ -4,7 +4,7 @@ import Grid from '@mui/material/Grid';
 import { useLayoutEffect } from 'react';
 
 import useHttp from '@metis/common/hooks/useHttp';
-import authService from '@metis/features/auth/services/auth.service';
+import AuthService from '@metis/features/auth/services/auth.service';
 
 import Notification from '@metis/common/components/ui/Notification';
 import { ToastContainer } from 'react-toastify';
@@ -18,6 +18,7 @@ const Main = () => {
   const { getHttpService, requestInterceptor, responseInterceptor } = useHttp();
 
   useLayoutEffect(() => {
+    const authService = new AuthService();
     const token = authService.getToken();
     const httpInstance = getHttpService();
     const request = requestInterceptor(httpInstance, token);
@@ -30,22 +31,18 @@ const Main = () => {
   }, [getHttpService, requestInterceptor, responseInterceptor]);
 
   return (
-    <>
-      <ToastContainer />
-      <Notification />
-      <Box height="100vh" className={classes.wrapper}>
-        <Container maxWidth="xl" component="main" className={classes.container}>
-          <Grid container columnSpacing={0} className={classes.grid}>
-            <Grid item xs={12} md={4} className={classes.gridRow}>
-              <LeftColumn />
-            </Grid>
-            <Grid item md={8} className={classes.gridRow}>
-              <RightColumn />
-            </Grid>
+    <Box height="100vh" className={classes.wrapper}>
+      <Container maxWidth="xl" component="main" className={classes.container}>
+        <Grid container columnSpacing={5} className={classes.grid}>
+          <Grid item xs={12} md={4} className={classes.gridRow}>
+            <LeftColumn />
           </Grid>
-        </Container>
-      </Box>
-    </>
+          <Grid item md={8} className={classes.gridRow}>
+            <RightColumn />
+          </Grid>
+        </Grid>
+      </Container>
+    </Box>
   );
 };
 

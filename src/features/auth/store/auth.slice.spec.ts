@@ -9,7 +9,7 @@ describe('Auth Slice', () => {
   beforeEach(() => {
     initialState = {
       isLoading: false,
-      isLoggedIn: false,
+      isLoggedIn: true,
     };
   });
 
@@ -29,10 +29,7 @@ describe('Auth Slice', () => {
         const expected = initialState;
         expected.isLoading = true;
 
-        const actual = authReducer(
-          initialState,
-          login.pending('', { password: 'dummy', passphrase: 'dummy' })
-        );
+        const actual = authReducer(initialState, login.pending('', 'Ox1232334454656'));
 
         expect(actual).toEqual(expected);
       });
@@ -43,10 +40,7 @@ describe('Auth Slice', () => {
         expected.isLoading = false;
         expected.isLoggedIn = true;
 
-        const actual = authReducer(
-          initialState,
-          login.fulfilled(true, '', { password: 'dummy', passphrase: 'dummy' })
-        );
+        const actual = authReducer(initialState, login.fulfilled(true, '', '0x223233445456'));
 
         expect(actual).toEqual(expected);
       });
@@ -55,10 +49,7 @@ describe('Auth Slice', () => {
       it('should set the isLoading flag to false', () => {
         const expected = initialState;
 
-        const actual = authReducer(
-          initialState,
-          login.rejected(null, '', { password: 'dummy', passphrase: 'dummy' })
-        );
+        const actual = authReducer(initialState, login.rejected(null, '', '0x233244545656'));
 
         expect(actual).toEqual(expected);
       });
