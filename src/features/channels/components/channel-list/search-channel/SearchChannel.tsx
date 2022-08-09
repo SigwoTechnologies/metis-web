@@ -1,40 +1,41 @@
-import { useState } from 'react';
-import { useAppDispatch, useAppSelector } from '@metis/store/hooks';
 import ReneAvatar from '@metis/assets/images/avatars/rene.jpg';
-import SearchIcon from '@mui/icons-material/Search';
+import Modal from '@metis/common/components/ui/Modal';
+import { useAppDispatch, useAppSelector } from '@metis/store/hooks';
+import { openToast } from '@metis/store/ui/ui.slice';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
-import Avatar from '@mui/material/Avatar';
 import AllInboxIcon from '@mui/icons-material/AllInbox';
+import DarkModeIcon from '@mui/icons-material/DarkMode';
+import IndeterminateCheckBoxIcon from '@mui/icons-material/IndeterminateCheckBox';
+import MenuIcon from '@mui/icons-material/Menu';
+import PersonAddIcon from '@mui/icons-material/PersonAdd';
+import SearchIcon from '@mui/icons-material/Search';
+import SettingsIcon from '@mui/icons-material/Settings';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import Container from '@mui/material/Container';
-import DarkModeIcon from '@mui/icons-material/DarkMode';
 import Divider from '@mui/material/Divider';
 import Drawer from '@mui/material/Drawer';
+import FormControl from '@mui/material/FormControl';
 import Grid from '@mui/material/Grid';
+import IconButton from '@mui/material/IconButton/IconButton';
+import Input from '@mui/material/Input';
+import InputAdornment from '@mui/material/InputAdornment';
+import InputLabel from '@mui/material/InputLabel';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import FormControl from '@mui/material/FormControl';
-import IconButton from '@mui/material/IconButton/IconButton';
-import IndeterminateCheckBoxIcon from '@mui/icons-material/IndeterminateCheckBox';
-import Input from '@mui/material/Input';
-import InputAdornment from '@mui/material/InputAdornment';
-import InputLabel from '@mui/material/InputLabel';
-import MenuIcon from '@mui/icons-material/Menu';
-import Modal from '@metis/common/components/ui/Modal';
-import PersonAddIcon from '@mui/icons-material/PersonAdd';
-import SettingsIcon from '@mui/icons-material/Settings';
 import Switch from '@mui/material/Switch';
 import Typography from '@mui/material/Typography';
-import VisibilityIcon from '@mui/icons-material/Visibility';
+import { useState } from 'react';
+import { selectState, unhideChannel } from '../../../store/channel.slice';
 import ChannelListItem from '../channel-list-item/ChannelListItem';
-import { createChannel as createChannelF, selectState } from '../../../store/channel.slice';
 import useStyles from './SearchChannel.styles';
 
 const ChannelList = () => {
@@ -42,13 +43,21 @@ const ChannelList = () => {
   const [open, setOpen] = useState(false);
   const styles = useStyles();
   const dispatch = useAppDispatch();
-  const { channels, isLoading, selectedChannel, hiddenChannels } = useAppSelector(selectState);
+  const { channels, hiddenChannels } = useAppSelector(selectState);
   const hiddenChannelsAddreses = hiddenChannels.map((channel) => channel.channelAddress);
 
   const closeModal = () => {
     setOpen(false);
   };
-
+  const showChannel = (channelAddress: string, channelName: string) => {
+    dispatch(unhideChannel(channelAddress));
+    dispatch(
+      openToast({
+        type: 'info',
+        text: `${channelName} was successfully removed from Hidden Channels`,
+      })
+    );
+  };
   return (
     <>
       <Drawer anchor="left" open={drawer} onClose={() => setDrawer(false)}>
@@ -94,20 +103,21 @@ const ChannelList = () => {
                       <Box key={channel.channelName}>
                         <Divider />
                         <Box className={styles.cardContainer}>
-                          <CardContent>
+                          <CardContent className={styles.cardContent}>
                             <ChannelListItem
                               channel={channel}
-                              key={channel.channelName}
+                              key={channel.channelAddress}
                               name={channel.channelName}
-                              message="Lorem ipsum dolor, sit amet consectetur adipisicing elit. Sed voluptate delectus sapiente nihil quas esse aliquid architecto. Perferendis libero harum, numquam non assumenda, corrupti consectetur eos iusto dolorem voluptas soluta."
-                              date="08:34 AM"
-                              onClick={() => alert('hello')}
-                              selected={selectedChannel.channelAddress === channel.channelAddress}
+                              date=""
+                              message=""
+                              onClick={() =>
+                                showChannel(channel.channelAddress, channel.channelName)
+                              }
                             />
                           </CardContent>
                           <CardActions
                             className={styles.actionContainer}
-                            onClick={() => alert('hello')}
+                            onClick={() => showChannel(channel.channelAddress, channel.channelName)}
                           >
                             <VisibilityIcon />
                           </CardActions>

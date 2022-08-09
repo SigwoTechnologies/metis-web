@@ -105,6 +105,18 @@ const slice = createSlice({
         localStorage.setItem(localStorageKeyHiddenChannel, JSON.stringify(state.hiddenChannels));
       }
     },
+    unhideChannel: (state: ChannelState, { payload }) => {
+      const isChannelHidden = state.hiddenChannels.find(
+        (chc: Channel) => chc?.channelAddress === payload
+      );
+
+      if (isChannelHidden) {
+        state.hiddenChannels = state.hiddenChannels.filter(
+          (channel) => channel.channelAddress !== payload
+        );
+        localStorage.setItem(localStorageKeyHiddenChannel, JSON.stringify(state.hiddenChannels));
+      }
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(findChannels.pending, (state) => {
@@ -146,5 +158,6 @@ export const {
   createChannel,
   finishChannelCreation,
   hideChannel,
+  unhideChannel,
 } = slice.actions;
 export const channelReducer = slice.reducer;

@@ -33,7 +33,7 @@ const ChannelList = () => {
           !hiddenChannelsAddreses.includes(channel.channelAddress) && (
             <ChannelListItem
               channel={channel}
-              key={channel.channelName}
+              key={channel.channelAddress}
               name={channel.channelName}
               message="Lorem ipsum dolor, sit amet consectetur adipisicing elit. Sed voluptate delectus sapiente nihil quas esse aliquid architecto. Perferendis libero harum, numquam non assumenda, corrupti consectetur eos iusto dolorem voluptas soluta."
               date="08:34 AM"
