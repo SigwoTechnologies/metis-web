@@ -9,7 +9,7 @@ describe('Auth Slice', () => {
   beforeEach(() => {
     initialState = {
       isLoading: false,
-      isLoggedIn: false,
+      isLoggedIn: true,
     };
   });
 

@@ -5,12 +5,16 @@ import Box from '@mui/material/Box';
 import { yupResolver } from '@hookform/resolvers/yup';
 import Form from '@metis/common/components/ui/Form/Form';
 import TextInput from '@metis/common/components/ui/TextInput/TextInput';
-import { createChannel } from '@metis/features/channels/store/channel.actions';
+import useChannelSocket from '@metis/features/channels/hooks/useChannelSocket';
+import channelService from '@metis/features/channels/services/channel.service';
+import { createChannel, finishChannelCreation } from '@metis/features/channels/store/channel.slice';
+import { Channel } from '@metis/features/channels/types/channel';
 import { ChannelDTO } from '@metis/features/channels/types/channelDTO';
-import { useAppDispatch } from '@metis/store/hooks';
+import { useAppDispatch, useAppSelector } from '@metis/store/hooks';
 import { openToast } from '@metis/store/ui/ui.slice';
 import CloseIcon from '@mui/icons-material/Close';
-import { Button, Drawer, IconButton } from '@mui/material';
+import { LoadingButton } from '@mui/lab';
+import { Drawer, IconButton } from '@mui/material';
 import { useState } from 'react';
 import * as yup from 'yup';
 import useStyles from './CreateButton.styles';
@@ -26,15 +30,39 @@ const CreateButton = () => {
   const classes = useStyles();
   const [openCreate, setOpenCreate] = useState(false);
   const dispatch = useAppDispatch();
+  const [loading, setLoading] = useState(false);
 
   const closeDrawer = () => {
     setOpenCreate(false);
   };
 
   const createNewChannel = (data: ChannelDTO) => {
-    dispatch(createChannel(data));
-    dispatch(openToast({ text: 'Channel created sucessfully', type: 'success' }));
-    closeDrawer();
+    setLoading(true);
+    channelService
+      .create(data)
+      .then((channel: Channel) => {
+        dispatch(createChannel(channel));
+        dispatch(openToast({ text: "We're creating your channel", type: 'info' }));
+        closeDrawer();
+      })
+      .then(() => {
+        const { onChannelCreated, onChannelCreationFailed } = useChannelSocket();
+        onChannelCreated(({ jobId, channelName }) => {
+          dispatch(
+            openToast({ type: 'success', text: `Channel '${channelName}' was created succesfully` })
+          );
+          dispatch(finishChannelCreation({ isSuccessful: true, jobId }));
+        });
+        onChannelCreationFailed((failedData) => {
+          const jobId = typeof failedData === 'number' ? failedData : failedData.jobId;
+          dispatch(openToast({ type: 'error', text: "The channel couldn't be created" }));
+          dispatch(finishChannelCreation({ isSuccessful: false, jobId }));
+        });
+      })
+      .catch(() => {
+        dispatch(openToast({ text: 'There was a problem creating your channel', type: 'error' }));
+      })
+      .finally(() => setLoading(false));
   };
 
   return (
@@ -46,9 +74,14 @@ const CreateButton = () => {
           </IconButton>
           <Form<ChannelDTO> onSubmit={createNewChannel} form={{ resolver: yupResolver(schema) }}>
             <TextInput label="Channel name here" name="channelName" />
-            <Button type="submit" className={classes.button} variant="contained">
+            <LoadingButton
+              loading={loading}
+              type="submit"
+              className={classes.button}
+              variant="contained"
+            >
               Create new channel
-            </Button>
+            </LoadingButton>
           </Form>
         </Box>
       </Drawer>

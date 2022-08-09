@@ -17,6 +17,12 @@ const useStyles = makeStyles(() =>
       justifyContent: 'space-around',
       alignItems: 'center',
     },
+    mutedIcon: {
+      marginLeft: '1rem',
+    },
+    listItemButton: {
+      padding: '1rem',
+    },
   })
 );
 

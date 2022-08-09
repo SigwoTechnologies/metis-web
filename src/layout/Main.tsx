@@ -1,10 +1,14 @@
-import { useLayoutEffect } from 'react';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
+import { useLayoutEffect } from 'react';
 
 import useHttp from '@metis/common/hooks/useHttp';
 import AuthService from '@metis/features/auth/services/auth.service';
+
+import Notification from '@metis/common/components/ui/Notification';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import LeftColumn from './columns/LeftColumn';
 import RightColumn from './columns/RightColumn';
 import useStyles from './Main.styles';

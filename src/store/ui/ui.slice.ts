@@ -1,10 +1,14 @@
 import { AlertColor } from '@mui/material';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import type { RootState } from '../types';
+import { toast } from 'react-toastify';
 
 export type UiState = {
   isLoading: boolean;
-  toast: ToastState;
+  notification: {
+    text: string;
+    open: boolean;
+    type: 'success' | 'error';
+  };
 };
 
 // TODO: Move this type into a separate file
@@ -16,7 +20,7 @@ export type ToastState = {
 
 const initialState: UiState = {
   isLoading: false,
-  toast: {
+  notification: {
     text: '',
     open: false,
     type: 'success',
@@ -32,18 +36,23 @@ export const slice = createSlice({
   name: 'ui',
   initialState,
   reducers: {
-    openToast: (state, action: PayloadAction<ToastPayload>) => {
-      const { type, text } = action.payload;
-      state.toast.text = text;
-      state.toast.type = type;
-      state.toast.open = true;
+    openToast: (state, { payload }: PayloadAction<ToastPayload>) => {
+      const { type, text } = payload;
+      toast[type](text, {
+        theme: 'colored',
+      });
     },
-    hideToast: (state) => {
-      state.toast = initialState.toast;
+    openNotification: (state, { payload }) => {
+      const { type, text } = payload;
+      state.notification.text = text;
+      state.notification.type = type;
+      state.notification.open = true;
+    },
+    hideNotification: (state) => {
+      state.notification.open = false;
     },
   },
 });
 
-export const { openToast, hideToast } = slice.actions;
-export const selectToast = (state: RootState) => state.ui.toast;
+export const { openToast, openNotification, hideNotification } = slice.actions;
 export const uiReducer = slice.reducer;

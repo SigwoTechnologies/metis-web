@@ -16,7 +16,7 @@ describe('Channel Service', () => {
 
       jest.spyOn(channelService, 'findChannels').mockResolvedValue(expected);
 
-      const actual = await channelService.findChannels();
+      const actual = await channelService.findChannels(null, {});
 
       expect(channelService.findChannels).toHaveBeenCalled();
       expect(actual.length).toEqual(expected.length);

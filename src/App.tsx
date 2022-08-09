@@ -1,14 +1,15 @@
 import { useRoutes } from 'react-router-dom';
-
+import { ToastContainer } from 'react-toastify';
 import routes from '@metis/common/router/Router';
-import Toast from '@metis/common/components/ui/Toast/Toast';
+import Notification from './common/components/ui/Notification';
 
 const App = () => {
   const content = useRoutes(routes);
 
   return (
     <>
-      <Toast />
+      <ToastContainer />
+      <Notification />
       {content}
     </>
   );

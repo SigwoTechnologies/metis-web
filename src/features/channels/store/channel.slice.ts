@@ -1,8 +1,14 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import type { RootState } from '@metis/store/types';
-import { channel } from 'diagnostics_channel';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { Channel } from '../types/channel';
-import { findChannels, createChannel } from './channel.actions';
+import { NewChannel } from '../types/newChannel';
+import {
+  findChannels,
+  getHiddenChannels,
+  getMutedChannelAddresses,
+  localStorageKeyHiddenChannel,
+  toggleMuteChannel,
+} from './channel.actions';
 
 type Reply = {
   active: boolean;
@@ -17,20 +23,32 @@ type ReplyPayload = {
 
 export type ChannelState = {
   isLoading: boolean;
-  channels: Channel[];
-  selectedChannel: string;
+  hiddenChannels: Channel[];
   reply: Reply;
+  mutedChannels: string[];
+  channels: Array<Channel | NewChannel>;
+  selectedChannel: Channel | NewChannel;
+  pendingChannels: NewChannel[];
 };
 
 const initialState: ChannelState = {
   isLoading: false,
   channels: [],
-  selectedChannel: '',
+  hiddenChannels: [],
+  selectedChannel: {
+    channelAddress: '',
+    channelPublicKey: '',
+    channelName: '',
+    createdBy: '',
+    createdAt: 0,
+  },
   reply: {
     active: false,
     name: '',
     message: '',
   },
+  mutedChannels: [],
+  pendingChannels: [],
 };
 
 const slice = createSlice({
@@ -38,10 +56,34 @@ const slice = createSlice({
   initialState,
   reducers: {
     selectChannel: (state: ChannelState, { payload }) => {
-      const channelNameExist = state.channels.some(
-        (element: Channel) => element.channelName === payload
+      const selectedChannelOrUndefined = state.channels.find(
+        (element) => element.channelAddress === payload
       );
-      if (channelNameExist) state.selectedChannel = payload;
+
+      if (selectedChannelOrUndefined) state.selectedChannel = selectedChannelOrUndefined;
+    },
+    createChannel: (state: ChannelState, { payload }) => {
+      state.channels.unshift(payload);
+      state.pendingChannels.push(payload);
+    },
+    // TODO: Make a better implementation of this
+    finishChannelCreation: (state: ChannelState, { payload }) => {
+      const { isSuccessful, jobId } = payload;
+
+      // Doesn't matter if it was successful or not
+      // either way we remove it from the pendingChannels array
+      const channelIndexToBeRemoved = state.pendingChannels.findIndex(
+        (channel) => channel.job.id === jobId
+      );
+      const channelAddressToBeRemoved =
+        state.pendingChannels[channelIndexToBeRemoved].channelAddress;
+      state.pendingChannels.splice(channelIndexToBeRemoved, 1);
+
+      if (!isSuccessful) {
+        state.channels = state.channels.filter(
+          (channel) => channel.channelAddress !== channelAddressToBeRemoved
+        );
+      }
     },
     updateReply: (state: ChannelState, action: PayloadAction<ReplyPayload>) => {
       const { name, message } = action.payload;
@@ -52,12 +94,25 @@ const slice = createSlice({
     discardReply: (state: ChannelState) => {
       state.reply = initialState.reply;
     },
+    hideChannel: (state: ChannelState, { payload }) => {
+      const isChannelAlreadyHidden = state.hiddenChannels.find(
+        (chc: Channel) => chc?.channelAddress === payload.channelAddress
+      );
+
+      if (!isChannelAlreadyHidden) {
+        state.hiddenChannels.push(payload);
+        state.selectedChannel = initialState.selectedChannel;
+        localStorage.setItem(localStorageKeyHiddenChannel, JSON.stringify(state.hiddenChannels));
+      }
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(findChannels.pending, (state) => {
       state.isLoading = true;
     });
     builder.addCase(findChannels.fulfilled, (state, { payload }) => {
+      const hiddenChannels = getHiddenChannels();
+      state.hiddenChannels = hiddenChannels;
       state.channels = payload;
       state.isLoading = false;
     });
@@ -65,20 +120,31 @@ const slice = createSlice({
       state.isLoading = false;
     });
 
-    // Create Channel ----------------------------------------------------------
-    builder.addCase(createChannel.pending, (state) => {
+    // Get muted channels ----------------------------------------------------------
+    builder.addCase(getMutedChannelAddresses.pending, (state) => {
       state.isLoading = true;
     });
-    builder.addCase(createChannel.fulfilled, (state, { payload }) => {
-      state.channels.unshift(payload);
+    builder.addCase(getMutedChannelAddresses.fulfilled, (state, { payload }) => {
+      state.mutedChannels = payload;
+    });
+    builder.addCase(getMutedChannelAddresses.rejected, (state) => {
       state.isLoading = false;
     });
-    builder.addCase(createChannel.rejected, (state) => {
-      state.isLoading = false;
+
+    // Mute or unmute channel -------------------------------------------------------
+    builder.addCase(toggleMuteChannel.fulfilled, (state, { payload }) => {
+      state.mutedChannels = payload;
     });
   },
 });
 
 export const selectState = (state: RootState) => state.channel;
-export const { updateReply, discardReply, selectChannel } = slice.actions;
+export const {
+  updateReply,
+  discardReply,
+  selectChannel,
+  createChannel,
+  finishChannelCreation,
+  hideChannel,
+} = slice.actions;
 export const channelReducer = slice.reducer;
