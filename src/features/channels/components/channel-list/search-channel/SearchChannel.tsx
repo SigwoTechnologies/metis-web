@@ -1,7 +1,6 @@
-import { useMemo, useState } from 'react';
-import { useAppSelector , useAppDispatch } from '@metis/store/hooks';
 import ReneAvatar from '@metis/assets/images/avatars/rene.jpg';
 import Modal from '@metis/common/components/ui/Modal';
+import { useAppDispatch, useAppSelector } from '@metis/store/hooks';
 import { openToast } from '@metis/store/ui/ui.slice';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import AllInboxIcon from '@mui/icons-material/AllInbox';
@@ -34,23 +33,21 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import Switch from '@mui/material/Switch';
 import Typography from '@mui/material/Typography';
-import { unhideChannel , selectState } from '../../../store/channel.slice';
+import { useMemo, useState } from 'react';
+import { selectState, unhideChannel } from '../../../store/channel.slice';
 import ChannelListItem from '../channel-list-item/ChannelListItem';
 import useStyles from './SearchChannel.styles';
 
 const ChannelList = () => {
   const [drawer, setDrawer] = useState(false);
   const [open, setOpen] = useState(false);
-
   const styles = useStyles();
   const dispatch = useAppDispatch();
-  const { channels, selectedChannel, hiddenChannels } = useAppSelector(selectState);
-
+  const { channels, hiddenChannels } = useAppSelector(selectState);
   const hiddenChannelsAddreses = useMemo(
     () => hiddenChannels.map((channel) => channel.channelAddress),
     [hiddenChannels]
   );
-
   const closeModal = () => {
     setOpen(false);
   };
