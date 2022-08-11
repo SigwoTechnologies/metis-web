@@ -1,40 +1,41 @@
-import { useMemo, useState } from 'react';
-import { useAppSelector } from '@metis/store/hooks';
 import ReneAvatar from '@metis/assets/images/avatars/rene.jpg';
-import SearchIcon from '@mui/icons-material/Search';
+import Modal from '@metis/common/components/ui/Modal';
+import { useAppSelector } from '@metis/store/hooks';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
-import Avatar from '@mui/material/Avatar';
 import AllInboxIcon from '@mui/icons-material/AllInbox';
+import DarkModeIcon from '@mui/icons-material/DarkMode';
+import IndeterminateCheckBoxIcon from '@mui/icons-material/IndeterminateCheckBox';
+import MenuIcon from '@mui/icons-material/Menu';
+import PersonAddIcon from '@mui/icons-material/PersonAdd';
+import SearchIcon from '@mui/icons-material/Search';
+import SettingsIcon from '@mui/icons-material/Settings';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import Container from '@mui/material/Container';
-import DarkModeIcon from '@mui/icons-material/DarkMode';
 import Divider from '@mui/material/Divider';
 import Drawer from '@mui/material/Drawer';
+import FormControl from '@mui/material/FormControl';
 import Grid from '@mui/material/Grid';
+import IconButton from '@mui/material/IconButton/IconButton';
+import Input from '@mui/material/Input';
+import InputAdornment from '@mui/material/InputAdornment';
+import InputLabel from '@mui/material/InputLabel';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import FormControl from '@mui/material/FormControl';
-import IconButton from '@mui/material/IconButton/IconButton';
-import IndeterminateCheckBoxIcon from '@mui/icons-material/IndeterminateCheckBox';
-import Input from '@mui/material/Input';
-import InputAdornment from '@mui/material/InputAdornment';
-import InputLabel from '@mui/material/InputLabel';
-import MenuIcon from '@mui/icons-material/Menu';
-import Modal from '@metis/common/components/ui/Modal';
-import PersonAddIcon from '@mui/icons-material/PersonAdd';
-import SettingsIcon from '@mui/icons-material/Settings';
 import Switch from '@mui/material/Switch';
-import Typography from '@mui/material/Typography';
-import VisibilityIcon from '@mui/icons-material/Visibility';
-import ChannelListItem from '../channel-list-item/ChannelListItem';
+import { useMemo, useState } from 'react';
 import { selectState } from '../../../store/channel.slice';
+import About from '../about/about';
+import ChannelListItem from '../channel-list-item/ChannelListItem';
+import TermConditions from '../term-conditions/termConditions';
 import useStyles from './SearchChannel.styles';
 
 const ChannelList = () => {
@@ -66,7 +67,7 @@ const ChannelList = () => {
           <List>
             <ListItem disablePadding>
               <ListItemButton>
-                <ListItemIcon style={{ color: 'orange' }}>
+                <ListItemIcon style={{ color: 'white' }}>
                   <PersonAddIcon />
                 </ListItemIcon>
                 <ListItemText primary="Invite friends" />
@@ -74,7 +75,7 @@ const ChannelList = () => {
             </ListItem>
             <ListItem disablePadding>
               <ListItemButton>
-                <ListItemIcon style={{ color: 'red' }}>
+                <ListItemIcon style={{ color: '#CFF4D2' }}>
                   <AddCircleIcon />
                 </ListItemIcon>
                 <ListItemText primary="New Channel" />
@@ -82,7 +83,7 @@ const ChannelList = () => {
             </ListItem>
             <ListItem disablePadding>
               <ListItemButton>
-                <ListItemIcon style={{ color: 'pink' }}>
+                <ListItemIcon style={{ color: '#7BE495' }}>
                   <AllInboxIcon />
                 </ListItemIcon>
                 <ListItemText primary="Wallet" />
@@ -123,7 +124,7 @@ const ChannelList = () => {
 
             <ListItem disablePadding>
               <ListItemButton onClick={() => setOpen(true)}>
-                <ListItemIcon style={{ color: 'purple' }}>
+                <ListItemIcon style={{ color: '#56C596' }}>
                   <IndeterminateCheckBoxIcon />
                 </ListItemIcon>
                 <ListItemText primary="Hidden Channels" />
@@ -132,7 +133,7 @@ const ChannelList = () => {
 
             <ListItem disablePadding>
               <ListItemButton>
-                <ListItemIcon style={{ color: 'gray' }}>
+                <ListItemIcon style={{ color: '#329D9C' }}>
                   <SettingsIcon />
                 </ListItemIcon>
                 <ListItemText primary="Settings" />
@@ -140,7 +141,7 @@ const ChannelList = () => {
             </ListItem>
             <ListItem disablePadding>
               <ListItemButton>
-                <ListItemIcon style={{ color: 'blue' }}>
+                <ListItemIcon style={{ color: '#205072' }}>
                   <DarkModeIcon />
                 </ListItemIcon>
                 <Switch defaultChecked />
@@ -150,16 +151,11 @@ const ChannelList = () => {
         </Box>
         <Divider />
         <Box className={styles.termPosition}>
-          <Typography variant="caption" display="block" className={styles.term}>
-            <a href="https://www.google.com/" style={{ color: '#555b6e' }}>
-              Terms and Conditions
-            </a>
-          </Typography>
-          <Typography variant="caption" display="block" className={styles.term}>
-            <a href="https://www.google.com/" style={{ color: '#555b6e' }}>
-              About
-            </a>
-          </Typography>
+          <About title="About" message="This is Metis Web App. It is still under construction." />
+          <TermConditions
+            title="Terms and Conditions"
+            message="These are the terms and conditions, please agree or disagree!"
+          />
         </Box>
       </Drawer>
 
