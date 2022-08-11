@@ -39,9 +39,9 @@ import ChannelListItem from '../channel-list-item/ChannelListItem';
 import useStyles from './SearchChannel.styles';
 
 const ChannelList = () => {
+  const styles = useStyles();
   const [drawer, setDrawer] = useState(false);
   const [open, setOpen] = useState(false);
-  const styles = useStyles();
   const dispatch = useAppDispatch();
   const { channels, hiddenChannels } = useAppSelector(selectState);
   const hiddenChannelsAddreses = useMemo(

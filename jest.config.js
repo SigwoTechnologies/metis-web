@@ -5,4 +5,7 @@ module.exports = {
     '^@metis/(.*)$': '<rootDir>/src/$1',
   },
   setupFilesAfterEnv: ['<rootDir>/src/setupTests.ts'],
+  globals: {
+    window: {},
+  },
 };

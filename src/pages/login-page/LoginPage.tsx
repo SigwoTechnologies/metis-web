@@ -1,19 +1,27 @@
+import { useEffect } from 'react';
+import { useAppDispatch } from '@metis/store/hooks';
+import { login } from '@metis/features/auth/store/auth.actions';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 import SquareGroup from '@metis/assets/images/misc/square-group.png';
-import { useAppDispatch } from '@metis/store/hooks';
-import { login } from '@metis/features/auth/store/auth.actions';
+import useMetamask from '@metis/features/auth/hooks/useMetamask';
 import useStyles from './LoginPage.styles';
 
 const LoginPage = () => {
   const dispatch = useAppDispatch();
   const classes = useStyles();
+  const { account, connect } = useMetamask();
 
-  // TODO: Implement login here
-  const handleLogin = () => {
-    dispatch(login({ password: 'password', passphrase: 'passphrase' }));
+  const handleLogin = async () => {
+    await connect();
   };
+
+  useEffect(() => {
+    if (account) {
+      dispatch(login(account));
+    }
+  }, [account]);
 
   return (
     <Box height="100vh" className={classes.wrapper}>
