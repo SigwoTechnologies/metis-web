@@ -71,7 +71,7 @@ const ChannelList = () => {
           <List>
             <ListItem disablePadding>
               <ListItemButton>
-                <ListItemIcon style={{ color: 'white' }}>
+                <ListItemIcon style={{ color: '#CFF4D2' }}>
                   <PersonAddIcon />
                 </ListItemIcon>
                 <ListItemText primary="Invite friends" />
@@ -87,7 +87,7 @@ const ChannelList = () => {
             </ListItem>
             <ListItem disablePadding>
               <ListItemButton>
-                <ListItemIcon style={{ color: '#7BE495' }}>
+                <ListItemIcon style={{ color: '#CFF4D2' }}>
                   <AllInboxIcon />
                 </ListItemIcon>
                 <ListItemText primary="Wallet" />
@@ -128,7 +128,7 @@ const ChannelList = () => {
 
             <ListItem disablePadding>
               <ListItemButton onClick={() => setOpen(true)}>
-                <ListItemIcon style={{ color: '#56C596' }}>
+                <ListItemIcon style={{ color: '#CFF4D2' }}>
                   <IndeterminateCheckBoxIcon />
                 </ListItemIcon>
                 <ListItemText primary="Hidden Channels" />
@@ -137,7 +137,7 @@ const ChannelList = () => {
 
             <ListItem disablePadding>
               <ListItemButton>
-                <ListItemIcon style={{ color: '#329D9C' }}>
+                <ListItemIcon style={{ color: '#CFF4D2' }}>
                   <SettingsIcon />
                 </ListItemIcon>
                 <ListItemText primary="Settings" />
@@ -145,7 +145,7 @@ const ChannelList = () => {
             </ListItem>
             <ListItem disablePadding>
               <ListItemButton>
-                <ListItemIcon style={{ color: '#205072' }}>
+                <ListItemIcon style={{ color: '#CFF4D2' }}>
                   <DarkModeIcon />
                 </ListItemIcon>
                 <Switch defaultChecked />
