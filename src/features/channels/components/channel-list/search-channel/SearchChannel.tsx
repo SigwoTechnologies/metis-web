@@ -56,13 +56,17 @@ const ChannelList = () => {
   return (
     <>
       <Drawer anchor="left" open={drawer} onClose={() => setDrawer(false)}>
-        <Box sx={{ width: 250 }} role="presentation" className={styles.upperGroup}>
+        <Box sx={{ width: 300 }} role="presentation" className={styles.upperGroup}>
           <Box className={styles.account}>
-            <Button component="label">
-              <Avatar alt="Channel Avatar" src={ReneAvatar} className={styles.accountAvatar} />
-              <input hidden accept="image/*" multiple type="file" />
-            </Button>
+            <Box className={styles.picBackground} />
+            <Box>
+              <Button component="label">
+                <Avatar alt="Channel Avatar" src={ReneAvatar} className={styles.accountAvatar} />
+                <input hidden accept="image/*" multiple type="file" />
+              </Button>
+            </Box>
           </Box>
+
           <Divider />
           <List>
             <ListItem disablePadding>
@@ -154,7 +158,7 @@ const ChannelList = () => {
           <About title="About" message="This is Metis Web App. It is still under construction." />
           <TermConditions
             title="Terms and Conditions"
-            message="These are the terms and conditions, please agree or disagree!"
+            message="These are the terms and conditions, you can choose to agree or disagree."
           />
         </Box>
       </Drawer>
