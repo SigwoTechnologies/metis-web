@@ -22,7 +22,6 @@ const ChannelList = () => {
   });
 
   const selectNewChannel = (channel: Channel | NewChannel) => {
-    dispatch(selectChannel(channel.channelAddress));
     navigate(`/main/${channel.channelAddress}`);
   };
 
