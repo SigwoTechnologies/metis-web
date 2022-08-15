@@ -15,6 +15,7 @@ import Drawer from '@mui/material/Drawer';
 import FormControl from '@mui/material/FormControl';
 import Grid from '@mui/material/Grid';
 import IconButton from '@mui/material/IconButton/IconButton';
+import IndeterminateCheckBoxIcon from '@mui/icons-material/IndeterminateCheckBox';
 import Input from '@mui/material/Input';
 import InputAdornment from '@mui/material/InputAdornment';
 import InputLabel from '@mui/material/InputLabel';
@@ -32,6 +33,7 @@ import useStyles from './SearchChannel.styles';
 const ChannelList = () => {
   const styles = useStyles();
   const [drawer, setDrawer] = useState(false);
+  const [open, setOpen] = useState(false);
 
   return (
     <>
@@ -69,7 +71,18 @@ const ChannelList = () => {
                 <ListItemText primary="Wallet" />
               </ListItemButton>
             </ListItem>
-            <ModalHiddenList />
+
+            <ListItem disablePadding>
+              <ListItemButton onClick={() => setOpen(true)}>
+                <ListItemIcon style={{ color: 'purple' }}>
+                  <IndeterminateCheckBoxIcon />
+                </ListItemIcon>
+                <ListItemText primary="Hidden Channels" />
+              </ListItemButton>
+            </ListItem>
+
+            <ModalHiddenList open={open} onClose={() => setOpen(false)} />
+
             <ListItem disablePadding>
               <ListItemButton>
                 <ListItemIcon style={{ color: 'gray' }}>
