@@ -11,7 +11,6 @@ type props = {
 
 const connect = ({ query, url = appConfig.api.baseUrl }: props) =>
   new Manager(url, {
-    autoConnect: false,
     forceNew: true,
     query,
   });
