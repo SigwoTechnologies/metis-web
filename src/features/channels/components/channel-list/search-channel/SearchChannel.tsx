@@ -1,27 +1,21 @@
 import ReneAvatar from '@metis/assets/images/avatars/rene.jpg';
-import Modal from '@metis/common/components/ui/Modal';
-import { useAppSelector } from '@metis/store/hooks';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import AllInboxIcon from '@mui/icons-material/AllInbox';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
-import IndeterminateCheckBoxIcon from '@mui/icons-material/IndeterminateCheckBox';
 import MenuIcon from '@mui/icons-material/Menu';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import SearchIcon from '@mui/icons-material/Search';
 import SettingsIcon from '@mui/icons-material/Settings';
-import VisibilityIcon from '@mui/icons-material/Visibility';
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
-import CardContent from '@mui/material/CardContent';
 import Container from '@mui/material/Container';
 import Divider from '@mui/material/Divider';
 import Drawer from '@mui/material/Drawer';
 import FormControl from '@mui/material/FormControl';
 import Grid from '@mui/material/Grid';
 import IconButton from '@mui/material/IconButton/IconButton';
+import IndeterminateCheckBoxIcon from '@mui/icons-material/IndeterminateCheckBox';
 import Input from '@mui/material/Input';
 import InputAdornment from '@mui/material/InputAdornment';
 import InputLabel from '@mui/material/InputLabel';
@@ -31,27 +25,16 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import Switch from '@mui/material/Switch';
-import { useMemo, useState } from 'react';
-import { selectState } from '../../../store/channel.slice';
 import About from '../about/about';
-import ChannelListItem from '../channel-list-item/ChannelListItem';
 import TermConditions from '../term-conditions/termConditions';
+import { useState } from 'react';
+import ModalHiddenList from '../modal-hidden-list/ModalHiddenList';
 import useStyles from './SearchChannel.styles';
 
 const ChannelList = () => {
   const styles = useStyles();
   const [drawer, setDrawer] = useState(false);
   const [open, setOpen] = useState(false);
-  const { channels, selectedChannel, hiddenChannels } = useAppSelector(selectState);
-
-  const hiddenChannelsAddreses = useMemo(
-    () => hiddenChannels.map((channel) => channel.channelAddress),
-    [hiddenChannels]
-  );
-
-  const closeModal = () => {
-    setOpen(false);
-  };
 
   return (
     <>
@@ -94,38 +77,6 @@ const ChannelList = () => {
               </ListItemButton>
             </ListItem>
 
-            <Modal open={open} onClose={closeModal} title="Hidden Channels">
-              <Card sx={{ minWidth: 400 }}>
-                {channels.map(
-                  (channel) =>
-                    hiddenChannelsAddreses.includes(channel.channelAddress) && (
-                      <Box key={channel.channelName}>
-                        <Divider />
-                        <Box className={styles.cardContainer}>
-                          <CardContent>
-                            <ChannelListItem
-                              channel={channel}
-                              key={channel.channelName}
-                              name={channel.channelName}
-                              message="Lorem ipsum dolor, sit amet consectetur adipisicing elit. Sed voluptate delectus sapiente nihil quas esse aliquid architecto. Perferendis libero harum, numquam non assumenda, corrupti consectetur eos iusto dolorem voluptas soluta."
-                              date="08:34 AM"
-                              onClick={() => alert('hello')}
-                              selected={selectedChannel.channelAddress === channel.channelAddress}
-                            />
-                          </CardContent>
-                          <CardActions
-                            className={styles.actionContainer}
-                            onClick={() => alert('hello')}
-                          >
-                            <VisibilityIcon />
-                          </CardActions>
-                        </Box>
-                      </Box>
-                    )
-                )}
-              </Card>
-            </Modal>
-
             <ListItem disablePadding>
               <ListItemButton onClick={() => setOpen(true)}>
                 <ListItemIcon style={{ color: '#CFF4D2' }}>
@@ -134,6 +85,8 @@ const ChannelList = () => {
                 <ListItemText primary="Hidden Channels" />
               </ListItemButton>
             </ListItem>
+
+            <ModalHiddenList open={open} onClose={() => setOpen(false)} />
 
             <ListItem disablePadding>
               <ListItemButton>
@@ -162,7 +115,6 @@ const ChannelList = () => {
           />
         </Box>
       </Drawer>
-
       <Container maxWidth="xl" component="main">
         <Grid container columnSpacing={5}>
           <Grid item xs={2} className={styles.iconContainer}>
