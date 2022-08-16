@@ -1,4 +1,5 @@
 import ReneAvatar from '@metis/assets/images/avatars/rene.jpg';
+import EXAMPLE from '@metis/assets/images/avatars/examplefromWEB.jpg';
 import { createStyles, makeStyles } from '@mui/styles';
 
 const useStyles = makeStyles(() =>
@@ -46,6 +47,7 @@ const useStyles = makeStyles(() =>
       fontSize: '0.5rem !important',
     },
     upperGroup: {
+      backgroundImage: `url(${EXAMPLE})`,
       flexGrow: 1,
     },
     inputText: {

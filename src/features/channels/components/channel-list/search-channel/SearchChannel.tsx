@@ -2,6 +2,7 @@ import ReneAvatar from '@metis/assets/images/avatars/rene.jpg';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import AllInboxIcon from '@mui/icons-material/AllInbox';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
+import IndeterminateCheckBoxIcon from '@mui/icons-material/IndeterminateCheckBox';
 import MenuIcon from '@mui/icons-material/Menu';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import SearchIcon from '@mui/icons-material/Search';
@@ -15,7 +16,6 @@ import Drawer from '@mui/material/Drawer';
 import FormControl from '@mui/material/FormControl';
 import Grid from '@mui/material/Grid';
 import IconButton from '@mui/material/IconButton/IconButton';
-import IndeterminateCheckBoxIcon from '@mui/icons-material/IndeterminateCheckBox';
 import Input from '@mui/material/Input';
 import InputAdornment from '@mui/material/InputAdornment';
 import InputLabel from '@mui/material/InputLabel';
@@ -25,10 +25,10 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import Switch from '@mui/material/Switch';
-import About from '../about/about';
-import TermConditions from '../term-conditions/termConditions';
 import { useState } from 'react';
+import About from '../about/about';
 import ModalHiddenList from '../modal-hidden-list/ModalHiddenList';
+import TermConditions from '../term-conditions/termConditions';
 import useStyles from './SearchChannel.styles';
 
 const ChannelList = () => {
