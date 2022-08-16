@@ -23,7 +23,8 @@ const ChatPage = () => {
       return;
     }
 
-    dispatch(selectChannel(channelAddress));
+    // eslint-disable-next-line no-unused-expressions
+    channelAddress && dispatch(selectChannel(channelAddress));
   }, [channelAddress]);
 
   return (
