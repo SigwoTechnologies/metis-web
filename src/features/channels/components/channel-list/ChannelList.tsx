@@ -21,7 +21,7 @@ const ChannelList = () => {
     dispatch(getMutedChannelAddresses(null));
   });
 
-  const selectNewChannel = (channel: Channel | NewChannel) => {
+  const selectNewChannel = (channel: Channel) => {
     navigate(`/main/${channel.channelAddress}`);
   };
 
@@ -34,7 +34,7 @@ const ChannelList = () => {
               channel={channel}
               key={channel.channelAddress}
               name={channel.channelName}
-              message="Lorem ipsum dolor, sit amet consectetur adipisicing elit. Sed voluptate delectus sapiente nihil quas esse aliquid architecto. Perferendis libero harum, numquam non assumenda, corrupti consectetur eos iusto dolorem voluptas soluta."
+              message={channel.messages.length > 0 ? channel.messages[0].message.message : ''}
               date="08:34 AM"
               onClick={() => selectNewChannel(channel)}
               selected={selectedChannel.channelAddress === channel.channelAddress}
