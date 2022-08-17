@@ -11,11 +11,11 @@ import {
   ListItemText,
   Typography,
 } from '@mui/material';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { finishChannelCreation } from '../../store/channel.slice';
-import { NewChannel } from '../../types/newChannel';
 import useStyles from './PendingChannelsList.styles';
 
+// TODO: changing this data with the user's data
 const socket = connect({
   query: {
     room: 'JUP-7DXL-L46R-8LHH-HWFN2', // address of the current user

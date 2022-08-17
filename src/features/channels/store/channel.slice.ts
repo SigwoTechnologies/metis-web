@@ -64,7 +64,7 @@ const slice = createSlice({
       if (selectedChannelOrUndefined) state.selectedChannel = selectedChannelOrUndefined;
     },
     createChannel: (state: ChannelState, { payload }) => {
-      state.pendingChannels.push(payload);
+      state.pendingChannels.unshift(payload);
     },
     // TODO: is there a way to not iterate the array two times?
     finishChannelCreation: (state: ChannelState, { payload }: PayloadAction<number>) => {
