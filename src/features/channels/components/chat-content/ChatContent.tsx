@@ -1,6 +1,7 @@
 import connect from '@metis/common/services/socket.service';
-import { useAppDispatch, useAppSelector } from '@metis/store/hooks';
+import { useAppDispatch } from '@metis/store/hooks';
 import { useEffect, useMemo } from 'react';
+import useSelectedChannel from '../../hooks/useSelectedChannel';
 import { addNewMessage } from '../../store/channel.slice';
 import { Message as MessageType } from '../../types/Message';
 import useStyles from './ChatContent.styles';
@@ -18,7 +19,7 @@ type ChatSocketResponse = {
 
 const ChatContent = () => {
   const classes = useStyles();
-  const { messages, channelAddress } = useAppSelector((state) => state.channel.selectedChannel);
+  const { messages, channelAddress } = useSelectedChannel();
   const sortedMessages = useMemo(() => [...messages].reverse(), [messages]);
   const dispatch = useAppDispatch();
 
@@ -34,7 +35,6 @@ const ChatContent = () => {
 
       socket.on('createMessage', ({ message }: ChatSocketResponse) => {
         dispatch(addNewMessage({ channelAddress, message }));
-        console.log(`added a new message to the following address: ${channelAddress}`);
       });
 
       return () => {
@@ -47,9 +47,11 @@ const ChatContent = () => {
 
   return (
     <div className={classes.container}>
-      {sortedMessages.map(({ senderAlias, message, createdAt }) => (
+      {sortedMessages.map(({ senderAlias, message, createdAt }, index) => (
         <Message
-          key={Math.random()}
+          // TODO: the backend is not giving us any way to differentiate between messages... Too bad!
+          // eslint-disable-next-line react/no-array-index-key
+          key={index}
           name={senderAlias}
           message={message}
           date={formatDate(createdAt)}
