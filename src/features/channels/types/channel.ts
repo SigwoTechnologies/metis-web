@@ -1,4 +1,4 @@
-import { ChannelsMessagesResponse } from './ChannelsMessagesResponse';
+import { Message } from './Message';
 
 export type Channel = {
   channelAddress: string;
@@ -6,5 +6,5 @@ export type Channel = {
   channelName: string;
   createdBy: string;
   createdAt: number;
-  messages: ChannelsMessagesResponse[];
+  messages: Message[];
 };

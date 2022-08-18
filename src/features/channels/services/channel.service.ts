@@ -18,11 +18,12 @@ const loadChannelsMessages = async ({
   channelAddress,
   pageNumber = 0,
   pageSize = 20,
-}: LoadChannelsMessagesProps): Promise<ChannelsMessagesResponse[]> => {
+}: LoadChannelsMessagesProps): Promise<Message[]> => {
   const response = await httpService.get<ChannelsMessagesResponse[]>(
     `/v1/api/channels/${channelAddress}/messages?pageNumber=${pageNumber}&pageSize=${pageSize}`
   );
-  return response.data;
+  const filteredData = response.data.map((item) => item.message);
+  return filteredData;
 };
 
 const findChannels = async (args: null, { dispatch, rejectWithValue }: any) => {
