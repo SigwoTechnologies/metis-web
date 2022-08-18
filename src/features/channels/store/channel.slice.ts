@@ -27,7 +27,6 @@ export type ChannelState = {
   reply: Reply;
   mutedChannels: string[];
   channels: Channel[];
-  selectedChannel: Channel;
   pendingChannels: NewChannel[];
 };
 
@@ -35,14 +34,6 @@ const initialState: ChannelState = {
   isLoading: false,
   channels: [],
   hiddenChannels: [],
-  selectedChannel: {
-    channelAddress: '',
-    channelPublicKey: '',
-    channelName: '',
-    createdBy: '',
-    createdAt: 0,
-    messages: [],
-  },
   reply: {
     active: false,
     name: '',
@@ -56,13 +47,6 @@ const slice = createSlice({
   name: 'channel',
   initialState,
   reducers: {
-    selectChannel: (state: ChannelState, { payload }: PayloadAction<string>) => {
-      const selectedChannelOrUndefined = state.channels.find(
-        (element) => element.channelAddress === payload
-      );
-
-      if (selectedChannelOrUndefined) state.selectedChannel = selectedChannelOrUndefined;
-    },
     createChannel: (state: ChannelState, { payload }) => {
       state.pendingChannels.unshift(payload);
     },
@@ -102,7 +86,6 @@ const slice = createSlice({
 
       if (!isChannelAlreadyHidden) {
         state.hiddenChannels.push(payload);
-        state.selectedChannel = initialState.selectedChannel;
         localStorage.setItem(localStorageKeyHiddenChannel, JSON.stringify(state.hiddenChannels));
       }
     },
@@ -126,11 +109,6 @@ const slice = createSlice({
       );
 
       targetChannel?.messages.unshift(message);
-
-      // TODO: make an implementation without the use of 'selectedChannel'
-      if (channelAddress === state.selectedChannel.channelAddress) {
-        state.selectedChannel.messages.unshift(message);
-      }
     },
   },
   extraReducers: (builder) => {
@@ -169,7 +147,6 @@ export const selectState = (state: RootState) => state.channel;
 export const {
   updateReply,
   discardReply,
-  selectChannel,
   createChannel,
   finishChannelCreation,
   hideChannel,

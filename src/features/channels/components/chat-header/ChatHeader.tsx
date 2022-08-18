@@ -16,6 +16,7 @@ import { toggleMuteChannel } from '../../store/channel.actions';
 import { hideChannel as hideChannelAction, selectState } from '../../store/channel.slice';
 import InviteUserModal from '../invite-user-modal/InviteUserModal';
 import useStyles from './ChatHeader.styles';
+import useSelectedChannel from '../../hooks/useSelectedChannel';
 
 const ChatHeader = () => {
   const classes = useStyles();
@@ -25,7 +26,8 @@ const ChatHeader = () => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const { selectedChannel, mutedChannels } = useAppSelector(selectState);
+  const { mutedChannels } = useAppSelector(selectState);
+  const selectedChannel = useSelectedChannel();
   const isMuted = mutedChannels.includes(selectedChannel.channelAddress);
 
   const menu = Boolean(anchorEl);

@@ -7,12 +7,13 @@ import { useNavigate } from 'react-router-dom';
 import ChannelListItem from './channel-list-item/ChannelListItem';
 
 import { findChannels, getMutedChannelAddresses } from '../../store/channel.actions';
-import { selectChannel, selectState } from '../../store/channel.slice';
-import { NewChannel } from '../../types/newChannel';
+import { selectState } from '../../store/channel.slice';
+import useSelectedChannel from '../../hooks/useSelectedChannel';
 
 const ChannelList = () => {
   const dispatch = useAppDispatch();
-  const { channels, isLoading, selectedChannel, hiddenChannels } = useAppSelector(selectState);
+  const { channels, isLoading, hiddenChannels } = useAppSelector(selectState);
+  const selectedChannel = useSelectedChannel();
   const hiddenChannelsAddreses = hiddenChannels.map((channel) => channel.channelAddress);
   const navigate = useNavigate();
 

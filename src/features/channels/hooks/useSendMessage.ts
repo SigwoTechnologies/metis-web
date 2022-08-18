@@ -1,12 +1,13 @@
 import EncryiptionService from '@metis/features/auth/services/encryption.service';
-import { useAppDispatch, useAppSelector } from '@metis/store/hooks';
+import { useAppDispatch } from '@metis/store/hooks';
 import { openToast } from '@metis/store/ui/ui.slice';
 import { PublicKey } from 'openpgp';
 import { useEffect, useState } from 'react';
 import channelService from '../services/channel.service';
+import useSelectedChannel from './useSelectedChannel';
 
 export default () => {
-  const { selectedChannel } = useAppSelector((state) => state.channel);
+  const selectedChannel = useSelectedChannel();
   const [publicKeys, setPublicKeys] = useState<PublicKey[]>([]);
   const [loading, setLoading] = useState(false);
   const encryptionService = new EncryiptionService();

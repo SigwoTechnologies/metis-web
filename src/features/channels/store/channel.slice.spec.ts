@@ -2,7 +2,7 @@ import { AnyAction } from '@reduxjs/toolkit';
 import store from '@metis/store';
 import { Channel } from '../types/channel';
 import { findChannels } from './channel.actions';
-import { channelReducer, ChannelState, selectChannel, selectState } from './channel.slice';
+import { channelReducer, ChannelState, selectState } from './channel.slice';
 
 describe('Channel Slice', () => {
   let initialState: ChannelState;
@@ -12,14 +12,6 @@ describe('Channel Slice', () => {
       isLoading: false,
       channels: [],
       hiddenChannels: [],
-      selectedChannel: {
-        channelAddress: '',
-        channelPublicKey: '',
-        channelName: '',
-        createdBy: '',
-        createdAt: 0,
-        messages: [],
-      },
       reply: {
         active: false,
         name: '',
@@ -81,34 +73,6 @@ describe('Channel Slice', () => {
 
         expect(actual).toEqual(expected);
       });
-    });
-  });
-
-  describe('When selectChannel is called', () => {
-    it('should check if the channel list contains a channel with the selected channelName', () => {
-      const expected = initialState;
-
-      const actual = channelReducer(initialState, selectChannel('hello'));
-
-      expect(actual).toEqual(expected);
-    });
-
-    it('should set the selectedChannel to the passed value', () => {
-      const testingChannel = {
-        channelAddress: 'JUP-VHVJ-WEBM-N5NR-3CV33',
-        channelPublicKey: '19d206b972aa2a7b5756a1797bd0901e2352d327e0906ebec717402ce54cb059',
-        channelName: 'testing',
-        createdBy: 'JUP-5FX8-JXLL-GLAV-7MG6P',
-        createdAt: 1656711221005,
-        messages: [],
-      };
-      const expected = initialState;
-      expected.selectedChannel = testingChannel;
-      expected.channels.push(testingChannel);
-
-      const actual = channelReducer(initialState, selectChannel('JUP-5FX8-JXLL-GLAV-7MG6P'));
-
-      expect(actual.selectedChannel).toEqual(expected.selectedChannel);
     });
   });
 
