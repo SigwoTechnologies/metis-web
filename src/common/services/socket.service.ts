@@ -6,6 +6,7 @@ type props = {
   query?: {
     room: string;
     user: string;
+    event?: string;
   };
 };
 
