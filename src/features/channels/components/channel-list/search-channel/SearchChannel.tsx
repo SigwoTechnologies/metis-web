@@ -39,6 +39,7 @@ const ChannelList = () => {
   return (
     <>
       <Drawer anchor="left" open={drawer} onClose={() => setDrawer(false)}>
+        {/* TODO fixed values are not good for responsive design */}
         <Box sx={{ width: 300 }} role="presentation" className={styles.upperGroup}>
           <Box className={styles.account}>
             <Box className={styles.picBackground} />
@@ -54,7 +55,7 @@ const ChannelList = () => {
           <List>
             <ListItem disablePadding>
               <ListItemButton>
-                <ListItemIcon style={{ color: '#CFF4D2' }}>
+                <ListItemIcon className={styles.listItemIcon}>
                   <PersonAddIcon />
                 </ListItemIcon>
                 <ListItemText primary="Invite friends" />
@@ -62,7 +63,7 @@ const ChannelList = () => {
             </ListItem>
             <ListItem disablePadding>
               <ListItemButton>
-                <ListItemIcon style={{ color: '#CFF4D2' }}>
+                <ListItemIcon className={styles.listItemIcon}>
                   <AddCircleIcon />
                 </ListItemIcon>
                 <ListItemText primary="New Channel" />
@@ -70,7 +71,7 @@ const ChannelList = () => {
             </ListItem>
             <ListItem disablePadding>
               <ListItemButton>
-                <ListItemIcon style={{ color: '#CFF4D2' }}>
+                <ListItemIcon className={styles.listItemIcon}>
                   <AllInboxIcon />
                 </ListItemIcon>
                 <ListItemText primary="Wallet" />
@@ -79,7 +80,7 @@ const ChannelList = () => {
 
             <ListItem disablePadding>
               <ListItemButton onClick={() => setOpen(true)}>
-                <ListItemIcon style={{ color: '#CFF4D2' }}>
+                <ListItemIcon className={styles.listItemIcon}>
                   <IndeterminateCheckBoxIcon />
                 </ListItemIcon>
                 <ListItemText primary="Hidden Channels" />
@@ -90,7 +91,7 @@ const ChannelList = () => {
 
             <ListItem disablePadding>
               <ListItemButton>
-                <ListItemIcon style={{ color: '#CFF4D2' }}>
+                <ListItemIcon className={styles.listItemIcon}>
                   <SettingsIcon />
                 </ListItemIcon>
                 <ListItemText primary="Settings" />
@@ -98,7 +99,7 @@ const ChannelList = () => {
             </ListItem>
             <ListItem disablePadding>
               <ListItemButton>
-                <ListItemIcon style={{ color: '#CFF4D2' }}>
+                <ListItemIcon className={styles.listItemIcon}>
                   <DarkModeIcon />
                 </ListItemIcon>
                 <Switch defaultChecked />

@@ -1,8 +1,9 @@
 import ReneAvatar from '@metis/assets/images/avatars/rene.jpg';
 import EXAMPLE from '@metis/assets/images/avatars/examplefromWEB.jpg';
 import { createStyles, makeStyles } from '@mui/styles';
+import { Theme } from '@mui/material/styles';
 
-const useStyles = makeStyles(() =>
+const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     iconContainer: {
       display: 'flex',
@@ -65,6 +66,9 @@ const useStyles = makeStyles(() =>
     actionContainer: {
       justifyContent: 'flex-end',
       padding: '0.8rem',
+    },
+    listItemIcon: {
+      color: `${theme.colors.green5}`,
     },
   })
 );

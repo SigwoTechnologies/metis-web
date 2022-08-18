@@ -47,9 +47,9 @@ const TermConditions = ({ title, message, onClick }: Props) => {
           <DialogContentText id="alert-dialog-description">{message}</DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}>Disagree</Button>
+          <Button onClick={handleClose}>Disagree and leave</Button>
           <Button onClick={handleClose} autoFocus>
-            Agree
+            Agree and stay
           </Button>
         </DialogActions>
       </Dialog>

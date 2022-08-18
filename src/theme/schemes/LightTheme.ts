@@ -62,6 +62,7 @@ export const themeOptions: ThemeOptions = {
     green2: '#60D956',
     green3: '#87DC72',
     green4: '#ADEA9E',
+    green5: '#CFF4D2',
     orange1: '#FD6F3C',
     orange2: '#FF977A',
     orange3: '#FFB6A1',
