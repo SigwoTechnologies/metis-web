@@ -1,3 +1,4 @@
+import GalaxyDark from '@metis/assets/images/misc/galaxy-dark.png';
 import { createStyles, makeStyles } from '@mui/styles';
 
 const useStyles = makeStyles(() =>
@@ -30,6 +31,10 @@ const useStyles = makeStyles(() =>
     },
     upperGroup: {
       flexGrow: 1,
+      backgroundImage: `url(${GalaxyDark})`,
+      backgroundSize: '100% 35%',
+      backgroundRepeat: 'no-repeat',
+      backgroundPositionY: '26rem',
     },
     inputText: {
       borderRadius: '1rem',
