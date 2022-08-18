@@ -118,6 +118,20 @@ const slice = createSlice({
         localStorage.setItem(localStorageKeyHiddenChannel, JSON.stringify(state.hiddenChannels));
       }
     },
+    addNewMessage: (state: ChannelState, { payload }) => {
+      const { channelAddress, message } = payload;
+
+      const targetChannel = state.channels.find(
+        (channel) => channel.channelAddress === channelAddress
+      );
+
+      targetChannel?.messages.unshift(message);
+
+      // TODO: make an implementation without the use of 'selectedChannel'
+      if (channelAddress === state.selectedChannel.channelAddress) {
+        state.selectedChannel.messages.unshift(message);
+      }
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(findChannels.pending, (state) => {
@@ -160,5 +174,6 @@ export const {
   finishChannelCreation,
   hideChannel,
   unhideChannel,
+  addNewMessage,
 } = slice.actions;
 export const channelReducer = slice.reducer;
