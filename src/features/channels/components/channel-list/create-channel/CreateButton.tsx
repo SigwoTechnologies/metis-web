@@ -5,12 +5,11 @@ import Box from '@mui/material/Box';
 import { yupResolver } from '@hookform/resolvers/yup';
 import Form from '@metis/common/components/ui/Form/Form';
 import TextInput from '@metis/common/components/ui/TextInput/TextInput';
-import useChannelSocket from '@metis/features/channels/hooks/useChannelSocket';
 import channelService from '@metis/features/channels/services/channel.service';
-import { createChannel, finishChannelCreation } from '@metis/features/channels/store/channel.slice';
+import { createChannel } from '@metis/features/channels/store/channel.slice';
 import { Channel } from '@metis/features/channels/types/channel';
 import { ChannelDTO } from '@metis/features/channels/types/channelDTO';
-import { useAppDispatch, useAppSelector } from '@metis/store/hooks';
+import { useAppDispatch } from '@metis/store/hooks';
 import { openToast } from '@metis/store/ui/ui.slice';
 import CloseIcon from '@mui/icons-material/Close';
 import { LoadingButton } from '@mui/lab';
@@ -44,20 +43,6 @@ const CreateButton = () => {
         dispatch(createChannel(channel));
         dispatch(openToast({ text: "We're creating your channel", type: 'info' }));
         closeDrawer();
-      })
-      .then(() => {
-        const { onChannelCreated, onChannelCreationFailed } = useChannelSocket();
-        onChannelCreated(({ jobId, channelName }) => {
-          dispatch(
-            openToast({ type: 'success', text: `Channel '${channelName}' was created succesfully` })
-          );
-          dispatch(finishChannelCreation({ isSuccessful: true, jobId }));
-        });
-        onChannelCreationFailed((failedData) => {
-          const jobId = typeof failedData === 'number' ? failedData : failedData.jobId;
-          dispatch(openToast({ type: 'error', text: "The channel couldn't be created" }));
-          dispatch(finishChannelCreation({ isSuccessful: false, jobId }));
-        });
       })
       .catch(() => {
         dispatch(openToast({ text: 'There was a problem creating your channel', type: 'error' }));

@@ -26,8 +26,8 @@ export type ChannelState = {
   hiddenChannels: Channel[];
   reply: Reply;
   mutedChannels: string[];
-  channels: Array<Channel | NewChannel>;
-  selectedChannel: Channel | NewChannel;
+  channels: Channel[];
+  selectedChannel: Channel;
   pendingChannels: NewChannel[];
 };
 
@@ -41,6 +41,7 @@ const initialState: ChannelState = {
     channelName: '',
     createdBy: '',
     createdAt: 0,
+    messages: [],
   },
   reply: {
     active: false,
@@ -55,7 +56,7 @@ const slice = createSlice({
   name: 'channel',
   initialState,
   reducers: {
-    selectChannel: (state: ChannelState, { payload }) => {
+    selectChannel: (state: ChannelState, { payload }: PayloadAction<string>) => {
       const selectedChannelOrUndefined = state.channels.find(
         (element) => element.channelAddress === payload
       );
@@ -63,25 +64,25 @@ const slice = createSlice({
       if (selectedChannelOrUndefined) state.selectedChannel = selectedChannelOrUndefined;
     },
     createChannel: (state: ChannelState, { payload }) => {
-      state.channels.unshift(payload);
-      state.pendingChannels.push(payload);
+      state.pendingChannels.unshift(payload);
     },
-    // TODO: Make a better implementation of this
-    finishChannelCreation: (state: ChannelState, { payload }) => {
-      const { isSuccessful, jobId } = payload;
+    // TODO: is there a way to not iterate the array two times?
+    finishChannelCreation: (state: ChannelState, { payload }: PayloadAction<number>) => {
+      const newChannel = state.pendingChannels.find((channel) => channel.job.id === payload);
 
-      // Doesn't matter if it was successful or not
-      // either way we remove it from the pendingChannels array
-      const channelIndexToBeRemoved = state.pendingChannels.findIndex(
-        (channel) => channel.job.id === jobId
-      );
-      const channelAddressToBeRemoved =
-        state.pendingChannels[channelIndexToBeRemoved].channelAddress;
-      state.pendingChannels.splice(channelIndexToBeRemoved, 1);
+      if (newChannel) {
+        const { job, ...rest } = newChannel;
+        const channelCreated: Channel = {
+          ...rest,
+          createdAt: Date.now(),
+          // TODO: change this for the user's address
+          createdBy: 'JUP-7DXL-L46R-8LHH-HWFN2',
+          messages: [],
+        };
 
-      if (!isSuccessful) {
-        state.channels = state.channels.filter(
-          (channel) => channel.channelAddress !== channelAddressToBeRemoved
+        state.channels.unshift(channelCreated);
+        state.pendingChannels = state.pendingChannels.filter(
+          (channel) => channel.job.id !== payload
         );
       }
     },

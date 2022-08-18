@@ -1,4 +1,6 @@
 import VolumeOffIcon from '@mui/icons-material/VolumeOff';
+import DoneAllIcon from '@mui/icons-material/DoneAll';
+import DoneIcon from '@mui/icons-material/Done';
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
@@ -9,7 +11,6 @@ import Typography from '@mui/material/Typography';
 import { Channel } from '@metis/features/channels/types/channel';
 import { NewChannel } from '@metis/features/channels/types/newChannel';
 import { useAppSelector } from '@metis/store/hooks';
-import { CircularProgress } from '@mui/material';
 import useStyles from './ChannelListItem.styles';
 
 type Props = {
@@ -32,17 +33,13 @@ const ChannelListItem = ({
   selected = false,
 }: Props) => {
   const classes = useStyles();
-  const { mutedChannels, pendingChannels } = useAppSelector((state) => state.channel);
-  const isNewChannel = pendingChannels
-    .map((newChannel) => newChannel.channelAddress)
-    .includes(channel.channelAddress);
+  const { mutedChannels } = useAppSelector((state) => state.channel);
   const isMuted = mutedChannels.includes(channel.channelAddress);
 
   return (
     <Box display="flex" alignItems="center">
       <ListItemButton
         className={classes.listItemButton}
-        disabled={isNewChannel}
         onClick={onClick}
         alignItems="flex-start"
         selected={selected}
@@ -61,13 +58,11 @@ const ChannelListItem = ({
               </Box>
               <Box className={classes.channelDescription}>
                 <Box display="flex">
-                  {/* TODO: enable this */}
-                  {/* {isRead ? (
-                  <DoneAllIcon fontSize="small" color="primary" />
-                ) : (
-                  <DoneIcon fontSize="small" color="primary" />
-                )} */}
-                  {isNewChannel && <CircularProgress size="1.4285714285714284rem" />}
+                  {true ? (
+                    <DoneAllIcon fontSize="small" color="primary" />
+                  ) : (
+                    <DoneIcon fontSize="small" color="primary" />
+                  )}
                 </Box>
                 <Box>
                   <Typography component="span" variant="caption" color="text.primary">
