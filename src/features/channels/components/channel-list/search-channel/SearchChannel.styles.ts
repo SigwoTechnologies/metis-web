@@ -1,7 +1,7 @@
-import ReneAvatar from '@metis/assets/images/avatars/rene.jpg';
 import EXAMPLE from '@metis/assets/images/avatars/examplefromWEB.jpg';
-import { createStyles, makeStyles } from '@mui/styles';
+import ReneAvatar from '@metis/assets/images/avatars/rene.jpg';
 import { Theme } from '@mui/material/styles';
+import { createStyles, makeStyles } from '@mui/styles';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
