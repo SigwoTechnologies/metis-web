@@ -1,7 +1,7 @@
-import EXAMPLE from '@metis/assets/images/avatars/examplefromWEB.jpg';
 import ReneAvatar from '@metis/assets/images/avatars/rene.jpg';
-import { Theme } from '@mui/material/styles';
+import GalaxyDark from '@metis/assets/images/misc/galaxy-dark.png';
 import { createStyles, makeStyles } from '@mui/styles';
+import { Theme } from '@mui/material/styles';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -48,8 +48,11 @@ const useStyles = makeStyles((theme: Theme) =>
       fontSize: '0.5rem !important',
     },
     upperGroup: {
-      backgroundImage: `url(${EXAMPLE})`,
       flexGrow: 1,
+      backgroundImage: `url(${GalaxyDark})`,
+      backgroundSize: '100% 35%',
+      backgroundRepeat: 'no-repeat',
+      backgroundPositionY: '26rem',
     },
     inputText: {
       borderRadius: '1rem',
