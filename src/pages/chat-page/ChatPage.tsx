@@ -24,9 +24,7 @@ const ChatPage = () => {
       <HeaderSection>
         <ChatHeader />
       </HeaderSection>
-      <MainSection>
-        <ChatContent />
-      </MainSection>
+      <ChatContent />
       <FooterSection>
         <ChatFooter />
       </FooterSection>

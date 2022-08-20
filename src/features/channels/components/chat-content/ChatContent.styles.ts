@@ -2,10 +2,15 @@ import { createStyles, makeStyles } from '@mui/styles';
 
 const useStyles = makeStyles(() =>
   createStyles({
-    container: {
+    container: {},
+    main: {
+      flex: 1,
       display: 'flex',
-      flexDirection: 'column',
       padding: '1rem',
+      flexDirection: 'column',
+      overflowY: 'auto',
+      overflowX: 'hidden',
+      position: 'relative',
     },
   })
 );
