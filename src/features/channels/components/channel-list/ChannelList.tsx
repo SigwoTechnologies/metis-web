@@ -34,8 +34,6 @@ const ChannelList = () => {
             <ChannelListItem
               channel={channel}
               key={channel.channelAddress}
-              name={channel.channelName}
-              message={channel.messages.length > 0 ? channel.messages[0].message : ''}
               date="08:34 AM"
               onClick={() => selectNewChannel(channel)}
               selected={selectedChannel.channelAddress === channel.channelAddress}

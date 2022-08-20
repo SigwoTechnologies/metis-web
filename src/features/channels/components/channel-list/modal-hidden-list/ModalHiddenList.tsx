@@ -61,9 +61,7 @@ const ModalHiddenList = () => {
                         <ChannelListItem
                           channel={channel}
                           key={channel.channelAddress}
-                          name={channel.channelName}
                           date=""
-                          message=""
                           onClick={() => showChannel(channel.channelAddress, channel.channelName)}
                         />
                       </CardContent>
