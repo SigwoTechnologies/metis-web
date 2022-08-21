@@ -18,6 +18,7 @@ declare module '@mui/material/styles' {
       green2: string;
       green3: string;
       green4: string;
+      green5: string;
       orange1: string;
       orange2: string;
       orange3: string;
@@ -49,6 +50,7 @@ declare module '@mui/material/styles' {
       green2: string;
       green3: string;
       green4: string;
+      green5: string;
       orange1: string;
       orange2: string;
       orange3: string;

@@ -11,7 +11,7 @@ const EmptyStateChannel: React.FC = () => {
       <div style={{ margin: 'auto' }}>
         <QuestionAnswerIcon fontSize="large" className={classes.icon} />
         <Typography variant="body2" color="text.secondary">
-          Select a channel and start chating!
+          Select a channel and start chatting!
         </Typography>
       </div>
     </div>
