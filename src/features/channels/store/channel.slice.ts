@@ -11,14 +11,9 @@ import {
 } from './channel.actions';
 
 type Reply = {
-  active: boolean;
-  name: string;
-  message: string;
-};
-
-type ReplyPayload = {
-  name: string;
-  message: string;
+  replyMessage: string;
+  replyRecipientAlias: string;
+  replyRecipientAddress: string;
 };
 
 export type ChannelState = {
@@ -35,9 +30,9 @@ const initialState: ChannelState = {
   channels: [],
   hiddenChannels: [],
   reply: {
-    active: false,
-    name: '',
-    message: '',
+    replyMessage: '',
+    replyRecipientAlias: '',
+    replyRecipientAddress: '',
   },
   mutedChannels: [],
   pendingChannels: [],
@@ -70,11 +65,11 @@ const slice = createSlice({
         );
       }
     },
-    updateReply: (state: ChannelState, action: PayloadAction<ReplyPayload>) => {
-      const { name, message } = action.payload;
-      state.reply.name = name;
-      state.reply.message = message;
-      state.reply.active = true;
+    updateReply: (state: ChannelState, { payload }) => {
+      const { replyMessage, replyRecipientAlias, replyRecipientAddress } = payload;
+      state.reply.replyMessage = replyMessage;
+      state.reply.replyRecipientAlias = replyRecipientAlias;
+      state.reply.replyRecipientAddress = replyRecipientAddress;
     },
     discardReply: (state: ChannelState) => {
       state.reply = initialState.reply;

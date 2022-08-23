@@ -11,14 +11,14 @@ import useStyles from './ChatFooter.styles';
 const ChatFooter = () => {
   const classes = useStyles();
   const dispatch = useAppDispatch();
-  const { active, message, name } = useAppSelector((state) => state.channel.reply);
+  const { replyMessage, replyRecipientAlias } = useAppSelector((state) => state.channel.reply);
 
   return (
     <>
-      {active && (
+      {replyMessage && (
         <Box className={classes.replyContainer}>
           <Box className={classes.replyColumn}>
-            <MessageReply name={name} message={message} color="#A36300" />
+            <MessageReply name={replyRecipientAlias} message={replyMessage} color="#A36300" />
           </Box>
           <Box className={classes.closeButtonContainer}>
             <IconButton className={classes.closeButton} onClick={() => dispatch(discardReply())}>

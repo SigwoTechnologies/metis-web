@@ -55,11 +55,12 @@ const ChatContent = () => {
 
   return (
     <Paper onScroll={onScroll} ref={containerRef} className={classes.main} square>
-      {sortedMessages.map(({ senderAlias, message, createdAt }, index) => (
+      {sortedMessages.map(({ senderAlias, message, createdAt, senderAddress }, index) => (
         <Message
           // TODO: the backend is not giving us any way to differentiate between messages... Too bad!
           // eslint-disable-next-line react/no-array-index-key
           key={index}
+          senderAddress={senderAddress}
           name={senderAlias}
           message={message}
           date={formatDate(createdAt)}
