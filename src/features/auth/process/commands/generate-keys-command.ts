@@ -15,6 +15,8 @@ export default class GenerateKeysCommand implements ICommand<LoginState> {
     if (!state.address) return { ...state, error: LoginError.RequiredAddress };
     if (!state.passphrase) return { ...state, error: LoginError.RequiredPassphrase };
 
+    if (state.privateKey && state.publicKey) return state;
+
     const { privateKey: privateKeyArmored, publicKey: publicKeyArmored } =
       await this.encryptionService.generateKeyPairs(state.address, state.passphrase);
 
@@ -28,7 +30,9 @@ export default class GenerateKeysCommand implements ICommand<LoginState> {
       privateKeyArmored,
       config
     );
+    state.privateKeyArmored = privateKeyArmored;
     state.publicKey = await this.encryptionService.read(publicKeyArmored);
+    state.publicKeyArmored = publicKeyArmored;
 
     return state;
   }

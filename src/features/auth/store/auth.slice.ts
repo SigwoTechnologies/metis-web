@@ -11,7 +11,7 @@ const authSlice = createSlice({
   name: 'auth',
   initialState: {
     isLoading: false,
-    isLoggedIn: true, // TODO: Make this value false when login is fully implemented
+    isLoggedIn: true,
   } as AuthState,
   reducers: {},
   extraReducers: (builder) => {

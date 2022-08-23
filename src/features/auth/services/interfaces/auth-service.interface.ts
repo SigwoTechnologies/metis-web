@@ -1,9 +1,18 @@
+export type Signature = {
+  challenge: string;
+  signature: string;
+  password: string;
+  passphrase: string;
+  publicKey: string;
+  address: string;
+};
+
 export default interface IAuthService {
   getChallenge(address: string): Promise<string>;
 
   getChallengeMessage(challenge: string): string;
 
-  validateSignature(message: string, signature: string): Promise<boolean>;
+  validateSignature(signature: Signature): Promise<boolean>;
 
   getAlias(address: string): Promise<string>;
 

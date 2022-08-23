@@ -1,8 +1,8 @@
 import BusinessError from '@metis/common/exceptions/business-error';
 import httpService from '@metis/common/services/http.service';
 import constants from '@metis/common/configuration/constants';
-import localStorageService from '@metis/common/services/local-storage.service';
-import IAuthService from './interfaces/auth-service.interface';
+import ILocalStorageService from '@metis/common/services/interfaces/local-storage-service.interface';
+import IAuthService, { Signature } from './interfaces/auth-service.interface';
 import AliasResponse from '../types/alias-response';
 import ChallengeResponse from '../types/challenge-response';
 import ValidateSignatureResponse from '../types/validate-signature-response';
@@ -10,10 +10,13 @@ import getBufferString from '../utils/auth.utils';
 import Credential from '../types/credential';
 
 export default class AuthService implements IAuthService {
-  private endpoint: string;
+  private readonly endpoint: string;
 
-  constructor() {
+  private readonly localStorageService: ILocalStorageService;
+
+  constructor(_localStorageService: ILocalStorageService) {
     this.endpoint = '/v1/api/crypto';
+    this.localStorageService = _localStorageService;
   }
 
   async getChallenge(address: string): Promise<string> {
@@ -34,13 +37,31 @@ export default class AuthService implements IAuthService {
     return getBufferString(challenge);
   }
 
-  async validateSignature(message: string, signature: string): Promise<boolean> {
+  async validateSignature({
+    challenge,
+    signature,
+    password,
+    passphrase,
+    publicKey,
+    address,
+  }: Signature): Promise<boolean> {
     try {
-      const payload = { challengeDigest: message, signature };
+      const payload = {
+        challengeDigest: challenge,
+        signature,
+        password,
+        passphrase,
+        publicKey,
+        blockchainAccountAddress: address,
+      };
       const { data } = await httpService.post<ValidateSignatureResponse>(
         `${this.endpoint}/verify-signature`,
         payload
       );
+
+      // TODO: data.verified is no longer valid
+      // Now, there are two options, one is when the account does not exist, the account is going to be created and a socket will be emitted.
+      // The second option will
 
       return data.verified;
     } catch (err: unknown) {
@@ -96,7 +117,7 @@ export default class AuthService implements IAuthService {
   getLoggedInUserCredentials(): Credential | undefined {
     const storedCredentials =
       sessionStorage.getItem(constants.CREDENTIALS) ||
-      localStorageService.getItem(constants.CREDENTIALS);
+      this.localStorageService.getItem(constants.CREDENTIALS);
 
     if (!storedCredentials) return undefined;
 
