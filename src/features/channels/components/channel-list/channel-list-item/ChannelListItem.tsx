@@ -1,6 +1,6 @@
-import VolumeOffIcon from '@mui/icons-material/VolumeOff';
-import DoneAllIcon from '@mui/icons-material/DoneAll';
 import DoneIcon from '@mui/icons-material/Done';
+import DoneAllIcon from '@mui/icons-material/DoneAll';
+import VolumeOffIcon from '@mui/icons-material/VolumeOff';
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
@@ -8,15 +8,15 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 import Typography from '@mui/material/Typography';
 
+import useOnMount from '@metis/common/hooks/useOnMount';
+import useChat from '@metis/features/channels/hooks/useChat';
+import { addNewMessage } from '@metis/features/channels/store/channel.slice';
 import { Channel } from '@metis/features/channels/types/channel';
-import { NewChannel } from '@metis/features/channels/types/newChannel';
-import { useAppSelector } from '@metis/store/hooks';
+import { useAppDispatch, useAppSelector } from '@metis/store/hooks';
 import useStyles from './ChannelListItem.styles';
 
 type Props = {
-  channel: Channel | NewChannel;
-  name: string;
-  message: string;
+  channel: Channel;
   date: string;
   avatar?: string;
   onClick?: () => void;
@@ -25,16 +25,24 @@ type Props = {
 
 const ChannelListItem = ({
   channel,
-  name,
-  message,
   date,
-  avatar = name,
+  avatar = channel.channelName,
   onClick,
   selected = false,
 }: Props) => {
   const classes = useStyles();
   const { mutedChannels } = useAppSelector((state) => state.channel);
   const isMuted = mutedChannels.includes(channel.channelAddress);
+  const { onSendMessage } = useChat(channel.channelAddress);
+  const dispatch = useAppDispatch();
+
+  // When a new message is created we add that message to the 'messages' property
+  // of the channel (this is a socket event so we only connect to it on mount)
+  useOnMount(() => {
+    onSendMessage((message) => {
+      dispatch(addNewMessage({ channelAddress: channel.channelAddress, message }));
+    });
+  });
 
   return (
     <Box display="flex" alignItems="center">
@@ -45,7 +53,7 @@ const ChannelListItem = ({
         selected={selected}
       >
         <ListItemAvatar>
-          <Avatar alt={name} src={avatar} className={classes.avatar} />
+          <Avatar alt={channel.channelName} src={avatar} className={classes.avatar} />
         </ListItemAvatar>
         <ListItemText
           disableTypography
@@ -53,7 +61,7 @@ const ChannelListItem = ({
             <Box display="flex" justifyContent="space-between">
               <Box className={classes.channelName}>
                 <Typography component="span" variant="caption" color="text.primary">
-                  {name}
+                  {channel.channelName}
                 </Typography>
               </Box>
               <Box className={classes.channelDescription}>
@@ -75,7 +83,7 @@ const ChannelListItem = ({
           secondary={
             <Box display="flex">
               <Typography noWrap component="span" variant="caption" color="text.secondary">
-                {message}
+                {channel.messages.length > 0 ? channel.messages[0].message : ''}
               </Typography>
               {isMuted && <VolumeOffIcon className={classes.mutedIcon} fontSize="small" />}
             </Box>

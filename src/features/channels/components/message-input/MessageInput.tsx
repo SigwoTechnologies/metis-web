@@ -8,6 +8,7 @@ import IconButton from '@mui/material/IconButton/IconButton';
 import InputAdornment from '@mui/material/InputAdornment';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
+import useSelectedChannel from '../../hooks/useSelectedChannel';
 import useSendMessage from '../../hooks/useSendMessage';
 import useStyles from './MessageInput.styles';
 
@@ -17,7 +18,7 @@ type FormData = {
 
 const MessageInput = () => {
   const classes = useStyles();
-  const { selectedChannel } = useAppSelector((state) => state.channel);
+  const selectedChannel = useSelectedChannel();
   const { register, handleSubmit, reset: clearInput } = useForm<FormData>();
   const { sendEncryptedMessage, loading } = useSendMessage();
 
