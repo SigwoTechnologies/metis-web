@@ -4,11 +4,38 @@ import { openToast } from '@metis/store/ui/ui.slice';
 import { AxiosError } from 'axios';
 import { Channel } from '../types/channel';
 import { ChannelDTO } from '../types/channelDTO';
+import { ChannelMember } from '../types/ChannelMember';
+import { ChannelsMessagesResponse } from '../types/ChannelsMessagesResponse';
+import { Message } from '../types/Message';
+
+type LoadChannelsMessagesProps = {
+  channelAddress: string;
+  pageNumber?: number;
+  pageSize?: number;
+};
+
+const loadChannelsMessages = async ({
+  channelAddress,
+  pageNumber = 0,
+  pageSize = 20,
+}: LoadChannelsMessagesProps): Promise<ChannelsMessagesResponse[]> => {
+  const response = await httpService.get<ChannelsMessagesResponse[]>(
+    `/v1/api/channels/${channelAddress}/messages?pageNumber=${pageNumber}&pageSize=${pageSize}`
+  );
+  return response.data;
+};
 
 const findChannels = async (args: null, { dispatch, rejectWithValue }: any) => {
   try {
     const response = await httpService.get<Channel[]>('/v1/api/channels');
-    return response.data;
+    const channels = await Promise.all(
+      response.data.map(async (channel) => ({
+        ...channel,
+        messages: await loadChannelsMessages({ channelAddress: channel.channelAddress }),
+      }))
+    );
+
+    return channels;
   } catch (error) {
     const err = error as AxiosError;
     dispatch(openToast({ type: 'error', text: 'There was a problem getting the channels' }));
@@ -68,10 +95,36 @@ const toggleMuteChannel = async (channelAddress: string, { getState, dispatch }:
   }
 };
 
+const getChannelMembers = async (channelAddress: string) => {
+  const response = await httpService.get<ChannelMember[]>(`/v1/api/${channelAddress}/members`);
+  return response.data;
+};
+
+const sendMessage = async (channelAddress: string, text: string) => {
+  try {
+    const message = {
+      message: text,
+      replyMessage: '',
+      replyRecipientAlias: '',
+      replyRecipientAddress: '',
+      version: '1.0',
+    };
+    const response = await httpService.post(`/v1/api/channels/${channelAddress}/messages`, message);
+
+    return message;
+  } catch (error) {
+    const err = error as AxiosError;
+    return err.response;
+  }
+};
+
 export default {
   findChannels,
   create,
   inviteToSelectedChannel,
   getMutedChannelAddresses,
   toggleMuteChannel,
+  loadChannelsMessages,
+  sendMessage,
+  getChannelMembers,
 };

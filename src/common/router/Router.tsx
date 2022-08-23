@@ -25,7 +25,7 @@ const routes: RouteObject[] = [
     ),
     children: [
       { index: true, element: <EmptyStateChannel /> },
-      { path: ':channelName', element: <ChatContainer /> },
+      { path: ':channelAddress', element: <ChatContainer /> },
     ],
   },
   {

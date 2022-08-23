@@ -18,6 +18,7 @@ describe('Channel Slice', () => {
         channelName: '',
         createdBy: '',
         createdAt: 0,
+        messages: [],
       },
       reply: {
         active: false,
@@ -58,6 +59,7 @@ describe('Channel Slice', () => {
           channelName: 'testing',
           createdBy: 'JUP-5FX8-JXLL-GLAV-7MG6P',
           createdAt: 1656711221005,
+          messages: [],
         },
       ];
 
@@ -98,12 +100,13 @@ describe('Channel Slice', () => {
         channelName: 'testing',
         createdBy: 'JUP-5FX8-JXLL-GLAV-7MG6P',
         createdAt: 1656711221005,
+        messages: [],
       };
       const expected = initialState;
       expected.selectedChannel = testingChannel;
       expected.channels.push(testingChannel);
 
-      const actual = channelReducer(initialState, selectChannel(testingChannel));
+      const actual = channelReducer(initialState, selectChannel('JUP-5FX8-JXLL-GLAV-7MG6P'));
 
       expect(actual.selectedChannel).toEqual(expected.selectedChannel);
     });
