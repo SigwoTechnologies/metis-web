@@ -1,5 +1,7 @@
-import { Paper } from '@mui/material';
-import { useEffect, useLayoutEffect, useMemo, useRef } from 'react';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import { Button, Paper } from '@mui/material';
+import { animated, config, useTransition } from '@react-spring/web';
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import useSelectedChannel from '../../hooks/useSelectedChannel';
 import useStyles from './ChatContent.styles';
 import Message from './message/Message';
@@ -17,32 +19,38 @@ const ChatContent = () => {
   const sortedMessages = useMemo(() => [...messages].reverse(), [messages]);
   const scrollRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
-  const isBottom = useRef(false);
+  const [isBottom, setIsBottom] = useState(false);
+  const transition = useTransition(isBottom, {
+    from: { opacity: 0 },
+    enter: { opacity: 1 },
+    leave: { opacity: 0 },
+    config: config.stiff,
+  });
 
-  const scrollToBottomSmoothly = () => {
+  const scrollSmoothlyToBottom = () => {
     scrollRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
 
-  const scrollToBottomInstantly = () => {
+  const scrollInstantlyToBottom = () => {
     scrollRef.current?.scrollIntoView();
   };
 
   const onScroll = () => {
     if (containerRef.current) {
       const { scrollTop, scrollHeight, clientHeight } = containerRef.current;
-      isBottom.current = scrollTop + clientHeight === scrollHeight;
+      setIsBottom(scrollTop + clientHeight === scrollHeight);
     }
   };
 
   useLayoutEffect(() => {
-    scrollToBottomInstantly();
+    scrollInstantlyToBottom();
   }, [selectedChannelAddress]);
 
   // Scroll smoothly to last message when there's a new message and the scrollbar
   // is at the bottom
   useEffect(() => {
     // eslint-disable-next-line no-unused-expressions
-    isBottom.current && scrollToBottomSmoothly();
+    isBottom && scrollSmoothlyToBottom();
   }, [messages]);
 
   return (
@@ -58,6 +66,21 @@ const ChatContent = () => {
           color="#A36300"
         />
       ))}
+      {transition(
+        (styles, item) =>
+          !item && (
+            <animated.div style={styles} className={classes.scrollToBottomButton}>
+              <Button
+                onClick={scrollInstantlyToBottom}
+                color="primary"
+                variant="contained"
+                component="label"
+              >
+                <KeyboardArrowDownIcon />
+              </Button>
+            </animated.div>
+          )
+      )}
       <div ref={scrollRef} />
     </Paper>
   );

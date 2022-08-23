@@ -12,6 +12,10 @@ const useStyles = makeStyles(() =>
       overflowX: 'hidden',
       position: 'relative',
     },
+    scrollToBottomButton: {
+      position: 'fixed',
+      alignSelf: 'flex-end',
+    },
   })
 );
 
