@@ -2,6 +2,7 @@ import ReneAvatar from '@metis/assets/images/avatars/rene.jpg';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import AllInboxIcon from '@mui/icons-material/AllInbox';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
+import IndeterminateCheckBoxIcon from '@mui/icons-material/IndeterminateCheckBox';
 import MenuIcon from '@mui/icons-material/Menu';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import SearchIcon from '@mui/icons-material/Search';
@@ -24,30 +25,37 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import Switch from '@mui/material/Switch';
-import Typography from '@mui/material/Typography';
 import { useState } from 'react';
+import About from '../about/about';
 import ModalHiddenList from '../modal-hidden-list/ModalHiddenList';
+import TermConditions from '../term-conditions/termConditions';
 import useStyles from './SearchChannel.styles';
 
 const ChannelList = () => {
   const styles = useStyles();
   const [drawer, setDrawer] = useState(false);
+  const [open, setOpen] = useState(false);
 
   return (
     <>
       <Drawer anchor="left" open={drawer} onClose={() => setDrawer(false)}>
-        <Box sx={{ width: 250 }} role="presentation" className={styles.upperGroup}>
+        {/* TODO fixed values are not good for responsive design */}
+        <Box sx={{ width: 300 }} role="presentation" className={styles.upperGroup}>
           <Box className={styles.account}>
-            <Button component="label">
-              <Avatar alt="Channel Avatar" src={ReneAvatar} className={styles.accountAvatar} />
-              <input hidden accept="image/*" multiple type="file" />
-            </Button>
+            <Box className={styles.picBackground} />
+            <Box>
+              <Button component="label">
+                <Avatar alt="Channel Avatar" src={ReneAvatar} className={styles.accountAvatar} />
+                <input hidden accept="image/*" multiple type="file" />
+              </Button>
+            </Box>
           </Box>
+
           <Divider />
           <List>
             <ListItem disablePadding>
               <ListItemButton>
-                <ListItemIcon style={{ color: 'orange' }}>
+                <ListItemIcon className={styles.listItemIcon}>
                   <PersonAddIcon />
                 </ListItemIcon>
                 <ListItemText primary="Invite friends" />
@@ -55,7 +63,7 @@ const ChannelList = () => {
             </ListItem>
             <ListItem disablePadding>
               <ListItemButton>
-                <ListItemIcon style={{ color: 'red' }}>
+                <ListItemIcon className={styles.listItemIcon}>
                   <AddCircleIcon />
                 </ListItemIcon>
                 <ListItemText primary="New Channel" />
@@ -63,16 +71,27 @@ const ChannelList = () => {
             </ListItem>
             <ListItem disablePadding>
               <ListItemButton>
-                <ListItemIcon style={{ color: 'pink' }}>
+                <ListItemIcon className={styles.listItemIcon}>
                   <AllInboxIcon />
                 </ListItemIcon>
                 <ListItemText primary="Wallet" />
               </ListItemButton>
             </ListItem>
-            <ModalHiddenList />
+
+            <ListItem disablePadding>
+              <ListItemButton onClick={() => setOpen(true)}>
+                <ListItemIcon className={styles.listItemIcon}>
+                  <IndeterminateCheckBoxIcon />
+                </ListItemIcon>
+                <ListItemText primary="Hidden Channels" />
+              </ListItemButton>
+            </ListItem>
+
+            <ModalHiddenList open={open} onClose={() => setOpen(false)} />
+
             <ListItem disablePadding>
               <ListItemButton>
-                <ListItemIcon style={{ color: 'gray' }}>
+                <ListItemIcon className={styles.listItemIcon}>
                   <SettingsIcon />
                 </ListItemIcon>
                 <ListItemText primary="Settings" />
@@ -80,7 +99,7 @@ const ChannelList = () => {
             </ListItem>
             <ListItem disablePadding>
               <ListItemButton>
-                <ListItemIcon style={{ color: 'blue' }}>
+                <ListItemIcon className={styles.listItemIcon}>
                   <DarkModeIcon />
                 </ListItemIcon>
                 <Switch defaultChecked />
@@ -90,16 +109,11 @@ const ChannelList = () => {
         </Box>
         <Divider />
         <Box className={styles.termPosition}>
-          <Typography variant="caption" display="block" className={styles.term}>
-            <a href="https://www.google.com/" style={{ color: '#555b6e' }}>
-              Terms and Conditions
-            </a>
-          </Typography>
-          <Typography variant="caption" display="block" className={styles.term}>
-            <a href="https://www.google.com/" style={{ color: '#555b6e' }}>
-              About
-            </a>
-          </Typography>
+          <About title="About" message="This is Metis Web App. It is still under construction." />
+          <TermConditions
+            title="Terms and Conditions"
+            message="These are the terms and conditions, you can choose to agree or disagree."
+          />
         </Box>
       </Drawer>
       <Container maxWidth="xl" component="main">

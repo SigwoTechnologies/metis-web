@@ -1,6 +1,9 @@
+import ReneAvatar from '@metis/assets/images/avatars/rene.jpg';
+import GalaxyDark from '@metis/assets/images/misc/galaxy-dark.png';
 import { createStyles, makeStyles } from '@mui/styles';
+import { Theme } from '@mui/material/styles';
 
-const useStyles = makeStyles(() =>
+const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     iconContainer: {
       display: 'flex',
@@ -8,13 +11,26 @@ const useStyles = makeStyles(() =>
       alignItems: 'end',
     },
     account: {
-      width: '10%',
+      position: 'relative',
+      width: '100%',
+      height: '5rem',
       display: 'flex',
       alignItems: 'center',
     },
+    picBackground: {
+      position: 'absolute',
+      top: '0',
+      left: '0',
+      right: '0',
+      bottom: '0',
+      backgroundImage: `url(${ReneAvatar})`,
+      backgroundSize: '100% 11rem',
+      filter: 'blur(2px) grayscale(100%)',
+      '&::-webkit-filter': 'blur(2px)',
+    },
     accountAvatar: {
-      width: '3rem',
-      height: '3rem',
+      width: '4rem',
+      height: '4rem',
       justifyContent: 'flex-start',
     },
     termPosition: {
@@ -24,12 +40,19 @@ const useStyles = makeStyles(() =>
     term: {
       size: '2rem',
       padding: '0.5rem',
+      cursor: 'pointer',
+      color: '#555b6e',
+      textDecoration: 'underline',
     },
     drawerLetters: {
       fontSize: '0.5rem !important',
     },
     upperGroup: {
       flexGrow: 1,
+      backgroundImage: `url(${GalaxyDark})`,
+      backgroundSize: '100% 35%',
+      backgroundRepeat: 'no-repeat',
+      backgroundPositionY: '26rem',
     },
     inputText: {
       borderRadius: '1rem',
@@ -46,6 +69,9 @@ const useStyles = makeStyles(() =>
     actionContainer: {
       justifyContent: 'flex-end',
       padding: '0.8rem',
+    },
+    listItemIcon: {
+      color: `${theme.colors.green5}`,
     },
   })
 );
