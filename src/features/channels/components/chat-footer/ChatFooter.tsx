@@ -3,6 +3,8 @@ import CloseIcon from '@mui/icons-material/Close';
 import { Box } from '@mui/material';
 import FormControl from '@mui/material/FormControl';
 import IconButton from '@mui/material/IconButton/IconButton';
+import { useEffect } from 'react';
+import useSelectedChannel from '../../hooks/useSelectedChannel';
 import { discardReply } from '../../store/channel.slice';
 import MessageReply from '../chat-content/message-reply/MessageReply';
 import MessageInput from '../message-input/MessageInput';
@@ -12,6 +14,11 @@ const ChatFooter = () => {
   const classes = useStyles();
   const dispatch = useAppDispatch();
   const { replyMessage, replyRecipientAlias } = useAppSelector((state) => state.channel.reply);
+  const { channelAddress: selectedChannelAddress } = useSelectedChannel();
+
+  useEffect(() => {
+    dispatch(discardReply());
+  }, [selectedChannelAddress]);
 
   return (
     <>
