@@ -2,6 +2,7 @@ import type { RootState } from '@metis/store/types';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { Channel } from '../types/channel';
 import { NewChannel } from '../types/newChannel';
+import { Reply } from '../types/Reply';
 import {
   findChannels,
   getHiddenChannels,
@@ -9,12 +10,6 @@ import {
   localStorageKeyHiddenChannel,
   toggleMuteChannel,
 } from './channel.actions';
-
-type Reply = {
-  replyMessage: string;
-  replyRecipientAlias: string;
-  replyRecipientAddress: string;
-};
 
 export type ChannelState = {
   isLoading: boolean;

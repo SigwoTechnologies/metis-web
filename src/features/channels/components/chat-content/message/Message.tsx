@@ -14,7 +14,7 @@ type Props = {
   color: string;
   avatar?: string;
   senderAddress: string;
-  children?: React.ReactElement;
+  children: React.ReactElement | '';
 };
 
 const Message = ({ name, message, date, color, children, avatar = name, senderAddress }: Props) => {
