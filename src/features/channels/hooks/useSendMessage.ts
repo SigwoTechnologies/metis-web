@@ -54,8 +54,8 @@ export default () => {
 
     return channelService.sendMessage(
       selectedChannelAddress,
-      reply,
-      armoredEncryptedMessage as string
+      armoredEncryptedMessage as string,
+      reply
     );
   };
 

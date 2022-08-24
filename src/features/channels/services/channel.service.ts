@@ -102,7 +102,7 @@ const getChannelMembers = async (channelAddress: string) => {
   return response.data;
 };
 
-const sendMessage = async (channelAddress: string, reply: Reply, text: string) => {
+const sendMessage = async (channelAddress: string, text: string, reply: Reply) => {
   try {
     const message = {
       message: text,
