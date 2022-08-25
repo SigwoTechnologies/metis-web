@@ -5,7 +5,7 @@ type props = {
   url?: string;
   query?: {
     room: string;
-    user: string;
+    user?: string;
   };
 };
 
