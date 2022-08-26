@@ -25,10 +25,10 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import Switch from '@mui/material/Switch';
+import Typography from '@mui/material/Typography';
 import { useState } from 'react';
 import About from '../about/about';
 import ModalHiddenList from '../modal-hidden-list/ModalHiddenList';
-import TermConditions from '../term-conditions/termConditions';
 import useStyles from './SearchChannel.styles';
 
 const ChannelList = () => {
@@ -110,10 +110,16 @@ const ChannelList = () => {
         <Divider />
         <Box className={styles.termPosition}>
           <About title="About" message="This is Metis Web App. It is still under construction." />
-          <TermConditions
-            title="Terms and Conditions"
-            message="These are the terms and conditions, you can choose to agree or disagree."
-          />
+          <Typography variant="caption" display="block" className={styles.term}>
+            <a
+              href="https://jup.io/terms"
+              target="_blank"
+              rel="noreferrer noopener"
+              style={{ color: '#555b6e' }}
+            >
+              Terms and Conditions
+            </a>
+          </Typography>
         </Box>
       </Drawer>
       <Container maxWidth="xl" component="main">
