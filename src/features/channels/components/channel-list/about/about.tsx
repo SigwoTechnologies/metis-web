@@ -1,7 +1,10 @@
+import httpService from '@metis/common/services/http.service';
+import Box from '@mui/material/Box';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
+import Divider from '@mui/material/Divider';
 import Typography from '@mui/material/Typography';
 import * as React from 'react';
 import useStyles from './about.styles';
@@ -22,7 +25,9 @@ const About = ({ title, message, onClick }: Props) => {
 
   const handleClose = () => {
     setOpen(false);
+    console.log(httpService.get('/v1/api/version').toString());
   };
+  const listOfInfo = {};
 
   return (
     <div>
@@ -42,7 +47,32 @@ const About = ({ title, message, onClick }: Props) => {
       >
         <DialogTitle id="alert-dialog-title">{title}</DialogTitle>
         <DialogContent>
-          <DialogContentText id="alert-dialog-description">{message}</DialogContentText>
+          <DialogContentText id="alert-dialog-description">
+            <Box sx={{ width: '25rem' }}>
+              <Box>Metis Version</Box>
+
+              <Box>
+                <Divider />
+                Metis Server
+              </Box>
+
+              <Box>
+                <Divider />
+                Jupiter Network
+              </Box>
+
+              <Box>
+                <Divider />
+                Jupiter Server
+              </Box>
+
+              <Box>
+                <Divider />
+                Display
+              </Box>
+              <Divider />
+            </Box>
+          </DialogContentText>
         </DialogContent>
       </Dialog>
     </div>
