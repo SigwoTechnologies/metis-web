@@ -22,9 +22,9 @@ export default class AuthService implements IAuthService {
   async getChallenge(address: string): Promise<string> {
     try {
       const { data } = await httpService.get<ChallengeResponse>(
-        `${this.endpoint}/create-challenge/${address}`
+        `${this.endpoint}/get-account/${address}`
       );
-      return data.challengeDigest;
+      return data.challenge;
     } catch (err: unknown) {
       // TODO: Log the error in a log service
       console.log('getChallenge|error', err);
