@@ -1,5 +1,5 @@
 type ChallengeResponse = {
-  challengeDigest: string;
+  challenge: string;
 };
 
 export default ChallengeResponse;
