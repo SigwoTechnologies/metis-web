@@ -1,5 +1,5 @@
 import EncryiptionService from '@metis/features/auth/services/encryption.service';
-import { useAppDispatch } from '@metis/store/hooks';
+import { useAppDispatch, useAppSelector } from '@metis/store/hooks';
 import { openToast } from '@metis/store/ui/ui.slice';
 import { PublicKey } from 'openpgp';
 import { useEffect, useState } from 'react';
@@ -7,7 +7,8 @@ import channelService from '../services/channel.service';
 import useSelectedChannel from './useSelectedChannel';
 
 export default () => {
-  const selectedChannel = useSelectedChannel();
+  const { reply } = useAppSelector((state) => state.channel);
+  const { channelAddress: selectedChannelAddress } = useSelectedChannel();
   const [publicKeys, setPublicKeys] = useState<PublicKey[]>([]);
   const [loading, setLoading] = useState(false);
   const encryptionService = new EncryiptionService();
@@ -24,9 +25,7 @@ export default () => {
   useEffect(() => {
     const fetchPublicKeys = async () => {
       try {
-        const channelMembers = await channelService.getChannelMembers(
-          selectedChannel.channelAddress
-        );
+        const channelMembers = await channelService.getChannelMembers(selectedChannelAddress);
 
         const publicKeysResponse = await Promise.all(
           channelMembers.map((member) => encryptionService.read(member.e2ePublicKey))
@@ -43,19 +42,20 @@ export default () => {
       }
     };
 
-    if (selectedChannel.channelAddress) {
+    if (selectedChannelAddress) {
       setLoading(true);
       fetchPublicKeys().finally(() => setLoading(false));
     }
-  }, [selectedChannel]);
+  }, [selectedChannelAddress]);
 
   const sendEncryptedMessage = async (text: string) => {
     const message = await encryptionService.createMsg(text);
     const armoredEncryptedMessage = await encryptionService.encryptMessage(message, publicKeys);
 
     return channelService.sendMessage(
-      selectedChannel.channelAddress,
-      armoredEncryptedMessage as string
+      selectedChannelAddress,
+      armoredEncryptedMessage as string,
+      reply
     );
   };
 

@@ -13,10 +13,11 @@ type Props = {
   date: string;
   color: string;
   avatar?: string;
-  children?: React.ReactElement;
+  senderAddress: string;
+  children: React.ReactElement | '';
 };
 
-const Message = ({ name, message, date, color, children, avatar = name }: Props) => {
+const Message = ({ name, message, date, color, children, avatar = name, senderAddress }: Props) => {
   const classes = useStyles();
   const [style, setStyle] = useState({ display: 'none' });
   const isYours = name === 'Rene Reyes';
@@ -25,8 +26,9 @@ const Message = ({ name, message, date, color, children, avatar = name }: Props)
   const handleReplyClick = () => {
     dispatch(
       updateReply({
-        name,
-        message,
+        replyRecipientAddress: senderAddress,
+        replyRecipientAlias: name,
+        replyMessage: message,
       })
     );
   };

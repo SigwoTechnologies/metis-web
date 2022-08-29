@@ -2,6 +2,7 @@ import type { RootState } from '@metis/store/types';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { Channel } from '../types/channel';
 import { NewChannel } from '../types/newChannel';
+import { Reply } from '../types/Reply';
 import {
   findChannels,
   getHiddenChannels,
@@ -9,17 +10,6 @@ import {
   localStorageKeyHiddenChannel,
   toggleMuteChannel,
 } from './channel.actions';
-
-type Reply = {
-  active: boolean;
-  name: string;
-  message: string;
-};
-
-type ReplyPayload = {
-  name: string;
-  message: string;
-};
 
 export type ChannelState = {
   isLoading: boolean;
@@ -35,9 +25,9 @@ const initialState: ChannelState = {
   channels: [],
   hiddenChannels: [],
   reply: {
-    active: false,
-    name: '',
-    message: '',
+    replyMessage: '',
+    replyRecipientAlias: '',
+    replyRecipientAddress: '',
   },
   mutedChannels: [],
   pendingChannels: [],
@@ -70,11 +60,11 @@ const slice = createSlice({
         );
       }
     },
-    updateReply: (state: ChannelState, action: PayloadAction<ReplyPayload>) => {
-      const { name, message } = action.payload;
-      state.reply.name = name;
-      state.reply.message = message;
-      state.reply.active = true;
+    updateReply: (state: ChannelState, { payload }) => {
+      const { replyMessage, replyRecipientAlias, replyRecipientAddress } = payload;
+      state.reply.replyMessage = replyMessage;
+      state.reply.replyRecipientAlias = replyRecipientAlias;
+      state.reply.replyRecipientAddress = replyRecipientAddress;
     },
     discardReply: (state: ChannelState) => {
       state.reply = initialState.reply;

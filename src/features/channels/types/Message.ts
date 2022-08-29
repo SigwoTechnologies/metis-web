@@ -4,7 +4,7 @@ export interface Message {
   attachmentObj: AttachmentObj | null;
   createdAt: number;
   message: string;
-  messageType: string;
+  messageType: 'message' | 'invitation';
   recordType: string;
   replyMessage: string;
   replyRecipientAddress: string;

@@ -4,6 +4,7 @@ import { animated, config, useTransition } from '@react-spring/web';
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import useSelectedChannel from '../../hooks/useSelectedChannel';
 import useStyles from './ChatContent.styles';
+import MessageReply from './message-reply/MessageReply';
 import Message from './message/Message';
 
 // TODO: put this inside the message component
@@ -55,17 +56,28 @@ const ChatContent = () => {
 
   return (
     <Paper onScroll={onScroll} ref={containerRef} className={classes.main} square>
-      {sortedMessages.map(({ senderAlias, message, createdAt }, index) => (
-        <Message
-          // TODO: the backend is not giving us any way to differentiate between messages... Too bad!
-          // eslint-disable-next-line react/no-array-index-key
-          key={index}
-          name={senderAlias}
-          message={message}
-          date={formatDate(createdAt)}
-          color="#A36300"
-        />
-      ))}
+      {sortedMessages.map(
+        (
+          { senderAlias, message, createdAt, senderAddress, replyMessage, replyRecipientAlias },
+          index
+        ) => (
+          <Message
+            // TODO: the backend is not giving us any way to differentiate between messages... Too bad!
+            // eslint-disable-next-line react/no-array-index-key
+            key={index}
+            senderAddress={senderAddress}
+            name={senderAlias}
+            message={message}
+            date={formatDate(createdAt)}
+            color="#A36300"
+          >
+            {/* TODO: there must be a better way to achieve this */}
+            {replyMessage && replyRecipientAlias && (
+              <MessageReply name={replyRecipientAlias} message={replyMessage} color="#A36300" />
+            )}
+          </Message>
+        )
+      )}
       {transition(
         (styles, item) =>
           !item && (

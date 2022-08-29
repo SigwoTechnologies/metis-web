@@ -7,6 +7,7 @@ import { ChannelDTO } from '../types/channelDTO';
 import { ChannelMember } from '../types/ChannelMember';
 import { ChannelsMessagesResponse } from '../types/ChannelsMessagesResponse';
 import { Message } from '../types/Message';
+import { Reply } from '../types/Reply';
 
 type LoadChannelsMessagesProps = {
   channelAddress: string;
@@ -101,13 +102,11 @@ const getChannelMembers = async (channelAddress: string) => {
   return response.data;
 };
 
-const sendMessage = async (channelAddress: string, text: string) => {
+const sendMessage = async (channelAddress: string, text: string, reply: Reply) => {
   try {
     const message = {
       message: text,
-      replyMessage: '',
-      replyRecipientAlias: '',
-      replyRecipientAddress: '',
+      ...reply,
       version: '1.0',
     };
     const response = await httpService.post(`/v1/api/channels/${channelAddress}/messages`, message);
