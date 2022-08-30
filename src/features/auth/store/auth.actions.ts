@@ -5,17 +5,15 @@ import LoginFlow from '../enums/login-flow.enum';
 import LoginState from '../types/login-state';
 import ClientProcessor from '../process/client-processor';
 
-export const login = createAsyncThunk<boolean, string, { rejectValue: ErrorResponse }>(
+export const login = createAsyncThunk<LoginState, string, { rejectValue: ErrorResponse }>(
   'auth/login',
   async (address: string, { rejectWithValue }) => {
     try {
-      // eslint-disable-next-line no-debugger
-      debugger;
       const loginState = { address, flow: LoginFlow.NewAccount } as LoginState;
       const processor = new ClientProcessor();
-      await processor.execute(loginState);
+      const state = await processor.execute(loginState);
 
-      return false;
+      return state;
     } catch (err: unknown) {
       if (err instanceof BusinessError) return rejectWithValue(err.getError());
       throw err;

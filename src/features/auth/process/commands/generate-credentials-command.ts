@@ -4,8 +4,9 @@ import ICommand from './command.interface';
 
 export default class GenerateCredentialsCommand implements ICommand<LoginResponse> {
   async execute(state: LoginResponse): Promise<LoginResponse> {
-    state.password = wordsHelper.generateRandomPassword();
-    state.passphrase = wordsHelper.generatePassphrase();
+    if (!state.password) state.password = wordsHelper.generateRandomPassword();
+    if (!state.passphrase) state.passphrase = wordsHelper.generatePassphrase();
+
     return state;
   }
 }

@@ -5,7 +5,7 @@ import useStyles from './Modal.styles';
 type props = {
   open: boolean;
   title?: string;
-  onClose: () => void;
+  onClose?: () => void;
   children: React.ReactNode;
 };
 

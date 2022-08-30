@@ -6,12 +6,15 @@ type LoginState = {
   address: string;
   challenge: string;
   challengeMessage: string;
+  encryptedCredentials: string;
   error: LoginError | null;
   flow: LoginFlow;
   passphrase: string;
   password: string;
-  privateKey: PrivateKey | null;
-  publicKey: Key | null;
+  privateKey: PrivateKey;
+  privateKeyArmored: string;
+  publicKey: Key;
+  publicKeyArmored: string;
   encryptedPassword: string;
   encryptedPassphrase: string;
 };
