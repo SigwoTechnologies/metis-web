@@ -1,24 +1,14 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { RootState } from '@metis/store/types';
 import { login } from './auth.actions';
-
-type UserData = {
-  password: string;
-  passphrase: string;
-  privateKeyArmored: string;
-  publicKeyArmored: string;
-};
-
-type JupAccount = {
-  address: string;
-  alias: string;
-};
+import EncryptedCredentials from '../types/encrypted-credentials';
+import { JupAccount } from '../types/JupAccount';
 
 export type AuthState = {
   isLoggedIn: boolean;
   isConnectingToMetamask: boolean;
   isCreatingAccount: boolean;
-  userData: UserData;
+  userData: EncryptedCredentials;
   jupAccount: JupAccount;
 };
 
@@ -59,7 +49,6 @@ const authSlice = createSlice({
       state.isCreatingAccount = true;
       const { password, passphrase, privateKeyArmored, publicKeyArmored } = payload;
       state.userData = {
-        ...state.userData,
         password,
         passphrase,
         privateKeyArmored,

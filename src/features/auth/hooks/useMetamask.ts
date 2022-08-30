@@ -13,9 +13,11 @@ const useMetamask = () => {
   // TODO: Add a prompt to warn the user when is a creating a testnet account
   const accountsChanged = async (newAccount: string) => setAccount(newAccount);
 
-  // eslint-disable-next-line consistent-return
   const connect = async () => {
-    if (!window.ethereum) return dispatch(openToast({ text: 'Install MetaMask', type: 'error' }));
+    if (!window.ethereum) {
+      dispatch(openToast({ text: 'Install MetaMask', type: 'error' }));
+      return;
+    }
 
     try {
       dispatch(setIsConnectingToMetamask(true));
@@ -32,7 +34,6 @@ const useMetamask = () => {
 
   const chainChanged = () => setAccount('');
 
-  // TODO: This whole thing makes the state change two times, so the component re renders
   useEffect(() => {
     if (window.ethereum) {
       window.ethereum.on('accountsChanged', (accounts: string[]) => accountsChanged(accounts[0]));

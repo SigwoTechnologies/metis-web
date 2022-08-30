@@ -1,6 +1,7 @@
 import SquareGroup from '@metis/assets/images/misc/square-group.png';
 import Modal from '@metis/common/components/ui/Modal';
 import constants from '@metis/common/configuration/constants';
+import LocalStorageService from '@metis/common/services/local-storage.service';
 import connectSocket from '@metis/common/services/socket.service';
 import useMetamask from '@metis/features/auth/hooks/useMetamask';
 import MetaMaskService from '@metis/features/auth/services/metamask.service';
@@ -45,22 +46,18 @@ const LoginPage = () => {
         },
       }).socket('/sign-up');
 
-      socket.on(
-        'signUpSuccessful',
-        async ({ token, address, alias }: SignUpSuccessfulEventResponse) => {
-          dispatch(setIsCreatingAccount(false));
+      socket.on('signUpSuccessful', ({ token, address, alias }: SignUpSuccessfulEventResponse) => {
+        dispatch(setIsCreatingAccount(false));
 
-          // eslint-disable-next-line quotes
-          dispatch(openToast({ text: 'Your account was created successfuly', type: 'success' }));
-          dispatch(setJupAccount({ address, alias }));
+        dispatch(openToast({ text: 'Your account was created successfuly', type: 'success' }));
+        dispatch(setJupAccount({ address, alias }));
 
-          // TODO: dont know why, but you need to do JSON.stringify twice for it to work
-          const stringifiedToken = JSON.stringify({ access_token: token });
-          localStorage.setItem(constants.TOKEN, JSON.stringify(stringifiedToken));
+        // TODO: because the service does JSON.stringify too we end up with a weird string, fix this
+        const localStorageService = new LocalStorageService();
+        localStorageService.setItem(constants.TOKEN, JSON.stringify({ access_token: token }));
 
-          dispatch(setLoggedIn(true));
-        }
-      );
+        dispatch(setLoggedIn(true));
+      });
 
       socket.on('signUpFailed', ({ message }: { message: string }) => {
         dispatch(openToast({ text: message, type: 'error' }));
