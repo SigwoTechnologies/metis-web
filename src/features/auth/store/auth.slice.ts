@@ -3,56 +3,76 @@ import type { RootState } from '@metis/store/types';
 import { login } from './auth.actions';
 
 type UserData = {
-  address: string;
-  alias: string;
   password: string;
   passphrase: string;
   privateKeyArmored: string;
   publicKeyArmored: string;
 };
 
+type JupAccount = {
+  address: string;
+  alias: string;
+};
+
 export type AuthState = {
-  isLoading: boolean;
   isLoggedIn: boolean;
+  isConnectingToMetamask: boolean;
+  isCreatingAccount: boolean;
   userData: UserData;
+  jupAccount: JupAccount;
 };
 
 const authSlice = createSlice({
   name: 'auth',
   initialState: {
-    isLoading: false,
     isLoggedIn: false,
+    isConnectingToMetamask: false,
+    isCreatingAccount: false,
     userData: {
-      address: '',
-      alias: '',
       password: '',
       passphrase: '',
       privateKeyArmored: '',
       publicKeyArmored: '',
+    },
+    jupAccount: {
+      address: '',
+      alias: '',
     },
   } as AuthState,
   reducers: {
     setLoggedIn: (state, { payload }) => {
       state.isLoggedIn = payload;
     },
-    setUserData: (state, { payload }) => {
-      state.userData = payload;
+    setJupAccount: (state, { payload }) => {
+      state.jupAccount = payload;
+    },
+    setIsConnectingToMetamask: (state, { payload }) => {
+      state.isConnectingToMetamask = payload;
+    },
+    setIsCreatingAccount: (state, { payload }) => {
+      state.isCreatingAccount = payload;
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(login.pending, (state) => {
-      state.isLoading = true;
-    });
     builder.addCase(login.fulfilled, (state, { payload }) => {
-      state.isLoading = false;
-      // state.isLoggedIn = payload;
+      state.isConnectingToMetamask = false;
+      state.isCreatingAccount = true;
+      const { password, passphrase, privateKeyArmored, publicKeyArmored } = payload;
+      state.userData = {
+        ...state.userData,
+        password,
+        passphrase,
+        privateKeyArmored,
+        publicKeyArmored,
+      };
     });
     builder.addCase(login.rejected, (state) => {
-      state.isLoading = false;
+      state.isConnectingToMetamask = false;
     });
   },
 });
 
 export const selectState = (state: RootState) => state.auth;
-export const { setLoggedIn, setUserData } = authSlice.actions;
+export const { setLoggedIn, setJupAccount, setIsConnectingToMetamask, setIsCreatingAccount } =
+  authSlice.actions;
 export const authReducer = authSlice.reducer;

@@ -29,8 +29,7 @@ export default class NewAccountInvoker {
 
     if (!this.state.error) this.state = await this.onSignChallenge.execute(this.state);
 
-    // TODO: Remove this, we store the credential only after the account is created (socket event)
-    // if (!this.state.error) this.state = await this.onLocalStorage.execute(this.state);
+    if (!this.state.error) this.state = await this.onLocalStorage.execute(this.state);
 
     return this.state;
   }
