@@ -44,6 +44,11 @@ const useStyles = makeStyles((theme: Theme) =>
       color: '#555b6e',
       textDecoration: 'underline',
     },
+
+    term2: {
+      size: '2rem',
+      padding: '0.5rem',
+    },
     drawerLetters: {
       fontSize: '0.5rem !important',
     },
