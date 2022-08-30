@@ -20,7 +20,9 @@ const MessageReply: React.FC<props> = ({ name, message, date, color }) => {
             {name}
           </Typography>
           <Box className={classes.message}>
-            <Typography variant="body2">{message}</Typography>
+            <Typography noWrap variant="body2">
+              {message}
+            </Typography>
             {date && (
               <Typography variant="caption" className={classes.date}>
                 {date}

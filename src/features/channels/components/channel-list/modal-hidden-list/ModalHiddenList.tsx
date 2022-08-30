@@ -2,13 +2,12 @@ import Modal from '@metis/common/components/ui/Modal';
 import { useAppDispatch, useAppSelector } from '@metis/store/hooks';
 import { openToast } from '@metis/store/ui/ui.slice';
 import VisibilityIcon from '@mui/icons-material/Visibility';
-import { ListItem, ListItemButton, ListItemIcon, ListItemText, Typography } from '@mui/material';
+import { Typography } from '@mui/material';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import Divider from '@mui/material/Divider';
-import * as React from 'react';
 import { useMemo } from 'react';
 import { selectState, unhideChannel } from '../../../store/channel.slice';
 import ChannelListItem from '../channel-list-item/ChannelListItem';
@@ -52,9 +51,7 @@ const ModalHiddenList = ({ open, onClose }: Props) => {
                       <ChannelListItem
                         channel={channel}
                         key={channel.channelAddress}
-                        name={channel.channelName}
                         date=""
-                        message=""
                         onClick={() => showChannel(channel.channelAddress, channel.channelName)}
                       />
                     </CardContent>

@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-props-no-spreading */
-import { useAppSelector } from '@metis/store/hooks';
+import { useAppDispatch, useAppSelector } from '@metis/store/hooks';
 import AttachFileIcon from '@mui/icons-material/AttachFile';
 import SendIcon from '@mui/icons-material/Send';
 import VideocamOutlinedIcon from '@mui/icons-material/VideocamOutlined';
@@ -8,7 +8,9 @@ import IconButton from '@mui/material/IconButton/IconButton';
 import InputAdornment from '@mui/material/InputAdornment';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
+import useSelectedChannel from '../../hooks/useSelectedChannel';
 import useSendMessage from '../../hooks/useSendMessage';
+import { discardReply } from '../../store/channel.slice';
 import useStyles from './MessageInput.styles';
 
 type FormData = {
@@ -17,17 +19,20 @@ type FormData = {
 
 const MessageInput = () => {
   const classes = useStyles();
-  const { selectedChannel } = useAppSelector((state) => state.channel);
+  const selectedChannel = useSelectedChannel();
   const { register, handleSubmit, reset: clearInput } = useForm<FormData>();
   const { sendEncryptedMessage, loading } = useSendMessage();
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     clearInput();
   }, [selectedChannel]);
 
   const onSubmit = ({ message }: FormData) => {
-    sendEncryptedMessage(message);
-    clearInput();
+    sendEncryptedMessage(message).then(() => {
+      dispatch(discardReply());
+      clearInput();
+    });
   };
 
   return (

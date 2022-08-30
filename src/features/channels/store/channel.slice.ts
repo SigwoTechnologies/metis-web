@@ -2,6 +2,7 @@ import type { RootState } from '@metis/store/types';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { Channel } from '../types/channel';
 import { NewChannel } from '../types/newChannel';
+import { Reply } from '../types/Reply';
 import {
   findChannels,
   getHiddenChannels,
@@ -10,24 +11,12 @@ import {
   toggleMuteChannel,
 } from './channel.actions';
 
-type Reply = {
-  active: boolean;
-  name: string;
-  message: string;
-};
-
-type ReplyPayload = {
-  name: string;
-  message: string;
-};
-
 export type ChannelState = {
   isLoading: boolean;
   hiddenChannels: Channel[];
   reply: Reply;
   mutedChannels: string[];
   channels: Channel[];
-  selectedChannel: Channel;
   pendingChannels: NewChannel[];
 };
 
@@ -35,18 +24,10 @@ const initialState: ChannelState = {
   isLoading: false,
   channels: [],
   hiddenChannels: [],
-  selectedChannel: {
-    channelAddress: '',
-    channelPublicKey: '',
-    channelName: '',
-    createdBy: '',
-    createdAt: 0,
-    messages: [],
-  },
   reply: {
-    active: false,
-    name: '',
-    message: '',
+    replyMessage: '',
+    replyRecipientAlias: '',
+    replyRecipientAddress: '',
   },
   mutedChannels: [],
   pendingChannels: [],
@@ -56,13 +37,6 @@ const slice = createSlice({
   name: 'channel',
   initialState,
   reducers: {
-    selectChannel: (state: ChannelState, { payload }: PayloadAction<string>) => {
-      const selectedChannelOrUndefined = state.channels.find(
-        (element) => element.channelAddress === payload
-      );
-
-      if (selectedChannelOrUndefined) state.selectedChannel = selectedChannelOrUndefined;
-    },
     createChannel: (state: ChannelState, { payload }) => {
       state.pendingChannels.unshift(payload);
     },
@@ -86,11 +60,11 @@ const slice = createSlice({
         );
       }
     },
-    updateReply: (state: ChannelState, action: PayloadAction<ReplyPayload>) => {
-      const { name, message } = action.payload;
-      state.reply.name = name;
-      state.reply.message = message;
-      state.reply.active = true;
+    updateReply: (state: ChannelState, { payload }) => {
+      const { replyMessage, replyRecipientAlias, replyRecipientAddress } = payload;
+      state.reply.replyMessage = replyMessage;
+      state.reply.replyRecipientAlias = replyRecipientAlias;
+      state.reply.replyRecipientAddress = replyRecipientAddress;
     },
     discardReply: (state: ChannelState) => {
       state.reply = initialState.reply;
@@ -102,7 +76,6 @@ const slice = createSlice({
 
       if (!isChannelAlreadyHidden) {
         state.hiddenChannels.push(payload);
-        state.selectedChannel = initialState.selectedChannel;
         localStorage.setItem(localStorageKeyHiddenChannel, JSON.stringify(state.hiddenChannels));
       }
     },
@@ -117,6 +90,15 @@ const slice = createSlice({
         );
         localStorage.setItem(localStorageKeyHiddenChannel, JSON.stringify(state.hiddenChannels));
       }
+    },
+    addNewMessage: (state: ChannelState, { payload }) => {
+      const { channelAddress, message } = payload;
+
+      const targetChannel = state.channels.find(
+        (channel) => channel.channelAddress === channelAddress
+      );
+
+      targetChannel?.messages.unshift(message);
     },
   },
   extraReducers: (builder) => {
@@ -155,10 +137,10 @@ export const selectState = (state: RootState) => state.channel;
 export const {
   updateReply,
   discardReply,
-  selectChannel,
   createChannel,
   finishChannelCreation,
   hideChannel,
   unhideChannel,
+  addNewMessage,
 } = slice.actions;
 export const channelReducer = slice.reducer;
