@@ -1,7 +1,9 @@
 /* eslint-disable quotes */
 import httpService from '@metis/common/services/http.service';
+import EncryiptionService from '@metis/features/auth/services/encryption.service';
 import { openToast } from '@metis/store/ui/ui.slice';
 import { AxiosError } from 'axios';
+import { enums } from 'openpgp';
 import { Channel } from '../types/channel';
 import { ChannelDTO } from '../types/channelDTO';
 import { ChannelMember } from '../types/ChannelMember';
@@ -10,6 +12,8 @@ import { Message } from '../types/Message';
 import { Reply } from '../types/Reply';
 
 type LoadChannelsMessagesProps = {
+  privateKeyArmored: string;
+  passphrase: string;
   channelAddress: string;
   pageNumber?: number;
   pageSize?: number;
@@ -17,23 +21,53 @@ type LoadChannelsMessagesProps = {
 
 const loadChannelsMessages = async ({
   channelAddress,
+  privateKeyArmored,
+  passphrase,
   pageNumber = 0,
   pageSize = 20,
 }: LoadChannelsMessagesProps): Promise<Message[]> => {
+  const decryptMessage = async (message: string) => {
+    const encryptionService = new EncryiptionService();
+    const privateKey = await encryptionService.decryptPrivateKey(passphrase, privateKeyArmored, {
+      preferredHashAlgorithm: enums.hash.sha256,
+      preferredSymmetricAlgorithm: enums.symmetric.aes128,
+    });
+    const encryptedMessage = await encryptionService.readMsg(message);
+    const decryptedMessage = await encryptionService.decryptMessage(encryptedMessage, privateKey);
+
+    return `${decryptedMessage}`;
+  };
+
   const response = await httpService.get<ChannelsMessagesResponse[]>(
     `/v1/api/channels/${channelAddress}/messages?pageNumber=${pageNumber}&pageSize=${pageSize}`
   );
-  const filteredData = response.data.map((item) => item.message);
+  const filteredData = await Promise.all(
+    response.data.map(async (item) => ({
+      ...item.message,
+      decryptedMessage: await decryptMessage(item.message.message),
+    }))
+  );
+
   return filteredData;
 };
 
-const findChannels = async (args: null, { dispatch, rejectWithValue }: any) => {
+const findChannels = async (args: null, { getState, dispatch, rejectWithValue }: any) => {
+  const {
+    auth: {
+      userData: { privateKeyArmored, passphrase },
+    },
+  } = getState();
+
   try {
     const response = await httpService.get<Channel[]>('/v1/api/channels');
     const channels = await Promise.all(
       response.data.map(async (channel) => ({
         ...channel,
-        messages: await loadChannelsMessages({ channelAddress: channel.channelAddress }),
+        messages: await loadChannelsMessages({
+          channelAddress: channel.channelAddress,
+          privateKeyArmored,
+          passphrase,
+        }),
       }))
     );
 

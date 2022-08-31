@@ -9,10 +9,12 @@ import ListItemText from '@mui/material/ListItemText';
 import Typography from '@mui/material/Typography';
 
 import useOnMount from '@metis/common/hooks/useOnMount';
+import EncryiptionService from '@metis/features/auth/services/encryption.service';
 import useChat from '@metis/features/channels/hooks/useChat';
 import { addNewMessage } from '@metis/features/channels/store/channel.slice';
 import { Channel } from '@metis/features/channels/types/channel';
 import { useAppDispatch, useAppSelector } from '@metis/store/hooks';
+import { enums } from 'openpgp';
 import useStyles from './ChannelListItem.styles';
 
 type Props = {
@@ -31,7 +33,12 @@ const ChannelListItem = ({
   selected = false,
 }: Props) => {
   const classes = useStyles();
-  const { mutedChannels } = useAppSelector((state) => state.channel);
+  const {
+    channel: { mutedChannels },
+    auth: {
+      userData: { privateKeyArmored, passphrase },
+    },
+  } = useAppSelector((state) => state);
   const isMuted = mutedChannels.includes(channel.channelAddress);
   const { onSendMessage } = useChat(channel.channelAddress);
   const dispatch = useAppDispatch();
@@ -39,8 +46,21 @@ const ChannelListItem = ({
   // When a new message is created we add that message to the 'messages' property
   // of the channel (this is a socket event so we only connect to it on mount)
   useOnMount(() => {
-    onSendMessage((message) => {
-      dispatch(addNewMessage({ channelAddress: channel.channelAddress, message }));
+    onSendMessage(async (message) => {
+      const encryptionService = new EncryiptionService();
+      const privateKey = await encryptionService.decryptPrivateKey(passphrase, privateKeyArmored, {
+        preferredHashAlgorithm: enums.hash.sha256,
+        preferredSymmetricAlgorithm: enums.symmetric.aes128,
+      });
+      const encryptedMessage = await encryptionService.readMsg(message.message);
+      const decryptedMessage = await encryptionService.decryptMessage(encryptedMessage, privateKey);
+
+      dispatch(
+        addNewMessage({
+          channelAddress: channel.channelAddress,
+          message: { ...message, decryptedMessage },
+        })
+      );
     });
   });
 
@@ -83,7 +103,7 @@ const ChannelListItem = ({
           secondary={
             <Box display="flex">
               <Typography noWrap component="span" variant="caption" color="text.secondary">
-                {channel.messages.length > 0 ? channel.messages[0].message : ''}
+                {channel.messages.length > 0 ? channel.messages[0].decryptedMessage : ''}
               </Typography>
               {isMuted && <VolumeOffIcon className={classes.mutedIcon} fontSize="small" />}
             </Box>

@@ -58,7 +58,14 @@ const ChatContent = () => {
     <Paper onScroll={onScroll} ref={containerRef} className={classes.main} square>
       {sortedMessages.map(
         (
-          { senderAlias, message, createdAt, senderAddress, replyMessage, replyRecipientAlias },
+          {
+            senderAlias,
+            decryptedMessage,
+            createdAt,
+            senderAddress,
+            replyMessage,
+            replyRecipientAlias,
+          },
           index
         ) => (
           <Message
@@ -67,7 +74,7 @@ const ChatContent = () => {
             key={index}
             senderAddress={senderAddress}
             name={senderAlias}
-            message={message}
+            message={decryptedMessage}
             date={formatDate(createdAt)}
             color="#A36300"
           >
