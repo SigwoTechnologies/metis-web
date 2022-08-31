@@ -1,6 +1,7 @@
 import useOnMount from '@metis/common/hooks/useOnMount';
+import connect from '@metis/common/services/socket.service';
 import { findChannels } from '@metis/features/channels/store/channel.actions';
-import { useAppDispatch } from '@metis/store/hooks';
+import { useAppDispatch, useAppSelector } from '@metis/store/hooks';
 import { openToast } from '@metis/store/ui/ui.slice';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import InboxIcon from '@mui/icons-material/Inbox';
@@ -19,34 +20,44 @@ import InviteListItem from './InviteListItem/InviteListItem';
 
 const InvitesList = () => {
   const [invites, setInvites] = useState<Invite[]>([]);
-  const [loading, setLoading] = useState(false);
+  const { alias, address } = useAppSelector((state) => state.auth.jupAccount);
   const dispatch = useAppDispatch();
 
-  const acceptInvite = (channelAddress: string) => {
-    setLoading(true);
-    inviteService
-      .acceptInvite(channelAddress)
-      .then(() => {
-        dispatch(openToast({ type: 'success', text: 'Invite accepted' }));
-        const updatedInvites = invites.filter((invite) => invite.channelAddress !== channelAddress);
-        setInvites(updatedInvites);
-        dispatch(findChannels(null));
-      })
-      .catch(() =>
-        dispatch(openToast({ type: 'error', text: 'There was a problem accepting the invite' }))
-      )
-      .finally(() => setLoading(false));
-  };
-
-  useOnMount(() => {
+  const fetchInvites = () => {
     inviteService
       .getUsersInvites()
-      .then((data) => setInvites(data))
+      .then(setInvites)
       .catch(() => {
         dispatch(
           openToast({ type: 'error', text: 'There was a problem when getting the pending invites' })
         );
       });
+  };
+
+  const acceptInvite = async (channelAddress: string) => {
+    try {
+      await inviteService.acceptInvite(channelAddress);
+      dispatch(openToast({ type: 'success', text: 'Invite accepted' }));
+      const updatedInvites = invites.filter((invite) => invite.channelAddress !== channelAddress);
+      setInvites(updatedInvites);
+      dispatch(findChannels(null));
+    } catch (error) {
+      dispatch(openToast({ type: 'error', text: 'There was a problem accepting the invite' }));
+    }
+  };
+
+  useOnMount(() => {
+    const socket = connect({
+      query: {
+        user: alias,
+        room: address,
+        event: 'newInvite',
+      },
+    }).socket('/invite');
+
+    socket.on('newInvite', fetchInvites);
+
+    fetchInvites();
   });
 
   return (
@@ -76,12 +87,7 @@ const InvitesList = () => {
         </AccordionSummary>
         <AccordionDetails>
           {invites.map((invite) => (
-            <InviteListItem
-              loading={loading}
-              acceptInvite={() => acceptInvite(invite.channelAddress)}
-              key={invite.invitationId}
-              invite={invite}
-            />
+            <InviteListItem key={invite.invitationId} acceptInvite={acceptInvite} invite={invite} />
           ))}
           {invites.length === 0 && (
             <Typography variant="body2">There are no pending invites</Typography>
