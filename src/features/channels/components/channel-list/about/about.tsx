@@ -9,11 +9,34 @@ import Typography from '@mui/material/Typography';
 import * as React from 'react';
 import useStyles from './about.styles';
 
+export interface WebAppInfo {
+  infoOne: string;
+  infoTwo: string;
+  infoThree: string;
+  infoFour: string;
+  infoFive: string;
+}
+export interface InfoResponse {
+  webAppInfo: WebAppInfo;
+  tag: string;
+  transactionId: string;
+}
+
 type Props = {
   title: string;
   message: string;
   onClick?: () => void;
 };
+
+const loadWebAppInfo = async (): Promise<WebAppInfo[]> => {
+  const response = await httpService.get<InfoResponse[]>('/v1/api/version');
+  const filteredData = response.data.map((item) => item.webAppInfo);
+  return filteredData;
+};
+
+Promise.all([loadWebAppInfo]).then((values) => {
+  console.log(values);
+});
 
 const About = ({ title, message, onClick }: Props) => {
   const [open, setOpen] = React.useState(false);
@@ -25,9 +48,13 @@ const About = ({ title, message, onClick }: Props) => {
 
   const handleClose = () => {
     setOpen(false);
-    console.log(httpService.get('/v1/api/version').toString());
   };
-  const listOfInfo = {};
+  const listOfInfo = async () => {
+    const try1 = await httpService.get('/v1/api/version');
+    return try1.data.toString();
+  };
+
+  console.log(listOfInfo());
 
   return (
     <div>
@@ -53,7 +80,7 @@ const About = ({ title, message, onClick }: Props) => {
 
               <Box>
                 <Divider />
-                Metis Server
+                <div>{}</div>
               </Box>
 
               <Box>
