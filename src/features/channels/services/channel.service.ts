@@ -26,25 +26,23 @@ const loadChannelsMessages = async ({
   pageNumber = 0,
   pageSize = 20,
 }: LoadChannelsMessagesProps): Promise<Message[]> => {
-  const decryptMessage = async (message: string) => {
-    const encryptionService = new EncryiptionService();
-    const privateKey = await encryptionService.decryptPrivateKey(passphrase, privateKeyArmored, {
-      preferredHashAlgorithm: enums.hash.sha256,
-      preferredSymmetricAlgorithm: enums.symmetric.aes128,
-    });
-    const encryptedMessage = await encryptionService.readMsg(message);
-    const decryptedMessage = await encryptionService.decryptMessage(encryptedMessage, privateKey);
-
-    return `${decryptedMessage}`;
-  };
-
+  const encryptionService = new EncryiptionService();
   const response = await httpService.get<ChannelsMessagesResponse[]>(
     `/v1/api/channels/${channelAddress}/messages?pageNumber=${pageNumber}&pageSize=${pageSize}`
   );
   const filteredData = await Promise.all(
     response.data.map(async (item) => ({
       ...item.message,
-      decryptedMessage: await decryptMessage(item.message.message),
+      decryptedReplyMessage: await encryptionService.decryptMessage(
+        item.message.replyMessage,
+        passphrase,
+        privateKeyArmored
+      ),
+      decryptedMessage: await encryptionService.decryptMessage(
+        item.message.message,
+        passphrase,
+        privateKeyArmored
+      ),
     }))
   );
 
