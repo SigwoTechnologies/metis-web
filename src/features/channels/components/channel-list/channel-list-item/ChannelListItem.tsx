@@ -48,17 +48,25 @@ const ChannelListItem = ({
   useOnMount(() => {
     onSendMessage(async (message) => {
       const encryptionService = new EncryiptionService();
-      const privateKey = await encryptionService.decryptPrivateKey(passphrase, privateKeyArmored, {
-        preferredHashAlgorithm: enums.hash.sha256,
-        preferredSymmetricAlgorithm: enums.symmetric.aes128,
-      });
-      const encryptedMessage = await encryptionService.readMsg(message.message);
-      const decryptedMessage = await encryptionService.decryptMessage(encryptedMessage, privateKey);
 
       dispatch(
         addNewMessage({
           channelAddress: channel.channelAddress,
-          message: { ...message, decryptedMessage },
+          message: {
+            ...message,
+            decryptedMessage: await encryptionService.decryptMessage(
+              message.message,
+              passphrase,
+              privateKeyArmored
+            ),
+            decryptedReplyMessage:
+              message.replyMessage &&
+              (await encryptionService.decryptMessage(
+                message.replyMessage,
+                passphrase,
+                privateKeyArmored
+              )),
+          },
         })
       );
     });

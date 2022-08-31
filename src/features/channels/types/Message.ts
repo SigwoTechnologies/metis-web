@@ -7,6 +7,7 @@ export interface Message {
   message: string;
   messageType: 'message' | 'invitation';
   recordType: string;
+  decryptedReplyMessage: string;
   replyMessage: string;
   replyRecipientAddress: string;
   replyRecipientAlias: string;
