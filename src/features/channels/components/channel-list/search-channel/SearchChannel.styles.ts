@@ -78,6 +78,9 @@ const useStyles = makeStyles((theme: Theme) =>
     listItemIcon: {
       color: `${theme.colors.green5}`,
     },
+    logout: {
+      color: '#f95849',
+    },
   })
 );
 

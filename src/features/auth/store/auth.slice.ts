@@ -12,23 +12,25 @@ export type AuthState = {
   jupAccount: JupAccount;
 };
 
+const initialState: AuthState = {
+  isLoggedIn: false,
+  isConnectingToMetamask: false,
+  isCreatingAccount: false,
+  userData: {
+    password: '',
+    passphrase: '',
+    privateKeyArmored: '',
+    publicKeyArmored: '',
+  },
+  jupAccount: {
+    address: '',
+    alias: '',
+  },
+};
+
 const authSlice = createSlice({
   name: 'auth',
-  initialState: {
-    isLoggedIn: false,
-    isConnectingToMetamask: false,
-    isCreatingAccount: false,
-    userData: {
-      password: '',
-      passphrase: '',
-      privateKeyArmored: '',
-      publicKeyArmored: '',
-    },
-    jupAccount: {
-      address: '',
-      alias: '',
-    },
-  } as AuthState,
+  initialState,
   reducers: {
     setLoggedIn: (state, { payload }) => {
       state.isLoggedIn = payload;
@@ -42,6 +44,7 @@ const authSlice = createSlice({
     setIsCreatingAccount: (state, { payload }) => {
       state.isCreatingAccount = payload;
     },
+    signOut: () => initialState,
   },
   extraReducers: (builder) => {
     builder.addCase(login.fulfilled, (state, { payload }) => {
@@ -62,6 +65,11 @@ const authSlice = createSlice({
 });
 
 export const selectState = (state: RootState) => state.auth;
-export const { setLoggedIn, setJupAccount, setIsConnectingToMetamask, setIsCreatingAccount } =
-  authSlice.actions;
+export const {
+  setLoggedIn,
+  setJupAccount,
+  setIsConnectingToMetamask,
+  setIsCreatingAccount,
+  signOut,
+} = authSlice.actions;
 export const authReducer = authSlice.reducer;
