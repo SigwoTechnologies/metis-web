@@ -1,11 +1,9 @@
 import SquareGroup from '@metis/assets/images/misc/square-group.png';
 import Modal from '@metis/common/components/ui/Modal';
 import constants from '@metis/common/configuration/constants';
-import LocalStorageService from '@metis/common/services/local-storage.service';
 import connectSocket from '@metis/common/services/socket.service';
 import useMetamask from '@metis/features/auth/hooks/useMetamask';
-import MetaMaskService from '@metis/features/auth/services/metamask.service';
-import { login } from '@metis/features/auth/store/auth.actions';
+import { addPublicKey, login } from '@metis/features/auth/store/auth.actions';
 import {
   setIsCreatingAccount,
   setJupAccount,
@@ -17,7 +15,7 @@ import PeopleIcon from '@mui/icons-material/People';
 import { LoadingButton } from '@mui/lab';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import useStyles from './LoginPage.styles';
 
 type SignUpSuccessfulEventResponse = {
@@ -39,6 +37,8 @@ const LoginPage = () => {
 
   useEffect(() => {
     if (account) {
+      dispatch(login(account));
+
       const socket = connectSocket({
         query: {
           room: `sign-up-${account}`, // address of the current user
@@ -46,25 +46,26 @@ const LoginPage = () => {
         },
       }).socket('/sign-up');
 
-      socket.on('signUpSuccessful', ({ token, address, alias }: SignUpSuccessfulEventResponse) => {
-        dispatch(setIsCreatingAccount(false));
+      socket.on(
+        'signUpSuccessful',
+        async ({ token, address, alias }: SignUpSuccessfulEventResponse) => {
+          // TODO: because the service does JSON.stringify too we end up with a weird string, fix this
+          const stringifiedToken = JSON.stringify({ access_token: token });
+          localStorage.setItem(constants.TOKEN, JSON.stringify(stringifiedToken));
 
-        dispatch(openToast({ text: 'Your account was created successfuly', type: 'success' }));
-        dispatch(setJupAccount({ address, alias }));
-
-        // TODO: because the service does JSON.stringify too we end up with a weird string, fix this
-        const localStorageService = new LocalStorageService();
-        localStorageService.setItem(constants.TOKEN, JSON.stringify({ access_token: token }));
-
-        dispatch(setLoggedIn(true));
-      });
+          dispatch(addPublicKey({ jupUserAddress: address, jwtToken: token })).then(() => {
+            dispatch(setJupAccount({ address, alias }));
+            dispatch(openToast({ text: 'Your account was created successfuly', type: 'success' }));
+            dispatch(setIsCreatingAccount(false));
+            dispatch(setLoggedIn(true));
+          });
+        }
+      );
 
       socket.on('signUpFailed', ({ message }: { message: string }) => {
         dispatch(openToast({ text: message, type: 'error' }));
         dispatch(setIsCreatingAccount(false));
       });
-
-      dispatch(login(account));
 
       return () => {
         socket.off('signUpSuccessful');

@@ -1,9 +1,11 @@
-import { createAsyncThunk } from '@reduxjs/toolkit';
-import ErrorResponse from '@metis/common/types/error-response';
+import appConfig from '@metis/common/configuration/app.config';
 import BusinessError from '@metis/common/exceptions/business-error';
+import httpService from '@metis/common/services/http.service';
+import ErrorResponse from '@metis/common/types/error-response';
+import { createAsyncThunk } from '@reduxjs/toolkit';
 import LoginFlow from '../enums/login-flow.enum';
-import LoginState from '../types/login-state';
 import ClientProcessor from '../process/client-processor';
+import LoginState from '../types/login-state';
 
 export const login = createAsyncThunk<LoginState, string, { rejectValue: ErrorResponse }>(
   'auth/login',
@@ -16,6 +18,39 @@ export const login = createAsyncThunk<LoginState, string, { rejectValue: ErrorRe
       return state;
     } catch (err: unknown) {
       if (err instanceof BusinessError) return rejectWithValue(err.getError());
+      throw err;
+    }
+  }
+);
+
+// TODO: this implementation is god awful, but it'll work for now
+export const addPublicKey = createAsyncThunk(
+  'auth/addPublicKey',
+  async ({ jupUserAddress, jwtToken }: any, { getState }) => {
+    const {
+      auth: {
+        userData: { publicKeyArmored },
+      },
+    } = getState() as any;
+    try {
+      const response = await fetch(
+        `${appConfig.api.baseUrl}/v1/api/users/${jupUserAddress}/e2e-public-keys`,
+        {
+          method: 'PUT',
+          headers: {
+            'Content-type': 'application/json',
+            Authorization: `Bearer ${jwtToken}`, // notice the Bearer before your token
+          },
+          body: JSON.stringify({
+            e2ePublicKey: publicKeyArmored,
+          }),
+        }
+      );
+
+      return response;
+    } catch (err: unknown) {
+      // TODO: handle the error
+      console.log('addPublicKey|error', err);
       throw err;
     }
   }
