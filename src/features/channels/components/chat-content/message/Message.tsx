@@ -1,34 +1,52 @@
 import { updateReply } from '@metis/features/channels/store/channel.slice';
-import { useAppDispatch } from '@metis/store/hooks';
+import { Message as MessageType } from '@metis/features/channels/types/Message';
+import { useAppDispatch, useAppSelector } from '@metis/store/hooks';
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import React, { memo, useState } from 'react';
+import MessageReply from '../message-reply/MessageReply';
 
 import useStyles from './Message.styles';
 
-type Props = {
-  name: string;
-  message: string;
-  date: string;
-  color: string;
-  avatar?: string;
-  senderAddress: string;
-  children: React.ReactElement | '';
+const formatDate = (dateNow: number) => {
+  const date = new Date(dateNow);
+
+  return date.toLocaleDateString('en-US');
 };
 
-const Message = ({ name, message, date, color, children, avatar = name, senderAddress }: Props) => {
+type Props = {
+  message: MessageType;
+  color: string;
+  avatar?: string;
+};
+
+const Message = ({
+  message: {
+    senderAddress,
+    senderAlias,
+    message,
+    createdAt,
+    decryptedMessage,
+    decryptedReplyMessage,
+    replyRecipientAlias,
+  },
+  color,
+  avatar = senderAlias,
+}: Props) => {
   const classes = useStyles();
   const [style, setStyle] = useState({ display: 'none' });
-  const isYours = name === 'Rene Reyes';
+  const { alias: currentUserAlias } = useAppSelector((state) => state.auth.jupAccount);
+  const isYours = senderAlias === currentUserAlias;
   const dispatch = useAppDispatch();
 
   const handleReplyClick = () => {
     dispatch(
       updateReply({
         replyRecipientAddress: senderAddress,
-        replyRecipientAlias: name,
+        replyRecipientAlias: senderAlias,
         replyMessage: message,
+        decryptedReplyMessage: decryptedMessage,
       })
     );
   };
@@ -55,13 +73,19 @@ const Message = ({ name, message, date, color, children, avatar = name, senderAd
           Reply
         </Box>
         <Typography variant="body2" fontWeight="bold" sx={{ color, marginBottom: '0.5rem' }}>
-          {name}
+          {senderAlias}
         </Typography>
-        {children}
+        {decryptedReplyMessage && replyRecipientAlias && (
+          <MessageReply
+            name={replyRecipientAlias}
+            message={decryptedReplyMessage}
+            color="#A36300"
+          />
+        )}
         <Box className={classes.message}>
-          <Typography variant="body2">{message}</Typography>
+          <Typography variant="body2">{decryptedMessage}</Typography>
           <Typography variant="caption" className={classes.date}>
-            {date}
+            {formatDate(createdAt)}
           </Typography>
         </Box>
       </Box>

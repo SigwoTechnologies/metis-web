@@ -44,13 +44,23 @@ export default class EncryiptionService implements IEncryptionService {
     });
   }
 
-  async decryptMessage(message: Message<WebStream<string>>, privateKey: PrivateKey) {
-    const { data } = await decrypt({
-      message,
-      decryptionKeys: privateKey,
-    });
+  async decryptMessage(armoredMessage: string, passphrase: string, privateKeyArmored: string) {
+    try {
+      const privateKey = await this.decryptPrivateKey(passphrase, privateKeyArmored, {
+        preferredHashAlgorithm: enums.hash.sha256,
+        preferredSymmetricAlgorithm: enums.symmetric.aes128,
+      });
+      const encryptedMessage = await this.readMsg(armoredMessage);
+      const { data: decryptedMessage } = await decrypt({
+        message: encryptedMessage,
+        decryptionKeys: privateKey,
+      });
 
-    return data;
+      return decryptedMessage as string;
+    } catch (error) {
+      // TODO: handle the error
+      return '';
+    }
   }
 
   async decryptPrivateKey(passphrase: string, privateKeyArmored: string, config: PartialConfig) {

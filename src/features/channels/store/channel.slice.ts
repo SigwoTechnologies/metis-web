@@ -26,6 +26,7 @@ const initialState: ChannelState = {
   hiddenChannels: [],
   reply: {
     replyMessage: '',
+    decryptedReplyMessage: '',
     replyRecipientAlias: '',
     replyRecipientAddress: '',
   },
@@ -61,10 +62,7 @@ const slice = createSlice({
       }
     },
     updateReply: (state: ChannelState, { payload }) => {
-      const { replyMessage, replyRecipientAlias, replyRecipientAddress } = payload;
-      state.reply.replyMessage = replyMessage;
-      state.reply.replyRecipientAlias = replyRecipientAlias;
-      state.reply.replyRecipientAddress = replyRecipientAddress;
+      state.reply = payload;
     },
     discardReply: (state: ChannelState) => {
       state.reply = initialState.reply;

@@ -7,13 +7,6 @@ import useStyles from './ChatContent.styles';
 import MessageReply from './message-reply/MessageReply';
 import Message from './message/Message';
 
-// TODO: put this inside the message component
-const formatDate = (dateNow: number) => {
-  const date = new Date(dateNow);
-
-  return date.toLocaleDateString('en-US');
-};
-
 const ChatContent = () => {
   const classes = useStyles();
   const { messages, channelAddress: selectedChannelAddress } = useSelectedChannel();
@@ -56,28 +49,15 @@ const ChatContent = () => {
 
   return (
     <Paper onScroll={onScroll} ref={containerRef} className={classes.main} square>
-      {sortedMessages.map(
-        (
-          { senderAlias, message, createdAt, senderAddress, replyMessage, replyRecipientAlias },
-          index
-        ) => (
-          <Message
-            // TODO: the backend is not giving us any way to differentiate between messages... Too bad!
-            // eslint-disable-next-line react/no-array-index-key
-            key={index}
-            senderAddress={senderAddress}
-            name={senderAlias}
-            message={message}
-            date={formatDate(createdAt)}
-            color="#A36300"
-          >
-            {/* TODO: there must be a better way to achieve this */}
-            {replyMessage && replyRecipientAlias && (
-              <MessageReply name={replyRecipientAlias} message={replyMessage} color="#A36300" />
-            )}
-          </Message>
-        )
-      )}
+      {sortedMessages.map((message, index) => (
+        <Message
+          // TODO: the backend is not giving us any way to differentiate between messages... Too bad!
+          // eslint-disable-next-line react/no-array-index-key
+          key={index}
+          message={message}
+          color="#A36300"
+        />
+      ))}
       {transition(
         (styles, item) =>
           !item && (
