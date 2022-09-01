@@ -5,6 +5,7 @@ import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import React, { memo, useState } from 'react';
+import MessageReply from '../message-reply/MessageReply';
 
 import useStyles from './Message.styles';
 
@@ -18,13 +19,19 @@ type Props = {
   message: MessageType;
   color: string;
   avatar?: string;
-  children: React.ReactElement | '';
 };
 
 const Message = ({
-  message: { senderAddress, senderAlias, message, createdAt, decryptedMessage },
+  message: {
+    senderAddress,
+    senderAlias,
+    message,
+    createdAt,
+    decryptedMessage,
+    decryptedReplyMessage,
+    replyRecipientAlias,
+  },
   color,
-  children,
   avatar = senderAlias,
 }: Props) => {
   const classes = useStyles();
@@ -68,7 +75,13 @@ const Message = ({
         <Typography variant="body2" fontWeight="bold" sx={{ color, marginBottom: '0.5rem' }}>
           {senderAlias}
         </Typography>
-        {children}
+        {decryptedReplyMessage && replyRecipientAlias && (
+          <MessageReply
+            name={replyRecipientAlias}
+            message={decryptedReplyMessage}
+            color="#A36300"
+          />
+        )}
         <Box className={classes.message}>
           <Typography variant="body2">{decryptedMessage}</Typography>
           <Typography variant="caption" className={classes.date}>

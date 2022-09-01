@@ -56,16 +56,7 @@ const ChatContent = () => {
           key={index}
           message={message}
           color="#A36300"
-        >
-          {/* TODO: there must be a better way to achieve this */}
-          {message.decryptedReplyMessage && message.replyRecipientAlias && (
-            <MessageReply
-              name={message.replyRecipientAlias}
-              message={message.decryptedReplyMessage}
-              color="#A36300"
-            />
-          )}
-        </Message>
+        />
       ))}
       {transition(
         (styles, item) =>
