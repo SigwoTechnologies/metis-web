@@ -1,25 +1,18 @@
+import useOnMount from '@metis/common/hooks/useOnMount';
 import httpService from '@metis/common/services/http.service';
-import Box from '@mui/material/Box';
+import Grid from '@mui/material/Grid';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import Divider from '@mui/material/Divider';
 import Typography from '@mui/material/Typography';
-import * as React from 'react';
+import { useState, useEffect } from 'react';
 import useStyles from './about.styles';
 
 export interface WebAppInfo {
-  infoOne: string;
-  infoTwo: string;
-  infoThree: string;
-  infoFour: string;
-  infoFive: string;
-}
-export interface InfoResponse {
-  webAppInfo: WebAppInfo;
-  tag: string;
-  transactionId: string;
+  name: string;
+  version: string;
 }
 
 type Props = {
@@ -29,18 +22,21 @@ type Props = {
 };
 
 const loadWebAppInfo = async (): Promise<WebAppInfo[]> => {
-  const response = await httpService.get<InfoResponse[]>('/v1/api/version');
-  const filteredData = response.data.map((item) => item.webAppInfo);
-  return filteredData;
+  const response = await httpService.get<WebAppInfo[]>('/v1/api/version');
+  return response.data;
 };
 
-Promise.all([loadWebAppInfo]).then((values) => {
-  console.log(values);
-});
-
 const About = ({ title, message, onClick }: Props) => {
-  const [open, setOpen] = React.useState(false);
+  const [user, setUser] = useState<WebAppInfo[]>();
+  const [open, setOpen] = useState(false);
   const styles = useStyles();
+  const key = 0;
+
+  useOnMount(() => {
+    loadWebAppInfo().then((data) => {
+      setUser(data);
+    });
+  });
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -49,12 +45,6 @@ const About = ({ title, message, onClick }: Props) => {
   const handleClose = () => {
     setOpen(false);
   };
-  const listOfInfo = async () => {
-    const try1 = await httpService.get('/v1/api/version');
-    return try1.data.toString();
-  };
-
-  console.log(listOfInfo());
 
   return (
     <div>
@@ -75,30 +65,31 @@ const About = ({ title, message, onClick }: Props) => {
         <DialogTitle id="alert-dialog-title">{title}</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            <Box sx={{ width: '25rem' }}>
-              <Box>Metis Version</Box>
-
-              <Box>
-                <Divider />
-                <div>{}</div>
-              </Box>
-
-              <Box>
-                <Divider />
-                Jupiter Network
-              </Box>
-
-              <Box>
-                <Divider />
-                Jupiter Server
-              </Box>
-
-              <Box>
-                <Divider />
-                Display
-              </Box>
+            <Grid className={styles.infoBox}>
               <Divider />
-            </Box>
+
+              <Grid className={styles.infoLine}>
+                <Grid className={styles.infoLineLeft}>{user && user[0].name}</Grid>
+                <Grid className={styles.infoLineRight}>{user && user[0].version}</Grid>
+              </Grid>
+              <Divider />
+
+              <Grid className={styles.infoLine}>
+                <Grid className={styles.infoLineLeft}>{user && user[1].name}</Grid>
+                <Grid className={styles.infoLineRight}>{user && user[1].version}</Grid>
+              </Grid>
+              <Divider />
+              <Grid className={styles.infoLine}>
+                <Grid className={styles.infoLineLeft}>{user && user[2].name}</Grid>
+                <Grid className={styles.infoLineRight}>{user && user[2].version}</Grid>
+              </Grid>
+              <Divider />
+              <Grid className={styles.infoLine}>
+                <Grid className={styles.infoLineLeft}>{user && user[3].name}</Grid>
+                <Grid className={styles.infoLineRight}>{user && user[3].version}</Grid>
+              </Grid>
+              <Divider />
+            </Grid>
           </DialogContentText>
         </DialogContent>
       </Dialog>
