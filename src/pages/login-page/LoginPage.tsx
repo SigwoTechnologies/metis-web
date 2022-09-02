@@ -1,4 +1,4 @@
-import SquareGroup from '@metis/assets/images/misc/square-group.png';
+import MetisLogo from '@metis/assets/images/misc/metis-logo.png';
 import Modal from '@metis/common/components/ui/Modal';
 import constants from '@metis/common/configuration/constants';
 import LocalStorageService from '@metis/common/services/local-storage.service';
@@ -86,7 +86,7 @@ const LoginPage = () => {
       <Box height="100vh" className={classes.wrapper}>
         <Container maxWidth="xl" component="main" className={classes.container}>
           <Box component="form" noValidate maxWidth="md">
-            <Box component="img" src={SquareGroup} alt="login" className={classes.image} />
+            <Box component="img" src={MetisLogo} alt="login" className={classes.image} />
             <LoadingButton
               loading={isConnectingToMetamask}
               loadingPosition="start"
