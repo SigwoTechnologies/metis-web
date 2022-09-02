@@ -1,7 +1,7 @@
 import appConfig from '@metis/common/configuration/app.config';
 import BusinessError from '@metis/common/exceptions/business-error';
-import httpService from '@metis/common/services/http.service';
 import ErrorResponse from '@metis/common/types/error-response';
+import { openToast } from '@metis/store/ui/ui.slice';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import LoginFlow from '../enums/login-flow.enum';
 import ClientProcessor from '../process/client-processor';
@@ -9,7 +9,7 @@ import LoginState from '../types/login-state';
 
 export const login = createAsyncThunk<LoginState, string, { rejectValue: ErrorResponse }>(
   'auth/login',
-  async (address: string, { rejectWithValue }) => {
+  async (address: string, { rejectWithValue, dispatch }) => {
     try {
       const loginState = { address, flow: LoginFlow.NewAccount } as LoginState;
       const processor = new ClientProcessor();
@@ -17,7 +17,10 @@ export const login = createAsyncThunk<LoginState, string, { rejectValue: ErrorRe
 
       return state;
     } catch (err: unknown) {
-      if (err instanceof BusinessError) return rejectWithValue(err.getError());
+      if (err instanceof BusinessError) {
+        dispatch(openToast({ text: err.message, type: 'error' }));
+        return rejectWithValue(err.getError());
+      }
       throw err;
     }
   }
