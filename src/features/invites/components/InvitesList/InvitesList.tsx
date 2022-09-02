@@ -89,7 +89,7 @@ const InvitesList = () => {
           {invites.map((invite) => (
             <InviteListItem key={invite.invitationId} acceptInvite={acceptInvite} invite={invite} />
           ))}
-          {invites.length === 0 && (
+          {!invites.length && (
             <Typography variant="body2">There are no pending invites</Typography>
           )}
         </AccordionDetails>
