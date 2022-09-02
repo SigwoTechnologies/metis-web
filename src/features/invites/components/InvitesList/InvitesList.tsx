@@ -81,7 +81,7 @@ const InvitesList = () => {
                 <InboxIcon />
               </Badge>
             )}
-            {invites.length === 0 && <InboxIcon />}
+            {!invites.length && <InboxIcon />}
             <Typography>Invites</Typography>
           </Box>
         </AccordionSummary>
@@ -89,9 +89,7 @@ const InvitesList = () => {
           {invites.map((invite) => (
             <InviteListItem key={invite.invitationId} acceptInvite={acceptInvite} invite={invite} />
           ))}
-          {!invites.length && (
-            <Typography variant="body2">There are no pending invites</Typography>
-          )}
+          {!invites.length && <Typography variant="body2">There are no pending invites</Typography>}
         </AccordionDetails>
       </Accordion>
     </List>
