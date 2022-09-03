@@ -1,7 +1,9 @@
-import { useEffect, useState } from 'react';
 import { useAppDispatch } from '@metis/store/hooks';
 import { openToast } from '@metis/store/ui/ui.slice';
+import { useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 import { setIsConnectingToMetamask } from '../store/auth.slice';
+import MetamaskNotice from '../components/metamask-notice/MetamaskNotice';
 
 // TODO: Make sure that only metamask provider is supported by the app (avoid overrides)
 // ref: https://docs.metamask.io/guide/ethereum-provider.html#using-the-provider
@@ -15,7 +17,9 @@ const useMetamask = () => {
 
   const connect = async () => {
     if (!window.ethereum) {
-      dispatch(openToast({ text: 'Install MetaMask', type: 'error' }));
+      toast.error(MetamaskNotice, {
+        theme: 'colored',
+      });
       return;
     }
 
