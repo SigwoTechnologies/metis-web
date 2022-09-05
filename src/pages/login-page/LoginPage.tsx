@@ -67,15 +67,15 @@ const LoginPage = () => {
         getJobStatus(Number(jobId)).then(async ({ status }) => {
           const creds = JSON.parse(localStorage.getItem(constants.CREDENTIALS)!);
           const metamaskService = new MetaMaskService();
-          const userDataString = await metamaskService.decryptMessage(creds, account);
-          const userData: EncryptedCredentials = JSON.parse(userDataString);
-
-          dispatch(setUserData(userData));
 
           if (status === 'active') {
             socket.on(
               'signUpSuccessful',
               async ({ token, address, alias }: SignUpSuccessfulEventResponse) => {
+                const userDataString = await metamaskService.decryptMessage(creds, account);
+                const userData: EncryptedCredentials = JSON.parse(userDataString);
+                dispatch(setUserData(userData));
+
                 const stringifiedToken = JSON.stringify({ access_token: token });
                 localStorage.setItem(constants.TOKEN, JSON.stringify(stringifiedToken));
 
@@ -92,6 +92,10 @@ const LoginPage = () => {
               }
             );
           } else if (status === 'complete') {
+            const userDataString = await metamaskService.decryptMessage(creds, account);
+            const userData: EncryptedCredentials = JSON.parse(userDataString);
+            dispatch(setUserData(userData));
+
             const { passphrase, password } = userData;
             const auth = new AuthService(new LocalStorageService());
             auth.legacyLogin(passphrase, password).then(({ user: { alias, address }, token }) => {
