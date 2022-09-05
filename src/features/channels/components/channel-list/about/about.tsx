@@ -1,10 +1,19 @@
+import useOnMount from '@metis/common/hooks/useOnMount';
+import httpService from '@metis/common/services/http.service';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
+import Divider from '@mui/material/Divider';
+import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
-import * as React from 'react';
+import { useState } from 'react';
 import useStyles from './about.styles';
+
+export interface WebAppInfo {
+  name: string;
+  version: string;
+}
 
 type Props = {
   title: string;
@@ -12,9 +21,21 @@ type Props = {
   onClick?: () => void;
 };
 
+const loadWebAppInfo = async (): Promise<WebAppInfo[]> => {
+  const { data } = await httpService.get<WebAppInfo[]>('/v1/api/version');
+  return data;
+};
+
 const About = ({ title, message, onClick }: Props) => {
-  const [open, setOpen] = React.useState(false);
+  const [info, setInfo] = useState<WebAppInfo[]>();
+  const [open, setOpen] = useState(false);
   const styles = useStyles();
+
+  useOnMount(() => {
+    loadWebAppInfo().then((data) => {
+      setInfo(data);
+    });
+  });
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -42,7 +63,24 @@ const About = ({ title, message, onClick }: Props) => {
       >
         <DialogTitle id="alert-dialog-title">{title}</DialogTitle>
         <DialogContent>
-          <DialogContentText id="alert-dialog-description">{message}</DialogContentText>
+          <DialogContentText id="alert-dialog-description">
+            <Grid className={styles.infoBox}>
+              <Divider />
+              {info &&
+                info.map((item) => {
+                  const { name, version } = item;
+                  return (
+                    <Grid>
+                      <Grid className={styles.infoLine}>
+                        <Grid className={styles.infoLineLeft}>{name}</Grid>
+                        <Grid className={styles.infoLineRight}>{version}</Grid>
+                      </Grid>
+                      <Divider />
+                    </Grid>
+                  );
+                })}
+            </Grid>
+          </DialogContentText>
         </DialogContent>
       </Dialog>
     </div>
