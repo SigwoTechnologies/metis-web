@@ -16,6 +16,7 @@ const TextInput = ({ register, name, label, error, ...rest }: props) => {
 
   return (
     <TextField
+      autoComplete="off"
       className={classes.textField}
       label={label}
       variant="standard"
