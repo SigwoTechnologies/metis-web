@@ -1,3 +1,4 @@
+import LocalStorageService from '@metis/common/services/local-storage.service';
 import AuthService from '../../services/auth.service';
 import MetaMaskService from '../../services/metamask.service';
 import LoginState from '../../types/login-state';
@@ -11,7 +12,8 @@ export default class ExistingAccountSameDeviceClient implements IClient {
 
   constructor(state: LoginState) {
     const metaMaskService = new MetaMaskService();
-    const authService = new AuthService();
+    const localStorageService = new LocalStorageService();
+    const authService = new AuthService(localStorageService);
 
     const getChallengeCommand = new GetChallengeCommand(authService);
     const signChallengeCmd = new SignChallengeCommand(authService, metaMaskService);

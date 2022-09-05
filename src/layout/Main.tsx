@@ -6,9 +6,8 @@ import { useLayoutEffect } from 'react';
 import useHttp from '@metis/common/hooks/useHttp';
 import AuthService from '@metis/features/auth/services/auth.service';
 
-import Notification from '@metis/common/components/ui/Notification';
-import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import LocalStorageService from '@metis/common/services/local-storage.service';
 import LeftColumn from './columns/LeftColumn';
 import RightColumn from './columns/RightColumn';
 import useStyles from './Main.styles';
@@ -18,7 +17,8 @@ const Main = () => {
   const { getHttpService, requestInterceptor, responseInterceptor } = useHttp();
 
   useLayoutEffect(() => {
-    const authService = new AuthService();
+    const localStorageService = new LocalStorageService();
+    const authService = new AuthService(localStorageService);
     const token = authService.getToken();
     const httpInstance = getHttpService();
     const request = requestInterceptor(httpInstance, token);

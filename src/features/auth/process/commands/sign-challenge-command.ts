@@ -20,10 +20,22 @@ export default class SignChallengeCommand implements ICommand<LoginState> {
     if (!state.challengeMessage) return { ...state, error: LoginError.RequiredChallengeMessage };
 
     const signature = await this.metaMaskService.signMessage(state.challengeMessage, state.address);
-    const isValid = await this.authService.validateSignature(state.challenge, signature);
 
-    if (!isValid) return { ...state, error: LoginError.InvalidSignature };
+    const {
+      verified,
+      job: { id },
+    } = await this.authService.validateSignature({
+      challenge: state.challenge,
+      signature,
+      publicKey: state.publicKeyArmored,
+      password: state.password,
+      passphrase: state.passphrase,
+      address: state.address,
+    });
 
+    if (!verified) return { ...state, error: LoginError.InvalidSignature };
+
+    localStorage.setItem('SIGNUP_JOB_ID', id.toString());
     return state;
   }
 }

@@ -1,8 +1,12 @@
-import ReneAvatar from '@metis/assets/images/avatars/rene.jpg';
+import PLaceholderAvatar from '@metis/assets/images/avatars/astronaut.png';
+import { signOut } from '@metis/features/auth/store/auth.slice';
+import { useAppDispatch } from '@metis/store/hooks';
+import { openToast } from '@metis/store/ui/ui.slice';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import AllInboxIcon from '@mui/icons-material/AllInbox';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
 import IndeterminateCheckBoxIcon from '@mui/icons-material/IndeterminateCheckBox';
+import LogoutIcon from '@mui/icons-material/Logout';
 import MenuIcon from '@mui/icons-material/Menu';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import SearchIcon from '@mui/icons-material/Search';
@@ -27,6 +31,7 @@ import ListItemText from '@mui/material/ListItemText';
 import Switch from '@mui/material/Switch';
 import Typography from '@mui/material/Typography';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import About from '../about/about';
 import ModalHiddenList from '../modal-hidden-list/ModalHiddenList';
 import useStyles from './SearchChannel.styles';
@@ -35,6 +40,12 @@ const ChannelList = () => {
   const styles = useStyles();
   const [drawer, setDrawer] = useState(false);
   const [open, setOpen] = useState(false);
+  const dispatch = useAppDispatch();
+
+  const handleSignOut = () => {
+    dispatch(signOut());
+    dispatch(openToast({ text: 'Sign out successful', type: 'info' }));
+  };
 
   return (
     <>
@@ -42,10 +53,14 @@ const ChannelList = () => {
         {/* TODO fixed values are not good for responsive design */}
         <Box sx={{ width: 300 }} role="presentation" className={styles.upperGroup}>
           <Box className={styles.account}>
-            <Box className={styles.picBackground} />
+            <Box />
             <Box>
               <Button component="label">
-                <Avatar alt="Channel Avatar" src={ReneAvatar} className={styles.accountAvatar} />
+                <Avatar
+                  alt="Channel Avatar"
+                  src={PLaceholderAvatar}
+                  className={styles.accountAvatar}
+                />
                 <input hidden accept="image/*" multiple type="file" />
               </Button>
             </Box>
@@ -107,8 +122,27 @@ const ChannelList = () => {
             </ListItem>
           </List>
         </Box>
+        <ListItem disablePadding>
+          <ListItemButton onClick={handleSignOut}>
+            <ListItemIcon className={styles.logout}>
+              <LogoutIcon />
+            </ListItemIcon>
+            <ListItemText className={styles.logout} primary="Sign out" />
+          </ListItemButton>
+        </ListItem>
         <Divider />
         <Box className={styles.termPosition}>
+          <Typography variant="caption" display="block" className={styles.term}>
+            <a
+              href="https://jup.io/terms"
+              target="_blank"
+              rel="noreferrer noopener"
+              style={{ color: '#555b6e' }}
+            >
+              Terms and Conditions
+            </a>
+          </Typography>
+
           <About title="About" message="This is Metis Web App. It is still under construction." />
           <Typography variant="caption" display="block" className={styles.term}>
             <a

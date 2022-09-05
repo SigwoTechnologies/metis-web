@@ -3,8 +3,11 @@ enum LoginError {
   RequiredAddress,
   RequiredChallenge,
   RequiredChallengeMessage,
+  RequiredCredentials,
   RequiredPassword,
   RequiredPassphrase,
+  RequiredPrivateKey,
+  RequiredPublicKey,
   DifferentFlow,
 }
 

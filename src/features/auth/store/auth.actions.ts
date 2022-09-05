@@ -1,23 +1,59 @@
-import { createAsyncThunk } from '@reduxjs/toolkit';
-import ErrorResponse from '@metis/common/types/error-response';
+import appConfig from '@metis/common/configuration/app.config';
 import BusinessError from '@metis/common/exceptions/business-error';
+import ErrorResponse from '@metis/common/types/error-response';
+import { openToast } from '@metis/store/ui/ui.slice';
+import { createAsyncThunk } from '@reduxjs/toolkit';
 import LoginFlow from '../enums/login-flow.enum';
-import LoginState from '../types/login-state';
 import ClientProcessor from '../process/client-processor';
+import LoginState from '../types/login-state';
 
-export const login = createAsyncThunk<boolean, string, { rejectValue: ErrorResponse }>(
+export const login = createAsyncThunk<LoginState, string, { rejectValue: ErrorResponse }>(
   'auth/login',
-  async (address: string, { rejectWithValue }) => {
+  async (address: string, { rejectWithValue, dispatch }) => {
     try {
-      // eslint-disable-next-line no-debugger
-      debugger;
       const loginState = { address, flow: LoginFlow.NewAccount } as LoginState;
       const processor = new ClientProcessor();
-      await processor.execute(loginState);
+      const state = await processor.execute(loginState);
 
-      return false;
+      return state;
     } catch (err: unknown) {
-      if (err instanceof BusinessError) return rejectWithValue(err.getError());
+      if (err instanceof BusinessError) {
+        dispatch(openToast({ text: err.message, type: 'error' }));
+        return rejectWithValue(err.getError());
+      }
+      throw err;
+    }
+  }
+);
+
+// TODO: this implementation is god awful, but it'll work for now
+export const addPublicKey = createAsyncThunk(
+  'auth/addPublicKey',
+  async ({ jupUserAddress, jwtToken }: any, { getState }) => {
+    const {
+      auth: {
+        userData: { publicKeyArmored },
+      },
+    } = getState() as any;
+    try {
+      const response = await fetch(
+        `${appConfig.api.baseUrl}/v1/api/users/${jupUserAddress}/e2e-public-keys`,
+        {
+          method: 'PUT',
+          headers: {
+            'Content-type': 'application/json',
+            Authorization: `Bearer ${jwtToken}`, // notice the Bearer before your token
+          },
+          body: JSON.stringify({
+            e2ePublicKey: publicKeyArmored,
+          }),
+        }
+      );
+
+      return response;
+    } catch (err: unknown) {
+      // TODO: handle the error
+      console.log('addPublicKey|error', err);
       throw err;
     }
   }

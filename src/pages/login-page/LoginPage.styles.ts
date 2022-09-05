@@ -19,6 +19,23 @@ const useStyles = makeStyles((theme: Theme) =>
       width: '10rem',
       marginBottom: '3rem',
     },
+    loading: {
+      fontFamily: 'monospace',
+      clipPath: 'inset(0 3ch 0 0)',
+      animation: '$l 1s steps(4) infinite',
+    },
+    '@keyframes l': {
+      to: {
+        clipPath: 'inset(0 -1ch 0 0)',
+      },
+    },
+    icon: {
+      fontSize: '6rem',
+    },
+    iconContainer: {
+      display: 'flex',
+      justifyContent: 'center',
+    },
   })
 );
 

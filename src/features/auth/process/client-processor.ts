@@ -15,7 +15,7 @@ class ClientProcessor {
 
     if (response.error) throw new Error('Custom message'); // TODO: Throw proper error here
 
-    return state;
+    return response;
   }
 }
 

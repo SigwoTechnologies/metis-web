@@ -6,13 +6,6 @@ import useSelectedChannel from '../../hooks/useSelectedChannel';
 import useStyles from './ChatContent.styles';
 import Message from './message/Message';
 
-// TODO: put this inside the message component
-const formatDate = (dateNow: number) => {
-  const date = new Date(dateNow);
-
-  return date.toLocaleDateString('en-US');
-};
-
 const ChatContent = () => {
   const classes = useStyles();
   const { messages, channelAddress: selectedChannelAddress } = useSelectedChannel();
@@ -43,6 +36,7 @@ const ChatContent = () => {
   };
 
   useLayoutEffect(() => {
+    onScroll();
     scrollInstantlyToBottom();
   }, [selectedChannelAddress]);
 
@@ -55,14 +49,12 @@ const ChatContent = () => {
 
   return (
     <Paper onScroll={onScroll} ref={containerRef} className={classes.main} square>
-      {sortedMessages.map(({ senderAlias, message, createdAt }, index) => (
+      {sortedMessages.map((message, index) => (
         <Message
           // TODO: the backend is not giving us any way to differentiate between messages... Too bad!
           // eslint-disable-next-line react/no-array-index-key
           key={index}
-          name={senderAlias}
           message={message}
-          date={formatDate(createdAt)}
           color="#A36300"
         />
       ))}

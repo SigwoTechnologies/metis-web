@@ -1,14 +1,19 @@
 /* eslint-disable quotes */
 import httpService from '@metis/common/services/http.service';
+import EncryiptionService from '@metis/features/auth/services/encryption.service';
 import { openToast } from '@metis/store/ui/ui.slice';
 import { AxiosError } from 'axios';
+import { enums } from 'openpgp';
 import { Channel } from '../types/channel';
 import { ChannelDTO } from '../types/channelDTO';
 import { ChannelMember } from '../types/ChannelMember';
 import { ChannelsMessagesResponse } from '../types/ChannelsMessagesResponse';
 import { Message } from '../types/Message';
+import { Reply } from '../types/Reply';
 
 type LoadChannelsMessagesProps = {
+  privateKeyArmored: string;
+  passphrase: string;
   channelAddress: string;
   pageNumber?: number;
   pageSize?: number;
@@ -16,23 +21,51 @@ type LoadChannelsMessagesProps = {
 
 const loadChannelsMessages = async ({
   channelAddress,
+  privateKeyArmored,
+  passphrase,
   pageNumber = 0,
   pageSize = 20,
 }: LoadChannelsMessagesProps): Promise<Message[]> => {
+  const encryptionService = new EncryiptionService();
   const response = await httpService.get<ChannelsMessagesResponse[]>(
     `/v1/api/channels/${channelAddress}/messages?pageNumber=${pageNumber}&pageSize=${pageSize}`
   );
-  const filteredData = response.data.map((item) => item.message);
+  const filteredData = await Promise.all(
+    response.data.map(async (item) => ({
+      ...item.message,
+      decryptedReplyMessage: await encryptionService.decryptMessage(
+        item.message.replyMessage,
+        passphrase,
+        privateKeyArmored
+      ),
+      decryptedMessage: await encryptionService.decryptMessage(
+        item.message.message,
+        passphrase,
+        privateKeyArmored
+      ),
+    }))
+  );
+
   return filteredData;
 };
 
-const findChannels = async (args: null, { dispatch, rejectWithValue }: any) => {
+const findChannels = async (args: null, { getState, dispatch, rejectWithValue }: any) => {
+  const {
+    auth: {
+      userData: { privateKeyArmored, passphrase },
+    },
+  } = getState();
+
   try {
     const response = await httpService.get<Channel[]>('/v1/api/channels');
     const channels = await Promise.all(
       response.data.map(async (channel) => ({
         ...channel,
-        messages: await loadChannelsMessages({ channelAddress: channel.channelAddress }),
+        messages: await loadChannelsMessages({
+          channelAddress: channel.channelAddress,
+          privateKeyArmored,
+          passphrase,
+        }),
       }))
     );
 
@@ -101,13 +134,11 @@ const getChannelMembers = async (channelAddress: string) => {
   return response.data;
 };
 
-const sendMessage = async (channelAddress: string, text: string) => {
+const sendMessage = async (channelAddress: string, text: string, reply: Reply) => {
   try {
     const message = {
       message: text,
-      replyMessage: '',
-      replyRecipientAlias: '',
-      replyRecipientAddress: '',
+      ...reply,
       version: '1.0',
     };
     const response = await httpService.post(`/v1/api/channels/${channelAddress}/messages`, message);
