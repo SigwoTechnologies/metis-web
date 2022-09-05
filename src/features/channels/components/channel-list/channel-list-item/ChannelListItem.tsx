@@ -1,5 +1,3 @@
-import DoneIcon from '@mui/icons-material/Done';
-import DoneAllIcon from '@mui/icons-material/DoneAll';
 import VolumeOffIcon from '@mui/icons-material/VolumeOff';
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
@@ -14,7 +12,6 @@ import useChat from '@metis/features/channels/hooks/useChat';
 import { addNewMessage } from '@metis/features/channels/store/channel.slice';
 import { Channel } from '@metis/features/channels/types/channel';
 import { useAppDispatch, useAppSelector } from '@metis/store/hooks';
-import { enums } from 'openpgp';
 import useStyles from './ChannelListItem.styles';
 
 type Props = {
@@ -93,13 +90,6 @@ const ChannelListItem = ({
                 </Typography>
               </Box>
               <Box className={classes.channelDescription}>
-                <Box display="flex">
-                  {true ? (
-                    <DoneAllIcon fontSize="small" color="primary" />
-                  ) : (
-                    <DoneIcon fontSize="small" color="primary" />
-                  )}
-                </Box>
                 <Box>
                   <Typography component="span" variant="caption" color="text.primary">
                     {date}
