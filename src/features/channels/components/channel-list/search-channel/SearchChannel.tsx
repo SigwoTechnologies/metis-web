@@ -144,6 +144,16 @@ const ChannelList = () => {
           </Typography>
 
           <About title="About" message="This is Metis Web App. It is still under construction." />
+          <Typography variant="caption" display="block" className={styles.term}>
+            <a
+              href="https://jup.io/terms"
+              target="_blank"
+              rel="noreferrer noopener"
+              style={{ color: '#555b6e' }}
+            >
+              Terms and Conditions
+            </a>
+          </Typography>
         </Box>
       </Drawer>
       <Container maxWidth="xl" component="main">
