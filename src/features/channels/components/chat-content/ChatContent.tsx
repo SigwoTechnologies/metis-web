@@ -4,7 +4,6 @@ import { animated, config, useTransition } from '@react-spring/web';
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import useSelectedChannel from '../../hooks/useSelectedChannel';
 import useStyles from './ChatContent.styles';
-import MessageReply from './message-reply/MessageReply';
 import Message from './message/Message';
 
 const ChatContent = () => {
@@ -37,6 +36,7 @@ const ChatContent = () => {
   };
 
   useLayoutEffect(() => {
+    onScroll();
     scrollInstantlyToBottom();
   }, [selectedChannelAddress]);
 

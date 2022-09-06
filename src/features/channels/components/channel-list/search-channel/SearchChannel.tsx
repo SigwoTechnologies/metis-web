@@ -1,4 +1,4 @@
-import ReneAvatar from '@metis/assets/images/avatars/rene.jpg';
+import PLaceholderAvatar from '@metis/assets/images/avatars/astronaut.png';
 import { signOut } from '@metis/features/auth/store/auth.slice';
 import { useAppDispatch } from '@metis/store/hooks';
 import { openToast } from '@metis/store/ui/ui.slice';
@@ -52,10 +52,14 @@ const ChannelList = () => {
         {/* TODO fixed values are not good for responsive design */}
         <Box sx={{ width: 300 }} role="presentation" className={styles.upperGroup}>
           <Box className={styles.account}>
-            <Box className={styles.picBackground} />
+            <Box />
             <Box>
               <Button component="label">
-                <Avatar alt="Channel Avatar" src={ReneAvatar} className={styles.accountAvatar} />
+                <Avatar
+                  alt="Channel Avatar"
+                  src={PLaceholderAvatar}
+                  className={styles.accountAvatar}
+                />
                 <input hidden accept="image/*" multiple type="file" />
               </Button>
             </Box>
@@ -138,7 +142,18 @@ const ChannelList = () => {
               Terms and Conditions
             </a>
           </Typography>
+
           <About title="About" message="This is Metis Web App. It is still under construction." />
+          <Typography variant="caption" display="block" className={styles.term}>
+            <a
+              href="https://jup.io/terms"
+              target="_blank"
+              rel="noreferrer noopener"
+              style={{ color: '#555b6e' }}
+            >
+              Terms and Conditions
+            </a>
+          </Typography>
         </Box>
       </Drawer>
       <Container maxWidth="xl" component="main">
