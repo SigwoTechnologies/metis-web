@@ -31,7 +31,6 @@ import ListItemText from '@mui/material/ListItemText';
 import Switch from '@mui/material/Switch';
 import Typography from '@mui/material/Typography';
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import About from '../about/about';
 import ModalHiddenList from '../modal-hidden-list/ModalHiddenList';
 import useStyles from './SearchChannel.styles';
@@ -68,14 +67,6 @@ const ChannelList = () => {
 
           <Divider />
           <List>
-            <ListItem disablePadding>
-              <ListItemButton>
-                <ListItemIcon className={styles.listItemIcon}>
-                  <PersonAddIcon />
-                </ListItemIcon>
-                <ListItemText primary="Invite friends" />
-              </ListItemButton>
-            </ListItem>
             <ListItem disablePadding>
               <ListItemButton>
                 <ListItemIcon className={styles.listItemIcon}>
@@ -118,6 +109,15 @@ const ChannelList = () => {
                   <DarkModeIcon />
                 </ListItemIcon>
                 <Switch defaultChecked />
+              </ListItemButton>
+            </ListItem>
+
+            <ListItem disablePadding>
+              <ListItemButton>
+                <ListItemIcon className={styles.listItemIcon}>
+                  <PersonAddIcon />
+                </ListItemIcon>
+                <ListItemText primary="Share Metis with friends!" />
               </ListItemButton>
             </ListItem>
           </List>

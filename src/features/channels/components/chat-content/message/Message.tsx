@@ -4,16 +4,10 @@ import { useAppDispatch, useAppSelector } from '@metis/store/hooks';
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import React, { memo, useState } from 'react';
+import dayjs from 'dayjs';
+import { memo, useState } from 'react';
 import MessageReply from '../message-reply/MessageReply';
-
 import useStyles from './Message.styles';
-
-const formatDate = (dateNow: number) => {
-  const date = new Date(dateNow);
-
-  return date.toLocaleDateString('en-US');
-};
 
 type Props = {
   message: MessageType;
@@ -84,8 +78,12 @@ const Message = ({
         )}
         <Box className={classes.message}>
           <Typography variant="body2">{decryptedMessage}</Typography>
-          <Typography variant="caption" className={classes.date}>
-            {formatDate(createdAt)}
+          <Typography
+            variant="caption"
+            className={classes.date}
+            title={dayjs(createdAt).format('MM/DD/YYYY hh:mm:ssa')}
+          >
+            {dayjs(createdAt).format('MM/DD/YYYY')}
           </Typography>
         </Box>
       </Box>

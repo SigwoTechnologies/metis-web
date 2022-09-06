@@ -1,3 +1,11 @@
+import useOnMount from '@metis/common/hooks/useOnMount';
+import EncryiptionService from '@metis/features/auth/services/encryption.service';
+import useChat from '@metis/features/channels/hooks/useChat';
+import { addNewMessage } from '@metis/features/channels/store/channel.slice';
+import { Channel } from '@metis/features/channels/types/channel';
+import { useAppDispatch, useAppSelector } from '@metis/store/hooks';
+import DoneIcon from '@mui/icons-material/Done';
+import DoneAllIcon from '@mui/icons-material/DoneAll';
 import VolumeOffIcon from '@mui/icons-material/VolumeOff';
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
@@ -5,18 +13,11 @@ import ListItemAvatar from '@mui/material/ListItemAvatar';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 import Typography from '@mui/material/Typography';
-
-import useOnMount from '@metis/common/hooks/useOnMount';
-import EncryiptionService from '@metis/features/auth/services/encryption.service';
-import useChat from '@metis/features/channels/hooks/useChat';
-import { addNewMessage } from '@metis/features/channels/store/channel.slice';
-import { Channel } from '@metis/features/channels/types/channel';
-import { useAppDispatch, useAppSelector } from '@metis/store/hooks';
+import dayjs from 'dayjs';
 import useStyles from './ChannelListItem.styles';
 
 type Props = {
   channel: Channel;
-  date: string;
   avatar?: string;
   onClick?: () => void;
   selected?: boolean;
@@ -24,7 +25,6 @@ type Props = {
 
 const ChannelListItem = ({
   channel,
-  date,
   avatar = channel.channelName,
   onClick,
   selected = false,
@@ -80,6 +80,7 @@ const ChannelListItem = ({
         <ListItemAvatar>
           <Avatar alt={channel.channelName} src={avatar} className={classes.avatar} />
         </ListItemAvatar>
+
         <ListItemText
           disableTypography
           primary={
@@ -91,8 +92,14 @@ const ChannelListItem = ({
               </Box>
               <Box className={classes.channelDescription}>
                 <Box>
-                  <Typography component="span" variant="caption" color="text.primary">
-                    {date}
+                  <Typography
+                    component="span"
+                    variant="caption"
+                    color="text.secondary"
+                    fontSize="small"
+                    title={dayjs(channel.createdAt).format('MM/DD/YYYY hh:mm:ssa')}
+                  >
+                    {dayjs(channel.createdAt).format('MM/DD/YYYY')}
                   </Typography>
                 </Box>
               </Box>
@@ -101,7 +108,7 @@ const ChannelListItem = ({
           secondary={
             <Box display="flex">
               <Typography noWrap component="span" variant="caption" color="text.secondary">
-                {channel.messages.length > 0 ? channel.messages[0].decryptedMessage : ''}
+                {channel.messages.length ? channel.messages[0].decryptedMessage : ''}
               </Typography>
               {isMuted && <VolumeOffIcon className={classes.mutedIcon} fontSize="small" />}
             </Box>
