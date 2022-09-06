@@ -9,6 +9,7 @@ const combinedReducer = combineReducers({
   ui: uiReducer,
 });
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const rootReducer = (state: CombinedState<any>, action: AnyAction) =>
   combinedReducer(state, action);
 

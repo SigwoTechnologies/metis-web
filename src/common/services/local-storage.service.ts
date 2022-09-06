@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 class LocalStorageService {
   getItem<T>(key: string) {
     try {

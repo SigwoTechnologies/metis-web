@@ -4,8 +4,6 @@ import useChat from '@metis/features/channels/hooks/useChat';
 import { addNewMessage } from '@metis/features/channels/store/channel.slice';
 import { Channel } from '@metis/features/channels/types/channel';
 import { useAppDispatch, useAppSelector } from '@metis/store/hooks';
-import DoneIcon from '@mui/icons-material/Done';
-import DoneAllIcon from '@mui/icons-material/DoneAll';
 import VolumeOffIcon from '@mui/icons-material/VolumeOff';
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';

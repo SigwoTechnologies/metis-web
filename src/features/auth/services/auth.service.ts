@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import BusinessError from '@metis/common/exceptions/business-error';
 import httpService from '@metis/common/services/http.service';
 import constants from '@metis/common/configuration/constants';

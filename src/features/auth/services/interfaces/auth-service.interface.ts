@@ -26,5 +26,6 @@ export default interface IAuthService {
     passphrase: string,
     password: string,
     blockchainAccountAddress: string
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   ): Promise<any>;
 }
