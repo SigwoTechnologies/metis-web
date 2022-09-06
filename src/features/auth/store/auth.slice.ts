@@ -47,7 +47,10 @@ const authSlice = createSlice({
     setIsCreatingAccount: (state, { payload }) => {
       state.isCreatingAccount = payload;
     },
-    signOut: () => initialState,
+    signOut: () => {
+      localStorage.removeItem('TOKEN');
+      return initialState;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(login.fulfilled, (state, { payload }) => {
