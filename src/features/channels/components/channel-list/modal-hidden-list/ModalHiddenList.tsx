@@ -51,7 +51,6 @@ const ModalHiddenList = ({ open, onClose }: Props) => {
                       <ChannelListItem
                         channel={channel}
                         key={channel.channelAddress}
-                        date=""
                         onClick={() => showChannel(channel.channelAddress, channel.channelName)}
                       />
                     </CardContent>
