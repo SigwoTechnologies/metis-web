@@ -8,17 +8,8 @@ import MetamaskNotice from '../components/metamask-notice/MetamaskNotice';
 // TODO: Make sure that only metamask provider is supported by the app (avoid overrides)
 // ref: https://docs.metamask.io/guide/ethereum-provider.html#using-the-provider
 
-const checkNavigator = () => {
-  if (navigator.userAgent.toLowerCase().includes('chrome')) return true;
+const checkNavigator = () => Boolean(navigator.userAgent.toLowerCase().match(/chrome|firefox|edge|brave/));
 
-  if (navigator.userAgent.toLowerCase().includes('firefox')) return true;
-
-  if (navigator.userAgent.toLowerCase().includes('edge')) return true;
-
-  if (navigator.userAgent.toLowerCase().includes('brave')) return true;
-
-  return false;
-};
 const useMetamask = () => {
   const dispatch = useAppDispatch();
   const [account, setAccount] = useState('');
