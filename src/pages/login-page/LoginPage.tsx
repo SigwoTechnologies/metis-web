@@ -1,4 +1,4 @@
-import MetisLogo from '@metis/assets/images/misc/metis-logo.png';
+import MetisLogo from '@metis/assets/images/misc/metis-logo.svg';
 import Modal from '@metis/common/components/ui/Modal';
 import constants from '@metis/common/configuration/constants';
 import LocalStorageService from '@metis/common/services/local-storage.service';
