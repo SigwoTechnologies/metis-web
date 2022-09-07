@@ -4,7 +4,6 @@ import constants from '@metis/common/configuration/constants';
 import LocalStorageService from '@metis/common/services/local-storage.service';
 import connectSocket from '@metis/common/services/socket.service';
 import useMetamask from '@metis/features/auth/hooks/useMetamask';
-import MetaMaskService from '@metis/features/auth/services/metamask.service';
 import { login } from '@metis/features/auth/store/auth.actions';
 import {
   setIsCreatingAccount,
@@ -17,7 +16,7 @@ import PeopleIcon from '@mui/icons-material/People';
 import { LoadingButton } from '@mui/lab';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import useStyles from './LoginPage.styles';
 
 type SignUpSuccessfulEventResponse = {
@@ -94,7 +93,9 @@ const LoginPage = () => {
               variant="contained"
               onClick={handleLogin}
             >
-              {isConnectingToMetamask ? 'Connecting to Metamask' : 'Log In with Metamask'}
+              <span className={classes.span}>
+                {isConnectingToMetamask ? 'Connecting to Metamask' : 'Log In with Metamask'}
+              </span>
             </LoadingButton>
           </Box>
         </Container>
