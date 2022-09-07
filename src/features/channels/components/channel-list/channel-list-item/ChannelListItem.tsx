@@ -1,3 +1,9 @@
+import useOnMount from '@metis/common/hooks/useOnMount';
+import EncryiptionService from '@metis/features/auth/services/encryption.service';
+import useChat from '@metis/features/channels/hooks/useChat';
+import { addNewMessage } from '@metis/features/channels/store/channel.slice';
+import { Channel } from '@metis/features/channels/types/channel';
+import { useAppDispatch, useAppSelector } from '@metis/store/hooks';
 import DoneIcon from '@mui/icons-material/Done';
 import DoneAllIcon from '@mui/icons-material/DoneAll';
 import VolumeOffIcon from '@mui/icons-material/VolumeOff';
@@ -7,17 +13,11 @@ import ListItemAvatar from '@mui/material/ListItemAvatar';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 import Typography from '@mui/material/Typography';
-
-import useOnMount from '@metis/common/hooks/useOnMount';
-import useChat from '@metis/features/channels/hooks/useChat';
-import { addNewMessage } from '@metis/features/channels/store/channel.slice';
-import { Channel } from '@metis/features/channels/types/channel';
-import { useAppDispatch, useAppSelector } from '@metis/store/hooks';
+import dayjs from 'dayjs';
 import useStyles from './ChannelListItem.styles';
 
 type Props = {
   channel: Channel;
-  date: string;
   avatar?: string;
   onClick?: () => void;
   selected?: boolean;
@@ -25,13 +25,17 @@ type Props = {
 
 const ChannelListItem = ({
   channel,
-  date,
   avatar = channel.channelName,
   onClick,
   selected = false,
 }: Props) => {
   const classes = useStyles();
-  const { mutedChannels } = useAppSelector((state) => state.channel);
+  const {
+    channel: { mutedChannels },
+    auth: {
+      userData: { privateKeyArmored, passphrase },
+    },
+  } = useAppSelector((state) => state);
   const isMuted = mutedChannels.includes(channel.channelAddress);
   const { onSendMessage } = useChat(channel.channelAddress);
   const dispatch = useAppDispatch();
@@ -39,8 +43,29 @@ const ChannelListItem = ({
   // When a new message is created we add that message to the 'messages' property
   // of the channel (this is a socket event so we only connect to it on mount)
   useOnMount(() => {
-    onSendMessage((message) => {
-      dispatch(addNewMessage({ channelAddress: channel.channelAddress, message }));
+    onSendMessage(async (message) => {
+      const encryptionService = new EncryiptionService();
+
+      dispatch(
+        addNewMessage({
+          channelAddress: channel.channelAddress,
+          message: {
+            ...message,
+            decryptedMessage: await encryptionService.decryptMessage(
+              message.message,
+              passphrase,
+              privateKeyArmored
+            ),
+            decryptedReplyMessage:
+              message.replyMessage &&
+              (await encryptionService.decryptMessage(
+                message.replyMessage,
+                passphrase,
+                privateKeyArmored
+              )),
+          },
+        })
+      );
     });
   });
 
@@ -55,6 +80,7 @@ const ChannelListItem = ({
         <ListItemAvatar>
           <Avatar alt={channel.channelName} src={avatar} className={classes.avatar} />
         </ListItemAvatar>
+
         <ListItemText
           disableTypography
           primary={
@@ -65,16 +91,15 @@ const ChannelListItem = ({
                 </Typography>
               </Box>
               <Box className={classes.channelDescription}>
-                <Box display="flex">
-                  {true ? (
-                    <DoneAllIcon fontSize="small" color="primary" />
-                  ) : (
-                    <DoneIcon fontSize="small" color="primary" />
-                  )}
-                </Box>
                 <Box>
-                  <Typography component="span" variant="caption" color="text.primary">
-                    {date}
+                  <Typography
+                    component="span"
+                    variant="caption"
+                    color="text.secondary"
+                    fontSize="small"
+                    title={dayjs(channel.createdAt).format('MM/DD/YYYY hh:mm:ssa')}
+                  >
+                    {dayjs(channel.createdAt).format('MM/DD/YYYY')}
                   </Typography>
                 </Box>
               </Box>
@@ -83,7 +108,7 @@ const ChannelListItem = ({
           secondary={
             <Box display="flex">
               <Typography noWrap component="span" variant="caption" color="text.secondary">
-                {channel.messages.length > 0 ? channel.messages[0].message : ''}
+                {channel.messages.length ? channel.messages[0].decryptedMessage : ''}
               </Typography>
               {isMuted && <VolumeOffIcon className={classes.mutedIcon} fontSize="small" />}
             </Box>

@@ -14,6 +14,7 @@ describe('Channel Slice', () => {
       hiddenChannels: [],
       reply: {
         replyMessage: '',
+        decryptedReplyMessage: '',
         replyRecipientAlias: '',
         replyRecipientAddress: '',
       },

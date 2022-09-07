@@ -8,6 +8,7 @@ import ChallengeResponse from '../types/challenge-response';
 import ValidateSignatureResponse from '../types/validate-signature-response';
 import getBufferString from '../utils/auth.utils';
 import Credential from '../types/credential';
+import { LegacyLoginResponse } from '../types/legacy-login-response';
 
 export default class AuthService implements IAuthService {
   private readonly endpoint: string;
@@ -17,6 +18,14 @@ export default class AuthService implements IAuthService {
   constructor(_localStorageService: ILocalStorageService) {
     this.endpoint = '/v1/api/crypto';
     this.localStorageService = _localStorageService;
+  }
+
+  async legacyLogin(passphrase: string, password: string) {
+    const { data } = await httpService.post<LegacyLoginResponse>('/v2/api/login', {
+      passphrase,
+      password,
+    });
+    return data;
   }
 
   async getChallenge(address: string): Promise<string> {
@@ -44,7 +53,7 @@ export default class AuthService implements IAuthService {
     passphrase,
     publicKey,
     address,
-  }: Signature): Promise<boolean> {
+  }: Signature): Promise<ValidateSignatureResponse> {
     try {
       const payload = {
         challengeDigest: challenge,
@@ -63,7 +72,7 @@ export default class AuthService implements IAuthService {
       // Now, there are two options, one is when the account does not exist, the account is going to be created and a socket will be emitted.
       // The second option will
 
-      return data.verified;
+      return data;
     } catch (err: unknown) {
       // TODO: Log the error in a log service
       console.log('validateSignature|error', err);

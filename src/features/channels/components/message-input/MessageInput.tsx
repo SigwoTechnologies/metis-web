@@ -38,6 +38,7 @@ const MessageInput = () => {
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <FilledInput
+        autoComplete="off"
         className={classes.button}
         startAdornment={
           <InputAdornment position="start">

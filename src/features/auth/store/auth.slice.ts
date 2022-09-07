@@ -35,6 +35,9 @@ const authSlice = createSlice({
     setLoggedIn: (state, { payload }) => {
       state.isLoggedIn = payload;
     },
+    setUserData: (state, { payload }) => {
+      state.userData = payload;
+    },
     setJupAccount: (state, { payload }) => {
       state.jupAccount = payload;
     },
@@ -44,7 +47,10 @@ const authSlice = createSlice({
     setIsCreatingAccount: (state, { payload }) => {
       state.isCreatingAccount = payload;
     },
-    signOut: () => initialState,
+    signOut: () => {
+      localStorage.removeItem('TOKEN');
+      return initialState;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(login.fulfilled, (state, { payload }) => {
@@ -71,5 +77,6 @@ export const {
   setIsConnectingToMetamask,
   setIsCreatingAccount,
   signOut,
+  setUserData,
 } = authSlice.actions;
 export const authReducer = authSlice.reducer;

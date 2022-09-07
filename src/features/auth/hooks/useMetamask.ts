@@ -1,6 +1,7 @@
-import { useEffect, useState } from 'react';
 import { useAppDispatch } from '@metis/store/hooks';
-import { openToast } from '@metis/store/ui/ui.slice';
+import { useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
+import MetamaskNotice from '../components/metamask-notice/MetamaskNotice';
 import { setIsConnectingToMetamask } from '../store/auth.slice';
 
 // TODO: Make sure that only metamask provider is supported by the app (avoid overrides)
@@ -15,19 +16,20 @@ const useMetamask = () => {
 
   const connect = async () => {
     if (!window.ethereum) {
-      dispatch(openToast({ text: 'Install MetaMask', type: 'error' }));
+      toast.error(MetamaskNotice, {
+        theme: 'colored',
+      });
       return;
     }
 
     try {
       dispatch(setIsConnectingToMetamask(true));
-      const accounts = await window.ethereum.request({
+      const [selectedAccount] = await window.ethereum.request({
         method: 'eth_requestAccounts',
       });
 
-      await accountsChanged(accounts[0]);
+      await accountsChanged(selectedAccount);
     } catch (err) {
-      dispatch(openToast({ text: 'There was a problem connecting to MetaMask', type: 'error' }));
       dispatch(setIsConnectingToMetamask(false));
     }
   };
@@ -36,7 +38,9 @@ const useMetamask = () => {
 
   useEffect(() => {
     if (window.ethereum) {
-      window.ethereum.on('accountsChanged', (accounts: string[]) => accountsChanged(accounts[0]));
+      window.ethereum.on('accountsChanged', ([selectedAccount]: string[]) =>
+        accountsChanged(selectedAccount)
+      );
       window.ethereum.on('chainChanged', chainChanged);
     }
     return () => {

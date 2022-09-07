@@ -26,8 +26,7 @@ const useStyles = makeStyles((theme: Theme) =>
       color: '#fff',
     },
     loading: {
-      fontFamily: 'monospace',
-      clipPath: 'inset(0 3ch 0 0)',
+      clipPath: 'inset(0 1ch 0 0)',
       animation: '$l 1s steps(4) infinite',
     },
     '@keyframes l': {

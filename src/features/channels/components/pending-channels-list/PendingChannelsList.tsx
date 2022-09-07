@@ -15,14 +15,6 @@ import { useEffect } from 'react';
 import { finishChannelCreation } from '../../store/channel.slice';
 import useStyles from './PendingChannelsList.styles';
 
-// TODO: changing this data with the user's data
-const socket = connect({
-  query: {
-    room: 'JUP-7DXL-L46R-8LHH-HWFN2', // address of the current user
-    user: 'user1', // alias of the current user
-  },
-}).socket('/channels');
-
 type SuccessfulChannelCreation = {
   jobId: number;
   channelName: string;
@@ -34,27 +26,41 @@ type FailedChannelCreation = { jobId: number; channelAddress: string };
 const PendingChannelsList = () => {
   const dispatch = useAppDispatch();
   const classes = useStyles();
-  const { pendingChannels } = useAppSelector((state) => state.channel);
+  const {
+    channel: { pendingChannels },
+    auth: { jupAccount },
+  } = useAppSelector((state) => state);
 
   useEffect(() => {
-    socket.on('channelSuccessful', ({ channelName, jobId }: SuccessfulChannelCreation) => {
-      dispatch(finishChannelCreation(jobId));
-      dispatch(
-        openToast({ type: 'success', text: `Channel '${channelName}' was created succesfully` })
-      );
-    });
+    if (jupAccount.address && jupAccount.alias) {
+      const socket = connect({
+        query: {
+          room: jupAccount.address, // address of the current user
+          user: jupAccount.alias, // alias of the current user
+        },
+      }).socket('/channels');
 
-    socket.on('channelCreationFailed', (channelFailedData: FailedChannelCreation) => {
-      const jobId =
-        typeof channelFailedData === 'number' ? channelFailedData : channelFailedData.jobId;
-      dispatch(finishChannelCreation(jobId));
-      dispatch(openToast({ type: 'error', text: "The channel couldn't be created" }));
-    });
+      socket.on('channelSuccessful', ({ channelName, jobId }: SuccessfulChannelCreation) => {
+        dispatch(finishChannelCreation(jobId));
+        dispatch(
+          openToast({ type: 'success', text: `Channel '${channelName}' was created succesfully` })
+        );
+      });
 
-    return () => {
-      socket.off('channelSuccessful');
-      socket.off('channelCreationFailed');
-    };
+      socket.on('channelCreationFailed', (channelFailedData: FailedChannelCreation) => {
+        const jobId =
+          typeof channelFailedData === 'number' ? channelFailedData : channelFailedData.jobId;
+        dispatch(finishChannelCreation(jobId));
+        dispatch(openToast({ type: 'error', text: "The channel couldn't be created" }));
+      });
+
+      return () => {
+        socket.off('channelSuccessful');
+        socket.off('channelCreationFailed');
+      };
+    }
+
+    return undefined;
   }, []);
 
   return (
@@ -84,10 +90,7 @@ const PendingChannelsList = () => {
               secondary={
                 <Box display="flex">
                   <Typography noWrap component="span" variant="caption" color="text.secondary">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Cumque fugit neque ut.
-                    Consequuntur, dolores deserunt! Doloribus eaque excepturi necessitatibus
-                    repellendus asperiores iusto, pariatur totam! Nulla voluptatem necessitatibus
-                    accusantium pariatur optio!
+                    <i>We&apos;re creating your new channel!</i>
                   </Typography>
                 </Box>
               }
