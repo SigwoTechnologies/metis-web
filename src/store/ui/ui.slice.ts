@@ -38,6 +38,7 @@ export const slice = createSlice({
   reducers: {
     openToast: (state, { payload }: PayloadAction<ToastPayload>) => {
       const { type, text } = payload;
+      // eslint-disable-next-line security/detect-object-injection
       toast[type](text, {
         theme: 'colored',
       });

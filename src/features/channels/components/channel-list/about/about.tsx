@@ -26,6 +26,7 @@ const loadWebAppInfo = async (): Promise<WebAppInfo[]> => {
   return data;
 };
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const About = ({ title, message, onClick }: Props) => {
   const [info, setInfo] = useState<WebAppInfo[]>();
   const [open, setOpen] = useState(false);

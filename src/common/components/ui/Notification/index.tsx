@@ -35,6 +35,7 @@ const Notification: React.FC = () => {
       }}
     >
       {
+        // eslint-disable-next-line security/detect-object-injection
         {
           success: <CheckIcon color="success" className={styles.icon} />,
           error: <CloseIcon color="error" className={styles.icon} />,

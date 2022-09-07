@@ -1,4 +1,4 @@
-import ReneAvatar from '@metis/assets/images/avatars/rene.jpg';
+import PLaceholderAvatar from '@metis/assets/images/avatars/astronaut.png';
 import { signOut } from '@metis/features/auth/store/auth.slice';
 import { useAppDispatch } from '@metis/store/hooks';
 import { openToast } from '@metis/store/ui/ui.slice';
@@ -31,7 +31,6 @@ import ListItemText from '@mui/material/ListItemText';
 import Switch from '@mui/material/Switch';
 import Typography from '@mui/material/Typography';
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import About from '../about/about';
 import ModalHiddenList from '../modal-hidden-list/ModalHiddenList';
 import useStyles from './SearchChannel.styles';
@@ -53,10 +52,14 @@ const ChannelList = () => {
         {/* TODO fixed values are not good for responsive design */}
         <Box sx={{ width: 300 }} role="presentation" className={styles.upperGroup}>
           <Box className={styles.account}>
-            <Box className={styles.picBackground} />
+            <Box />
             <Box>
               <Button component="label">
-                <Avatar alt="Channel Avatar" src={ReneAvatar} className={styles.accountAvatar} />
+                <Avatar
+                  alt="Channel Avatar"
+                  src={PLaceholderAvatar}
+                  className={styles.accountAvatar}
+                />
                 <input hidden accept="image/*" multiple type="file" />
               </Button>
             </Box>
@@ -64,14 +67,6 @@ const ChannelList = () => {
 
           <Divider />
           <List>
-            <ListItem disablePadding>
-              <ListItemButton>
-                <ListItemIcon className={styles.listItemIcon}>
-                  <PersonAddIcon />
-                </ListItemIcon>
-                <ListItemText primary="Invite friends" />
-              </ListItemButton>
-            </ListItem>
             <ListItem disablePadding>
               <ListItemButton>
                 <ListItemIcon className={styles.listItemIcon}>
@@ -116,6 +111,15 @@ const ChannelList = () => {
                 <Switch defaultChecked />
               </ListItemButton>
             </ListItem>
+
+            <ListItem disablePadding>
+              <ListItemButton>
+                <ListItemIcon className={styles.listItemIcon}>
+                  <PersonAddIcon />
+                </ListItemIcon>
+                <ListItemText primary="Share Metis with friends!" />
+              </ListItemButton>
+            </ListItem>
           </List>
         </Box>
         <ListItem disablePadding>
@@ -138,7 +142,18 @@ const ChannelList = () => {
               Terms and Conditions
             </a>
           </Typography>
+
           <About title="About" message="This is Metis Web App. It is still under construction." />
+          <Typography variant="caption" display="block" className={styles.term}>
+            <a
+              href="https://jup.io/terms"
+              target="_blank"
+              rel="noreferrer noopener"
+              style={{ color: '#555b6e' }}
+            >
+              Terms and Conditions
+            </a>
+          </Typography>
         </Box>
       </Drawer>
       <Container maxWidth="xl" component="main">

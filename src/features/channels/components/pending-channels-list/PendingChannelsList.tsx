@@ -90,10 +90,7 @@ const PendingChannelsList = () => {
               secondary={
                 <Box display="flex">
                   <Typography noWrap component="span" variant="caption" color="text.secondary">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Cumque fugit neque ut.
-                    Consequuntur, dolores deserunt! Doloribus eaque excepturi necessitatibus
-                    repellendus asperiores iusto, pariatur totam! Nulla voluptatem necessitatibus
-                    accusantium pariatur optio!
+                    <i>We&apos;re creating your new channel!</i>
                   </Typography>
                 </Box>
               }

@@ -49,6 +49,8 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     date: {
       textAlign: 'right',
+      color: '#b7b7b7',
+      fontSize: '0.7rem',
     },
     replyButton: {
       fontSize: '0.85rem',

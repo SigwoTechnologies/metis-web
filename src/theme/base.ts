@@ -74,5 +74,6 @@ declare module '@mui/material/styles' {
 }
 
 export default function themeCreator(theme: string): Theme {
+  // eslint-disable-next-line security/detect-object-injection
   return themeMap[theme];
 }

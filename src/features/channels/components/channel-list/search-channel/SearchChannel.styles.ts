@@ -1,5 +1,3 @@
-import ReneAvatar from '@metis/assets/images/avatars/rene.jpg';
-import GalaxyDark from '@metis/assets/images/misc/galaxy-dark.png';
 import { createStyles, makeStyles } from '@mui/styles';
 import { Theme } from '@mui/material/styles';
 
@@ -17,17 +15,7 @@ const useStyles = makeStyles((theme: Theme) =>
       display: 'flex',
       alignItems: 'center',
     },
-    picBackground: {
-      position: 'absolute',
-      top: '0',
-      left: '0',
-      right: '0',
-      bottom: '0',
-      backgroundImage: `url(${ReneAvatar})`,
-      backgroundSize: '100% 11rem',
-      filter: 'blur(2px) grayscale(100%)',
-      '&::-webkit-filter': 'blur(2px)',
-    },
+
     accountAvatar: {
       width: '4rem',
       height: '4rem',
@@ -54,10 +42,6 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     upperGroup: {
       flexGrow: 1,
-      backgroundImage: `url(${GalaxyDark})`,
-      backgroundSize: '100% 35%',
-      backgroundRepeat: 'no-repeat',
-      backgroundPositionY: '26rem',
     },
     inputText: {
       borderRadius: '1rem',
@@ -79,7 +63,7 @@ const useStyles = makeStyles((theme: Theme) =>
       color: `${theme.colors.green5}`,
     },
     logout: {
-      color: '#f95849',
+      color: '#ec5151',
     },
   })
 );

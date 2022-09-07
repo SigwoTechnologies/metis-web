@@ -3,6 +3,7 @@ import { ThemeProvider } from '@mui/material';
 import { StylesProvider } from '@mui/styles';
 import themeCreator from './base';
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const ThemeContext = React.createContext((_: string): void => {});
 
 type Props = {

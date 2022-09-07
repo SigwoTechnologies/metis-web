@@ -1,3 +1,6 @@
+import { LegacyLoginResponse } from '../../types/legacy-login-response';
+import ValidateSignatureResponse from '../../types/validate-signature-response';
+
 export type Signature = {
   challenge: string;
   signature: string;
@@ -10,9 +13,11 @@ export type Signature = {
 export default interface IAuthService {
   getChallenge(address: string): Promise<string>;
 
+  legacyLogin(passphrase: string, password: string): Promise<LegacyLoginResponse>;
+
   getChallengeMessage(challenge: string): string;
 
-  validateSignature(signature: Signature): Promise<boolean>;
+  validateSignature(signature: Signature): Promise<ValidateSignatureResponse>;
 
   getAlias(address: string): Promise<string>;
 
@@ -21,5 +26,6 @@ export default interface IAuthService {
     passphrase: string,
     password: string,
     blockchainAccountAddress: string
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   ): Promise<any>;
 }

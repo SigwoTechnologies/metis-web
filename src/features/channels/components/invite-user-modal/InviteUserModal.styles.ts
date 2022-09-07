@@ -1,7 +1,8 @@
 import { Theme } from '@mui/material';
 import { createStyles, makeStyles } from '@mui/styles';
 
-const useStyles = makeStyles((theme: Theme) =>
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const useStyles = makeStyles((_theme: Theme) =>
   createStyles({
     button: {
       width: '100%',

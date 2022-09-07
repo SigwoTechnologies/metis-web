@@ -29,11 +29,13 @@ export const login = createAsyncThunk<LoginState, string, { rejectValue: ErrorRe
 // TODO: this implementation is god awful, but it'll work for now
 export const addPublicKey = createAsyncThunk(
   'auth/addPublicKey',
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   async ({ jupUserAddress, jwtToken }: any, { getState }) => {
     const {
       auth: {
         userData: { publicKeyArmored },
       },
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } = getState() as any;
     try {
       const response = await fetch(
@@ -53,6 +55,7 @@ export const addPublicKey = createAsyncThunk(
       return response;
     } catch (err: unknown) {
       // TODO: handle the error
+      // eslint-disable-next-line no-console
       console.log('addPublicKey|error', err);
       throw err;
     }
