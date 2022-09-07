@@ -15,8 +15,6 @@ type LoginState = {
   privateKeyArmored: string;
   publicKey: Key;
   publicKeyArmored: string;
-  encryptedPassword: string;
-  encryptedPassphrase: string;
 };
 
 export default LoginState;
