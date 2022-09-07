@@ -23,7 +23,6 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     span: {
       fontWeight: 700,
-      color: '#fff',
     },
     loading: {
       clipPath: 'inset(0 1ch 0 0)',
