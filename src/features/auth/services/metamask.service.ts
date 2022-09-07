@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { encrypt } from '@metamask/eth-sig-util';
 import { Buffer } from 'buffer';
 import { bufferToHex } from 'ethereumjs-util';
@@ -5,8 +6,8 @@ import BusinessError from '@metis/common/exceptions/business-error';
 import IMetaMaskService from './interfaces/metamask-service.interface';
 
 export default class MetaMaskService implements IMetaMaskService {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  private ethereum: any;
+  // TODO: Find correct type
+  private ethereum;
 
   constructor() {
     this.ethereum = window.ethereum;
@@ -39,10 +40,8 @@ export default class MetaMaskService implements IMetaMaskService {
         method: 'eth_getEncryptionPublicKey',
         params: [address],
       });
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
-      // eslint-disable-next-line no-console
-      console.log('getEncryptPublicKey|error', err);
+      // console.log('getEncryptPublicKey|error', err);
       if (err.code === 4001) {
         throw new BusinessError(
           'We cannot encrypt anything without the key. Please approve and try again'
@@ -69,8 +68,7 @@ export default class MetaMaskService implements IMetaMaskService {
 
       return bufferToHex(buffer);
     } catch (err: unknown) {
-      // eslint-disable-next-line no-console
-      console.log('encryptMessage|error', err);
+      // console.log('encryptMessage|error', err);
       throw new BusinessError('An error has occurred while encrypting your identity.');
     }
   }
@@ -82,8 +80,7 @@ export default class MetaMaskService implements IMetaMaskService {
         params: [message, address],
       });
     } catch (err: unknown) {
-      // eslint-disable-next-line no-console
-      console.log('decryptMessage|error', err);
+      // console.log('decryptMessage|error', err);
       throw new BusinessError('An error has occurred while decrypting your identity.');
     }
   }

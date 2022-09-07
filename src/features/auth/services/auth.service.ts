@@ -91,6 +91,7 @@ export default class AuthService implements IAuthService {
       );
 
       // TODO: Validate if the api can return undefined/null response
+      // TODO: Avoid magic strings
       if (data?.message.toLocaleLowerCase() === 'no available alias') return '';
 
       // TODO: What type of response does the api returns here?
@@ -112,7 +113,6 @@ export default class AuthService implements IAuthService {
         password,
         blockchainAccountAddress,
       });
-      console.log('response', response);
       return response.data;
     } catch (err: unknown) {
       // TODO: Log the error in a log service

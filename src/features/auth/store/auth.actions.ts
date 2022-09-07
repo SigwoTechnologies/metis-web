@@ -27,16 +27,26 @@ export const login = createAsyncThunk<LoginState, string, { rejectValue: ErrorRe
 );
 
 // TODO: this implementation is god awful, but it'll work for now
+type AuthAddPublicKey = {
+  jupUserAddress: string;
+  jwtToken: string;
+};
+
+// TODO: Improve this naming
+type TGetState = {
+  auth: {
+    userData: { publicKeyArmored: string };
+  };
+};
+
 export const addPublicKey = createAsyncThunk(
   'auth/addPublicKey',
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  async ({ jupUserAddress, jwtToken }: any, { getState }) => {
+  async ({ jupUserAddress, jwtToken }: AuthAddPublicKey, { getState }) => {
     const {
       auth: {
         userData: { publicKeyArmored },
       },
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } = getState() as any;
+    } = getState() as TGetState;
     try {
       const response = await fetch(
         `${appConfig.api.baseUrl}/v1/api/users/${jupUserAddress}/e2e-public-keys`,

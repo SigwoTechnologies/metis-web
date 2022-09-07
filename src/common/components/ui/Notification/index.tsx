@@ -3,13 +3,18 @@ import { hideNotification } from '@metis/store/ui/ui.slice';
 import CheckIcon from '@mui/icons-material/Check';
 import CloseIcon from '@mui/icons-material/Close';
 import { Dialog } from '@mui/material';
-import React, { useEffect } from 'react';
+import React, { ReactNode, useEffect } from 'react';
 import useStyles from './Notification.styles';
 
 const Notification: React.FC = () => {
   const { open, type, text } = useAppSelector((state) => state.ui.notification);
   const dispatch = useAppDispatch();
   const styles = useStyles();
+
+  const STATUSES: { [key: string]: ReactNode } = {
+    success: <CheckIcon color="success" className={styles.icon} />,
+    error: <CloseIcon color="error" className={styles.icon} />,
+  };
 
   useEffect(() => {
     if (open) {
@@ -34,13 +39,7 @@ const Notification: React.FC = () => {
         },
       }}
     >
-      {
-        // eslint-disable-next-line security/detect-object-injection
-        {
-          success: <CheckIcon color="success" className={styles.icon} />,
-          error: <CloseIcon color="error" className={styles.icon} />,
-        }[type]
-      }
+      {STATUSES[type as string]}
       <p className={styles.text}>{text}</p>
     </Dialog>
   );

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { LegacyLoginResponse } from '../../types/legacy-login-response';
 import ValidateSignatureResponse from '../../types/validate-signature-response';
 
@@ -26,6 +27,5 @@ export default interface IAuthService {
     passphrase: string,
     password: string,
     blockchainAccountAddress: string
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   ): Promise<any>;
 }
