@@ -1,4 +1,5 @@
 import { useAppDispatch } from '@metis/store/hooks';
+import { openToast } from '@metis/store/ui/ui.slice';
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import MetamaskNotice from '../components/metamask-notice/MetamaskNotice';
