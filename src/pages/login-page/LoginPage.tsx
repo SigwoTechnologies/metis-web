@@ -1,4 +1,4 @@
-import SquareGroup from '@metis/assets/images/misc/square-group.png';
+import MetisLogo from '@metis/assets/images/misc/metis-logo.svg';
 import Modal from '@metis/common/components/ui/Modal';
 import constants from '@metis/common/configuration/constants';
 import useOnMount from '@metis/common/hooks/useOnMount';
@@ -158,7 +158,7 @@ const LoginPage = () => {
       <Box height="100vh" className={classes.wrapper}>
         <Container maxWidth="xl" component="main" className={classes.container}>
           <Box component="form" noValidate maxWidth="md">
-            <Box component="img" src={SquareGroup} alt="login" className={classes.image} />
+            <Box component="img" src={MetisLogo} alt="login" className={classes.image} />
             <LoadingButton
               loading={isConnectingToMetamask}
               loadingPosition="start"
@@ -166,7 +166,9 @@ const LoginPage = () => {
               variant="contained"
               onClick={handleLogin}
             >
-              {isConnectingToMetamask ? 'Connecting to Metamask' : 'Log In with Metamask'}
+              <span className={classes.span}>
+                {isConnectingToMetamask ? 'Connecting to Metamask' : 'Log In with Metamask'}
+              </span>
             </LoadingButton>
           </Box>
         </Container>
