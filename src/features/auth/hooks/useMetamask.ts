@@ -7,6 +7,8 @@ import { setIsConnectingToMetamask } from '../store/auth.slice';
 
 // TODO: Make sure that only metamask provider is supported by the app (avoid overrides)
 // ref: https://docs.metamask.io/guide/ethereum-provider.html#using-the-provider
+const checkNavigatorCompatibility = () =>
+  Boolean(navigator.userAgent.toLowerCase().match(/chrome|firefox|edge|brave/));
 
 const useMetamask = () => {
   const dispatch = useAppDispatch();
@@ -16,8 +18,9 @@ const useMetamask = () => {
   const accountsChanged = async (newAccount: string) => setAccount(newAccount);
 
   const connect = async () => {
-    if (!navigator.userAgent.toLowerCase().match(/chrome|firefox|edge|brave/)) {
-      dispatch(openToast({ text: 'Navigator is not compatible with MetaMask', type: 'error' }));
+    const isCompatible = checkNavigatorCompatibility();
+    if (!isCompatible) {
+      dispatch(openToast({ text: 'Browser is not compatible with MetaMask', type: 'error' }));
       return;
     }
 
