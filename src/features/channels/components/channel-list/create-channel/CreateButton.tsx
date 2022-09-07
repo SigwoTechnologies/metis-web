@@ -1,8 +1,6 @@
 /* eslint-disable quotes */
-import PlusButton from '@metis/assets/images/misc/plus-button.png';
-import Box from '@mui/material/Box';
-
 import { yupResolver } from '@hookform/resolvers/yup';
+import PlusButton from '@metis/assets/images/misc/plus-button.png';
 import Form from '@metis/common/components/ui/Form/Form';
 import TextInput from '@metis/common/components/ui/TextInput/TextInput';
 import channelService from '@metis/features/channels/services/channel.service';
@@ -14,6 +12,7 @@ import { openToast } from '@metis/store/ui/ui.slice';
 import CloseIcon from '@mui/icons-material/Close';
 import { LoadingButton } from '@mui/lab';
 import { Drawer, IconButton } from '@mui/material';
+import Box from '@mui/material/Box';
 import { useState } from 'react';
 import * as yup from 'yup';
 import useStyles from './CreateButton.styles';

@@ -37,7 +37,7 @@ const ModalHiddenList = ({ open, onClose }: Props) => {
   };
   return (
     <Modal open={open} onClose={onClose} title="Hidden Channels">
-      {hiddenChannelsAddreses.length === 0 ? (
+      {!hiddenChannelsAddreses.length ? (
         <Typography className={styles.nothingMessage}>There are no hidden channels</Typography>
       ) : (
         <Card sx={{ minWidth: 400 }}>

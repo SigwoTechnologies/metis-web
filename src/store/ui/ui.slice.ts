@@ -1,3 +1,4 @@
+/* eslint-disable security/detect-object-injection */
 import { AlertColor } from '@mui/material';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { toast } from 'react-toastify';
@@ -38,7 +39,6 @@ export const slice = createSlice({
   reducers: {
     openToast: (state, { payload }: PayloadAction<ToastPayload>) => {
       const { type, text } = payload;
-      // eslint-disable-next-line security/detect-object-injection
       toast[type](text, {
         theme: 'colored',
       });

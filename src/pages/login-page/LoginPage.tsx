@@ -1,7 +1,6 @@
 import SquareGroup from '@metis/assets/images/misc/square-group.png';
 import Modal from '@metis/common/components/ui/Modal';
 import constants from '@metis/common/configuration/constants';
-import useOnMount from '@metis/common/hooks/useOnMount';
 import { getJobStatus } from '@metis/common/services/job.service';
 import LocalStorageService from '@metis/common/services/local-storage.service';
 import connectSocket from '@metis/common/services/socket.service';
@@ -41,8 +40,6 @@ const LoginPage = () => {
   const handleLogin = async () => {
     await connect();
   };
-
-  useOnMount(() => {});
 
   // TODO: Make a better implementation of this
   useEffect(() => {
