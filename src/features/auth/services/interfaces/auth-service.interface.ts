@@ -1,3 +1,4 @@
+import { ExistingAccountSignResponse } from '../../types/existing-account-sign-response';
 import { LegacyLoginResponse } from '../../types/legacy-login-response';
 import ValidateSignatureResponse from '../../types/validate-signature-response';
 
@@ -17,7 +18,9 @@ export default interface IAuthService {
 
   getChallengeMessage(challenge: string): string;
 
-  validateSignature(signature: Signature): Promise<ValidateSignatureResponse>;
+  validateSignature(
+    signature: Signature
+  ): Promise<ValidateSignatureResponse | ExistingAccountSignResponse>;
 
   getAlias(address: string): Promise<string>;
 
