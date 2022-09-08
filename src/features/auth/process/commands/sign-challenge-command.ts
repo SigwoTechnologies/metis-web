@@ -1,7 +1,11 @@
+import constants from '@metis/common/configuration/constants';
 import LoginError from '../../enums/login-error.enum';
+import LoginFlow from '../../enums/login-flow.enum';
 import IAuthService from '../../services/interfaces/auth-service.interface';
 import IMetaMaskService from '../../services/interfaces/metamask-service.interface';
+import { ExistingAccountSignResponse } from '../../types/existing-account-sign-response';
 import LoginState from '../../types/login-state';
+import ValidateSignatureResponse from '../../types/validate-signature-response';
 import ICommand from './command.interface';
 
 export default class SignChallengeCommand implements ICommand<LoginState> {
@@ -21,10 +25,7 @@ export default class SignChallengeCommand implements ICommand<LoginState> {
 
     const signature = await this.metaMaskService.signMessage(state.challengeMessage, state.address);
 
-    const {
-      verified,
-      job: { id },
-    } = await this.authService.validateSignature({
+    const data = await this.authService.validateSignature({
       challenge: state.challenge,
       signature,
       publicKey: state.publicKeyArmored,
@@ -33,9 +34,25 @@ export default class SignChallengeCommand implements ICommand<LoginState> {
       address: state.address,
     });
 
-    if (!verified) return { ...state, error: LoginError.InvalidSignature };
+    if (state.flow === LoginFlow.NewAccount) {
+      const {
+        verified,
+        job: { id },
+      } = data as ValidateSignatureResponse;
+      if (!verified) return { ...state, error: LoginError.InvalidSignature };
 
-    localStorage.setItem('SIGNUP_JOB_ID', id.toString());
+      localStorage.setItem('SIGNUP_JOB_ID', id.toString());
+    }
+
+    if (state.flow === LoginFlow.ExistingAccountSameDevice) {
+      const { alias, accountRS, token } = data as ExistingAccountSignResponse;
+      const stringifiedToken = JSON.stringify({ access_token: token });
+      localStorage.setItem(constants.TOKEN, JSON.stringify(stringifiedToken));
+      state.alias = alias;
+      state.jupAddress = accountRS;
+      state.isLoggedIn = true;
+    }
+
     return state;
   }
 }
