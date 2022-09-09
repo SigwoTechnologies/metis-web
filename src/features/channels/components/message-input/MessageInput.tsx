@@ -40,21 +40,22 @@ const MessageInput = () => {
       <FilledInput
         autoComplete="off"
         className={classes.button}
-        startAdornment={
-          <InputAdornment position="start">
-            <IconButton aria-label="send message" edge="start" size="medium" sx={{ p: 1.5 }}>
-              <AttachFileIcon />
-            </IconButton>
-            <IconButton
-              aria-label="send message"
-              edge="start"
-              size="medium"
-              sx={{ p: 1.5, mr: 0.5 }}
-            >
-              <VideocamOutlinedIcon />
-            </IconButton>
-          </InputAdornment>
-        }
+        // startAdornment={
+        //   <InputAdornment position="start">
+        //     <IconButton aria-label="send message" edge="start" size="medium" sx={{ p: 1.5 }}>
+        //       <AttachFileIcon />
+        //     </IconButton>
+        //     <IconButton
+        //       aria-label="send message"
+        //       edge="start"
+        //       size="medium"
+        //       sx={{ p: 1.5, mr: 0.5 }}
+        //     >
+        //       <VideocamOutlinedIcon />
+        //     </IconButton>
+        //   </InputAdornment>
+        // }
+
         inputProps={{ className: classes.footerInputStyle }}
         endAdornment={
           <InputAdornment position="end">

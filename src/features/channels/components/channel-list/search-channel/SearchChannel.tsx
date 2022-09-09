@@ -75,6 +75,7 @@ const ChannelList = () => {
                 <ListItemText primary="New Channel" />
               </ListItemButton>
             </ListItem>
+            {/* 
             <ListItem disablePadding>
               <ListItemButton>
                 <ListItemIcon className={styles.listItemIcon}>
@@ -83,6 +84,7 @@ const ChannelList = () => {
                 <ListItemText primary="Wallet" />
               </ListItemButton>
             </ListItem>
+  */}
 
             <ListItem disablePadding>
               <ListItemButton onClick={() => setOpen(true)}>
@@ -94,7 +96,7 @@ const ChannelList = () => {
             </ListItem>
 
             <ModalHiddenList open={open} onClose={() => setOpen(false)} />
-
+            {/*
             <ListItem disablePadding>
               <ListItemButton>
                 <ListItemIcon className={styles.listItemIcon}>
@@ -120,6 +122,7 @@ const ChannelList = () => {
                 <ListItemText primary="Share Metis with friends!" />
               </ListItemButton>
             </ListItem>
+            */}
           </List>
         </Box>
         <ListItem disablePadding>
@@ -144,16 +147,6 @@ const ChannelList = () => {
           </Typography>
 
           <About title="About" message="This is Metis Web App. It is still under construction." />
-          <Typography variant="caption" display="block" className={styles.term}>
-            <a
-              href="https://jup.io/terms"
-              target="_blank"
-              rel="noreferrer noopener"
-              style={{ color: '#555b6e' }}
-            >
-              Terms and Conditions
-            </a>
-          </Typography>
         </Box>
       </Drawer>
       <Container maxWidth="xl" component="main">
@@ -163,6 +156,7 @@ const ChannelList = () => {
               <MenuIcon />
             </IconButton>
           </Grid>
+          {/* 
           <Grid item xs={10}>
             <FormControl variant="standard" fullWidth>
               <InputLabel>Search</InputLabel>
@@ -179,6 +173,7 @@ const ChannelList = () => {
               />
             </FormControl>
           </Grid>
+          */}
         </Grid>
       </Container>
     </>
