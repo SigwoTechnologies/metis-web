@@ -1,4 +1,4 @@
-import SquareGroup from '@metis/assets/images/misc/square-group.png';
+import MetisLogo from '@metis/assets/images/misc/metis-logo.svg';
 import Modal from '@metis/common/components/ui/Modal';
 import constants from '@metis/common/configuration/constants';
 import useOnMount from '@metis/common/hooks/useOnMount';
@@ -67,15 +67,15 @@ const LoginPage = () => {
         getJobStatus(Number(jobId)).then(async ({ status }) => {
           const creds = JSON.parse(localStorage.getItem(constants.CREDENTIALS)!);
           const metamaskService = new MetaMaskService();
-          const userDataString = await metamaskService.decryptMessage(creds, account);
-          const userData: EncryptedCredentials = JSON.parse(userDataString);
-
-          dispatch(setUserData(userData));
 
           if (status === 'active') {
             socket.on(
               'signUpSuccessful',
               async ({ token, address, alias }: SignUpSuccessfulEventResponse) => {
+                const userDataString = await metamaskService.decryptMessage(creds, account);
+                const userData: EncryptedCredentials = JSON.parse(userDataString);
+                dispatch(setUserData(userData));
+
                 const stringifiedToken = JSON.stringify({ access_token: token });
                 localStorage.setItem(constants.TOKEN, JSON.stringify(stringifiedToken));
 
@@ -92,6 +92,10 @@ const LoginPage = () => {
               }
             );
           } else if (status === 'complete') {
+            const userDataString = await metamaskService.decryptMessage(creds, account);
+            const userData: EncryptedCredentials = JSON.parse(userDataString);
+            dispatch(setUserData(userData));
+
             const { passphrase, password } = userData;
             const auth = new AuthService(new LocalStorageService());
             auth.legacyLogin(passphrase, password).then(({ user: { alias, address }, token }) => {
@@ -154,7 +158,7 @@ const LoginPage = () => {
       <Box height="100vh" className={classes.wrapper}>
         <Container maxWidth="xl" component="main" className={classes.container}>
           <Box component="form" noValidate maxWidth="md">
-            <Box component="img" src={SquareGroup} alt="login" className={classes.image} />
+            <Box component="img" src={MetisLogo} alt="login" className={classes.image} />
             <LoadingButton
               loading={isConnectingToMetamask}
               loadingPosition="start"
@@ -162,7 +166,9 @@ const LoginPage = () => {
               variant="contained"
               onClick={handleLogin}
             >
-              {isConnectingToMetamask ? 'Connecting to Metamask' : 'Log In with Metamask'}
+              <span className={classes.span}>
+                {isConnectingToMetamask ? 'Connecting to Metamask' : 'Log In with Metamask'}
+              </span>
             </LoadingButton>
           </Box>
         </Container>

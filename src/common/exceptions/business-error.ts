@@ -3,7 +3,7 @@ import ErrorResponse from '../types/error-response';
 class BusinessError extends Error {
   private msg: string;
 
-  constructor(message: string, private errName = '', private code = '') {
+  constructor(message: string, private errName = '', private error = {}) {
     super(message);
 
     this.msg = message;
@@ -12,7 +12,7 @@ class BusinessError extends Error {
   }
 
   getError(): ErrorResponse {
-    return { name: this.errName, message: this.msg, code: this.code };
+    return { name: this.errName, message: this.msg, error: this.error };
   }
 }
 

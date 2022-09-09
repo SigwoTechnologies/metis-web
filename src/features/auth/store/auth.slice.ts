@@ -47,19 +47,37 @@ const authSlice = createSlice({
     setIsCreatingAccount: (state, { payload }) => {
       state.isCreatingAccount = payload;
     },
-    signOut: () => initialState,
+    signOut: () => {
+      localStorage.removeItem('TOKEN');
+      return initialState;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(login.fulfilled, (state, { payload }) => {
       state.isConnectingToMetamask = false;
       state.isCreatingAccount = true;
-      const { password, passphrase, privateKeyArmored, publicKeyArmored } = payload;
+      const {
+        password,
+        passphrase,
+        privateKeyArmored,
+        publicKeyArmored,
+        isLoggedIn,
+        jupAddress,
+        alias,
+      } = payload;
+      if (jupAddress && alias) {
+        state.jupAccount = {
+          address: jupAddress,
+          alias,
+        };
+      }
       state.userData = {
         password,
         passphrase,
         privateKeyArmored,
         publicKeyArmored,
       };
+      state.isLoggedIn = isLoggedIn ?? false;
     });
     builder.addCase(login.rejected, (state) => {
       state.isConnectingToMetamask = false;

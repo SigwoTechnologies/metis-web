@@ -7,8 +7,9 @@ const useStyles = makeStyles((theme: Theme) =>
       width: '3.7rem',
       height: '3.7rem',
       position: 'absolute',
+      margin: '1rem',
       bottom: 0,
-      right: '1rem',
+      right: 0,
       '&:hover': {
         cursor: 'pointer',
       },
@@ -16,6 +17,7 @@ const useStyles = makeStyles((theme: Theme) =>
     button: {
       width: '100%',
       marginBottom: '1rem',
+      textTransform: 'capitalize',
     },
     textField: {
       width: '100%',
