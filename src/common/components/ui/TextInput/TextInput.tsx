@@ -1,4 +1,3 @@
-/* eslint-disable react/jsx-props-no-spreading */
 import { TextField } from '@mui/material';
 import { FieldError, FieldValues, UseFormRegister } from 'react-hook-form';
 import useStyles from './TextInput.styles';

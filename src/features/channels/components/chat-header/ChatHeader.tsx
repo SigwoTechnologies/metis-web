@@ -3,8 +3,7 @@ import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
-import React, { useState } from 'react';
-
+import { useState, MouseEvent } from 'react';
 import BugAvatar from '@metis/assets/images/avatars/bug.jpg';
 import Modal from '@metis/common/components/ui/Modal';
 import { useAppDispatch, useAppSelector } from '@metis/store/hooks';
@@ -23,7 +22,7 @@ const ChatHeader = () => {
   const [open, setOpen] = useState(false);
   const [muteModalOpen, setMuteModalOpen] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const { mutedChannels } = useAppSelector(selectState);
@@ -31,7 +30,7 @@ const ChatHeader = () => {
   const isMuted = mutedChannels.includes(selectedChannel.channelAddress);
 
   const menu = Boolean(anchorEl);
-  const openMenu = (event: React.MouseEvent<HTMLButtonElement>) => {
+  const openMenu = (event: MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
   };
 

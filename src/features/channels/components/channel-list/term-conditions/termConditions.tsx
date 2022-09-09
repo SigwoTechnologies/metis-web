@@ -9,11 +9,9 @@ import useStyles from './termConditions.styles';
 type Props = {
   title: string;
   message: string;
-  onClick?: () => void;
 };
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const TermConditions = ({ title, message, onClick }: Props) => {
+const TermConditions = ({ title, message }: Props) => {
   const [open, setOpen] = React.useState(false);
   const styles = useStyles();
 

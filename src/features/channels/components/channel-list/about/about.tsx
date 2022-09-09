@@ -68,18 +68,15 @@ const About = ({ title, message, onClick }: Props) => {
             <Grid className={styles.infoBox}>
               <Divider />
               {info &&
-                info.map((item) => {
-                  const { name, version } = item;
-                  return (
-                    <Grid>
-                      <Grid className={styles.infoLine}>
-                        <Grid className={styles.infoLineLeft}>{name}</Grid>
-                        <Grid className={styles.infoLineRight}>{version}</Grid>
-                      </Grid>
-                      <Divider />
+                info.map(({ name, version }) => (
+                  <Grid>
+                    <Grid className={styles.infoLine}>
+                      <Grid className={styles.infoLineLeft}>{name}</Grid>
+                      <Grid className={styles.infoLineRight}>{version}</Grid>
                     </Grid>
-                  );
-                })}
+                    <Divider />
+                  </Grid>
+                ))}
             </Grid>
           </DialogContentText>
         </DialogContent>
