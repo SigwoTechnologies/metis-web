@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable quotes */
 import PlusButton from '@metis/assets/images/misc/plus-button.png';
 import Box from '@mui/material/Box';
@@ -36,6 +37,10 @@ const CreateButton = () => {
   };
 
   const createNewChannel = (data: ChannelDTO) => {
+    if (!data.channelName.trim()) {
+      return;
+    }
+
     setLoading(true);
     channelService
       .create(data)

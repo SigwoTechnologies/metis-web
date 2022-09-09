@@ -17,6 +17,7 @@ const useStyles = makeStyles((theme: Theme) =>
     button: {
       width: '100%',
       marginBottom: '1rem',
+      textTransform: 'capitalize',
     },
     textField: {
       width: '100%',

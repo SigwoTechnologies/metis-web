@@ -1,5 +1,4 @@
-/* eslint-disable react/jsx-props-no-spreading */
-import { useAppDispatch, useAppSelector } from '@metis/store/hooks';
+import { useAppDispatch } from '@metis/store/hooks';
 import AttachFileIcon from '@mui/icons-material/AttachFile';
 import SendIcon from '@mui/icons-material/Send';
 import VideocamOutlinedIcon from '@mui/icons-material/VideocamOutlined';
@@ -29,6 +28,10 @@ const MessageInput = () => {
   }, [selectedChannel]);
 
   const onSubmit = ({ message }: FormData) => {
+    if (!message.trim()) {
+      return;
+    }
+
     sendEncryptedMessage(message).then(() => {
       dispatch(discardReply());
       clearInput();
