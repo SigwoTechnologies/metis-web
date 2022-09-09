@@ -1,34 +1,25 @@
 import PLaceholderAvatar from '@metis/assets/images/avatars/astronaut.png';
 import { signOut } from '@metis/features/auth/store/auth.slice';
+import { setOpenCreateChannelDrawer } from '@metis/features/channels/store/channel.slice';
 import { useAppDispatch } from '@metis/store/hooks';
 import { openToast } from '@metis/store/ui/ui.slice';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
-import AllInboxIcon from '@mui/icons-material/AllInbox';
-import DarkModeIcon from '@mui/icons-material/DarkMode';
 import IndeterminateCheckBoxIcon from '@mui/icons-material/IndeterminateCheckBox';
 import LogoutIcon from '@mui/icons-material/Logout';
 import MenuIcon from '@mui/icons-material/Menu';
-import PersonAddIcon from '@mui/icons-material/PersonAdd';
-import SearchIcon from '@mui/icons-material/Search';
-import SettingsIcon from '@mui/icons-material/Settings';
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 import Divider from '@mui/material/Divider';
 import Drawer from '@mui/material/Drawer';
-import FormControl from '@mui/material/FormControl';
 import Grid from '@mui/material/Grid';
 import IconButton from '@mui/material/IconButton/IconButton';
-import Input from '@mui/material/Input';
-import InputAdornment from '@mui/material/InputAdornment';
-import InputLabel from '@mui/material/InputLabel';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import Switch from '@mui/material/Switch';
 import Typography from '@mui/material/Typography';
 import { useState } from 'react';
 import About from '../about/about';
@@ -44,6 +35,11 @@ const ChannelList = () => {
   const handleSignOut = () => {
     dispatch(signOut());
     dispatch(openToast({ text: 'Sign out successful', type: 'info' }));
+  };
+
+  const openCreateChannel = () => {
+    setDrawer(false);
+    dispatch(setOpenCreateChannelDrawer(true));
   };
 
   return (
@@ -72,7 +68,7 @@ const ChannelList = () => {
                 <ListItemIcon className={styles.listItemIcon}>
                   <AddCircleIcon />
                 </ListItemIcon>
-                <ListItemText primary="New Channel" />
+                <ListItemText primary="New Channel" onClick={openCreateChannel} />
               </ListItemButton>
             </ListItem>
             {/* 

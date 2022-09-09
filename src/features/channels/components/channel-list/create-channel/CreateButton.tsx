@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable quotes */
 import PlusButton from '@metis/assets/images/misc/plus-button.png';
 import Box from '@mui/material/Box';
@@ -7,10 +6,13 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import Form from '@metis/common/components/ui/Form/Form';
 import TextInput from '@metis/common/components/ui/TextInput/TextInput';
 import channelService from '@metis/features/channels/services/channel.service';
-import { createChannel } from '@metis/features/channels/store/channel.slice';
+import {
+  createChannel,
+  setOpenCreateChannelDrawer,
+} from '@metis/features/channels/store/channel.slice';
 import { Channel } from '@metis/features/channels/types/channel';
 import { ChannelDTO } from '@metis/features/channels/types/channelDTO';
-import { useAppDispatch } from '@metis/store/hooks';
+import { useAppDispatch, useAppSelector } from '@metis/store/hooks';
 import { openToast } from '@metis/store/ui/ui.slice';
 import CloseIcon from '@mui/icons-material/Close';
 import { LoadingButton } from '@mui/lab';
@@ -28,12 +30,16 @@ const schema = yup.object({
 
 const CreateButton = () => {
   const classes = useStyles();
-  const [openCreate, setOpenCreate] = useState(false);
   const dispatch = useAppDispatch();
+  const { isOpenCreateChannelDrawer } = useAppSelector((state) => state.channel);
   const [loading, setLoading] = useState(false);
 
   const closeDrawer = () => {
-    setOpenCreate(false);
+    dispatch(setOpenCreateChannelDrawer(false));
+  };
+
+  const openDrawer = () => {
+    dispatch(setOpenCreateChannelDrawer(true));
   };
 
   const createNewChannel = (data: ChannelDTO) => {
@@ -57,7 +63,7 @@ const CreateButton = () => {
 
   return (
     <>
-      <Drawer anchor="left" open={openCreate} onClose={closeDrawer}>
+      <Drawer anchor="left" open={isOpenCreateChannelDrawer} onClose={closeDrawer}>
         <Box role="presentation" className={classes.drawerContainer}>
           <IconButton aria-label="close" onClick={closeDrawer} className={classes.closeButton}>
             <CloseIcon />
@@ -76,7 +82,7 @@ const CreateButton = () => {
         </Box>
       </Drawer>
       <Box
-        onClick={() => setOpenCreate(true)}
+        onClick={() => openDrawer()}
         component="img"
         src={PlusButton}
         alt="Create Channel"

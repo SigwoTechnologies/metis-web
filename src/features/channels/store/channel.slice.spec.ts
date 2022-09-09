@@ -20,6 +20,7 @@ describe('Channel Slice', () => {
       },
       mutedChannels: [],
       pendingChannels: [],
+      isOpenCreateChannelDrawer: false,
     };
   });
 
