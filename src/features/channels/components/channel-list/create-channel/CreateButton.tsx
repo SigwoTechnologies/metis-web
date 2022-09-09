@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable quotes */
 import { yupResolver } from '@hookform/resolvers/yup';
 import PlusButton from '@metis/assets/images/misc/plus-button.png';
@@ -35,6 +36,10 @@ const CreateButton = () => {
   };
 
   const createNewChannel = (data: ChannelDTO) => {
+    if (!data.channelName.trim()) {
+      return;
+    }
+
     setLoading(true);
     channelService
       .create(data)

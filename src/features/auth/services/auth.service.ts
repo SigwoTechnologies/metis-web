@@ -1,15 +1,15 @@
-/* eslint-disable no-console */
+import constants from '@metis/common/configuration/constants';
 import BusinessError from '@metis/common/exceptions/business-error';
 import httpService from '@metis/common/services/http.service';
-import constants from '@metis/common/configuration/constants';
 import ILocalStorageService from '@metis/common/services/interfaces/local-storage-service.interface';
-import IAuthService, { Signature } from './interfaces/auth-service.interface';
+import { AxiosError } from 'axios';
 import AliasResponse from '../types/alias-response';
 import ChallengeResponse from '../types/challenge-response';
-import ValidateSignatureResponse from '../types/validate-signature-response';
-import getBufferString from '../utils/auth.utils';
 import Credential from '../types/credential';
 import { LegacyLoginResponse } from '../types/legacy-login-response';
+import ValidateSignatureResponse from '../types/validate-signature-response';
+import getBufferString from '../utils/auth.utils';
+import IAuthService, { Signature } from './interfaces/auth-service.interface';
 
 export default class AuthService implements IAuthService {
   private readonly endpoint: string;
@@ -39,7 +39,12 @@ export default class AuthService implements IAuthService {
       // TODO: Log the error in a log service
       console.log('getChallenge|error', err);
       // TODO: Create codes enums and a better error response message
-      throw new BusinessError('An error has occured while signing in', 'get_challenge');
+      const { response } = err as AxiosError;
+      throw new BusinessError(
+        'An error has occured while signing in',
+        'existing_account',
+        response?.data as any
+      );
     }
   }
 

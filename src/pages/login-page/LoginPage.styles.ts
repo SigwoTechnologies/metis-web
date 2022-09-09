@@ -18,10 +18,14 @@ const useStyles = makeStyles((theme: Theme) =>
       height: '10rem',
       width: '10rem',
       marginBottom: '3rem',
+      objectFit: 'cover',
+      borderRadius: '100%',
+    },
+    span: {
+      fontWeight: 700,
     },
     loading: {
-      fontFamily: 'monospace',
-      clipPath: 'inset(0 3ch 0 0)',
+      clipPath: 'inset(0 1ch 0 0)',
       animation: '$l 1s steps(4) infinite',
     },
     '@keyframes l': {
