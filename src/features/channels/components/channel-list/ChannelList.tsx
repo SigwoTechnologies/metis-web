@@ -1,7 +1,7 @@
-import Spinner from '@metis/common/components/ui/spinner/Spinner';
 import useOnMount from '@metis/common/hooks/useOnMount';
 import { Channel } from '@metis/features/channels/types/channel';
 import { useAppDispatch, useAppSelector } from '@metis/store/hooks';
+import { CircularProgress } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import useSelectedChannel from '../../hooks/useSelectedChannel';
 import { findChannels, getMutedChannelAddresses } from '../../store/channel.actions';
@@ -24,8 +24,12 @@ const ChannelList = () => {
     navigate(`/main/${channel.channelAddress}`);
   };
 
+  if (isLoading) {
+    return <CircularProgress />;
+  }
+
   return (
-    <Spinner isLoading={isLoading}>
+    <>
       {channels.map(
         (channel) =>
           !hiddenChannelsAddreses.includes(channel.channelAddress) && (
@@ -37,7 +41,7 @@ const ChannelList = () => {
             />
           )
       )}
-    </Spinner>
+    </>
   );
 };
 

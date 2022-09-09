@@ -69,7 +69,7 @@ const InvitesList = () => {
           id="panel1a-header"
         >
           <Box display="flex" gap="1rem">
-            {invites.length > 0 && (
+            {invites.length && (
               <Badge
                 color="error"
                 badgeContent={invites.length}

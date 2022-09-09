@@ -45,6 +45,7 @@ describe('Channel Slice', () => {
       });
     });
     describe('and the response is successfull', () => {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const channels: Channel[] = [
         {
           channelAddress: 'JUP-VHVJ-WEBM-N5NR-3CV33',

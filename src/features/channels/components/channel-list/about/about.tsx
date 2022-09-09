@@ -26,6 +26,7 @@ const loadWebAppInfo = async (): Promise<WebAppInfo[]> => {
   return data;
 };
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const About = ({ title, message, onClick }: Props) => {
   const [info, setInfo] = useState<WebAppInfo[]>();
   const [open, setOpen] = useState(false);
@@ -67,18 +68,15 @@ const About = ({ title, message, onClick }: Props) => {
             <Grid className={styles.infoBox}>
               <Divider />
               {info &&
-                info.map((item) => {
-                  const { name, version } = item;
-                  return (
-                    <Grid>
-                      <Grid className={styles.infoLine}>
-                        <Grid className={styles.infoLineLeft}>{name}</Grid>
-                        <Grid className={styles.infoLineRight}>{version}</Grid>
-                      </Grid>
-                      <Divider />
+                info.map(({ name, version }) => (
+                  <Grid>
+                    <Grid className={styles.infoLine}>
+                      <Grid className={styles.infoLineLeft}>{name}</Grid>
+                      <Grid className={styles.infoLineRight}>{version}</Grid>
                     </Grid>
-                  );
-                })}
+                    <Divider />
+                  </Grid>
+                ))}
             </Grid>
           </DialogContentText>
         </DialogContent>

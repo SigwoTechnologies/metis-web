@@ -4,7 +4,6 @@ import ChatFooter from '@metis/features/channels/components/chat-footer/ChatFoot
 import ChatHeader from '@metis/features/channels/components/chat-header/ChatHeader';
 import FooterSection from '@metis/layout/sections/FooterSection';
 import HeaderSection from '@metis/layout/sections/HeaderSection';
-import MainSection from '@metis/layout/sections/MainSection';
 import { useAppSelector } from '@metis/store/hooks';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -16,7 +15,7 @@ const ChatPage = () => {
   // Set the selected channel when the user navigates to the page
   useEffect(() => {
     // Navigate to the main page on start when there's no channels
-    channels.length === 0 && navigate('/main');
+    !channels.length && navigate('/main');
   }, []);
 
   return (
