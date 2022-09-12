@@ -1,4 +1,3 @@
-import constants from '@metis/common/configuration/constants';
 import LoginError from '../../enums/login-error.enum';
 import LoginFlow from '../../enums/login-flow.enum';
 import IMetaMaskService from '../../services/interfaces/metamask-service.interface';
@@ -34,7 +33,8 @@ export default class LocalStorageParserCommand implements ICommand<LoginState> {
 
       return state;
     } catch (error) {
-      localStorage.removeItem(constants.CREDENTIALS);
+      // TODO: get this back when the login flow is implemented
+      // localStorage.removeItem(constants.CREDENTIALS);
 
       return {
         ...state,
