@@ -16,6 +16,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import { LoadingButton } from '@mui/lab';
 import { Drawer, IconButton } from '@mui/material';
 import Box from '@mui/material/Box';
+import emojiRegex from 'emoji-regex';
 import { useState } from 'react';
 import * as yup from 'yup';
 import useStyles from './CreateButton.styles';
@@ -40,12 +41,20 @@ const CreateButton = () => {
   const openDrawer = () => {
     dispatch(setOpenCreateChannelDrawer(true));
   };
-
+  const checkEmojiIndex = (channelName: string) => {
+    const regex = emojiRegex();
+    // eslint-disable-next-line no-restricted-syntax
+    for (const { index } of channelName.matchAll(regex)) {
+      if (!index) {
+        throw dispatch(openToast({ text: 'Channel name cannot start with Emoji', type: 'error' }));
+      }
+    }
+  };
   const createNewChannel = (data: ChannelDTO) => {
     if (!data.channelName.trim()) {
       return;
     }
-
+    checkEmojiIndex(data.channelName);
     setLoading(true);
     channelService
       .create(data)
