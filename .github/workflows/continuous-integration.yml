@@ -5,7 +5,7 @@ on: [pull_request]
 # test
 jobs:
   check:
-    name: 🔎 Check
+    name: 🔎 Check format and lint
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
@@ -24,7 +24,7 @@ jobs:
         run: yarn lint
 
   test:
-    name: 🧪 Test
+    name: 🧪 Test and build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
@@ -38,19 +38,6 @@ jobs:
 
       - name: Test
         run: yarn test --watchAll=false
-
-  build:
-    name: 👷🏼‍♂️ Build
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v1
-      - uses: actions/setup-node@v3
-        with:
-          node-version: lts/*
-          cache: yarn
-
-      - name: Install Dependencies
-        run: yarn
 
       - name: Build
         run: yarn build
