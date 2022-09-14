@@ -120,7 +120,12 @@ const ChatHeader = () => {
       <InviteUserModal closeModal={() => setOpen(false)} open={open} />
       <Box className={classes.titleContainer}>
         <Box display="flex" justifyContent="center" alignItems="center">
-          <Avatar alt="Channel Avatar" src={BugAvatar} className={classes.avatar} />
+          <Avatar
+            alt={selectedChannel.channelName}
+            src={selectedChannel.channelName}
+            className={classes.avatar}
+          />
+
           <Typography variant="body1" sx={{ ml: '1rem' }}>
             {selectedChannel.channelName}
           </Typography>
