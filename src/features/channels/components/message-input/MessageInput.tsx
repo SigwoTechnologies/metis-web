@@ -1,11 +1,13 @@
 import { useAppDispatch } from '@metis/store/hooks';
-import AttachFileIcon from '@mui/icons-material/AttachFile';
+// import AttachFileIcon from '@mui/icons-material/AttachFile';
 import SendIcon from '@mui/icons-material/Send';
-import VideocamOutlinedIcon from '@mui/icons-material/VideocamOutlined';
+import EmojiEmotions from '@mui/icons-material/EmojiEmotions';
+// import VideocamOutlinedIcon from '@mui/icons-material/VideocamOutlined';
 import { FilledInput } from '@mui/material';
 import IconButton from '@mui/material/IconButton/IconButton';
 import InputAdornment from '@mui/material/InputAdornment';
-import { useEffect } from 'react';
+import Picker from 'emoji-picker-react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import useSelectedChannel from '../../hooks/useSelectedChannel';
 import useSendMessage from '../../hooks/useSendMessage';
@@ -16,10 +18,18 @@ type FormData = {
   message: string;
 };
 
+type EmojiObject = {
+  emoji: string;
+  names: string[];
+  originalUnified: string;
+  unified: string;
+};
+
 const MessageInput = () => {
   const classes = useStyles();
+  const [emojiPickerVisible, setEmojiPickerVisible] = useState(false);
   const selectedChannel = useSelectedChannel();
-  const { register, handleSubmit, reset: clearInput } = useForm<FormData>();
+  const { register, handleSubmit, reset: clearInput, watch, setValue } = useForm<FormData>();
   const { sendEncryptedMessage, loading } = useSendMessage();
   const dispatch = useAppDispatch();
 
@@ -36,6 +46,10 @@ const MessageInput = () => {
       dispatch(discardReply());
       clearInput();
     });
+  };
+
+  const onEmojiClick = (_event: any, { emoji }: EmojiObject) => {
+    setValue('message', watch('message') + emoji);
   };
 
   return (
@@ -71,6 +85,30 @@ const MessageInput = () => {
               sx={{ padding: 1.5 }}
             >
               <SendIcon />
+            </IconButton>
+
+            <IconButton
+              disabled={loading}
+              edge="start"
+              size="medium"
+              sx={{ padding: 1.5 }}
+              onClick={() => setEmojiPickerVisible(!emojiPickerVisible)}
+              style={{ position: 'relative' }}
+            >
+              {emojiPickerVisible && (
+                <div className={classes.emojiPicker}>
+                  <Picker
+                    onEmojiClick={onEmojiClick}
+                    pickerStyle={{ border: 'none', boxShadow: 'none' }}
+                    disableSearchBar
+                    disableSkinTonePicker
+                    groupVisibility={{
+                      flags: false,
+                    }}
+                  />
+                </div>
+              )}
+              <EmojiEmotions />
             </IconButton>
           </InputAdornment>
         }
