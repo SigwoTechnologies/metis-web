@@ -39,9 +39,6 @@ jobs:
       - name: Test
         run: yarn test --watchAll=false
 
-      - name: Build
-        run: yarn build
-
   build:
     name: 👷🏼‍♂️ Build
     runs-on: ubuntu-latest
