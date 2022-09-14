@@ -14,13 +14,13 @@ jobs:
           node-version: lts/*
 
       - name: Install Dependencies
-        run: yarn
+        run: npm ci
 
       - name: Format
-        run: yarn format:check
+        run: npm run format:check
 
       - name: Lint
-        run: yarn lint
+        run: npm run lint
 
   test:
     name: 🧪 Test
