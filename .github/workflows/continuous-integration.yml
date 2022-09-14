@@ -2,12 +2,17 @@ name: Continuous Integration
 
 on: [pull_request]
 
+# test
 jobs:
   check:
     name: 🔎 Check
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
+      - uses: actions/setup-node@v3
+        with:
+          node-version: lts/*
+          cache: yarn
 
       - name: Install Dependencies
         run: yarn
@@ -23,6 +28,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
+      - uses: actions/setup-node@v3
+        with:
+          node-version: lts/*
+          cache: yarn
 
       - name: Install Dependencies
         run: yarn
@@ -35,9 +44,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
+      - uses: actions/setup-node@v3
+        with:
+          node-version: lts/*
+          cache: yarn
 
       - name: Install Dependencies
         run: yarn
-
-      - name: Build
-        run: yarn build
