@@ -4,8 +4,8 @@ on: [pull_request]
 
 # test
 jobs:
-  check:
-    name: 🔎 Check format and lint
+  continuous_integration:
+    name: 🔎 Check format, lint, test and build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
@@ -22,19 +22,6 @@ jobs:
 
       - name: Lint
         run: yarn lint
-
-  test:
-    name: 🧪 Test and build
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v1
-      - uses: actions/setup-node@v3
-        with:
-          node-version: lts/*
-          cache: yarn
-
-      - name: Install Dependencies
-        run: yarn
 
       - name: Test
         run: yarn test --watchAll=false
