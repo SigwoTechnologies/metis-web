@@ -2,7 +2,6 @@ name: Continuous Integration
 
 on: [pull_request]
 
-# Testing workflow
 jobs:
   check:
     name: 🔎 Check
@@ -12,15 +11,16 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: lts/*
+          cache: 'yarn'
 
       - name: Install Dependencies
-        run: npm ci
+        run: yarn
 
       - name: Format
-        run: npm run format:check
+        run: yarn format:check
 
       - name: Lint
-        run: npm run lint
+        run: yarn lint
 
   test:
     name: 🧪 Test
