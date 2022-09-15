@@ -7,7 +7,7 @@ const useStyles = makeStyles(() =>
       alignItems: 'center',
       justifyContent: 'center',
       position: 'fixed',
-      left: 0,
+      left: '10rem',
       top: 0,
       width: '100%',
       height: '100%',
