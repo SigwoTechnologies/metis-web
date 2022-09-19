@@ -5,15 +5,16 @@ on:
       - main
 
 jobs:
-  sync-branch:
+  sync-branches:
     runs-on: ubuntu-latest
+    name: Syncing branches
     steps:
-      - uses: actions/checkout@master
-
-      - name: Merge main -> dev
-        uses: devmasx/merge-branch@master
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Opening pull request
+        id: pull
+        uses: tretuna/sync-branches@1.4.0
         with:
-          type: now
-          from_branch: main
-          target_branch: dev
-          github_token: ${{ github.token }}
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+          FROM_BRANCH: 'main'
+          TO_BRANCH: 'dev'
