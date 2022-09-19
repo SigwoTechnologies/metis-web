@@ -4,21 +4,10 @@ on:
     branches:
       - main
 
-steps:
-    
-    - ...
-
-    - name: "Restore 'include administrators' default branch protection"
-    uses: benjefferies/branch-protection-bot@master
-    if: always() # Force to always run this step to ensure "include administrators" is always turned back on
-    with:
-        access_token: ${{ secrets.ACCESS_TOKEN }}
-        branch: ${{ github.event.repository.default_branch }}
-        enforce_admins: ${{ steps.disable_include_admins.outputs.initial_status }}
-
 jobs:
-  sync-branch:
+  sync-branches:
     runs-on: ubuntu-latest
+    name: Syncing branches
     steps:
       - uses: actions/checkout@master
 
@@ -26,8 +15,8 @@ jobs:
         uses: benjefferies/branch-protection-bot@master
         if: always()
         with:
-            access_token: ${{ secrets.ACCESS_TOKEN }}
-            branch: 'dev'
+          access_token: ${{ secrets.ACCESS_TOKEN }}
+          branch: 'dev'
 
       - name: Merge main -> dev
         uses: devmasx/merge-branch@master
@@ -41,5 +30,5 @@ jobs:
         uses: benjefferies/branch-protection-bot@master
         if: always()
         with:
-            access_token: ${{ secrets.ACCESS_TOKEN }}
-            branch: 'dev'
+          access_token: ${{ secrets.ACCESS_TOKEN }}
+          branch: 'dev'
