@@ -1,4 +1,4 @@
-name: Sync 'main' and 'dev' branch
+name: Create PR to sync the 'main' and 'dev' branch
 on:
   push:
     branches:
@@ -9,26 +9,12 @@ jobs:
     runs-on: ubuntu-latest
     name: Syncing branches
     steps:
-      - uses: actions/checkout@master
-
-      - name: Temporarily disable "include administrators" branch protection
-        uses: benjefferies/branch-protection-bot@master
-        if: always()
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Opening pull request
+        id: pull
+        uses: tretuna/sync-branches@1.4.0
         with:
-          access_token: ${{ secrets.ACCESS_TOKEN }}
-          branch: 'dev'
-
-      - name: Merge main -> dev
-        uses: devmasx/merge-branch@master
-        with:
-          type: now
-          from_branch: main
-          target_branch: dev
-          github_token: ${{ github.token }}
-
-      - name: Enable "include administrators" branch protection
-        uses: benjefferies/branch-protection-bot@master
-        if: always()
-        with:
-          access_token: ${{ secrets.ACCESS_TOKEN }}
-          branch: 'dev'
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+          FROM_BRANCH: 'main'
+          TO_BRANCH: 'dev'
