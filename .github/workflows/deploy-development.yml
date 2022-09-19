@@ -29,5 +29,5 @@ jobs:
       - name: DigitalOcean App Platform deployment
         uses: digitalocean/app_action@main
         with:
-          app_name: metis-web
+          app_name: metis-web-dev
           token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
