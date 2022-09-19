@@ -1,0 +1,19 @@
+name: Sync 'main' and 'dev' branch
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  sync-branch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+
+      - name: Merge main -> dev
+        uses: devmasx/merge-branch@master
+        with:
+          type: now
+          from_branch: main
+          target_branch: dev
+          github_token: ${{ github.token }}

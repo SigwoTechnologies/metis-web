@@ -1,12 +1,12 @@
-name: Continuous Deployment
+name: Deploy to development environment on DO
 on:
   push:
     branches:
-      - main
+      - develop
 
 jobs:
-  check:
-    name: 🔎 Check
+  deploy:
+    name: 🚀 Deploy
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
@@ -20,34 +20,12 @@ jobs:
       - name: Lint
         run: yarn lint
 
-  test:
-    name: 🧪 Test
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v1
-
-      - name: Install Dependencies
-        run: yarn
-
       - name: Test
         run: yarn test --watchAll=false
-
-  build:
-    name: 👷🏼‍♂️ Build
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v1
-
-      - name: Install Dependencies
-        run: yarn
 
       - name: Build
         run: yarn build
 
-  deploy:
-    name: Deploy
-    runs-on: ubuntu-latest
-    steps:
       - name: DigitalOcean App Platform deployment
         uses: digitalocean/app_action@main
         with:

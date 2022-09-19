@@ -2,7 +2,6 @@ name: Continuous Integration
 
 on: [pull_request]
 
-# test
 jobs:
   check:
     name: 🔎 Check
