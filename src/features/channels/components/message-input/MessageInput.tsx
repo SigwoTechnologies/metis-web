@@ -1,15 +1,13 @@
 import { useAppDispatch } from '@metis/store/hooks';
-// import AttachFileIcon from '@mui/icons-material/AttachFile';
-import SendIcon from '@mui/icons-material/Send';
 import EmojiEmotions from '@mui/icons-material/EmojiEmotions';
-// import VideocamOutlinedIcon from '@mui/icons-material/VideocamOutlined';
+import SendIcon from '@mui/icons-material/Send';
 import { FilledInput } from '@mui/material';
 import IconButton from '@mui/material/IconButton/IconButton';
 import InputAdornment from '@mui/material/InputAdornment';
 import Picker from 'emoji-picker-react';
-import { useEffect, useState } from 'react';
+import { MouseEvent, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import useSelectedChannel from '../../hooks/useSelectedChannel';
+import { useParams } from 'react-router-dom';
 import useSendMessage from '../../hooks/useSendMessage';
 import { discardReply } from '../../store/channel.slice';
 import useStyles from './MessageInput.styles';
@@ -28,14 +26,14 @@ type EmojiObject = {
 const MessageInput = () => {
   const classes = useStyles();
   const [emojiPickerVisible, setEmojiPickerVisible] = useState(false);
-  const selectedChannel = useSelectedChannel();
+  const { channelAddress } = useParams();
   const { register, handleSubmit, reset: clearInput, watch, setValue } = useForm<FormData>();
   const { sendEncryptedMessage, loading } = useSendMessage();
   const dispatch = useAppDispatch();
 
   useEffect(() => {
     clearInput();
-  }, [selectedChannel]);
+  }, [channelAddress]);
 
   const onSubmit = ({ message }: FormData) => {
     if (!message.trim()) {
@@ -48,7 +46,7 @@ const MessageInput = () => {
     });
   };
 
-  const onEmojiClick = (_event: any, { emoji }: EmojiObject) => {
+  const onEmojiClick = (_event: MouseEvent<Element>, { emoji }: EmojiObject) => {
     setValue('message', watch('message') + emoji);
   };
 
