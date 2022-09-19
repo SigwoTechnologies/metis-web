@@ -26,8 +26,8 @@ jobs:
       - name: Build
         run: yarn build
 
-      # - name: DigitalOcean App Platform deployment
-      #   uses: digitalocean/app_action@main
-      #   with:
-      #     app_name: metis-web
-      #     token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+      - name: DigitalOcean App Platform deployment
+        uses: digitalocean/app_action@main
+        with:
+          app_name: metis-web
+          token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
