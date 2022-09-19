@@ -1,7 +1,7 @@
 name: Auto approve
 
 on: pull_request
-
+# test
 jobs:
   auto-approve:
     runs-on: ubuntu-latest
