@@ -1,7 +1,6 @@
 import { Invite } from '@metis/features/invites/services/invite.service';
 import CloseIcon from '@mui/icons-material/Close';
 import DoneIcon from '@mui/icons-material/Done';
-import FolderIcon from '@mui/icons-material/Folder';
 import {
   Avatar,
   Badge,
@@ -54,9 +53,7 @@ const InviteListItem = ({ invite, acceptInvite }: Props) => {
             horizontal: 'left',
           }}
         >
-          <Avatar>
-            <FolderIcon />
-          </Avatar>
+          <Avatar alt={invite.channelName} src={invite.channelName} />
         </Badge>
       </ListItemAvatar>
       <ListItemText primary={invite.channelName} secondary={invite.channelAddress} />
