@@ -1,7 +1,4 @@
 /* eslint-disable no-console */
-import constants from '@metis/common/configuration/constants';
-import LocalStorageService from '@metis/common/services/local-storage.service';
-import AuthService from '@metis/features/auth/services/auth.service';
 import { useAppDispatch } from '@metis/store/hooks';
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
