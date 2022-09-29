@@ -1,3 +1,4 @@
+import appConfig from '@metis/common/configuration/app.config';
 import constants from '@metis/common/configuration/constants';
 import LoginError from '../../enums/login-error.enum';
 import LoginFlow from '../../enums/login-flow.enum';
@@ -24,7 +25,6 @@ export default class SignChallengeCommand implements ICommand<LoginState> {
     if (!state.challengeMessage) return { ...state, error: LoginError.RequiredChallengeMessage };
 
     const signature = await this.metaMaskService.signMessage(state.challengeMessage, state.address);
-
     const data = await this.authService.validateSignature({
       challenge: state.challenge,
       signature,
@@ -51,6 +51,25 @@ export default class SignChallengeCommand implements ICommand<LoginState> {
       state.alias = alias;
       state.jupAddress = accountRS;
       state.isLoggedIn = true;
+    }
+    if (state.flow === LoginFlow.LegacyAccount) {
+      const { alias, accountRS, token } = data as ExistingAccountSignResponse;
+      const stringifiedToken = JSON.stringify({ access_token: token });
+      localStorage.setItem(constants.TOKEN, JSON.stringify(stringifiedToken));
+      state.alias = alias;
+      state.jupAddress = accountRS;
+      state.isLoggedIn = true;
+
+      await fetch(`${appConfig.api.baseUrl}/v1/api/users/${accountRS}/e2e-public-keys`, {
+        method: 'PUT',
+        headers: {
+          'Content-type': 'application/json',
+          Authorization: `Bearer ${token}`, // notice the Bearer before your token
+        },
+        body: JSON.stringify({
+          e2ePublicKey: state.publicKeyArmored,
+        }),
+      });
     }
 
     return state;
