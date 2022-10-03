@@ -44,7 +44,7 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     userMessageContainer: {
       // TODO: add this color to the theme
-      backgroundColor: '#145b91 !important',
+      backgroundColor: '#1C6758 !important',
     },
     message: {
       display: 'flex',
