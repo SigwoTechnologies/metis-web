@@ -1,4 +1,4 @@
-import constants from '@metis/common/configuration/constants';
+import { saveToken } from '@metis/common/services/token.service';
 import LoginError from '../../enums/login-error.enum';
 import LoginFlow from '../../enums/login-flow.enum';
 import IAuthService from '../../services/interfaces/auth-service.interface';
@@ -41,13 +41,12 @@ export default class SignChallengeCommand implements ICommand<LoginState> {
       } = data as ValidateSignatureResponse;
       if (!verified) return { ...state, error: LoginError.InvalidSignature };
 
-      localStorage.setItem('SIGNUP_JOB_ID', id.toString());
+      localStorage.setItem('SIGNUP_JOB_ID', String(id));
     }
 
     if (state.flow === LoginFlow.ExistingAccountSameDevice) {
       const { alias, accountRS, token } = data as ExistingAccountSignResponse;
-      const stringifiedToken = JSON.stringify({ access_token: token });
-      localStorage.setItem(constants.TOKEN, JSON.stringify(stringifiedToken));
+      saveToken(token);
       state.alias = alias;
       state.jupAddress = accountRS;
       state.isLoggedIn = true;
