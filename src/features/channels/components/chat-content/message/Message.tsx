@@ -66,7 +66,7 @@ const Message = ({
         <Box className={classes.replyButton} style={style} onClick={handleReplyClick}>
           Reply
         </Box>
-        <Typography variant="body2" fontWeight="bold" sx={{ color, marginBottom: '0.5rem' }}>
+        <Typography variant="body2" fontWeight="bold" className={classes.userName} sx={{ color }}>
           {senderAlias}
         </Typography>
         {decryptedReplyMessage && replyRecipientAlias && (
