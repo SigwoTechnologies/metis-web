@@ -6,6 +6,7 @@ import { openToast } from '@metis/store/ui/ui.slice';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import IndeterminateCheckBoxIcon from '@mui/icons-material/IndeterminateCheckBox';
 import LogoutIcon from '@mui/icons-material/Logout';
+import AllInboxIcon from '@mui/icons-material/AllInbox';
 import MenuIcon from '@mui/icons-material/Menu';
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
@@ -25,6 +26,7 @@ import { useState } from 'react';
 import About from '../about/about';
 import ModalHiddenList from '../modal-hidden-list/ModalHiddenList';
 import useStyles from './SearchChannel.styles';
+import Wallet from '../wallet/Wallet';
 
 const ChannelList = () => {
   const styles = useStyles();
@@ -71,16 +73,8 @@ const ChannelList = () => {
                 <ListItemText primary="New Channel" onClick={openCreateChannel} />
               </ListItemButton>
             </ListItem>
-            {/* 
-            <ListItem disablePadding>
-              <ListItemButton>
-                <ListItemIcon className={styles.listItemIcon}>
-                  <AllInboxIcon />
-                </ListItemIcon>
-                <ListItemText primary="Wallet" />
-              </ListItemButton>
-            </ListItem>
-  */}
+
+            <Wallet />
 
             <ListItem disablePadding>
               <ListItemButton onClick={() => setOpen(true)}>
