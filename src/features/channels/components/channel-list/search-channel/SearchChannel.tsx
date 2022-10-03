@@ -4,6 +4,7 @@ import { setOpenCreateChannelDrawer } from '@metis/features/channels/store/chann
 import { useAppDispatch } from '@metis/store/hooks';
 import { openToast } from '@metis/store/ui/ui.slice';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
+import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import IndeterminateCheckBoxIcon from '@mui/icons-material/IndeterminateCheckBox';
 import LogoutIcon from '@mui/icons-material/Logout';
 import AllInboxIcon from '@mui/icons-material/AllInbox';
@@ -42,6 +43,11 @@ const ChannelList = () => {
   const openCreateChannel = () => {
     setDrawer(false);
     dispatch(setOpenCreateChannelDrawer(true));
+  };
+
+  const handleShareMetis = () => {
+    dispatch(openToast({ text: 'Invitation copied in clipboard', type: 'info' }));
+    navigator.clipboard.writeText('Try out Metis! http://www.jup.io');
   };
 
   return (
@@ -103,16 +109,15 @@ const ChannelList = () => {
                 <Switch defaultChecked />
               </ListItemButton>
             </ListItem>
-
+ */}
             <ListItem disablePadding>
-              <ListItemButton>
+              <ListItemButton onClick={handleShareMetis}>
                 <ListItemIcon className={styles.listItemIcon}>
                   <PersonAddIcon />
                 </ListItemIcon>
                 <ListItemText primary="Share Metis with friends!" />
               </ListItemButton>
             </ListItem>
-            */}
           </List>
         </Box>
         <ListItem disablePadding>
