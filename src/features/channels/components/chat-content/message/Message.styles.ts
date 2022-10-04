@@ -1,4 +1,3 @@
-import { red } from '@mui/material/colors';
 import { Theme } from '@mui/material/styles';
 import { createStyles, makeStyles } from '@mui/styles';
 

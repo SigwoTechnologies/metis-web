@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import httpService from '@metis/common/services/http.service';
 import EncryiptionService from '@metis/features/auth/services/encryption.service';
 import { openToast } from '@metis/store/ui/ui.slice';
@@ -7,7 +8,6 @@ import { ChannelDTO } from '../types/channelDTO';
 import { ChannelMember } from '../types/ChannelMember';
 import { ChannelsMessagesResponse } from '../types/ChannelsMessagesResponse';
 import { Message } from '../types/Message';
-import { Reply } from '../types/Reply';
 
 type LoadChannelsMessagesProps = {
   privateKeyArmored: string;
@@ -134,13 +134,8 @@ const getChannelMembers = async (channelAddress: string) => {
   return response.data;
 };
 
-const sendMessage = async (channelAddress: string, text: string, reply: Reply) => {
+const sendMessage = async (channelAddress: string, message: any) => {
   try {
-    const message = {
-      message: text,
-      ...reply,
-      version: '1.0',
-    };
     await httpService.post(`/v1/api/channels/${channelAddress}/messages`, message);
 
     return message;
