@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 type ErrorResponse = {
   /**
    * The name that identifies the type of exception that has occured.

@@ -1,10 +1,8 @@
-/* eslint-disable no-console */
-/* eslint-disable camelcase */
 import { yupResolver } from '@hookform/resolvers/yup';
 import Form from '@metis/common/components/ui/Form/Form';
 import TextInput from '@metis/common/components/ui/TextInput/TextInput';
 import appConfig from '@metis/common/configuration/app.config';
-import constants from '@metis/common/configuration/constants';
+import { getToken } from '@metis/common/services/token.service';
 import { convertJupToNQT, convertNQTToJup } from '@metis/common/utils/utils';
 import { openToast } from '@metis/store/ui/ui.slice';
 import { LoadingButton } from '@mui/lab';
@@ -39,7 +37,6 @@ type Props = {
   getBalance: () => void;
 };
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const SendJup = ({ balance, getBalance }: Props) => {
   const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
@@ -54,11 +51,11 @@ const SendJup = ({ balance, getBalance }: Props) => {
   };
 
   const sendJup = async ({ recipient, amount }: TForm) => {
-    const { access_token } = JSON.parse(JSON.parse(String(localStorage.getItem(constants.TOKEN))));
+    const token = getToken();
     const headers = {
       'Content-Type': 'application/json',
       Accept: 'application/json',
-      Authorization: `Bearer ${access_token}`,
+      Authorization: `Bearer ${token}`,
     };
     await axios.post(
       `${appConfig.api.baseUrl}/v1/api/transfer-money`,
@@ -77,7 +74,6 @@ const SendJup = ({ balance, getBalance }: Props) => {
     await getBalance();
   };
   const onSend = async ({ recipient, amount }: TForm) => {
-    console.log({ recipient, amount, balance });
     await sendJup({ recipient, amount });
   };
 

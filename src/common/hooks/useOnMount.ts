@@ -3,5 +3,7 @@ import { useEffect } from 'react';
 
 export default (onMount: () => void) =>
   useEffect(() => {
-    onMount && onMount();
+    if (onMount) {
+      onMount();
+    }
   }, []);

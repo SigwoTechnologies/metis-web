@@ -1,4 +1,3 @@
-/* eslint-disable camelcase */
 import { updateReply } from '@metis/features/channels/store/channel.slice';
 import { Message as MessageType } from '@metis/features/channels/types/Message';
 import { useAppDispatch, useAppSelector } from '@metis/store/hooks';

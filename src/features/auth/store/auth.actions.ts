@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import appConfig from '@metis/common/configuration/app.config';
 import BusinessError from '@metis/common/exceptions/business-error';
 import ErrorResponse from '@metis/common/types/error-response';
@@ -65,7 +66,6 @@ export const addPublicKey = createAsyncThunk(
       return response;
     } catch (err: unknown) {
       // TODO: handle the error
-      // eslint-disable-next-line no-console
       console.log('addPublicKey|error', err);
       throw err;
     }

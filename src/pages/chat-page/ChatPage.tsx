@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-expressions */
 import ChatContent from '@metis/features/channels/components/chat-content/ChatContent';
 import ChatFooter from '@metis/features/channels/components/chat-footer/ChatFooter';
 import ChatHeader from '@metis/features/channels/components/chat-header/ChatHeader';
@@ -15,7 +14,9 @@ const ChatPage = () => {
   // Set the selected channel when the user navigates to the page
   useEffect(() => {
     // Navigate to the main page on start when there's no channels
-    !channels.length && navigate('/main');
+    if (!channels.length) {
+      navigate('/main');
+    }
   }, []);
 
   return (
