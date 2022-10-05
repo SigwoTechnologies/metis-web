@@ -1,4 +1,3 @@
-import { red } from '@mui/material/colors';
 import { Theme } from '@mui/material/styles';
 import { createStyles, makeStyles } from '@mui/styles';
 
@@ -63,7 +62,6 @@ const useStyles = makeStyles((theme: Theme) =>
     replyButton: {
       fontSize: '0.85rem',
       position: 'absolute',
-      backgroundColor: '#145b91',
       top: '0.5rem',
       right: '0.7rem',
       '&:hover': {

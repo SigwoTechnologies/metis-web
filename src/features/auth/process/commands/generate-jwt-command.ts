@@ -1,6 +1,6 @@
 import constants from '@metis/common/configuration/constants';
 import ILocalStorageService from '@metis/common/services/interfaces/local-storage-service.interface';
-import { enums } from 'openpgp';
+// import { enums } from 'openpgp';
 import LoginError from '../../enums/login-error.enum';
 import IAuthService from '../../services/interfaces/auth-service.interface';
 import LoginState from '../../types/login-state';

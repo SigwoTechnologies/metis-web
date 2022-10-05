@@ -6,6 +6,7 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import dayjs from 'dayjs';
 import { memo, useState } from 'react';
+import Attachment from '../attachment/Attachment';
 import MessageReply from '../message-reply/MessageReply';
 import useStyles from './Message.styles';
 
@@ -24,6 +25,7 @@ const Message = ({
     decryptedMessage,
     decryptedReplyMessage,
     replyRecipientAlias,
+    attachmentObj,
   },
   color,
   avatar = senderAlias,
@@ -77,13 +79,16 @@ const Message = ({
           />
         )}
         <Box className={classes.message}>
-          <Typography variant="body2">{decryptedMessage}</Typography>
+          <Typography variant="body2">
+            <Box>{decryptedMessage}</Box>
+            {attachmentObj && <Attachment attachmentObj={attachmentObj} />}
+          </Typography>
           <Typography
             variant="caption"
             className={classes.date}
             title={dayjs(createdAt).format('MM/DD/YYYY hh:mm:ssa')}
           >
-            {dayjs(createdAt).format('MM/DD/YYYY')}
+            {dayjs(createdAt).format('hh:mm:ssa')}
           </Typography>
         </Box>
       </Box>

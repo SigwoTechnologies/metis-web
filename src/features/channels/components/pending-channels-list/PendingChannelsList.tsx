@@ -1,4 +1,3 @@
-/* eslint-disable quotes */
 import connect from '@metis/common/services/socket.service';
 import { useAppDispatch, useAppSelector } from '@metis/store/hooks';
 import { openToast } from '@metis/store/ui/ui.slice';
@@ -51,7 +50,7 @@ const PendingChannelsList = () => {
         const jobId =
           typeof channelFailedData === 'number' ? channelFailedData : channelFailedData.jobId;
         dispatch(finishChannelCreation(jobId));
-        dispatch(openToast({ type: 'error', text: "The channel couldn't be created" }));
+        dispatch(openToast({ type: 'error', text: 'The channel could not be created' }));
       });
 
       return () => {

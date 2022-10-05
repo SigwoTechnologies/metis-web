@@ -1,6 +1,5 @@
 import BusinessError from '@metis/common/exceptions/business-error';
 import LoginError from '../../enums/login-error.enum';
-import LoginFlow from '../../enums/login-flow.enum';
 import IAuthService from '../../services/interfaces/auth-service.interface';
 import { ExistingAccountChallengeResponse } from '../../types/existing-account-challenge-response';
 import LoginState from '../../types/login-state';
