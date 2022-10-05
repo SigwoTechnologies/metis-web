@@ -5,10 +5,10 @@ import useStyles from './TextInput.styles';
 type props = {
   register?: UseFormRegister<FieldValues>;
   name: string;
-  placeholder?: string;
   label?: string;
-  type?: string;
   error?: FieldError;
+  placeholder?: string;
+  type?: string;
 };
 
 const TextInput = ({ register, name, label, error, placeholder, type, ...rest }: props) => {

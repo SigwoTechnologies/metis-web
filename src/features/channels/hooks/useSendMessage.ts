@@ -5,6 +5,7 @@ import { openToast } from '@metis/store/ui/ui.slice';
 import { PublicKey } from 'openpgp';
 import { useEffect, useState } from 'react';
 import channelService from '../services/channel.service';
+import { AttachmentObj } from '../types/AttachmentObj';
 import useSelectedChannel from './useSelectedChannel';
 
 export default () => {
@@ -54,15 +55,31 @@ export default () => {
     if (selectedChannelAddress) fetchPublicKeys();
   }, [selectedChannelAddress]);
 
-  const sendEncryptedMessage = async (text: string) => {
-    const message = await encryptionService.createMsg(text);
-    const armoredEncryptedMessage = await encryptionService.encryptMessage(message, publicKeys);
+  const sendEncryptedMessage = async ({
+    text,
+    attachmentObj,
+    messageType = 'message',
+  }: {
+    text: string;
+    attachmentObj?: AttachmentObj;
+    messageType?: string;
+  }) => {
+    let armoredEncryptedMessage;
+    if (messageType === 'message') {
+      const message = await encryptionService.createMsg(text);
+      armoredEncryptedMessage = await encryptionService.encryptMessage(message, publicKeys);
+    }
 
-    return channelService.sendMessage(
-      selectedChannelAddress,
-      armoredEncryptedMessage as string,
-      reply
-    );
+    const dataSendMessage = {
+      message: armoredEncryptedMessage || text,
+      address: selectedChannelAddress,
+      mentions: [],
+      attachmentObj,
+      messageType,
+      ...reply,
+    };
+
+    return channelService.sendMessage(selectedChannelAddress, dataSendMessage);
   };
 
   return { sendEncryptedMessage, loading };

@@ -12,7 +12,7 @@ const useStyles = makeStyles((theme: Theme) =>
       right: '1rem',
     },
     footerInputStyle: {
-      padding: '1rem 0',
+      padding: '1rem 1rem',
       position: 'relative',
     },
     button: {

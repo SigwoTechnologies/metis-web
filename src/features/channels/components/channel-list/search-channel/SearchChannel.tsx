@@ -4,6 +4,7 @@ import { setOpenCreateChannelDrawer } from '@metis/features/channels/store/chann
 import { useAppDispatch } from '@metis/store/hooks';
 import { openToast } from '@metis/store/ui/ui.slice';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
+import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import IndeterminateCheckBoxIcon from '@mui/icons-material/IndeterminateCheckBox';
 import LogoutIcon from '@mui/icons-material/Logout';
 import MenuIcon from '@mui/icons-material/Menu';
@@ -25,6 +26,7 @@ import { useState } from 'react';
 import About from '../about/about';
 import ModalHiddenList from '../modal-hidden-list/ModalHiddenList';
 import useStyles from './SearchChannel.styles';
+import Wallet from '../wallet/Wallet';
 
 const ChannelList = () => {
   const styles = useStyles();
@@ -40,6 +42,11 @@ const ChannelList = () => {
   const openCreateChannel = () => {
     setDrawer(false);
     dispatch(setOpenCreateChannelDrawer(true));
+  };
+
+  const handleShareMetis = () => {
+    dispatch(openToast({ text: 'Invitation copied in clipboard', type: 'info' }));
+    navigator.clipboard.writeText('Try out Metis! http://www.jup.io');
   };
 
   return (
@@ -71,16 +78,8 @@ const ChannelList = () => {
                 <ListItemText primary="New Channel" onClick={openCreateChannel} />
               </ListItemButton>
             </ListItem>
-            {/* 
-            <ListItem disablePadding>
-              <ListItemButton>
-                <ListItemIcon className={styles.listItemIcon}>
-                  <AllInboxIcon />
-                </ListItemIcon>
-                <ListItemText primary="Wallet" />
-              </ListItemButton>
-            </ListItem>
-  */}
+
+            <Wallet />
 
             <ListItem disablePadding>
               <ListItemButton onClick={() => setOpen(true)}>
@@ -109,16 +108,15 @@ const ChannelList = () => {
                 <Switch defaultChecked />
               </ListItemButton>
             </ListItem>
-
+ */}
             <ListItem disablePadding>
-              <ListItemButton>
+              <ListItemButton onClick={handleShareMetis}>
                 <ListItemIcon className={styles.listItemIcon}>
                   <PersonAddIcon />
                 </ListItemIcon>
                 <ListItemText primary="Share Metis with friends!" />
               </ListItemButton>
             </ListItem>
-            */}
           </List>
         </Box>
         <ListItem disablePadding>

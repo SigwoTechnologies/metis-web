@@ -7,7 +7,7 @@ import IMetaMaskService from '../../services/interfaces/metamask-service.interfa
 import { ExistingAccountSignResponse } from '../../types/existing-account-sign-response';
 import LoginState from '../../types/login-state';
 import ValidateSignatureResponse from '../../types/validate-signature-response';
-import ICommand from './command.interface';
+import ICommand .from './command.interface';
 
 export default class SignChallengeCommand implements ICommand<LoginState> {
   private readonly authService: IAuthService;
@@ -41,13 +41,12 @@ export default class SignChallengeCommand implements ICommand<LoginState> {
       } = data as ValidateSignatureResponse;
       if (!verified) return { ...state, error: LoginError.InvalidSignature };
 
-      localStorage.setItem('SIGNUP_JOB_ID', id.toString());
+      localStorage.setItem('SIGNUP_JOB_ID', String(id));
     }
 
     if (state.flow === LoginFlow.ExistingAccountSameDevice) {
       const { alias, accountRS, token } = data as ExistingAccountSignResponse;
-      const stringifiedToken = JSON.stringify({ access_token: token });
-      localStorage.setItem(constants.TOKEN, JSON.stringify(stringifiedToken));
+      saveToken(token);
       state.alias = alias;
       state.jupAddress = accountRS;
       state.isLoggedIn = true;

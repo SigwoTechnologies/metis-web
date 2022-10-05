@@ -15,6 +15,13 @@ const useStyles = makeStyles((theme: Theme) =>
       justifyContent: 'end',
       flexDirection: 'row-reverse',
     },
+    userName: {
+      width: '8rem',
+      marginBottom: '0.5rem',
+      textOverflow: 'ellipsis',
+      whiteSpace: 'nowrap',
+      overflow: 'hidden',
+    },
     avatarContainer: {
       display: 'flex',
       justifyContent: 'center',
@@ -36,7 +43,7 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     userMessageContainer: {
       // TODO: add this color to the theme
-      backgroundColor: '#145b91 !important',
+      backgroundColor: '#1C6758 !important',
     },
     message: {
       display: 'flex',
@@ -55,6 +62,7 @@ const useStyles = makeStyles((theme: Theme) =>
     replyButton: {
       fontSize: '0.85rem',
       position: 'absolute',
+      backgroundColor: '#145b91',
       top: '0.5rem',
       right: '0.7rem',
       '&:hover': {
