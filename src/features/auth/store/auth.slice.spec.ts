@@ -11,6 +11,7 @@ describe('Auth Slice', () => {
       isLoggedIn: false,
       isConnectingToMetamask: false,
       isCreatingAccount: false,
+      isConnectedToMetamask: false,
       userData: {
         password: '',
         passphrase: '',

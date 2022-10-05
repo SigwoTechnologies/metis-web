@@ -8,6 +8,7 @@ export type AuthState = {
   isLoggedIn: boolean;
   isConnectingToMetamask: boolean;
   isCreatingAccount: boolean;
+  isConnectedToMetamask: boolean;
   userData: EncryptedCredentials;
   jupAccount: JupAccount;
 };
@@ -16,6 +17,7 @@ const initialState: AuthState = {
   isLoggedIn: false,
   isConnectingToMetamask: false,
   isCreatingAccount: false,
+  isConnectedToMetamask: false,
   userData: {
     password: '',
     passphrase: '',
@@ -43,6 +45,9 @@ const authSlice = createSlice({
     },
     setIsConnectingToMetamask: (state, { payload }) => {
       state.isConnectingToMetamask = payload;
+    },
+    setIsConnectedToMetamask: (state, { payload }) => {
+      state.isConnectedToMetamask = payload;
     },
     setIsCreatingAccount: (state, { payload }) => {
       state.isCreatingAccount = payload;
@@ -91,6 +96,7 @@ export const {
   setJupAccount,
   setIsConnectingToMetamask,
   setIsCreatingAccount,
+  setIsConnectedToMetamask,
   signOut,
   setUserData,
 } = authSlice.actions;
