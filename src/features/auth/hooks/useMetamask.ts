@@ -24,10 +24,8 @@ const useMetamask = () => {
         method: 'eth_requestAccounts',
       });
 
-      await accountsChanged(selectedAccount);
       dispatch(setIsConnectedToMetamask(true));
       setAccount(selectedAccount);
-
     } catch (err) {
       dispatch(setIsConnectingToMetamask(false));
     }

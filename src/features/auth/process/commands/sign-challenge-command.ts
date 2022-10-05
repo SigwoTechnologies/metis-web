@@ -1,5 +1,6 @@
 import appConfig from '@metis/common/configuration/app.config';
 import constants from '@metis/common/configuration/constants';
+import { saveToken } from '@metis/common/services/token.service';
 import LoginError from '../../enums/login-error.enum';
 import LoginFlow from '../../enums/login-flow.enum';
 import IAuthService from '../../services/interfaces/auth-service.interface';
@@ -7,7 +8,7 @@ import IMetaMaskService from '../../services/interfaces/metamask-service.interfa
 import { ExistingAccountSignResponse } from '../../types/existing-account-sign-response';
 import LoginState from '../../types/login-state';
 import ValidateSignatureResponse from '../../types/validate-signature-response';
-import ICommand .from './command.interface';
+import ICommand from './command.interface';
 
 export default class SignChallengeCommand implements ICommand<LoginState> {
   private readonly authService: IAuthService;
