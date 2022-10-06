@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import appConfig from '@metis/common/configuration/app.config';
+import httpService from '@metis/common/services/http.service';
 import connectSocket from '@metis/common/services/socket.service';
 import { getToken } from '@metis/common/services/token.service';
 import { useAppDispatch } from '@metis/store/hooks';
@@ -10,7 +10,6 @@ import SendIcon from '@mui/icons-material/Send';
 import { FilledInput } from '@mui/material';
 import IconButton from '@mui/material/IconButton/IconButton';
 import InputAdornment from '@mui/material/InputAdornment';
-import axios from 'axios';
 import Picker from 'emoji-picker-react';
 import { MouseEvent, useEffect, useState } from 'react';
 import Files from 'react-files';
@@ -120,7 +119,7 @@ const MessageInput = () => {
     setSelectedFile(undefined);
     setPreview('');
 
-    return axios.post(`${appConfig.api.baseUrl}/jim/v1/api/files`, formData, { headers });
+    return httpService.post('/jim/v1/api/files', formData, { headers });
   };
 
   const onSubmit = async ({ message }: FormData) => {

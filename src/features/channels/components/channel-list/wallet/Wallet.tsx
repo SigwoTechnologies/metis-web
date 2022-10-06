@@ -1,4 +1,4 @@
-import appConfig from '@metis/common/configuration/app.config';
+import httpService from '@metis/common/services/http.service';
 import { getToken } from '@metis/common/services/token.service';
 import { convertNQTToJup } from '@metis/common/utils/utils';
 import { useAppSelector } from '@metis/store/hooks';
@@ -18,7 +18,6 @@ import {
   ListItemText,
 } from '@mui/material';
 import Box from '@mui/material/Box';
-import axios from 'axios';
 import { Fragment, useEffect, useState } from 'react';
 import ReceiveJup from './receive-jup/receive-jup';
 import SendJup from './send-jup/send-jup';
@@ -64,7 +63,7 @@ const Wallet = () => {
     };
     const {
       data: { transactions: recentTransactions },
-    } = await axios.get(`${appConfig.api.baseUrl}/v1/api/recent-transactions`, { headers });
+    } = await httpService.get('/v1/api/recent-transactions', { headers });
     setTransactions(recentTransactions);
   };
 
@@ -77,7 +76,7 @@ const Wallet = () => {
     };
     const {
       data: { balance: balanceFetched },
-    } = await axios.get(`${appConfig.api.baseUrl}/v1/api/balance`, { headers });
+    } = await httpService.get('/v1/api/balance', { headers });
 
     setBalance(balanceFetched);
   };
