@@ -55,32 +55,38 @@ export default () => {
     if (selectedChannelAddress) fetchPublicKeys();
   }, [selectedChannelAddress]);
 
-  const sendEncryptedMessage = async ({
-    text,
-    attachmentObj,
-    messageType = 'message',
-  }: {
-    text: string;
-    attachmentObj?: AttachmentObj;
-    messageType?: string;
-  }) => {
-    let armoredEncryptedMessage;
-    if (messageType === 'message') {
-      const message = await encryptionService.createMsg(text);
-      armoredEncryptedMessage = await encryptionService.encryptMessage(message, publicKeys);
-    }
+  const sendEncryptedMessage = async ({ text }: { text: string }) => {
+    const message = await encryptionService.createMsg(text);
+    const armoredEncryptedMessage = await encryptionService.encryptMessage(message, publicKeys);
 
     const dataSendMessage = {
       message: armoredEncryptedMessage || text,
       address: selectedChannelAddress,
       mentions: [],
-      attachmentObj,
-      messageType,
       ...reply,
     };
 
     return channelService.sendMessage(selectedChannelAddress, dataSendMessage);
   };
 
-  return { sendEncryptedMessage, loading };
+  const sendEncryptedMessageWithAttachment = async ({
+    attachmentObj,
+    channelAddress,
+  }: {
+    attachmentObj: AttachmentObj;
+    channelAddress: string;
+  }) => {
+    const message = {
+      message: 'attachment',
+      address: channelAddress,
+      mentions: [],
+      attachmentObj,
+      messageType: 'attachment',
+      ...reply,
+    };
+
+    return channelService.sendMessage(channelAddress, message);
+  };
+
+  return { sendEncryptedMessage, sendEncryptedMessageWithAttachment, loading };
 };

@@ -1,10 +1,9 @@
 /* eslint-disable camelcase */
-import appConfig from '@metis/common/configuration/app.config';
 import constants from '@metis/common/configuration/constants';
+import httpService from '@metis/common/services/http.service';
 import { AttachmentObj } from '@metis/features/channels/types/AttachmentObj';
 import Box from '@mui/material/Box';
 import CircularProgress from '@mui/material/CircularProgress';
-import axios from 'axios';
 import { memo, useEffect, useState } from 'react';
 import useStyles from './Attachment.styles';
 
@@ -12,7 +11,7 @@ type Props = {
   attachmentObj: AttachmentObj;
 };
 
-const Message = ({ attachmentObj }: Props) => {
+const Attachment = ({ attachmentObj }: Props) => {
   const classes = useStyles();
   const [preview, setPreview] = useState('');
   const [loading, setLoading] = useState(false);
@@ -45,7 +44,7 @@ const Message = ({ attachmentObj }: Props) => {
       Accept: 'application/json',
       Authorization: `Bearer ${access_token}`,
     };
-    const { data } = await axios.get(`${appConfig.api.baseUrl}${url}`, {
+    const { data } = await httpService.get(url, {
       headers,
       responseType: 'blob',
     });
@@ -74,4 +73,4 @@ const Message = ({ attachmentObj }: Props) => {
   );
 };
 
-export default memo(Message);
+export default memo(Attachment);
