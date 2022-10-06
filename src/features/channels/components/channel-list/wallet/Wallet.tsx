@@ -21,6 +21,7 @@ import {
 } from '@mui/material';
 import Box from '@mui/material/Box';
 import axios from 'axios';
+import dayjs from 'dayjs';
 import { Fragment, useEffect, useState } from 'react';
 import ReceiveJup from './receive-jup/receive-jup';
 import SendJup from './send-jup/send-jup';
@@ -29,6 +30,7 @@ import useStyles from './Wallet.styles';
 type TTransaction = {
   amountNQT: string;
   block: string;
+  blockTimestamp: number;
   confirmations: number;
   ecBlockHeight: number;
   ecBlockId: string;
@@ -112,7 +114,7 @@ const Wallet = () => {
             <ReceiveJup />
           </Box>
 
-          <Box>
+          <Box sx={{ textAlign: 'center' }}>
             Transactions
             <List>
               {transactions
@@ -120,14 +122,17 @@ const Wallet = () => {
                     <Fragment key={e.block}>
                       <ListItem disablePadding>
                         <ListItemButton>
-                          <ListItemAvatar className={classes.listItemIcon}>
-                            <Avatar>
-                              <SendIcon />
-                            </Avatar>
-                          </ListItemAvatar>
                           <ListItemText
                             primary={
-                              e.senderRS === jupAccount.address ? 'Sent JUP' : 'Received JUP'
+                              <>
+                                <span>
+                                  {e.senderRS === jupAccount.address
+                                    ? 'Sent JUP '
+                                    : 'Received JUP '}
+                                </span>
+                                {/* TO-DO: research how to show date  */}
+                                {/* <small>{dayjs(e.timestamp).format('MM/DD/YYYY')}</small> */}
+                              </>
                             }
                             secondary={`You has ${
                               e.senderRS === jupAccount.address ? 'Sent' : 'Received'
