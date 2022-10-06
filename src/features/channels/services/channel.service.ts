@@ -46,7 +46,6 @@ const loadChannelsMessages = async ({
 
   return filteredData;
 };
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const findChannels = async (args: null, { getState, dispatch, rejectWithValue }: any) => {
   const {
     auth: {
@@ -89,7 +88,6 @@ const inviteToSelectedChannel = async (payload: InviteToChannel): Promise<Channe
   const { data } = await httpService.post('/v1/api/channel/invite', payload);
   return data;
 };
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const getMutedChannelAddresses = async (args: null, { dispatch, rejectWithValue }: any) => {
   try {
     const {
@@ -103,7 +101,6 @@ const getMutedChannelAddresses = async (args: null, { dispatch, rejectWithValue 
     return rejectWithValue(err.response);
   }
 };
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const toggleMuteChannel = async (channelAddress: string, { getState, dispatch }: any) => {
   const isMuted = getState().channel.mutedChannels.includes(channelAddress);
   try {

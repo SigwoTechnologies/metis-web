@@ -1,7 +1,5 @@
-/* eslint-disable camelcase */
-/* eslint-disable quotes */
 import appConfig from '@metis/common/configuration/app.config';
-import constants from '@metis/common/configuration/constants';
+import { getToken } from '@metis/common/services/token.service';
 import { convertNQTToJup } from '@metis/common/utils/utils';
 import { useAppSelector } from '@metis/store/hooks';
 import AllInboxIcon from '@mui/icons-material/AllInbox';
@@ -58,11 +56,11 @@ const Wallet = () => {
   const [balance, setBalance] = useState(0);
 
   const getTransactions = async () => {
-    const { access_token } = JSON.parse(JSON.parse(String(localStorage.getItem(constants.TOKEN))));
+    const token = getToken();
     const headers = {
       'Content-Type': 'application/json',
       Accept: 'application/json',
-      Authorization: `Bearer ${access_token}`,
+      Authorization: `Bearer ${token}`,
     };
     const {
       data: { transactions: recentTransactions },
@@ -71,11 +69,11 @@ const Wallet = () => {
   };
 
   const getBalance = async () => {
-    const { access_token } = JSON.parse(JSON.parse(String(localStorage.getItem(constants.TOKEN))));
+    const token = getToken();
     const headers = {
       'Content-Type': 'application/json',
       Accept: 'application/json',
-      Authorization: `Bearer ${access_token}`,
+      Authorization: `Bearer ${token}`,
     };
     const {
       data: { balance: balanceFetched },

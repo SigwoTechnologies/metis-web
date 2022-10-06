@@ -1,7 +1,5 @@
-/* eslint-disable camelcase */
-/* eslint-disable quotes */
 import appConfig from '@metis/common/configuration/app.config';
-import constants from '@metis/common/configuration/constants';
+import { getToken } from '@metis/common/services/token.service';
 import { Channel } from '@metis/features/channels/types/channel';
 import { ChannelMember } from '@metis/features/channels/types/ChannelMember';
 import CloseIcon from '@mui/icons-material/Close';
@@ -32,11 +30,10 @@ const ChannelInfo = ({ selectedChannel }: Props) => {
   const [members, setMembers] = useState<ChannelMember[]>([]);
 
   const getMembers = async () => {
-    const { access_token } = JSON.parse(JSON.parse(String(localStorage.getItem(constants.TOKEN))));
     const headers = {
       'Content-Type': 'application/json',
       Accept: 'application/json',
-      Authorization: `Bearer ${access_token}`,
+      Authorization: `Bearer ${getToken()}`,
     };
     const { data } = await axios.get(
       `${appConfig.api.baseUrl}/v1/api/${selectedChannel.channelAddress}/members`,

@@ -1,5 +1,8 @@
 import Modal from '@metis/common/components/ui/Modal';
-import { useAppDispatch, useAppSelector } from '@metis/store/hooks';
+import {
+  useAppDispatch,
+  // useAppSelector
+} from '@metis/store/hooks';
 import { openToast } from '@metis/store/ui/ui.slice';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import { LoadingButton } from '@mui/lab';
@@ -12,7 +15,10 @@ import { MouseEvent, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import useSelectedChannel from '../../hooks/useSelectedChannel';
 import { toggleMuteChannel } from '../../store/channel.actions';
-import { hideChannel as hideChannelAction, selectState } from '../../store/channel.slice';
+import {
+  hideChannel as hideChannelAction,
+  // selectState
+} from '../../store/channel.slice';
 import InviteUserModal from '../invite-user-modal/InviteUserModal';
 import ChannelInfo from './channel-info/ChannelInfo';
 import useStyles from './ChatHeader.styles';
@@ -25,9 +31,9 @@ const ChatHeader = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const { mutedChannels } = useAppSelector(selectState);
+  // const { mutedChannels } = useAppSelector(selectState);
   const selectedChannel = useSelectedChannel();
-  const isMuted = mutedChannels.includes(selectedChannel.channelAddress);
+  // const isMuted = mutedChannels.includes(selectedChannel.channelAddress);
 
   const menu = Boolean(anchorEl);
   const openMenu = (event: MouseEvent<HTMLButtonElement>) => {
@@ -50,10 +56,10 @@ const ChatHeader = () => {
     closeMenu();
   };
 
-  const openMuteModal = () => {
-    setMuteModalOpen(true);
-    closeMenu();
-  };
+  // const openMuteModal = () => {
+  //   setMuteModalOpen(true);
+  //   closeMenu();
+  // };
 
   const muteChannel = () => {
     setLoading(true);
@@ -63,13 +69,13 @@ const ChatHeader = () => {
     });
   };
 
-  const unmuteChannel = () => {
-    setLoading(true);
-    dispatch(toggleMuteChannel(selectedChannel.channelAddress)).then(() => {
-      closeMenu();
-      setLoading(false);
-    });
-  };
+  // const unmuteChannel = () => {
+  //   setLoading(true);
+  //   dispatch(toggleMuteChannel(selectedChannel.channelAddress)).then(() => {
+  //     closeMenu();
+  //     setLoading(false);
+  //   });
+  // };
 
   return (
     <>

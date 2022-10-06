@@ -1,6 +1,5 @@
-/* eslint-disable camelcase */
 import appConfig from '@metis/common/configuration/app.config';
-import constants from '@metis/common/configuration/constants';
+import { getToken } from '@metis/common/services/token.service';
 import { AttachmentObj } from '@metis/features/channels/types/AttachmentObj';
 import Box from '@mui/material/Box';
 import CircularProgress from '@mui/material/CircularProgress';
@@ -39,11 +38,10 @@ const Message = ({ attachmentObj }: Props) => {
 
   const getImage = async (url: string) => {
     setLoading(true);
-    const { access_token } = JSON.parse(JSON.parse(String(localStorage.getItem(constants.TOKEN))));
     const headers = {
       'Content-Type': 'application/json',
       Accept: 'application/json',
-      Authorization: `Bearer ${access_token}`,
+      Authorization: `Bearer ${getToken()}`,
     };
     const { data } = await axios.get(`${appConfig.api.baseUrl}${url}`, {
       headers,

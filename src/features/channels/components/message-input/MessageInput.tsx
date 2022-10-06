@@ -1,8 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable camelcase */
 import appConfig from '@metis/common/configuration/app.config';
-import constants from '@metis/common/configuration/constants';
 import connectSocket from '@metis/common/services/socket.service';
+import { getToken } from '@metis/common/services/token.service';
 import { useAppDispatch } from '@metis/store/hooks';
 import { openToast } from '@metis/store/ui/ui.slice';
 import AttachFileIcon from '@mui/icons-material/AttachFile';
@@ -111,11 +110,10 @@ const MessageInput = () => {
     formData.append('fileCategory', 'attachment');
     formData.append('name', 'file');
 
-    const { access_token } = JSON.parse(JSON.parse(String(localStorage.getItem(constants.TOKEN))));
     const headers = {
       'Content-Type': 'multipart/form-data',
       Accept: 'application/json',
-      Authorization: `Bearer ${access_token}`,
+      Authorization: `Bearer ${getToken()}`,
     };
     setUploadingImage(true);
     dispatch(openToast({ text: 'Uploading image, please wait', type: 'info' }));
