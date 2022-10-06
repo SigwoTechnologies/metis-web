@@ -44,7 +44,7 @@ const MessageInput = () => {
   const [emojiPickerVisible, setEmojiPickerVisible] = useState(false);
   const { channelAddress } = useParams();
   const { register, handleSubmit, reset: clearInput, watch, setValue } = useForm<FormData>();
-  const { sendEncryptedMessage, loading } = useSendMessage();
+  const { sendEncryptedMessage, sendEncryptedMessageWithAttachment, loading } = useSendMessage();
   const dispatch = useAppDispatch();
   const [selectedFile, setSelectedFile] = useState<TFile>();
   const [preview, setPreview] = useState('');
@@ -75,15 +75,14 @@ const MessageInput = () => {
           size: number;
           originalFileType: string;
         }) => {
-          sendEncryptedMessage({
-            text: 'image',
+          sendEncryptedMessageWithAttachment({
+            channelAddress,
             attachmentObj: {
               url,
               originalname: fileName,
               mimetype: originalFileType || mimeType,
               size,
             },
-            messageType: 'attachment',
           }).then(() => {
             dispatch(discardReply());
             clearInput();

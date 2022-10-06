@@ -10,7 +10,7 @@ type Props = {
   attachmentObj: AttachmentObj;
 };
 
-const Message = ({ attachmentObj }: Props) => {
+const Attachment = ({ attachmentObj }: Props) => {
   const classes = useStyles();
   const [preview, setPreview] = useState('');
   const [loading, setLoading] = useState(false);
@@ -71,4 +71,4 @@ const Message = ({ attachmentObj }: Props) => {
   );
 };
 
-export default memo(Message);
+export default memo(Attachment);
