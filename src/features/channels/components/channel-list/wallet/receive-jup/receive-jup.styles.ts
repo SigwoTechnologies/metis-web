@@ -29,6 +29,14 @@ const useStyles = makeStyles(() =>
       justifyContent: 'flex-end',
       flex: '1',
     },
+    buttonID: {
+      border: 'none',
+      background: 'none',
+      color: '#fff',
+      padding: '0',
+      fontSize: '16px',
+      cursor: 'pointer',
+    },
   })
 );
 

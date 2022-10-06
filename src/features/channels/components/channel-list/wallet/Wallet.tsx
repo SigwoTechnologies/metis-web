@@ -6,22 +6,18 @@ import { convertNQTToJup } from '@metis/common/utils/utils';
 import { useAppSelector } from '@metis/store/hooks';
 import AllInboxIcon from '@mui/icons-material/AllInbox';
 import CloseIcon from '@mui/icons-material/Close';
-import SendIcon from '@mui/icons-material/Send';
 import {
-  Avatar,
   Divider,
   Drawer,
   IconButton,
   List,
   ListItem,
-  ListItemAvatar,
   ListItemButton,
   ListItemIcon,
   ListItemText,
 } from '@mui/material';
 import Box from '@mui/material/Box';
 import axios from 'axios';
-import dayjs from 'dayjs';
 import { Fragment, useEffect, useState } from 'react';
 import ReceiveJup from './receive-jup/receive-jup';
 import SendJup from './send-jup/send-jup';
@@ -107,7 +103,12 @@ const Wallet = () => {
             <CloseIcon />
           </IconButton>
 
-          <Box>Balance: {balance}</Box>
+          <Box>
+            <span style={{ color: 'grey' }}>Total Value (JUP) </span>
+            <br />
+
+            <span style={{ fontSize: '3rem' }}>{balance}</span>
+          </Box>
 
           <Box style={{ display: 'flex', gap: '1rem', width: '100%' }}>
             <SendJup balance={balance} getBalance={getBalance} />

@@ -51,23 +51,12 @@ const ReceiveJup = () => {
       >
         <DialogTitle id="alert-dialog-title">ACCOUNT ID</DialogTitle>
         <DialogContent>
-          <p>This ID is only for you and it will always be th same.</p>
+          <p>This ID is only for you and it will always be the same.</p>
           <p>For payments within the app you can also share your alias.</p>
-          <p>To receive JUP you can either your alias or account ID</p>
+          <p>To receive JUP you can either enter your alias or account ID</p>
           <Divider />
           <p>Alias: {jupAccount.alias}</p>
-          <button
-            type="button"
-            onClick={copyMyAddress}
-            style={{
-              border: 'none',
-              background: 'none',
-              color: '#fff',
-              padding: '0',
-              fontSize: '16px',
-              cursor: 'pointer',
-            }}
-          >
+          <button type="button" onClick={copyMyAddress} className={classes.buttonID}>
             Account ID: {jupAccount.address}
           </button>
         </DialogContent>
