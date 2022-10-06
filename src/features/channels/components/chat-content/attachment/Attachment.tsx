@@ -1,9 +1,8 @@
-import appConfig from '@metis/common/configuration/app.config';
+import httpService from '@metis/common/services/http.service';
 import { getToken } from '@metis/common/services/token.service';
 import { AttachmentObj } from '@metis/features/channels/types/AttachmentObj';
 import Box from '@mui/material/Box';
 import CircularProgress from '@mui/material/CircularProgress';
-import axios from 'axios';
 import { memo, useEffect, useState } from 'react';
 import useStyles from './Attachment.styles';
 
@@ -43,7 +42,7 @@ const Message = ({ attachmentObj }: Props) => {
       Accept: 'application/json',
       Authorization: `Bearer ${getToken()}`,
     };
-    const { data } = await axios.get(`${appConfig.api.baseUrl}${url}`, {
+    const { data } = await httpService.get(url, {
       headers,
       responseType: 'blob',
     });

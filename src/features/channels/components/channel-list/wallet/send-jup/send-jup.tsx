@@ -1,7 +1,7 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import Form from '@metis/common/components/ui/Form/Form';
 import TextInput from '@metis/common/components/ui/TextInput/TextInput';
-import appConfig from '@metis/common/configuration/app.config';
+import httpService from '@metis/common/services/http.service';
 import { getToken } from '@metis/common/services/token.service';
 import { convertJupToNQT, convertNQTToJup } from '@metis/common/utils/utils';
 import { openToast } from '@metis/store/ui/ui.slice';
@@ -11,7 +11,6 @@ import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import Divider from '@mui/material/Divider';
-import axios from 'axios';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import * as yup from 'yup';
@@ -57,8 +56,8 @@ const SendJup = ({ balance, getBalance }: Props) => {
       Accept: 'application/json',
       Authorization: `Bearer ${token}`,
     };
-    await axios.post(
-      `${appConfig.api.baseUrl}/v1/api/transfer-money`,
+    await httpService.post(
+      '/v1/api/transfer-money',
       { recipient, amount: convertJupToNQT(amount) },
       { headers }
     );
