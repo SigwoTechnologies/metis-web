@@ -25,9 +25,10 @@ export default interface IAuthService {
   getAlias(address: string): Promise<string>;
 
   // TODO: Type response when there is more information
-  createAccount(
-    passphrase: string,
-    password: string,
-    blockchainAccountAddress: string
-  ): Promise<any>;
+  // TODO: This is not implemented
+  // createAccount(
+  //   passphrase: string,
+  //   password: string,
+  //   blockchainAccountAddress: string
+  // ): Promise<any>;
 }

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { AnyAction, CombinedState, combineReducers, configureStore } from '@reduxjs/toolkit';
 import { authReducer } from '@metis/features/auth/store/auth.slice';
 import { channelReducer } from '@metis/features/channels/store/channel.slice';
@@ -9,7 +10,6 @@ const combinedReducer = combineReducers({
   ui: uiReducer,
 });
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const rootReducer = (state: CombinedState<any>, action: AnyAction) =>
   combinedReducer(state, action);
 

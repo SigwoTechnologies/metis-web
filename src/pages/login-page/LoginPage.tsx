@@ -1,8 +1,7 @@
-/* eslint-disable no-console */
 import MetisLogo from '@metis/assets/images/misc/metis-logo.svg';
 import Modal from '@metis/common/components/ui/Modal';
 import constants from '@metis/common/configuration/constants';
-import { getJobStatus } from '@metis/common/services/job.service';
+import getJobStatus from '@metis/common/services/job.service';
 import LocalStorageService from '@metis/common/services/local-storage.service';
 import connectSocket from '@metis/common/services/socket.service';
 import { saveToken } from '@metis/common/services/token.service';

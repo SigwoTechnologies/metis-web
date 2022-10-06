@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable no-console */
 import constants from '@metis/common/configuration/constants';
 import BusinessError from '@metis/common/exceptions/business-error';
 import httpService from '@metis/common/services/http.service';
@@ -111,23 +113,24 @@ export default class AuthService implements IAuthService {
     }
   }
 
-  async createAccount(passphrase: string, password: string, blockchainAccountAddress: string) {
-    try {
-      const response = await httpService.post(`${this.endpoint}/create/account`, {
-        passphrase,
-        password,
-        blockchainAccountAddress,
-      });
-      return response.data;
-    } catch (err: unknown) {
-      // TODO: Log the error in a log service
-      console.log('createAccount|error', err);
-      throw new BusinessError(
-        'An error has occured while creating your new account',
-        'create_account'
-      );
-    }
-  }
+  // TODO: This is not implemented
+  // async createAccount(passphrase: string, password: string, blockchainAccountAddress: string) {
+  //   try {
+  //     const { data } = await httpService.post(`${this.endpoint}/create/account`, {
+  //       passphrase,
+  //       password,
+  //       blockchainAccountAddress,
+  //     });
+  //     return data;
+  //   } catch (err: unknown) {
+  //     // TODO: Log the error in a log service
+  //     console.log('createAccount|error', err);
+  //     throw new BusinessError(
+  //       'An error has occured while creating your new account',
+  //       'create_account'
+  //     );
+  //   }
+  // }
 
   getLoggedInUserCredentials(): Credential | undefined {
     const storedCredentials =

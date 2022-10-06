@@ -1,4 +1,4 @@
-/* eslint-disable quotes */
+/* eslint-disable no-restricted-syntax */
 import { yupResolver } from '@hookform/resolvers/yup';
 import PlusButton from '@metis/assets/images/misc/plus-button.png';
 import Form from '@metis/common/components/ui/Form/Form';
@@ -25,7 +25,7 @@ const schema = yup.object({
   channelName: yup
     .string()
     .required('This field is required')
-    .max(25, "The channel name can't have more than 25 characters"),
+    .max(25, 'The channel name can not have more than 25 characters'),
 });
 
 const CreateButton = () => {
@@ -43,7 +43,6 @@ const CreateButton = () => {
   };
   const checkEmojiIndex = (channelName: string) => {
     const regex = emojiRegex();
-    // eslint-disable-next-line no-restricted-syntax
     for (const { index } of channelName.matchAll(regex)) {
       if (!index) {
         throw dispatch(openToast({ text: 'Channel name cannot start with Emoji', type: 'error' }));
@@ -60,7 +59,7 @@ const CreateButton = () => {
       .create(data)
       .then((channel: Channel) => {
         dispatch(createChannel(channel));
-        dispatch(openToast({ text: "We're creating your channel", type: 'info' }));
+        dispatch(openToast({ text: 'We are creating your channel', type: 'info' }));
         closeDrawer();
       })
       .catch(() => {

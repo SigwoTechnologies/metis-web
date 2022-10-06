@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import { useAppDispatch } from '@metis/store/hooks';
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
