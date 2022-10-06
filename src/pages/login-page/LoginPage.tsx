@@ -23,6 +23,7 @@ import { LoadingButton } from '@mui/lab';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 import { useEffect } from 'react';
+import { NavLink } from 'react-router-dom';
 import useStyles from './LoginPage.styles';
 
 type SignUpSuccessfulEventResponse = {
@@ -147,6 +148,10 @@ const LoginPage = () => {
                 {isConnectingToMetamask ? 'Connecting to Metamask' : 'Log In with Metamask'}
               </span>
             </LoadingButton>
+            <br />
+            <NavLink to="/auth/legacy" className={classes.associate}>
+              Associate your Legacy Account
+            </NavLink>
           </Box>
         </Container>
       </Box>
