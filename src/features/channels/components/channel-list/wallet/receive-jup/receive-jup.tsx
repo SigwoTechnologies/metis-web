@@ -30,9 +30,9 @@ const ReceiveJup = () => {
     setOpen(false);
   };
 
-  const copyMyAddress = () => {
-    navigator.clipboard.writeText(jupAccount.address);
-    dispatch(openToast({ text: 'JUP Address copied to clipboard', type: 'success' }));
+  const copyToClipboard = (textCopy: string) => {
+    navigator.clipboard.writeText(textCopy);
+    dispatch(openToast({ text: `${textCopy} copied to clipboard`, type: 'success' }));
   };
 
   return (
@@ -59,19 +59,23 @@ const ReceiveJup = () => {
           <Typography className={classes.paragraph}>
             This ID is only for you and it will always be the same. For payments within the app you
             can also share your alias. To receive JUP you can enter either your alias or account ID.
+            <br />
           </Typography>
 
           <Divider />
           <Grid>
             <Grid style={{ color: 'grey', fontSize: '1rem' }}>Alias: </Grid>
             <Grid>
-              <button type="button" onClick={copyMyAddress} className={classes.buttonID}>
+              <button
+                type="button"
+                onClick={() => copyToClipboard(jupAccount.alias)}
+                className={classes.buttonID}
+              >
                 <Grid className={classes.buttonLayout}>
                   <Grid className={classes.buttonLeft}>
-                    {' '}
                     <ContentCopyIcon className={classes.icon} />
                   </Grid>
-                  <Grid className={classes.buttonRight}>{jupAccount.alias}</Grid>
+                  <Grid className={classes.buttonRight}> &nbsp; {jupAccount.alias}</Grid>
                 </Grid>
               </button>
             </Grid>
@@ -79,12 +83,16 @@ const ReceiveJup = () => {
           <Grid>
             <Grid style={{ color: 'grey', fontSize: '1rem' }}>Account ID: </Grid>
             <Grid>
-              <button type="button" onClick={copyMyAddress} className={classes.buttonID}>
+              <button
+                type="button"
+                onClick={() => copyToClipboard(jupAccount.address)}
+                className={classes.buttonID}
+              >
                 <Grid className={classes.buttonLayout}>
                   <Grid className={classes.buttonLeft}>
                     <ContentCopyIcon className={classes.icon} />
                   </Grid>
-                  <Grid className={classes.buttonRight}>{jupAccount.address}</Grid>
+                  <Grid className={classes.buttonRight}> &nbsp; {jupAccount.address}</Grid>
                 </Grid>
               </button>
             </Grid>
