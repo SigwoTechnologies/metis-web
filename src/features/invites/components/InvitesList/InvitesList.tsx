@@ -69,7 +69,8 @@ const InvitesList = () => {
           id="panel1a-header"
         >
           <Box display="flex" gap="1rem">
-            {invites.length && (
+            {/* To-do: clarify this part */}
+            {/* {invites.length && (
               <Badge
                 color="error"
                 badgeContent={invites.length}
@@ -80,7 +81,7 @@ const InvitesList = () => {
               >
                 <InboxIcon />
               </Badge>
-            )}
+            )} */}
             {!invites.length && <InboxIcon />}
             <Typography>Invites</Typography>
           </Box>

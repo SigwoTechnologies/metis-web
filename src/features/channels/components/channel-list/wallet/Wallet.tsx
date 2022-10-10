@@ -4,15 +4,12 @@ import { convertNQTToJup } from '@metis/common/utils/utils';
 import { useAppSelector } from '@metis/store/hooks';
 import AllInboxIcon from '@mui/icons-material/AllInbox';
 import CloseIcon from '@mui/icons-material/Close';
-import SendIcon from '@mui/icons-material/Send';
 import {
-  Avatar,
   Divider,
   Drawer,
   IconButton,
   List,
   ListItem,
-  ListItemAvatar,
   ListItemButton,
   ListItemIcon,
   ListItemText,
@@ -26,6 +23,7 @@ import useStyles from './Wallet.styles';
 type TTransaction = {
   amountNQT: string;
   block: string;
+  blockTimestamp: number;
   confirmations: number;
   ecBlockHeight: number;
   ecBlockId: string;
@@ -102,14 +100,19 @@ const Wallet = () => {
             <CloseIcon />
           </IconButton>
 
-          <Box>Balance: {balance}</Box>
+          <Box>
+            <span style={{ color: 'grey' }}>Total Value (JUP) </span>
+            <br />
+
+            <span style={{ fontSize: '3rem' }}>{balance}</span>
+          </Box>
 
           <Box style={{ display: 'flex', gap: '1rem', width: '100%' }}>
             <SendJup balance={balance} getBalance={getBalance} />
             <ReceiveJup />
           </Box>
 
-          <Box>
+          <Box sx={{ textAlign: 'center' }}>
             Transactions
             <List>
               {transactions
@@ -117,14 +120,17 @@ const Wallet = () => {
                     <Fragment key={e.block}>
                       <ListItem disablePadding>
                         <ListItemButton>
-                          <ListItemAvatar className={classes.listItemIcon}>
-                            <Avatar>
-                              <SendIcon />
-                            </Avatar>
-                          </ListItemAvatar>
                           <ListItemText
                             primary={
-                              e.senderRS === jupAccount.address ? 'Sent JUP' : 'Received JUP'
+                              <>
+                                <span>
+                                  {e.senderRS === jupAccount.address
+                                    ? 'Sent JUP '
+                                    : 'Received JUP '}
+                                </span>
+                                {/* TO-DO: research how to show date  */}
+                                {/* <small>{dayjs(e.timestamp).format('MM/DD/YYYY')}</small> */}
+                              </>
                             }
                             secondary={`You has ${
                               e.senderRS === jupAccount.address ? 'Sent' : 'Received'

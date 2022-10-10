@@ -14,20 +14,37 @@ const useStyles = makeStyles(() =>
       marginBottom: '1rem',
       textTransform: 'capitalize',
     },
-    infoBox: {
-      width: '25rem',
+    icon: {
+      flex: '1',
+      display: 'flex',
+      justifyContent: 'flex-end',
+      fontSize: '1.2rem',
     },
-    infoLine: {
+    idTitle: {
+      textAlign: 'center',
+    },
+    buttonLayout: {
       display: 'flex',
     },
-    infoLineLeft: {
-      display: 'flex',
-      justifyContent: 'flex-start',
+    buttonID: {
+      border: 'none',
+      background: 'none',
+      color: '#fff',
+      padding: '0',
+      fontSize: '16px',
+      cursor: 'pointer',
     },
-    infoLineRight: {
+    buttonLeft: {
+      display: 'flex',
+      justifyContent: 'flex-start ',
+    },
+    buttonRight: {
       display: 'flex',
       justifyContent: 'flex-end',
       flex: '1',
+    },
+    paragraph: {
+      fontSize: '1rem',
     },
   })
 );

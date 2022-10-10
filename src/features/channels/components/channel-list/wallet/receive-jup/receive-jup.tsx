@@ -1,10 +1,13 @@
 import { useAppDispatch, useAppSelector } from '@metis/store/hooks';
 import { openToast } from '@metis/store/ui/ui.slice';
+import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import { LoadingButton } from '@mui/lab';
+import { Grid } from '@mui/material';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import Divider from '@mui/material/Divider';
+import Typography from '@mui/material/Typography';
 import { useState } from 'react';
 import useStyles from './receive-jup.styles';
 
@@ -27,9 +30,9 @@ const ReceiveJup = () => {
     setOpen(false);
   };
 
-  const copyMyAddress = () => {
-    navigator.clipboard.writeText(jupAccount.address);
-    dispatch(openToast({ text: 'JUP Address copied to clipboard', type: 'success' }));
+  const copyToClipboard = (textCopy: string) => {
+    navigator.clipboard.writeText(textCopy);
+    dispatch(openToast({ text: `${textCopy} copied to clipboard`, type: 'success' }));
   };
 
   return (
@@ -49,27 +52,51 @@ const ReceiveJup = () => {
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title">ACCOUNT ID</DialogTitle>
+        <DialogTitle id="alert-dialog-title" className={classes.idTitle}>
+          ACCOUNT ID
+        </DialogTitle>
         <DialogContent>
-          <p>This ID is only for you and it will always be th same.</p>
-          <p>For payments within the app you can also share your alias.</p>
-          <p>To receive JUP you can either your alias or account ID</p>
+          <Typography className={classes.paragraph}>
+            This ID is only for you and it will always be the same. For payments within the app you
+            can also share your alias. To receive JUP you can enter either your alias or account ID.
+            <br />
+          </Typography>
+
           <Divider />
-          <p>Alias: {jupAccount.alias}</p>
-          <button
-            type="button"
-            onClick={copyMyAddress}
-            style={{
-              border: 'none',
-              background: 'none',
-              color: '#fff',
-              padding: '0',
-              fontSize: '16px',
-              cursor: 'pointer',
-            }}
-          >
-            Account ID: {jupAccount.address}
-          </button>
+          <Grid>
+            <Grid style={{ color: 'grey', fontSize: '1rem' }}>Alias: </Grid>
+            <Grid>
+              <button
+                type="button"
+                onClick={() => copyToClipboard(jupAccount.alias)}
+                className={classes.buttonID}
+              >
+                <Grid className={classes.buttonLayout}>
+                  <Grid className={classes.buttonLeft}>
+                    <ContentCopyIcon className={classes.icon} />
+                  </Grid>
+                  <Grid className={classes.buttonRight}> &nbsp; {jupAccount.alias}</Grid>
+                </Grid>
+              </button>
+            </Grid>
+          </Grid>
+          <Grid>
+            <Grid style={{ color: 'grey', fontSize: '1rem' }}>Account ID: </Grid>
+            <Grid>
+              <button
+                type="button"
+                onClick={() => copyToClipboard(jupAccount.address)}
+                className={classes.buttonID}
+              >
+                <Grid className={classes.buttonLayout}>
+                  <Grid className={classes.buttonLeft}>
+                    <ContentCopyIcon className={classes.icon} />
+                  </Grid>
+                  <Grid className={classes.buttonRight}> &nbsp; {jupAccount.address}</Grid>
+                </Grid>
+              </button>
+            </Grid>
+          </Grid>
         </DialogContent>
       </Dialog>
     </>
