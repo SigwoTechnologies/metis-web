@@ -96,6 +96,7 @@ const MessageInput = () => {
     };
   }, [channelAddress]);
 
+  // TODO: Change implementation
   const sendFileMessage = async (file: TFile) => {
     if (!file) {
       throw new Error('[sendFileMessage]: File not provided');
