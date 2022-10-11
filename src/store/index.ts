@@ -1,12 +1,14 @@
 import { AnyAction, CombinedState, combineReducers, configureStore } from '@reduxjs/toolkit';
 import { authReducer } from '@metis/features/auth/store/auth.slice';
 import { channelReducer } from '@metis/features/channels/store/channel.slice';
+import { walletReducer } from '@metis/features/wallet/store/wallet.slice';
 import { uiReducer } from './ui/ui.slice';
 
 const combinedReducer = combineReducers({
   auth: authReducer,
   channel: channelReducer,
   ui: uiReducer,
+  wallet: walletReducer,
 });
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
