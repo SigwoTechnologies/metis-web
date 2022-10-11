@@ -72,7 +72,14 @@ const LegacyLoginPage = () => {
         throw new Error('Please check your address');
       }
 
-      dispatch(legacyLogin(account)).then(async () => {
+      dispatch(
+        legacyLogin({
+          address: account,
+          passphrase: data.passphrase,
+          password: data.password,
+        })
+      ).then(async () => {
+        dispatch(openToast({ text: 'Your account was associated successfully', type: 'success' }));
         const creds = JSON.parse(localStorage.getItem(constants.CREDENTIALS)!);
         const metamaskService = new MetaMaskService();
         const userDataString = await metamaskService.decryptMessage(creds, account);
@@ -80,7 +87,7 @@ const LegacyLoginPage = () => {
         dispatch(setUserData(userData));
 
         dispatch(setJupAccount({ address, alias }));
-        dispatch(openToast({ text: 'Your account was associated successfully', type: 'success' }));
+
         dispatch(setIsCreatingAccount(false));
         dispatch(setLoggedIn(true));
       });
