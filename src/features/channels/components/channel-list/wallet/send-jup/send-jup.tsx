@@ -4,6 +4,8 @@ import TextInput from '@metis/common/components/ui/TextInput/TextInput';
 import httpService from '@metis/common/services/http.service';
 import { getToken } from '@metis/common/services/token.service';
 import { convertJupToNQT, convertNQTToJup } from '@metis/common/utils/utils';
+import fetchBalance from '@metis/features/wallet/services/fetchBalance';
+import { useAppSelector } from '@metis/store/hooks';
 import { openToast } from '@metis/store/ui/ui.slice';
 import { LoadingButton } from '@mui/lab';
 import { Box } from '@mui/material';
@@ -31,13 +33,9 @@ type TForm = {
   amount: number;
 };
 
-type Props = {
-  balance: number;
-  getBalance: () => void;
-};
-
-const SendJup = ({ balance, getBalance }: Props) => {
+const SendJup = () => {
   const dispatch = useDispatch();
+  const { balance } = useAppSelector((state) => state.wallet);
   const [open, setOpen] = useState(false);
   const classes = useStyles();
 
@@ -49,12 +47,21 @@ const SendJup = ({ balance, getBalance }: Props) => {
     setOpen(false);
   };
 
-  const sendJup = async ({ recipient, amount }: TForm) => {
-    const token = getToken();
+  const onSendJup = async ({ recipient, amount }: TForm) => {
+    if (amount > balance) {
+      dispatch(
+        openToast({
+          text: 'Insufficient Funds',
+          type: 'error',
+        })
+      );
+      return;
+    }
+
     const headers = {
       'Content-Type': 'application/json',
       Accept: 'application/json',
-      Authorization: `Bearer ${token}`,
+      Authorization: `Bearer ${getToken()}`,
     };
     await httpService.post(
       '/v1/api/transfer-money',
@@ -70,10 +77,8 @@ const SendJup = ({ balance, getBalance }: Props) => {
         type: 'success',
       })
     );
-    await getBalance();
-  };
-  const onSend = async ({ recipient, amount }: TForm) => {
-    await sendJup({ recipient, amount });
+    await fetchBalance(dispatch);
+    setOpen(false);
   };
 
   return (
@@ -102,7 +107,7 @@ const SendJup = ({ balance, getBalance }: Props) => {
         </DialogTitle>
         <Divider />
         <DialogContent>
-          <Form<TForm> onSubmit={onSend} form={{ resolver: yupResolver(schema) }}>
+          <Form<TForm> onSubmit={onSendJup} form={{ resolver: yupResolver(schema) }}>
             <TextInput placeholder="Enter JUP Quantity" name="amount" />
             <TextInput placeholder="Enter JUP Destination Address" name="recipient" />
             <LoadingButton type="submit" className={classes.button} variant="contained">
