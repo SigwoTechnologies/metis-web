@@ -19,6 +19,7 @@ type Props = {
 };
 const ModalHiddenList = ({ open, onClose }: Props) => {
   const styles = useStyles();
+
   const dispatch = useAppDispatch();
   const { channels, hiddenChannels } = useAppSelector(selectState);
   const hiddenChannelsAddreses = useMemo(
