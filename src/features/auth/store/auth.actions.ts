@@ -26,30 +26,30 @@ export const login = createAsyncThunk<LoginState, string, { rejectValue: ErrorRe
     }
   }
 );
-export const legacyLogin = createAsyncThunk<LoginState, string, { rejectValue: ErrorResponse }>(
-  'auth/legacy',
-  async (address: string, { rejectWithValue, dispatch }) => {
-    try {
-      const loginState = {
-        address,
-        password: '2vvn34k4',
-        passphrase:
-          'claw whenever bounce nation depend burn forgotten respect son bird retreat horizon',
-        flow: LoginFlow.LegacyAccount,
-      } as LoginState;
-      const processor = new ClientProcessor();
-      const state = await processor.execute(loginState);
+export const legacyLogin = createAsyncThunk<
+  LoginState,
+  { address: string; password: string; passphrase: string },
+  { rejectValue: ErrorResponse }
+>('auth/legacy', async ({ address, password, passphrase }, { rejectWithValue, dispatch }) => {
+  try {
+    const loginState = {
+      address,
+      password,
+      passphrase,
+      flow: LoginFlow.LegacyAccount,
+    } as LoginState;
+    const processor = new ClientProcessor();
+    const state = await processor.execute(loginState);
 
-      return state;
-    } catch (err: unknown) {
-      if (err instanceof BusinessError) {
-        dispatch(openToast({ text: err.message, type: 'error' }));
-        return rejectWithValue(err.getError());
-      }
-      throw err;
+    return state;
+  } catch (err: unknown) {
+    if (err instanceof BusinessError) {
+      dispatch(openToast({ text: err.message, type: 'error' }));
+      return rejectWithValue(err.getError());
     }
+    throw err;
   }
-);
+});
 
 // TODO: this implementation is god awful, but it'll work for now
 type AuthAddPublicKey = {

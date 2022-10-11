@@ -156,27 +156,33 @@ const MessageInput = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form onSubmit={handleSubmit(onSubmit)} style={{ position: 'relative' }}>
       {selectedFile && <img src={preview} alt="Alo" style={{ width: '100px', height: '100px' }} />}
+      <IconButton
+        aria-label="send message"
+        edge="start"
+        size="medium"
+        sx={{ p: 1.5 }}
+        style={{ position: 'absolute', left: '0', bottom: '0', zIndex: '1' }}
+      >
+        <Files
+          className="files-dropzone"
+          onChange={handleSelectFile}
+          accepts={['image/*']}
+          multiple
+          maxFileSize={10000000}
+          minFileSize={0}
+          clickable
+        >
+          <AttachFileIcon />
+        </Files>
+      </IconButton>
       <FilledInput
         autoComplete="off"
         disabled={uploadingImage}
         className={classes.button}
         startAdornment={
           <InputAdornment position="start">
-            <IconButton aria-label="send message" edge="start" size="medium" sx={{ p: 1.5 }}>
-              <Files
-                className="files-dropzone"
-                onChange={handleSelectFile}
-                accepts={['image/*']}
-                multiple
-                maxFileSize={10000000}
-                minFileSize={0}
-                clickable
-              >
-                <AttachFileIcon />
-              </Files>
-            </IconButton>
             {/* <IconButton
               aria-label="send message"
               edge="start"
