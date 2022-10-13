@@ -14,6 +14,11 @@ const useStyles = makeStyles((theme: Theme) =>
       height: '4rem',
       justifyContent: 'flex-start',
     },
+    container: {
+      '&:hover .icon': {
+        opacity: '0.3',
+      },
+    },
     termPosition: {
       display: 'flex',
       justifyContent: 'flex-start',
@@ -25,7 +30,6 @@ const useStyles = makeStyles((theme: Theme) =>
       color: '#555b6e',
       textDecoration: 'underline',
     },
-
     term2: {
       size: '2rem',
       padding: '0.5rem',
@@ -57,6 +61,20 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     logout: {
       color: '#ec5151',
+    },
+    icon: {
+      opacity: '0',
+      '&:hover': {
+        opacity: '1',
+      },
+      color: 'white',
+      fontSize: '96%',
+      position: 'absolute',
+      top: '50%',
+      left: '50%',
+      transform: 'translate(-50%, -50%)',
+      '-ms-transform': 'translate(-50%, -50%)',
+      textAlign: 'center',
     },
   })
 );

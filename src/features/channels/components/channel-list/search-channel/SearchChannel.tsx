@@ -21,8 +21,8 @@ import ListItemText from '@mui/material/ListItemText';
 import Typography from '@mui/material/Typography';
 import { useState } from 'react';
 import About from '../about/about';
-import ProfileAvatar from '../profile-avatar/ProfileAvatar';
 import ModalHiddenList from '../modal-hidden-list/ModalHiddenList';
+import ProfileAvatar from '../profile-avatar/ProfileAvatar';
 import Wallet from '../wallet/Wallet';
 import useStyles from './SearchChannel.styles';
 

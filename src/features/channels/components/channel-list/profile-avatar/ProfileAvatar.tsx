@@ -5,7 +5,8 @@ import connectSocket from '@metis/common/services/socket.service';
 import { getToken } from '@metis/common/services/token.service';
 import { useAppDispatch, useAppSelector } from '@metis/store/hooks';
 import { openToast } from '@metis/store/ui/ui.slice';
-import { Avatar, IconButton } from '@mui/material';
+import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
+import { Avatar, Box, IconButton } from '@mui/material';
 import { useEffect, useState } from 'react';
 import Files from 'react-files';
 import useStyles from './ProfileAvatar.styles';
@@ -104,7 +105,13 @@ const ProfileAvatar = () => {
     await sendProfileAvatar(file);
   };
   return (
-    <IconButton aria-label="send message" edge="start" size="medium" sx={{ p: 1.5 }}>
+    <IconButton
+      aria-label="send message"
+      edge="start"
+      size="medium"
+      sx={{ p: 1.5 }}
+      className={styles.container}
+    >
       <Files
         className="files-dropzone"
         onChange={handleSelectFile}
@@ -119,6 +126,9 @@ const ProfileAvatar = () => {
           src={preview || PLaceholderAvatar}
           className={styles.accountAvatar}
         />
+        <Box>
+          <AddAPhotoIcon className={styles.icon} />
+        </Box>
       </Files>
     </IconButton>
   );
