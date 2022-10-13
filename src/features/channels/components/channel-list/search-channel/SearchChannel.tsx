@@ -1,16 +1,13 @@
-import PLaceholderAvatar from '@metis/assets/images/avatars/astronaut.png';
 import { signOut } from '@metis/features/auth/store/auth.slice';
 import { setOpenCreateChannelDrawer } from '@metis/features/channels/store/channel.slice';
 import { useAppDispatch } from '@metis/store/hooks';
 import { openToast } from '@metis/store/ui/ui.slice';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
-import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import IndeterminateCheckBoxIcon from '@mui/icons-material/IndeterminateCheckBox';
 import LogoutIcon from '@mui/icons-material/Logout';
 import MenuIcon from '@mui/icons-material/Menu';
-import Avatar from '@mui/material/Avatar';
+import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 import Divider from '@mui/material/Divider';
 import Drawer from '@mui/material/Drawer';
@@ -24,9 +21,10 @@ import ListItemText from '@mui/material/ListItemText';
 import Typography from '@mui/material/Typography';
 import { useState } from 'react';
 import About from '../about/about';
+import ProfileAvatar from '../profile-avatar/ProfileAvatar';
 import ModalHiddenList from '../modal-hidden-list/ModalHiddenList';
-import useStyles from './SearchChannel.styles';
 import Wallet from '../wallet/Wallet';
+import useStyles from './SearchChannel.styles';
 
 const ChannelList = () => {
   const styles = useStyles();
@@ -55,17 +53,7 @@ const ChannelList = () => {
         {/* TODO fixed values are not good for responsive design */}
         <Box sx={{ width: 300 }} role="presentation" className={styles.upperGroup}>
           <Box className={styles.account}>
-            <Box />
-            <Box>
-              <Button component="label">
-                <Avatar
-                  alt="Channel Avatar"
-                  src={PLaceholderAvatar}
-                  className={styles.accountAvatar}
-                />
-                <input hidden accept="image/*" multiple type="file" />
-              </Button>
-            </Box>
+            <ProfileAvatar />
           </Box>
 
           <Divider />
