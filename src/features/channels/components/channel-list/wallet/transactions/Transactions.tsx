@@ -2,9 +2,8 @@
 /* eslint-disable camelcase */
 /* eslint-disable quotes */
 import { convertNQTToJup } from '@metis/common/utils/utils';
-import fetchBalance from '@metis/features/wallet/services/fetchBalance';
 import fetchTransactions from '@metis/features/wallet/services/fetchTransactions';
-import { useAppSelector } from '@metis/store/hooks';
+import { useAppDispatch, useAppSelector } from '@metis/store/hooks';
 import SendIcon from '@mui/icons-material/Send';
 import {
   Avatar,
@@ -18,17 +17,16 @@ import {
 } from '@mui/material';
 import Box from '@mui/material/Box';
 import { Fragment, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
 import useStyles from './Transactions.styles';
 
 const Transactions = () => {
   const classes = useStyles();
   const { jupAccount } = useAppSelector((state) => state.auth);
   const { transactions, balance } = useAppSelector((state) => state.wallet);
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
-    fetchTransactions(dispatch);
+    dispatch(fetchTransactions());
   }, [balance]);
 
   if (!transactions.length) {

@@ -5,7 +5,7 @@ import httpService from '@metis/common/services/http.service';
 import { getToken } from '@metis/common/services/token.service';
 import { convertJupToNQT, convertNQTToJup } from '@metis/common/utils/utils';
 import fetchBalance from '@metis/features/wallet/services/fetchBalance';
-import { useAppSelector } from '@metis/store/hooks';
+import { useAppDispatch, useAppSelector } from '@metis/store/hooks';
 import { openToast } from '@metis/store/ui/ui.slice';
 import { LoadingButton } from '@mui/lab';
 import { Box } from '@mui/material';
@@ -14,7 +14,6 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import Divider from '@mui/material/Divider';
 import { useState } from 'react';
-import { useDispatch } from 'react-redux';
 import * as yup from 'yup';
 import useStyles from './send-jup.styles';
 
@@ -34,7 +33,7 @@ type TForm = {
 };
 
 const SendJup = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const { balance } = useAppSelector((state) => state.wallet);
   const [open, setOpen] = useState(false);
   const classes = useStyles();
@@ -77,7 +76,7 @@ const SendJup = () => {
         type: 'success',
       })
     );
-    await fetchBalance(dispatch);
+    dispatch(fetchBalance());
     setOpen(false);
   };
 
