@@ -82,7 +82,7 @@ const ProfileAvatar = () => {
     }
 
     const formData = new FormData();
-    formData.append('file', file as any);
+    formData.append('file', file as never);
     formData.append('originalFileType', String(selectedFile?.type));
     formData.append('attachToJupiterAddress', String(address));
     formData.append('fileCategory', 'public-profile');
