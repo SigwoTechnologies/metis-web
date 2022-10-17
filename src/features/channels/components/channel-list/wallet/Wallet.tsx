@@ -1,6 +1,6 @@
 import fetchBalance from '@metis/features/wallet/services/fetchBalance';
 import { setIsOpenWallet } from '@metis/features/wallet/store/wallet.slice';
-import { useAppSelector } from '@metis/store/hooks';
+import { useAppDispatch, useAppSelector } from '@metis/store/hooks';
 import AllInboxIcon from '@mui/icons-material/AllInbox';
 import CloseIcon from '@mui/icons-material/Close';
 import {
@@ -13,7 +13,6 @@ import {
 } from '@mui/material';
 import Box from '@mui/material/Box';
 import { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
 import ReceiveJup from './receive-jup/receive-jup';
 import SendJup from './send-jup/send-jup';
 import Transactions from './transactions/Transactions';
@@ -22,10 +21,10 @@ import useStyles from './Wallet.styles';
 const Wallet = () => {
   const classes = useStyles();
   const { balance, isOpenWallet } = useAppSelector((state) => state.wallet);
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
-    fetchBalance(dispatch);
+    dispatch(fetchBalance());
   }, []);
 
   const closeDrawer = () => {

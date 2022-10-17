@@ -1,7 +1,7 @@
-/* eslint-disable camelcase */
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import type { RootState } from '@metis/store/types';
 import { createSlice } from '@reduxjs/toolkit';
+import fetchBalance from '../services/fetchBalance';
+import fetchTransactions from '../services/fetchTransactions';
 import { TTransaction } from '../types/TTransaction';
 
 export type TWalletState = {
@@ -22,12 +22,6 @@ const slice = createSlice({
   name: 'wallet',
   initialState,
   reducers: {
-    setTransactions: (state: TWalletState, { payload: transactions }) => {
-      state.transactions = transactions;
-    },
-    setBalance: (state: TWalletState, { payload: balance }) => {
-      state.balance = balance;
-    },
     setLoading: (state: TWalletState, { payload: status }) => {
       state.isLoading = status;
     },
@@ -36,10 +30,15 @@ const slice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    // Add reducers for additional action types here, and handle loading state as needed
+    builder.addCase(fetchBalance.fulfilled, (state, action) => {
+      state.balance = action.payload;
+    });
+    builder.addCase(fetchTransactions.fulfilled, (state, action) => {
+      state.transactions = action.payload;
+    });
   },
 });
 
 export const selectState = (state: RootState) => state.channel;
-export const { setIsOpenWallet, setLoading, setTransactions, setBalance } = slice.actions;
+export const { setIsOpenWallet, setLoading } = slice.actions;
 export const walletReducer = slice.reducer;
