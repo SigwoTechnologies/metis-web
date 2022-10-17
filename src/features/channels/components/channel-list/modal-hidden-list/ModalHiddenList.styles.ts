@@ -14,6 +14,7 @@ const useStyles = makeStyles(() =>
       justifyContent: 'flex-start',
       alignContent: 'center',
       fontSize: '1rem',
+      '&:hover .glow': {},
       // backgroundColor: 'green',
     },
     actionContainer: {
