@@ -56,7 +56,7 @@ const ModalHiddenList = ({ open, onClose }: Props) => {
                       onClick={() => showChannel(channel.channelAddress, channel.channelName)}
                     >
                       <Typography className={styles.glow}>
-                        <VisibilityIcon />
+                        <VisibilityIcon sx={{ position: 'relative', alignContent: 'center' }} />
                       </Typography>
                     </CardActions>
                   </Box>
