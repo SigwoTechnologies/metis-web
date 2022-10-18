@@ -10,7 +10,6 @@ import AuthService from '@metis/features/auth/services/auth.service';
 import MetaMaskService from '@metis/features/auth/services/metamask.service';
 import { legacyLogin } from '@metis/features/auth/store/auth.actions';
 import {
-  setIsConnectedToMetamask,
   setIsCreatingAccount,
   setJupAccount,
   setLoggedIn,
@@ -23,7 +22,7 @@ import PeopleIcon from '@mui/icons-material/People';
 import { LoadingButton } from '@mui/lab';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import * as yup from 'yup';
 import useStyles from './LegacyLoginPage.styles';
 
@@ -39,27 +38,12 @@ interface IForm {
 const LegacyLoginPage = () => {
   const dispatch = useAppDispatch();
   const classes = useStyles();
-  const { connect } = useMetamask();
-  const { isCreatingAccount, isConnectedToMetamask, ethAccount } = useAppSelector(
-    (state) => state.auth
-  );
+  useMetamask();
+  const { isCreatingAccount, ethAccount } = useAppSelector((state) => state.auth);
   const [passwordShown, setPasswordShown] = useState(false);
   const [passphraseShown, setPassphraseShown] = useState(false);
 
-  const handleLogin = async () => {
-    await connect();
-  };
-
-  // TODO: Make a better implementation of this
-  useEffect(() => {
-    if (ethAccount) {
-      dispatch(setIsConnectedToMetamask(true));
-    }
-
-    return undefined;
-  }, [ethAccount]);
-
-  const createNewChannel = async (data: IForm) => {
+  const handleAssociate = async (data: IForm) => {
     if (!data.passphrase.trim() || !data.password.trim()) {
       return;
     }
@@ -100,20 +84,6 @@ const LegacyLoginPage = () => {
     }
   };
 
-  if (!ethAccount && !isConnectedToMetamask) {
-    return (
-      <Box height="100vh" className={classes.wrapper}>
-        <Container maxWidth="xl" component="main" className={classes.container}>
-          <Box component="form" noValidate maxWidth="md">
-            <Box component="img" src={MetisLogo} alt="login" className={classes.image} />
-            <LoadingButton fullWidth variant="contained" onClick={handleLogin}>
-              <span className={classes.span}>Connect Metamask</span>
-            </LoadingButton>
-          </Box>
-        </Container>
-      </Box>
-    );
-  }
   return (
     <>
       <Modal open={isCreatingAccount}>
@@ -127,7 +97,7 @@ const LegacyLoginPage = () => {
           <Box component="form" noValidate maxWidth="md">
             <Box component="img" src={MetisLogo} alt="login" className={classes.image} />
           </Box>
-          <Form<IForm> onSubmit={createNewChannel} form={{ resolver: yupResolver(schema) }}>
+          <Form<IForm> onSubmit={handleAssociate} form={{ resolver: yupResolver(schema) }}>
             <TextInput
               placeholder="Passphrase here"
               name="passphrase"

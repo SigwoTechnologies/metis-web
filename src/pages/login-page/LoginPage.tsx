@@ -122,7 +122,6 @@ const LoginPage = () => {
                 style={{
                   width: '25rem',
                 }}
-                // onClick={() => navigate('/auth/sync-devices')}
                 onClick={sendSyncRequest}
               >
                 <span className={classes.span}>Sync with old device</span>
