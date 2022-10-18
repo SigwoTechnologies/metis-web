@@ -9,10 +9,10 @@ import {
   Accordion,
   AccordionDetails,
   AccordionSummary,
-  Badge,
   Box,
   List,
   Typography,
+  Badge,
 } from '@mui/material';
 import { useState } from 'react';
 import inviteService, { Invite } from '../../services/invite.service';
@@ -69,8 +69,7 @@ const InvitesList = () => {
           id="panel1a-header"
         >
           <Box display="flex" gap="1rem">
-            {/* To-do: clarify this part */}
-            {/* {invites.length && (
+            {invites.length ? (
               <Badge
                 color="error"
                 badgeContent={invites.length}
@@ -81,7 +80,9 @@ const InvitesList = () => {
               >
                 <InboxIcon />
               </Badge>
-            )} */}
+            ) : (
+              ''
+            )}
             {!invites.length && <InboxIcon />}
             <Typography>Invites</Typography>
           </Box>
