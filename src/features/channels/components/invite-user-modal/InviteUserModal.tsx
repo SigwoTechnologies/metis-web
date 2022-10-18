@@ -36,7 +36,10 @@ const InviteUserModal: React.FC<Props> = ({ closeModal, open }) => {
     setLoading(true);
     channelService
       .inviteToSelectedChannel({ inviteeAddressOrAlias, channelAddress })
-      .then(() => dispatch(openNotification({ text: 'Invite sent!', type: 'success' })))
+      .then(() => {
+        dispatch(openNotification({ text: 'Invite sent!', type: 'success' }));
+        closeModal();
+      })
       .catch((error) => {
         const { message } = error.response.data;
         dispatch(
