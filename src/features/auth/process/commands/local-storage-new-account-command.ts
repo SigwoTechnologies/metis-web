@@ -15,12 +15,19 @@ export default class LocalStorageNewAccountCommand implements ICommand<LoginResp
   async execute(state: LoginResponse): Promise<LoginResponse> {
     const credentials = this.localStorageService.getItem<string>(constants.CREDENTIALS);
 
-    if (credentials) {
+    if (credentials && [LoginFlow.NewAccount, LoginFlow.LegacyAccount].includes(state.flow)) {
       return {
         ...state,
         encryptedCredentials: credentials,
         error: LoginError.DifferentFlow,
         flow: LoginFlow.ExistingAccountSameDevice,
+      };
+    }
+
+    if (credentials && state.flow === LoginFlow.ExistingAccountSameDevice) {
+      return {
+        ...state,
+        encryptedCredentials: credentials,
       };
     }
 

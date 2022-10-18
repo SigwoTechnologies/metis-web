@@ -25,7 +25,7 @@ import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 import { useEffect, useState } from 'react';
 import * as yup from 'yup';
-import useStyles from './LegacyLoginPage.styles';
+import useStyles from './SyncDevicesPage.styles';
 
 const schema = yup.object({
   password: yup.string().required('This field is required'),

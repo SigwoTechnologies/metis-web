@@ -12,6 +12,7 @@ const useStyles = makeStyles((theme: Theme) =>
       flexDirection: 'column',
       justifyContent: 'center',
       alignItems: 'center',
+      textAlign: 'center',
     },
     image: {
       height: '10rem',
@@ -20,13 +21,8 @@ const useStyles = makeStyles((theme: Theme) =>
       objectFit: 'cover',
       borderRadius: '100%',
     },
-    associate: {
-      color: '#ccc',
-      textDecoration: 'none',
-    },
     span: {
       fontWeight: 700,
-      fontSize: '14px',
     },
     loading: {
       clipPath: 'inset(0 1ch 0 0)',
@@ -36,6 +32,13 @@ const useStyles = makeStyles((theme: Theme) =>
       to: {
         clipPath: 'inset(0 -1ch 0 0)',
       },
+    },
+    icon: {
+      fontSize: '6rem',
+    },
+    iconContainer: {
+      display: 'flex',
+      justifyContent: 'center',
     },
   })
 );

@@ -20,13 +20,12 @@ const useStyles = makeStyles((theme: Theme) =>
       objectFit: 'cover',
       borderRadius: '100%',
     },
+    span: {
+      fontWeight: 700,
+    },
     associate: {
       color: '#ccc',
       textDecoration: 'none',
-    },
-    span: {
-      fontWeight: 700,
-      fontSize: '14px',
     },
     loading: {
       clipPath: 'inset(0 1ch 0 0)',
@@ -36,6 +35,13 @@ const useStyles = makeStyles((theme: Theme) =>
       to: {
         clipPath: 'inset(0 -1ch 0 0)',
       },
+    },
+    icon: {
+      fontSize: '6rem',
+    },
+    iconContainer: {
+      display: 'flex',
+      justifyContent: 'center',
     },
   })
 );

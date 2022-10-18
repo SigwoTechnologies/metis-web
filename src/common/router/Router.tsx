@@ -9,6 +9,7 @@ import NonAuthRoute from './non-auth-route/NonAuthRoute';
 
 const Login = Loader(lazy(() => import('@metis/pages/login-page/LoginPage')));
 const LegacyLogin = Loader(lazy(() => import('@metis/pages/legacy-login-page/LegacyLoginPage')));
+const SyncDevices = Loader(lazy(() => import('@metis/pages/sync-devices-page/SyncDevicesPage')));
 const ChatContainer = Loader(lazy(() => import('@metis/pages/chat-page/ChatPage')));
 const Status404 = Loader(lazy(() => import('@metis/pages/error-pages/Status404')));
 
@@ -38,6 +39,14 @@ const routes: RouteObject[] = [
         element: (
           <NonAuthRoute>
             <Login />
+          </NonAuthRoute>
+        ),
+      },
+      {
+        path: 'sync-devices',
+        element: (
+          <NonAuthRoute>
+            <SyncDevices />
           </NonAuthRoute>
         ),
       },
