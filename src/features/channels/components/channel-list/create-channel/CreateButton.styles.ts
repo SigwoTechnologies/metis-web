@@ -4,8 +4,8 @@ import { createStyles, makeStyles } from '@mui/styles';
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     createButton: {
-      width: '3.7rem',
-      height: '3.7rem',
+      width: '3rem',
+      height: '3rem',
       position: 'absolute',
       margin: '1rem',
       bottom: 0,

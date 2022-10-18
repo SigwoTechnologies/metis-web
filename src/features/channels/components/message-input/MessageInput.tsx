@@ -163,7 +163,7 @@ const MessageInput = () => {
         edge="start"
         size="medium"
         sx={{ p: 1.5 }}
-        style={{ position: 'absolute', left: '0', bottom: '0', zIndex: '1' }}
+        style={{ position: 'absolute', left: '12px', bottom: '5px', zIndex: '1', fontSize: '1px' }}
       >
         <Files
           className="files-dropzone"

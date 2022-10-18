@@ -28,7 +28,7 @@ const ProfileAvatar = () => {
   } = useAppSelector((s) => s.auth);
   const [selectedFile, setSelectedFile] = useState<TFile>();
   const [preview, setPreview] = useState('');
-  const [uploadingImage, setUploadingImage] = useState(false);
+  // const [uploadingImage, setUploadingImage] = useState(false);
 
   const getImage = async (url: string) => {
     const headers = {
@@ -56,7 +56,7 @@ const ProfileAvatar = () => {
     if (address)
       socket.on('uploadCreated', async ({ url }: { url: string }) => {
         await getImage(url);
-        setUploadingImage(false);
+        // setUploadingImage(false);
       });
 
     return () => {
@@ -93,7 +93,7 @@ const ProfileAvatar = () => {
       Accept: 'application/json',
       Authorization: `Bearer ${getToken()}`,
     };
-    setUploadingImage(true);
+    // setUploadingImage(true);
     dispatch(openToast({ text: 'Uploading image, please wait', type: 'info' }));
     setSelectedFile(undefined);
     setPreview('');
