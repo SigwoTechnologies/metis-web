@@ -6,7 +6,7 @@ import { getToken } from '@metis/common/services/token.service';
 import { useAppDispatch, useAppSelector } from '@metis/store/hooks';
 import { openToast } from '@metis/store/ui/ui.slice';
 import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
-import { Avatar, Box, IconButton } from '@mui/material';
+import { Avatar, Box, CircularProgress, IconButton } from '@mui/material';
 import { useEffect, useState } from 'react';
 import Files from 'react-files';
 import useStyles from './ProfileAvatar.styles';
@@ -104,6 +104,9 @@ const ProfileAvatar = () => {
     setSelectedFile(file);
     await sendProfileAvatar(file);
   };
+  if (!preview.length) {
+    return <CircularProgress className={styles.spinner} />;
+  }
   return (
     <IconButton
       aria-label="send message"
