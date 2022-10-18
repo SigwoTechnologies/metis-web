@@ -42,10 +42,10 @@ const ChannelInfo = ({ selectedChannel }: Props) => {
   };
 
   useEffect(() => {
-    if (selectedChannel.channelAddress) {
+    if (isOpenWallet) {
       getMembers();
     }
-  }, [selectedChannel.channelAddress]);
+  }, [isOpenWallet]);
 
   const closeDrawer = () => {
     setIsOpenWallet(false);
