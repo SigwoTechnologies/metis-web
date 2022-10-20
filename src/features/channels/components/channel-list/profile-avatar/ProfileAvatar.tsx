@@ -6,7 +6,7 @@ import { getToken } from '@metis/common/services/token.service';
 import { useAppDispatch, useAppSelector } from '@metis/store/hooks';
 import { openToast } from '@metis/store/ui/ui.slice';
 import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
-import { Avatar, Box, IconButton } from '@mui/material';
+import { Avatar, Box, CircularProgress, IconButton } from '@mui/material';
 import { useEffect, useState } from 'react';
 import Files from 'react-files';
 import useStyles from './ProfileAvatar.styles';
@@ -28,7 +28,7 @@ const ProfileAvatar = () => {
   } = useAppSelector((s) => s.auth);
   const [selectedFile, setSelectedFile] = useState<TFile>();
   const [preview, setPreview] = useState('');
-  // const [uploadingImage, setUploadingImage] = useState(false);
+  const [uploadingImage, setUploadingImage] = useState(false);
 
   const getImage = async (url: string) => {
     const headers = {
@@ -56,7 +56,7 @@ const ProfileAvatar = () => {
     if (address)
       socket.on('uploadCreated', async ({ url }: { url: string }) => {
         await getImage(url);
-        // setUploadingImage(false);
+        setUploadingImage(false);
       });
 
     return () => {
@@ -93,7 +93,7 @@ const ProfileAvatar = () => {
       Accept: 'application/json',
       Authorization: `Bearer ${getToken()}`,
     };
-    // setUploadingImage(true);
+    setUploadingImage(true);
     dispatch(openToast({ text: 'Uploading image, please wait', type: 'info' }));
     setSelectedFile(undefined);
     setPreview('');
@@ -104,7 +104,9 @@ const ProfileAvatar = () => {
     setSelectedFile(file);
     await sendProfileAvatar(file);
   };
-  return (
+  return uploadingImage ? (
+    <CircularProgress className={styles.spinner} />
+  ) : (
     <IconButton
       aria-label="send message"
       edge="start"

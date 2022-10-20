@@ -26,6 +26,9 @@ const useStyles = makeStyles(() =>
       '-ms-transform': 'translate(-50%, -50%)',
       textAlign: 'center',
     },
+    spinner: {
+      alignSelf: 'center',
+    },
   })
 );
 
