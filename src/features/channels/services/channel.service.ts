@@ -23,12 +23,12 @@ const loadChannelsMessages = async ({
   passphrase,
   pageNumber = 0,
   pageSize = 20,
-}: LoadChannelsMessagesProps): Promise<Message[]> => {
+}: LoadChannelsMessagesProps): Promise<{ messages: Message[]; channelAddress: string }> => {
   const encryptionService = new EncryiptionService();
   const response = await httpService.get<ChannelsMessagesResponse[]>(
     `/v1/api/channels/${channelAddress}/messages?pageNumber=${pageNumber}&pageSize=${pageSize}`
   );
-  const filteredData = await Promise.all(
+  const messages = await Promise.all(
     response.data.map(async (item) => ({
       ...item.message,
       decryptedReplyMessage: await encryptionService.decryptMessage(
@@ -44,28 +44,17 @@ const loadChannelsMessages = async ({
     }))
   );
 
-  return filteredData;
+  return { messages, channelAddress };
 };
-const findChannels = async (args: null, { getState, dispatch, rejectWithValue }: any) => {
-  const {
-    auth: {
-      userData: { privateKeyArmored, passphrase },
-    },
-  } = getState();
-
+const findChannels = async (args: null, { dispatch, rejectWithValue }: any) => {
   try {
     const response = await httpService.get<Channel[]>('/v1/api/channels');
     const channels = await Promise.all(
       response.data.map(async (channel) => ({
         ...channel,
-        messages: await loadChannelsMessages({
-          channelAddress: channel.channelAddress,
-          privateKeyArmored,
-          passphrase,
-        }),
+        messages: [],
       }))
     );
-
     return channels;
   } catch (error) {
     const err = error as AxiosError;

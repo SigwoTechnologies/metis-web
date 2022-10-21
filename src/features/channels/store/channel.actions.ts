@@ -5,6 +5,10 @@ import channelService from '../services/channel.service';
 export const localStorageKeyHiddenChannel = '@hiddenChannels';
 
 export const findChannels = createAsyncThunk('channels/findChannels', channelService.findChannels);
+export const loadChannelsMessages = createAsyncThunk(
+  'channels/loadChannelsMessages',
+  channelService.loadChannelsMessages
+);
 export const getMutedChannelAddresses = createAsyncThunk(
   'channels/getMutedChannelAddresses',
   channelService.getMutedChannelAddresses
@@ -24,4 +28,5 @@ export default {
   getMutedChannelAddresses,
   toggleMuteChannel,
   getHiddenChannels,
+  loadChannelsMessages,
 };

@@ -10,6 +10,7 @@ import {
   getMutedChannelAddresses,
   localStorageKeyHiddenChannel,
   toggleMuteChannel,
+  loadChannelsMessages,
 } from './channel.actions';
 
 export type ChannelState = {
@@ -119,6 +120,26 @@ const slice = createSlice({
       state.isLoading = false;
     });
     builder.addCase(findChannels.rejected, (state) => {
+      state.isLoading = false;
+    });
+
+    // Get channels messages ----------------------------------------------------------
+    builder.addCase(loadChannelsMessages.pending, (state) => {
+      state.isLoading = true;
+    });
+    builder.addCase(
+      loadChannelsMessages.fulfilled,
+      (state, { payload: { messages, channelAddress } }) => {
+        state.channels.forEach((channel) => {
+          if (channel.channelAddress === channelAddress) {
+            // eslint-disable-next-line no-param-reassign
+            channel.messages = messages;
+          }
+        });
+        state.isLoading = false;
+      }
+    );
+    builder.addCase(loadChannelsMessages.rejected, (state) => {
       state.isLoading = false;
     });
 
