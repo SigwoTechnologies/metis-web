@@ -3,7 +3,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import PlusButton from '@metis/assets/images/misc/plus-button.png';
 import Form from '@metis/common/components/ui/Form/Form';
 import TextInput from '@metis/common/components/ui/TextInput/TextInput';
-import channelService from '@metis/features/channels/services/channel.service';
+import httpService from '@metis/common/services/http.service';
 import {
   createChannel,
   setOpenCreateChannelDrawer,
@@ -49,23 +49,23 @@ const CreateButton = () => {
       }
     }
   };
-  const createNewChannel = (data: ChannelDTO) => {
+  const createNewChannel = async (data: ChannelDTO) => {
     if (!data.channelName.trim()) {
       return;
     }
-    checkEmojiIndex(data.channelName);
-    setLoading(true);
-    channelService
-      .create(data)
-      .then((channel: Channel) => {
-        dispatch(createChannel(channel));
-        dispatch(openToast({ text: 'We are creating your channel', type: 'info' }));
-        closeDrawer();
-      })
-      .catch(() => {
-        dispatch(openToast({ text: 'There was a problem creating your channel', type: 'error' }));
-      })
-      .finally(() => setLoading(false));
+    try {
+      checkEmojiIndex(data.channelName);
+      setLoading(true);
+
+      const { data: channelCreated } = await httpService.post('/v1/api/channel', data);
+
+      dispatch(createChannel(channelCreated as Channel));
+      dispatch(openToast({ text: 'We are creating your channel', type: 'info' }));
+      closeDrawer();
+    } catch (error) {
+      dispatch(openToast({ text: 'There was a problem creating your channel', type: 'error' }));
+    }
+    setLoading(false);
   };
 
   return (

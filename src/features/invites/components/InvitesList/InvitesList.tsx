@@ -1,6 +1,6 @@
 import useOnMount from '@metis/common/hooks/useOnMount';
 import connect from '@metis/common/services/socket.service';
-import { findChannels } from '@metis/features/channels/store/channel.actions';
+import { findChannels } from '@metis/features/channels/hooks/useGetChannels';
 import { useAppDispatch, useAppSelector } from '@metis/store/hooks';
 import { openToast } from '@metis/store/ui/ui.slice';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';

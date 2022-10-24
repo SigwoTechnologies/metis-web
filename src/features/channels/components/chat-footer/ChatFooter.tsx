@@ -4,7 +4,6 @@ import { Box } from '@mui/material';
 import FormControl from '@mui/material/FormControl';
 import IconButton from '@mui/material/IconButton/IconButton';
 import { useEffect } from 'react';
-import useSelectedChannel from '../../hooks/useSelectedChannel';
 import { discardReply } from '../../store/channel.slice';
 import MessageReply from '../chat-content/message-reply/MessageReply';
 import MessageInput from '../message-input/MessageInput';
@@ -13,14 +12,14 @@ import useStyles from './ChatFooter.styles';
 const ChatFooter = () => {
   const classes = useStyles();
   const dispatch = useAppDispatch();
-  const { decryptedReplyMessage, replyRecipientAlias } = useAppSelector(
-    (state) => state.channel.reply
-  );
-  const { channelAddress: selectedChannelAddress } = useSelectedChannel();
+  const {
+    reply: { decryptedReplyMessage, replyRecipientAlias },
+    selectedChannel: { channelAddress },
+  } = useAppSelector((state) => state.channel);
 
   useEffect(() => {
     dispatch(discardReply());
-  }, [selectedChannelAddress]);
+  }, [channelAddress]);
 
   return (
     <>

@@ -1,5 +1,4 @@
 import appConfig from '@metis/common/configuration/app.config';
-import constants from '@metis/common/configuration/constants';
 import { saveToken } from '@metis/common/services/token.service';
 import LoginError from '../../enums/login-error.enum';
 import LoginFlow from '../../enums/login-flow.enum';

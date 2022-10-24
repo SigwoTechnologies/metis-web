@@ -1,16 +1,20 @@
 /* eslint-disable react/no-array-index-key */
+import { useAppSelector } from '@metis/store/hooks';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import { Button, Paper } from '@mui/material';
+import { Button, Paper, CircularProgress, Box } from '@mui/material';
 import { animated, config, useTransition } from '@react-spring/web';
-import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
-import useSelectedChannel from '../../hooks/useSelectedChannel';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import useStyles from './ChatContent.styles';
 import Message from './message/Message';
 
-const ChatContent = () => {
+export const ChatContent = () => {
   const classes = useStyles();
-  const { messages, channelAddress: selectedChannelAddress } = useSelectedChannel();
-  const sortedMessages = useMemo(() => [...messages].reverse(), [messages]);
+  const { channelAddress } = useParams();
+  const {
+    selectedChannel: { messages },
+    isLoadingMessages,
+  } = useAppSelector((state) => state.channel);
   const scrollRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const [isBottom, setIsBottom] = useState(false);
@@ -39,7 +43,7 @@ const ChatContent = () => {
   useLayoutEffect(() => {
     onScroll();
     scrollInstantlyToBottom();
-  }, [selectedChannelAddress]);
+  }, [channelAddress]);
 
   // Scroll smoothly to last message when there's a new message and the scrollbar
   // is at the bottom
@@ -49,9 +53,17 @@ const ChatContent = () => {
     }
   }, [messages]);
 
+  if (isLoadingMessages) {
+    return (
+      <Box className={classes.isLoadingMessages}>
+        <CircularProgress />
+      </Box>
+    );
+  }
+
   return (
     <Paper onScroll={onScroll} ref={containerRef} className={classes.main} square>
-      {sortedMessages.map((message, index) => (
+      {messages.map((message, index) => (
         <Message
           // TODO: the backend is not giving us any way to differentiate between messages... Too bad!
           key={index}
@@ -78,5 +90,3 @@ const ChatContent = () => {
     </Paper>
   );
 };
-
-export default ChatContent;

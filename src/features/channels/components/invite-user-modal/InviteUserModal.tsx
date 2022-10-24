@@ -2,15 +2,14 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import Form from '@metis/common/components/ui/Form/Form';
 import Modal from '@metis/common/components/ui/Modal';
 import TextInput from '@metis/common/components/ui/TextInput/TextInput';
-import { useAppDispatch } from '@metis/store/hooks';
+import { useAppDispatch, useAppSelector } from '@metis/store/hooks';
 import { openNotification } from '@metis/store/ui/ui.slice';
 import PeopleIcon from '@mui/icons-material/People';
 import { LoadingButton } from '@mui/lab';
 import { Button } from '@mui/material';
 import React, { useState } from 'react';
 import * as yup from 'yup';
-import useSelectedChannel from '../../hooks/useSelectedChannel';
-import channelService from '../../services/channel.service';
+import { useSendInvitation } from '../../hooks/useSendInvitation';
 import useStyles from './InviteUserModal.styles';
 
 type Props = {
@@ -28,14 +27,15 @@ const schema = yup.object({
 
 const InviteUserModal: React.FC<Props> = ({ closeModal, open }) => {
   const classes = useStyles();
-  const { channelAddress } = useSelectedChannel();
+  const {
+    selectedChannel: { channelAddress },
+  } = useAppSelector((state) => state.channel);
   const dispatch = useAppDispatch();
   const [loading, setLoading] = useState(false);
 
   const onSubmit = ({ inviteeAddressOrAlias }: AliasOrId) => {
     setLoading(true);
-    channelService
-      .inviteToSelectedChannel({ inviteeAddressOrAlias, channelAddress })
+    useSendInvitation({ inviteeAddressOrAlias, channelAddress })
       .then(() => {
         dispatch(openNotification({ text: 'Invite sent!', type: 'success' }));
         closeModal();
