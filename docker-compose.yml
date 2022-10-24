@@ -1,0 +1,12 @@
+version: '3.8'
+services:
+  metis:
+    container_name: metis-web
+    restart: always
+    build: .
+    ports:
+      - '3000:3000'
+    environment:
+      - API_URL=${VITE_METIS_API_URL}
+    volumes:
+      - .:/usr/src/app
