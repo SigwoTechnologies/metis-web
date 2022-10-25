@@ -1,4 +1,4 @@
-import appConfig from '@metis/common/configuration/app.config';
+import httpService from '@metis/common/services/http.service';
 import { getToken } from '@metis/common/services/token.service';
 import { Channel } from '@metis/features/channels/types/channel';
 import { ChannelMember } from '@metis/features/channels/types/ChannelMember';
@@ -16,7 +16,6 @@ import {
 } from '@mui/material';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import axios from 'axios';
 import dayjs from 'dayjs';
 import { Fragment, useEffect, useState } from 'react';
 import useStyles from './ChannelInfo.styles';
@@ -35,21 +34,18 @@ const ChannelInfo = ({ selectedChannel }: Props) => {
       Accept: 'application/json',
       Authorization: `Bearer ${getToken()}`,
     };
-    const { data } = await axios.get(
-      `${appConfig.api.baseUrl}/v1/api/${selectedChannel.channelAddress}/members`,
-      {
-        headers,
-      }
-    );
+    const { data } = await httpService.get(`/v1/api/${selectedChannel.channelAddress}/members`, {
+      headers,
+    });
 
     setMembers(data);
   };
 
   useEffect(() => {
-    if (selectedChannel.channelAddress) {
+    if (isOpenWallet) {
       getMembers();
     }
-  }, [selectedChannel.channelAddress]);
+  }, [isOpenWallet]);
 
   const closeDrawer = () => {
     setIsOpenWallet(false);

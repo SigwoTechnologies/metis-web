@@ -10,12 +10,12 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     account: {
       position: 'relative',
+      paddingLeft: '0.75rem',
       width: '100%',
-      height: '5rem',
+      height: '5.6rem',
       display: 'flex',
       alignItems: 'center',
     },
-
     accountAvatar: {
       width: '4rem',
       height: '4rem',

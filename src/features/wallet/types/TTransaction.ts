@@ -1,0 +1,23 @@
+export type TTransaction = {
+  amountNQT: string;
+  block: string;
+  confirmations: number;
+  ecBlockHeight: number;
+  ecBlockId: string;
+  feeNQT: string;
+  fullHash: string;
+  height: number;
+  phased: boolean;
+  recipient: string;
+  recipientRS: string;
+  sender: string;
+  senderPublicKey: string;
+  senderRS: string;
+  signature: string;
+  signatureHash: string;
+  subtype: number;
+  timestamp: number;
+  transaction: string;
+  transactionIndex: number;
+  type: number;
+};

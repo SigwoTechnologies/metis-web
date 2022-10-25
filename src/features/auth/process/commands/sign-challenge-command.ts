@@ -52,10 +52,10 @@ export default class SignChallengeCommand implements ICommand<LoginState> {
       state.jupAddress = accountRS;
       state.isLoggedIn = true;
     }
+
     if (state.flow === LoginFlow.LegacyAccount) {
       const { alias, accountRS, token } = data as ExistingAccountSignResponse;
-      const stringifiedToken = JSON.stringify({ access_token: token });
-      localStorage.setItem(constants.TOKEN, JSON.stringify(stringifiedToken));
+      saveToken(token);
       state.alias = alias;
       state.jupAddress = accountRS;
       state.isLoggedIn = true;

@@ -19,6 +19,7 @@ type Props = {
 };
 const ModalHiddenList = ({ open, onClose }: Props) => {
   const styles = useStyles();
+
   const dispatch = useAppDispatch();
   const { channels, hiddenChannels } = useAppSelector(selectState);
   const hiddenChannelsAddreses = useMemo(
@@ -48,17 +49,15 @@ const ModalHiddenList = ({ open, onClose }: Props) => {
                   <Divider />
                   <Box className={styles.cardContainer}>
                     <CardContent className={styles.cardContent}>
-                      <ChannelListItem
-                        channel={channel}
-                        key={channel.channelAddress}
-                        onClick={() => showChannel(channel.channelAddress, channel.channelName)}
-                      />
+                      <ChannelListItem channel={channel} key={channel.channelAddress} />
                     </CardContent>
                     <CardActions
                       className={styles.actionContainer}
                       onClick={() => showChannel(channel.channelAddress, channel.channelName)}
                     >
-                      <VisibilityIcon />
+                      <Typography className={styles.glow}>
+                        <VisibilityIcon sx={{ position: 'relative', alignContent: 'center' }} />
+                      </Typography>
                     </CardActions>
                   </Box>
                 </Box>

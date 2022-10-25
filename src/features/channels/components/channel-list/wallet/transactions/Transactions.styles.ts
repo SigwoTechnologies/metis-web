@@ -4,8 +4,8 @@ import { createStyles, makeStyles } from '@mui/styles';
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     createButton: {
-      width: '3rem',
-      height: '3rem',
+      width: '3.7rem',
+      height: '3.7rem',
       position: 'absolute',
       margin: '1rem',
       bottom: 0,
@@ -26,17 +26,26 @@ const useStyles = makeStyles((theme: Theme) =>
     drawerContainer: {
       display: 'flex',
       justifyContent: 'center',
-      alignContent: 'center',
-      width: 400,
-      height: '100%',
       flexDirection: 'column',
+      width: 400,
       padding: '0 1rem 0 1rem',
+      gap: '.5rem',
     },
     closeButton: {
-      position: 'absolute',
-      right: 8,
-      top: 8,
+      flexGrow: 1,
+      alignSelf: 'flex-end',
+      paddingBottom: '1rem',
       color: theme.palette.grey[500],
+    },
+    jupQuantity: {
+      flexGrow: 1,
+      justifySelf: '',
+    },
+    listItemIcon: {
+      color: `${theme.colors.green5}`,
+    },
+    spinner: {
+      alignSelf: 'center',
     },
   })
 );

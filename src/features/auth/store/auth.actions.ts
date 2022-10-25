@@ -1,5 +1,6 @@
 /* eslint-disable no-console */
 import appConfig from '@metis/common/configuration/app.config';
+import constants from '@metis/common/configuration/constants';
 import BusinessError from '@metis/common/exceptions/business-error';
 import ErrorResponse from '@metis/common/types/error-response';
 import { openToast } from '@metis/store/ui/ui.slice';
@@ -8,8 +9,8 @@ import LoginFlow from '../enums/login-flow.enum';
 import ClientProcessor from '../process/client-processor';
 import LoginState from '../types/login-state';
 
-export const login = createAsyncThunk<LoginState, string, { rejectValue: ErrorResponse }>(
-  'auth/login',
+export const register = createAsyncThunk<LoginState, string, { rejectValue: ErrorResponse }>(
+  'auth/register',
   async (address: string, { rejectWithValue, dispatch }) => {
     try {
       const loginState = { address, flow: LoginFlow.NewAccount } as LoginState;
@@ -26,17 +27,19 @@ export const login = createAsyncThunk<LoginState, string, { rejectValue: ErrorRe
     }
   }
 );
-export const legacyLogin = createAsyncThunk<LoginState, string, { rejectValue: ErrorResponse }>(
-  'auth/legacy',
+
+export const login = createAsyncThunk<LoginState, string, { rejectValue: ErrorResponse }>(
+  'auth/login',
   async (address: string, { rejectWithValue, dispatch }) => {
     try {
+      const CREDENTIALS = window.localStorage.getItem(constants.CREDENTIALS);
       const loginState = {
         address,
-        password: '2vvn34k4',
-        passphrase:
-          'claw whenever bounce nation depend burn forgotten respect son bird retreat horizon',
-        flow: LoginFlow.LegacyAccount,
+        flow: CREDENTIALS
+          ? LoginFlow.ExistingAccountSameDevice
+          : LoginFlow.ExistingAccountDifferentDevice,
       } as LoginState;
+
       const processor = new ClientProcessor();
       const state = await processor.execute(loginState);
 
@@ -50,6 +53,30 @@ export const legacyLogin = createAsyncThunk<LoginState, string, { rejectValue: E
     }
   }
 );
+export const legacyLogin = createAsyncThunk<
+  LoginState,
+  { address: string; password: string; passphrase: string },
+  { rejectValue: ErrorResponse }
+>('auth/legacy', async ({ address, password, passphrase }, { rejectWithValue, dispatch }) => {
+  try {
+    const loginState = {
+      address,
+      password,
+      passphrase,
+      flow: LoginFlow.LegacyAccount,
+    } as LoginState;
+    const processor = new ClientProcessor();
+    const state = await processor.execute(loginState);
+
+    return state;
+  } catch (err: unknown) {
+    if (err instanceof BusinessError) {
+      dispatch(openToast({ text: err.message, type: 'error' }));
+      return rejectWithValue(err.getError());
+    }
+    throw err;
+  }
+});
 
 // TODO: this implementation is god awful, but it'll work for now
 type AuthAddPublicKey = {
