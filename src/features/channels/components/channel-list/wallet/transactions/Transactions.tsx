@@ -27,7 +27,7 @@ const Transactions = () => {
 
   useEffect(() => {
     dispatch(fetchTransactions());
-  }, [balance]);
+  }, [balance, transactions]);
 
   if (!transactions.length) {
     return <CircularProgress className={classes.spinner} />;
