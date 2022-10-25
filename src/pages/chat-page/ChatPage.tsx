@@ -1,4 +1,4 @@
-import ChatContent from '@metis/features/channels/components/chat-content/ChatContent';
+import { ChatContent } from '@metis/features/channels/components/chat-content/ChatContent';
 import ChatFooter from '@metis/features/channels/components/chat-footer/ChatFooter';
 import ChatHeader from '@metis/features/channels/components/chat-header/ChatHeader';
 import FooterSection from '@metis/layout/sections/FooterSection';

@@ -2,7 +2,7 @@
 import httpService from '@metis/common/services/http.service';
 import connectSocket from '@metis/common/services/socket.service';
 import { getToken } from '@metis/common/services/token.service';
-import { useAppDispatch } from '@metis/store/hooks';
+import { useAppDispatch, useAppSelector } from '@metis/store/hooks';
 import { openToast } from '@metis/store/ui/ui.slice';
 import AttachFileIcon from '@mui/icons-material/AttachFile';
 import EmojiEmotions from '@mui/icons-material/EmojiEmotions';
@@ -76,7 +76,6 @@ const MessageInput = () => {
           originalFileType: string;
         }) => {
           sendEncryptedMessageWithAttachment({
-            channelAddress,
             attachmentObj: {
               url,
               originalname: fileName,

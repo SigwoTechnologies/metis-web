@@ -4,28 +4,39 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { Channel } from '../types/channel';
 import { NewChannel } from '../types/newChannel';
 import { Reply } from '../types/Reply';
-import {
-  findChannels,
-  getHiddenChannels,
-  getMutedChannelAddresses,
-  localStorageKeyHiddenChannel,
-  toggleMuteChannel,
-} from './channel.actions';
+import { getMutedChannelAddresses } from '../hooks/useGetMutedChannelAddresses';
+import { usToggleMuteChannel } from '../hooks/useToggleMuteChannel';
+import { getHiddenChannels, localStorageKeyHiddenChannel } from '../hooks/useGetHiddenChannels';
+import { useGetMessages } from '../hooks/useGetMessages';
+import { findChannels } from '../hooks/useGetChannels';
+
+const initialChannelState = {
+  channelAddress: '',
+  channelPublicKey: '',
+  channelName: '',
+  createdBy: '',
+  createdAt: 0,
+  messages: [],
+};
 
 export type ChannelState = {
   isLoading: boolean;
+  isLoadingMessages: boolean;
   hiddenChannels: Channel[];
   reply: Reply;
   mutedChannels: string[];
   channels: Channel[];
+  selectedChannel: Channel;
   pendingChannels: NewChannel[];
   isOpenCreateChannelDrawer: boolean;
 };
 
 const initialState: ChannelState = {
   isLoading: false,
+  isLoadingMessages: false,
   channels: [],
   hiddenChannels: [],
+  selectedChannel: initialChannelState,
   reply: {
     replyMessage: '',
     decryptedReplyMessage: '',
@@ -46,10 +57,12 @@ const slice = createSlice({
     },
     // TODO: is there a way to not iterate the array two times?
     finishChannelCreation: (state: ChannelState, { payload }: PayloadAction<number>) => {
-      const newChannel = state.pendingChannels.find((channel) => channel.job.id === payload);
+      const channelJustCreated = state.pendingChannels.find(
+        (channel) => channel.job.id === payload
+      );
 
-      if (newChannel) {
-        const { job, ...rest } = newChannel;
+      if (channelJustCreated) {
+        const { job, ...rest } = channelJustCreated;
         const channelCreated: Channel = {
           ...rest,
           createdAt: Date.now(),
@@ -63,6 +76,12 @@ const slice = createSlice({
           (channel) => channel.job.id !== payload
         );
       }
+    },
+    setSelectedChannel: (state: ChannelState, { payload: channelAddress }) => {
+      const targetChannel = state.channels.find(
+        (channel) => channel.channelAddress === channelAddress
+      );
+      state.selectedChannel = targetChannel || initialChannelState;
     },
     updateReply: (state: ChannelState, { payload }) => {
       state.reply = payload;
@@ -93,12 +112,13 @@ const slice = createSlice({
       }
     },
     addNewMessage: (state: ChannelState, { payload }) => {
-      const { channelAddress, message } = payload;
+      const { message } = payload;
 
       const targetChannel = state.channels.find(
-        (channel) => channel.channelAddress === channelAddress
+        (channel) => channel.channelAddress === state.selectedChannel.channelAddress
       );
 
+      state.selectedChannel.messages.push(message);
       targetChannel?.messages.unshift(message);
     },
     setOpenDrawer: (state: ChannelState, { payload: status }) => {
@@ -122,6 +142,14 @@ const slice = createSlice({
       state.isLoading = false;
     });
 
+    // Get channels messages ----------------------------------------------------------
+    builder.addCase(useGetMessages.pending, (state, { payload: messages }) => {
+      state.isLoadingMessages = true;
+    });
+    builder.addCase(useGetMessages.fulfilled, (state, { payload: messages }) => {
+      state.selectedChannel.messages = messages;
+      state.isLoadingMessages = false;
+    });
     // Get muted channels ----------------------------------------------------------
     builder.addCase(getMutedChannelAddresses.pending, (state) => {
       state.isLoading = true;
@@ -134,7 +162,7 @@ const slice = createSlice({
     });
 
     // Mute or unmute channel -------------------------------------------------------
-    builder.addCase(toggleMuteChannel.fulfilled, (state, { payload }) => {
+    builder.addCase(usToggleMuteChannel.fulfilled, (state, { payload }) => {
       state.mutedChannels = payload;
     });
   },
@@ -149,6 +177,7 @@ export const {
   hideChannel,
   unhideChannel,
   addNewMessage,
+  setSelectedChannel,
   setOpenDrawer: setOpenCreateChannelDrawer,
 } = slice.actions;
 export const channelReducer = slice.reducer;

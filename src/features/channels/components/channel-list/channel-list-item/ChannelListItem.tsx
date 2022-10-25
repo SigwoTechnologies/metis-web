@@ -1,7 +1,8 @@
 import useOnMount from '@metis/common/hooks/useOnMount';
 import EncryiptionService from '@metis/features/auth/services/encryption.service';
 import useChat from '@metis/features/channels/hooks/useChat';
-import { addNewMessage } from '@metis/features/channels/store/channel.slice';
+import { useGetMessages } from '@metis/features/channels/hooks/useGetMessages';
+import { addNewMessage, setSelectedChannel } from '@metis/features/channels/store/channel.slice';
 import { Channel } from '@metis/features/channels/types/channel';
 import { useAppDispatch, useAppSelector } from '@metis/store/hooks';
 import VolumeOffIcon from '@mui/icons-material/VolumeOff';
@@ -12,21 +13,16 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 import Typography from '@mui/material/Typography';
 import dayjs from 'dayjs';
+import { useNavigate } from 'react-router-dom';
 import useStyles from './ChannelListItem.styles';
 
 type Props = {
   channel: Channel;
   avatar?: string;
-  onClick?: () => void;
   selected?: boolean;
 };
 
-const ChannelListItem = ({
-  channel,
-  avatar = channel.channelName,
-  onClick,
-  selected = false,
-}: Props) => {
+const ChannelListItem = ({ channel, avatar = channel.channelName, selected = false }: Props) => {
   const classes = useStyles();
   const {
     channel: { mutedChannels },
@@ -34,6 +30,8 @@ const ChannelListItem = ({
       userData: { privateKeyArmored, passphrase },
     },
   } = useAppSelector((state) => state);
+  const navigate = useNavigate();
+
   const isMuted = mutedChannels.includes(channel.channelAddress);
   const { onSendMessage } = useChat(channel.channelAddress);
   const dispatch = useAppDispatch();
@@ -43,10 +41,8 @@ const ChannelListItem = ({
   useOnMount(() => {
     onSendMessage(async (message) => {
       const encryptionService = new EncryiptionService();
-
       dispatch(
         addNewMessage({
-          channelAddress: channel.channelAddress,
           message: {
             ...message,
             decryptedMessage: await encryptionService.decryptMessage(
@@ -67,11 +63,17 @@ const ChannelListItem = ({
     });
   });
 
+  const onSelectChannel = () => {
+    navigate(`/main/${channel.channelAddress}`);
+    dispatch(setSelectedChannel(channel.channelAddress));
+    dispatch(useGetMessages({ channelAddress: channel.channelAddress }));
+  };
+
   return (
     <Box display="flex" alignItems="center">
       <ListItemButton
         className={classes.listItemButton}
-        onClick={onClick}
+        onClick={onSelectChannel}
         alignItems="flex-start"
         selected={selected}
       >

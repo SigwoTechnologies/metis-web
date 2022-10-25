@@ -16,6 +16,12 @@ const useStyles = makeStyles(() =>
       position: 'fixed',
       alignSelf: 'flex-end',
     },
+    isLoadingMessages: {
+      height: '100%',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
   })
 );
 
