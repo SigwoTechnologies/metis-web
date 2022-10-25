@@ -8,7 +8,6 @@ export default class NewAccountInvoker {
     private onGetChallenge: ICommand<LoginState>,
     private onGenerateCredentials: ICommand<LoginState>,
     private onGenerateKeys: ICommand<LoginState>,
-    private onEncryptWithMetaMask: ICommand<LoginState>,
     private onSignChallenge: ICommand<LoginState>,
     private onLocalStorage: ICommand<LoginState>,
     private onParseCeredentials: ICommand<LoginState>
@@ -24,8 +23,6 @@ export default class NewAccountInvoker {
     if (!this.state.error) this.state = await this.onGenerateCredentials.execute(this.state);
 
     if (!this.state.error) this.state = await this.onGenerateKeys.execute(this.state);
-
-    if (!this.state.error) this.state = await this.onEncryptWithMetaMask.execute(this.state);
 
     if (!this.state.error) this.state = await this.onSignChallenge.execute(this.state);
 

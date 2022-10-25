@@ -1,38 +1,29 @@
-import ReneAvatar from '@metis/assets/images/avatars/rene.jpg';
 import { signOut } from '@metis/features/auth/store/auth.slice';
+import { setOpenCreateChannelDrawer } from '@metis/features/channels/store/channel.slice';
 import { useAppDispatch } from '@metis/store/hooks';
 import { openToast } from '@metis/store/ui/ui.slice';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
-import AllInboxIcon from '@mui/icons-material/AllInbox';
-import DarkModeIcon from '@mui/icons-material/DarkMode';
 import IndeterminateCheckBoxIcon from '@mui/icons-material/IndeterminateCheckBox';
 import LogoutIcon from '@mui/icons-material/Logout';
 import MenuIcon from '@mui/icons-material/Menu';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
-import SearchIcon from '@mui/icons-material/Search';
-import SettingsIcon from '@mui/icons-material/Settings';
-import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 import Divider from '@mui/material/Divider';
 import Drawer from '@mui/material/Drawer';
-import FormControl from '@mui/material/FormControl';
 import Grid from '@mui/material/Grid';
 import IconButton from '@mui/material/IconButton/IconButton';
-import Input from '@mui/material/Input';
-import InputAdornment from '@mui/material/InputAdornment';
-import InputLabel from '@mui/material/InputLabel';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import Switch from '@mui/material/Switch';
 import Typography from '@mui/material/Typography';
 import { useState } from 'react';
 import About from '../about/about';
 import ModalHiddenList from '../modal-hidden-list/ModalHiddenList';
+import ProfileAvatar from '../profile-avatar/ProfileAvatar';
+import Wallet from '../wallet/Wallet';
 import useStyles from './SearchChannel.styles';
 
 const ChannelList = () => {
@@ -46,19 +37,23 @@ const ChannelList = () => {
     dispatch(openToast({ text: 'Sign out successful', type: 'info' }));
   };
 
+  const openCreateChannel = () => {
+    setDrawer(false);
+    dispatch(setOpenCreateChannelDrawer(true));
+  };
+
+  const handleShareMetis = () => {
+    dispatch(openToast({ text: 'Invitation copied in clipboard', type: 'info' }));
+    navigator.clipboard.writeText('Try out Metis! http://www.jup.io');
+  };
+
   return (
     <>
       <Drawer anchor="left" open={drawer} onClose={() => setDrawer(false)}>
         {/* TODO fixed values are not good for responsive design */}
         <Box sx={{ width: 300 }} role="presentation" className={styles.upperGroup}>
           <Box className={styles.account}>
-            <Box className={styles.picBackground} />
-            <Box>
-              <Button component="label">
-                <Avatar alt="Channel Avatar" src={ReneAvatar} className={styles.accountAvatar} />
-                <input hidden accept="image/*" multiple type="file" />
-              </Button>
-            </Box>
+            <ProfileAvatar />
           </Box>
 
           <Divider />
@@ -68,17 +63,11 @@ const ChannelList = () => {
                 <ListItemIcon className={styles.listItemIcon}>
                   <AddCircleIcon />
                 </ListItemIcon>
-                <ListItemText primary="New Channel" />
+                <ListItemText primary="New Channel" onClick={openCreateChannel} />
               </ListItemButton>
             </ListItem>
-            <ListItem disablePadding>
-              <ListItemButton>
-                <ListItemIcon className={styles.listItemIcon}>
-                  <AllInboxIcon />
-                </ListItemIcon>
-                <ListItemText primary="Wallet" />
-              </ListItemButton>
-            </ListItem>
+
+            <Wallet />
 
             <ListItem disablePadding>
               <ListItemButton onClick={() => setOpen(true)}>
@@ -90,7 +79,7 @@ const ChannelList = () => {
             </ListItem>
 
             <ModalHiddenList open={open} onClose={() => setOpen(false)} />
-
+            {/*
             <ListItem disablePadding>
               <ListItemButton>
                 <ListItemIcon className={styles.listItemIcon}>
@@ -107,9 +96,9 @@ const ChannelList = () => {
                 <Switch defaultChecked />
               </ListItemButton>
             </ListItem>
-
+ */}
             <ListItem disablePadding>
-              <ListItemButton>
+              <ListItemButton onClick={handleShareMetis}>
                 <ListItemIcon className={styles.listItemIcon}>
                   <PersonAddIcon />
                 </ListItemIcon>
@@ -138,6 +127,7 @@ const ChannelList = () => {
               Terms and Conditions
             </a>
           </Typography>
+
           <About title="About" message="This is Metis Web App. It is still under construction." />
         </Box>
       </Drawer>
@@ -148,6 +138,7 @@ const ChannelList = () => {
               <MenuIcon />
             </IconButton>
           </Grid>
+          {/* 
           <Grid item xs={10}>
             <FormControl variant="standard" fullWidth>
               <InputLabel>Search</InputLabel>
@@ -164,6 +155,7 @@ const ChannelList = () => {
               />
             </FormControl>
           </Grid>
+          */}
         </Grid>
       </Container>
     </>

@@ -1,0 +1,33 @@
+name: Deploy to production environment on DO
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    name: 🚀 Deploy
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+
+      - name: Install Dependencies
+        run: yarn
+
+      - name: Format
+        run: yarn format:check
+
+      - name: Lint
+        run: yarn lint
+
+      - name: Test
+        run: yarn test --watchAll=false
+
+      - name: Build
+        run: yarn build
+
+      # - name: DigitalOcean App Platform deployment
+      #   uses: digitalocean/app_action@main
+      #   with:
+      #     app_name: metis-web
+      #     token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}

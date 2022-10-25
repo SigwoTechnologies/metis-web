@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useCallback, useState } from 'react';
 import { ThemeProvider } from '@mui/material';
 import { StylesProvider } from '@mui/styles';

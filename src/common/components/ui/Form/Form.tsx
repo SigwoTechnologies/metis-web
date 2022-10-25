@@ -1,13 +1,13 @@
 import React, { ReactElement } from 'react';
-import { SubmitHandler, useForm, UseFormProps, FieldErrors } from 'react-hook-form';
+import { SubmitHandler, useForm, UseFormProps, FieldErrors, FieldValues } from 'react-hook-form';
 
-type props<T> = {
+type props<T extends FieldValues> = {
   form?: UseFormProps<T>;
   children: ReactElement | ReactElement[];
   onSubmit: SubmitHandler<T>;
 };
 
-export default <T,>({ form, children, onSubmit }: props<T>) => {
+export default <T extends FieldValues>({ form, children, onSubmit }: props<T>) => {
   const methods = useForm<T>(form);
   const {
     handleSubmit,

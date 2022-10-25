@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { RootState } from '@metis/store/types';
-import { login } from './auth.actions';
+import { login, register } from './auth.actions';
 import EncryptedCredentials from '../types/encrypted-credentials';
 import { JupAccount } from '../types/JupAccount';
 
@@ -8,6 +8,9 @@ export type AuthState = {
   isLoggedIn: boolean;
   isConnectingToMetamask: boolean;
   isCreatingAccount: boolean;
+  isConnectedToMetamask: boolean;
+  ethAccount: string;
+  hasMetamask: boolean;
   userData: EncryptedCredentials;
   jupAccount: JupAccount;
 };
@@ -16,6 +19,9 @@ const initialState: AuthState = {
   isLoggedIn: false,
   isConnectingToMetamask: false,
   isCreatingAccount: false,
+  isConnectedToMetamask: false,
+  ethAccount: '',
+  hasMetamask: false,
   userData: {
     password: '',
     passphrase: '',
@@ -35,30 +41,88 @@ const authSlice = createSlice({
     setLoggedIn: (state, { payload }) => {
       state.isLoggedIn = payload;
     },
+    setUserData: (state, { payload }) => {
+      state.userData = payload;
+    },
+    setHasMetamask: (state, { payload }) => {
+      state.hasMetamask = payload;
+    },
+    setEthAccount: (state, { payload }) => {
+      state.ethAccount = payload;
+    },
     setJupAccount: (state, { payload }) => {
       state.jupAccount = payload;
     },
     setIsConnectingToMetamask: (state, { payload }) => {
       state.isConnectingToMetamask = payload;
     },
+    setIsConnectedToMetamask: (state, { payload }) => {
+      state.isConnectedToMetamask = payload;
+    },
     setIsCreatingAccount: (state, { payload }) => {
       state.isCreatingAccount = payload;
     },
-    signOut: () => initialState,
+    signOut: () => {
+      window.location.reload();
+      localStorage.removeItem('TOKEN');
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(login.fulfilled, (state, { payload }) => {
       state.isConnectingToMetamask = false;
-      state.isCreatingAccount = true;
-      const { password, passphrase, privateKeyArmored, publicKeyArmored } = payload;
+      const {
+        password,
+        passphrase,
+        privateKeyArmored,
+        publicKeyArmored,
+        isLoggedIn,
+        jupAddress,
+        alias,
+      } = payload;
+      if (jupAddress && alias) {
+        state.jupAccount = {
+          address: jupAddress,
+          alias,
+        };
+      }
       state.userData = {
         password,
         passphrase,
         privateKeyArmored,
         publicKeyArmored,
       };
+      state.isLoggedIn = isLoggedIn ?? false;
     });
     builder.addCase(login.rejected, (state) => {
+      state.isConnectingToMetamask = false;
+    });
+    builder.addCase(register.fulfilled, (state, { payload }) => {
+      state.isConnectingToMetamask = false;
+      state.isCreatingAccount = true;
+      const {
+        password,
+        passphrase,
+        privateKeyArmored,
+        publicKeyArmored,
+        isLoggedIn,
+        jupAddress,
+        alias,
+      } = payload;
+      if (jupAddress && alias) {
+        state.jupAccount = {
+          address: jupAddress,
+          alias,
+        };
+      }
+      state.userData = {
+        password,
+        passphrase,
+        privateKeyArmored,
+        publicKeyArmored,
+      };
+      state.isLoggedIn = isLoggedIn ?? false;
+    });
+    builder.addCase(register.rejected, (state) => {
       state.isConnectingToMetamask = false;
     });
   },
@@ -70,6 +134,10 @@ export const {
   setJupAccount,
   setIsConnectingToMetamask,
   setIsCreatingAccount,
+  setIsConnectedToMetamask,
   signOut,
+  setUserData,
+  setHasMetamask,
+  setEthAccount,
 } = authSlice.actions;
 export const authReducer = authSlice.reducer;

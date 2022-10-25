@@ -1,10 +1,10 @@
+/* eslint-disable react/no-array-index-key */
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import { Button, Paper } from '@mui/material';
 import { animated, config, useTransition } from '@react-spring/web';
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import useSelectedChannel from '../../hooks/useSelectedChannel';
 import useStyles from './ChatContent.styles';
-import MessageReply from './message-reply/MessageReply';
 import Message from './message/Message';
 
 const ChatContent = () => {
@@ -37,14 +37,16 @@ const ChatContent = () => {
   };
 
   useLayoutEffect(() => {
+    onScroll();
     scrollInstantlyToBottom();
   }, [selectedChannelAddress]);
 
   // Scroll smoothly to last message when there's a new message and the scrollbar
   // is at the bottom
   useEffect(() => {
-    // eslint-disable-next-line no-unused-expressions
-    isBottom && scrollSmoothlyToBottom();
+    if (isBottom) {
+      scrollSmoothlyToBottom();
+    }
   }, [messages]);
 
   return (
@@ -52,7 +54,6 @@ const ChatContent = () => {
       {sortedMessages.map((message, index) => (
         <Message
           // TODO: the backend is not giving us any way to differentiate between messages... Too bad!
-          // eslint-disable-next-line react/no-array-index-key
           key={index}
           message={message}
           color="#A36300"

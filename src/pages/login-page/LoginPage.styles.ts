@@ -12,29 +12,30 @@ const useStyles = makeStyles((theme: Theme) =>
       flexDirection: 'column',
       justifyContent: 'center',
       alignItems: 'center',
-      textAlign: 'center',
     },
     image: {
       height: '10rem',
       width: '10rem',
       marginBottom: '3rem',
+      objectFit: 'cover',
+      borderRadius: '100%',
+    },
+    associate: {
+      color: '#ccc',
+      textDecoration: 'none',
+    },
+    span: {
+      fontWeight: 700,
+      fontSize: '14px',
     },
     loading: {
-      fontFamily: 'monospace',
-      clipPath: 'inset(0 3ch 0 0)',
+      clipPath: 'inset(0 1ch 0 0)',
       animation: '$l 1s steps(4) infinite',
     },
     '@keyframes l': {
       to: {
         clipPath: 'inset(0 -1ch 0 0)',
       },
-    },
-    icon: {
-      fontSize: '6rem',
-    },
-    iconContainer: {
-      display: 'flex',
-      justifyContent: 'center',
     },
   })
 );

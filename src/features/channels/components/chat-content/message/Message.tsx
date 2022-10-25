@@ -4,16 +4,11 @@ import { useAppDispatch, useAppSelector } from '@metis/store/hooks';
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import React, { memo, useState } from 'react';
+import dayjs from 'dayjs';
+import { memo, useState } from 'react';
+import Attachment from '../attachment/Attachment';
 import MessageReply from '../message-reply/MessageReply';
-
 import useStyles from './Message.styles';
-
-const formatDate = (dateNow: number) => {
-  const date = new Date(dateNow);
-
-  return date.toLocaleDateString('en-US');
-};
 
 type Props = {
   message: MessageType;
@@ -30,6 +25,7 @@ const Message = ({
     decryptedMessage,
     decryptedReplyMessage,
     replyRecipientAlias,
+    attachmentObj,
   },
   color,
   avatar = senderAlias,
@@ -72,7 +68,7 @@ const Message = ({
         <Box className={classes.replyButton} style={style} onClick={handleReplyClick}>
           Reply
         </Box>
-        <Typography variant="body2" fontWeight="bold" sx={{ color, marginBottom: '0.5rem' }}>
+        <Typography variant="body2" fontWeight="bold" className={classes.userName} sx={{ color }}>
           {senderAlias}
         </Typography>
         {decryptedReplyMessage && replyRecipientAlias && (
@@ -83,9 +79,16 @@ const Message = ({
           />
         )}
         <Box className={classes.message}>
-          <Typography variant="body2">{decryptedMessage}</Typography>
-          <Typography variant="caption" className={classes.date}>
-            {formatDate(createdAt)}
+          <Typography variant="body2">
+            <Box>{decryptedMessage}</Box>
+            {attachmentObj && <Attachment attachmentObj={attachmentObj} />}
+          </Typography>
+          <Typography
+            variant="caption"
+            className={classes.date}
+            title={dayjs(createdAt).format('MM/DD/YYYY hh:mm:ssa')}
+          >
+            {dayjs(createdAt).format('hh:mm:ssa')}
           </Typography>
         </Box>
       </Box>

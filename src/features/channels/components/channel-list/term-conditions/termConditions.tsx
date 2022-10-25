@@ -1,6 +1,4 @@
-import { Button } from '@mui/material';
 import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
@@ -11,10 +9,9 @@ import useStyles from './termConditions.styles';
 type Props = {
   title: string;
   message: string;
-  onClick?: () => void;
 };
 
-const TermConditions = ({ title, message, onClick }: Props) => {
+const TermConditions = ({ title, message }: Props) => {
   const [open, setOpen] = React.useState(false);
   const styles = useStyles();
 

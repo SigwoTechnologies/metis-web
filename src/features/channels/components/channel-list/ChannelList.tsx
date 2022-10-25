@@ -1,14 +1,12 @@
+import useOnMount from '@metis/common/hooks/useOnMount';
 import { Channel } from '@metis/features/channels/types/channel';
 import { useAppDispatch, useAppSelector } from '@metis/store/hooks';
-
-import Spinner from '@metis/common/components/ui/spinner/Spinner';
-import useOnMount from '@metis/common/hooks/useOnMount';
+import { CircularProgress } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import ChannelListItem from './channel-list-item/ChannelListItem';
-
+import useSelectedChannel from '../../hooks/useSelectedChannel';
 import { findChannels, getMutedChannelAddresses } from '../../store/channel.actions';
 import { selectState } from '../../store/channel.slice';
-import useSelectedChannel from '../../hooks/useSelectedChannel';
+import ChannelListItem from './channel-list-item/ChannelListItem';
 
 const ChannelList = () => {
   const dispatch = useAppDispatch();
@@ -26,21 +24,24 @@ const ChannelList = () => {
     navigate(`/main/${channel.channelAddress}`);
   };
 
+  if (isLoading) {
+    return <CircularProgress />;
+  }
+
   return (
-    <Spinner isLoading={isLoading}>
+    <>
       {channels.map(
         (channel) =>
           !hiddenChannelsAddreses.includes(channel.channelAddress) && (
             <ChannelListItem
               channel={channel}
               key={channel.channelAddress}
-              date="08:34 AM"
               onClick={() => selectNewChannel(channel)}
               selected={selectedChannel.channelAddress === channel.channelAddress}
             />
           )
       )}
-    </Spinner>
+    </>
   );
 };
 

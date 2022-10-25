@@ -74,5 +74,5 @@ declare module '@mui/material/styles' {
 }
 
 export default function themeCreator(theme: string): Theme {
-  return themeMap[theme];
+  return themeMap[theme as string];
 }

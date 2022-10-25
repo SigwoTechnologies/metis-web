@@ -1,13 +1,17 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable no-console */
+import constants from '@metis/common/configuration/constants';
 import BusinessError from '@metis/common/exceptions/business-error';
 import httpService from '@metis/common/services/http.service';
-import constants from '@metis/common/configuration/constants';
 import ILocalStorageService from '@metis/common/services/interfaces/local-storage-service.interface';
-import IAuthService, { Signature } from './interfaces/auth-service.interface';
+import { AxiosError } from 'axios';
 import AliasResponse from '../types/alias-response';
 import ChallengeResponse from '../types/challenge-response';
+import Credential from '../types/credential';
+import { LegacyLoginResponse } from '../types/legacy-login-response';
 import ValidateSignatureResponse from '../types/validate-signature-response';
 import getBufferString from '../utils/auth.utils';
-import Credential from '../types/credential';
+import IAuthService, { Signature } from './interfaces/auth-service.interface';
 
 export default class AuthService implements IAuthService {
   private readonly endpoint: string;
@@ -17,6 +21,14 @@ export default class AuthService implements IAuthService {
   constructor(_localStorageService: ILocalStorageService) {
     this.endpoint = '/v1/api/crypto';
     this.localStorageService = _localStorageService;
+  }
+
+  async legacyLogin(passphrase: string, password: string) {
+    const { data } = await httpService.post<LegacyLoginResponse>('/v2/api/login', {
+      passphrase,
+      password,
+    });
+    return data;
   }
 
   async getChallenge(address: string): Promise<string> {
@@ -29,7 +41,12 @@ export default class AuthService implements IAuthService {
       // TODO: Log the error in a log service
       console.log('getChallenge|error', err);
       // TODO: Create codes enums and a better error response message
-      throw new BusinessError('An error has occured while signing in', 'get_challenge');
+      const { response } = err as AxiosError;
+      throw new BusinessError(
+        'An error has occured while signing in',
+        'existing_account',
+        response?.data as any
+      );
     }
   }
 
@@ -44,7 +61,7 @@ export default class AuthService implements IAuthService {
     passphrase,
     publicKey,
     address,
-  }: Signature): Promise<boolean> {
+  }: Signature): Promise<ValidateSignatureResponse> {
     try {
       const payload = {
         challengeDigest: challenge,
@@ -63,7 +80,7 @@ export default class AuthService implements IAuthService {
       // Now, there are two options, one is when the account does not exist, the account is going to be created and a socket will be emitted.
       // The second option will
 
-      return data.verified;
+      return data;
     } catch (err: unknown) {
       // TODO: Log the error in a log service
       console.log('validateSignature|error', err);
@@ -81,6 +98,7 @@ export default class AuthService implements IAuthService {
       );
 
       // TODO: Validate if the api can return undefined/null response
+      // TODO: Avoid magic strings
       if (data?.message.toLocaleLowerCase() === 'no available alias') return '';
 
       // TODO: What type of response does the api returns here?
@@ -95,24 +113,24 @@ export default class AuthService implements IAuthService {
     }
   }
 
-  async createAccount(passphrase: string, password: string, blockchainAccountAddress: string) {
-    try {
-      const response = await httpService.post(`${this.endpoint}/create/account`, {
-        passphrase,
-        password,
-        blockchainAccountAddress,
-      });
-      console.log('response', response);
-      return response.data;
-    } catch (err: unknown) {
-      // TODO: Log the error in a log service
-      console.log('createAccount|error', err);
-      throw new BusinessError(
-        'An error has occured while creating your new account',
-        'create_account'
-      );
-    }
-  }
+  // TODO: This is not implemented
+  // async createAccount(passphrase: string, password: string, blockchainAccountAddress: string) {
+  //   try {
+  //     const { data } = await httpService.post(`${this.endpoint}/create/account`, {
+  //       passphrase,
+  //       password,
+  //       blockchainAccountAddress,
+  //     });
+  //     return data;
+  //   } catch (err: unknown) {
+  //     // TODO: Log the error in a log service
+  //     console.log('createAccount|error', err);
+  //     throw new BusinessError(
+  //       'An error has occured while creating your new account',
+  //       'create_account'
+  //     );
+  //   }
+  // }
 
   getLoggedInUserCredentials(): Credential | undefined {
     const storedCredentials =

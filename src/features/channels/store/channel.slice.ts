@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import type { RootState } from '@metis/store/types';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { Channel } from '../types/channel';
@@ -18,6 +19,7 @@ export type ChannelState = {
   mutedChannels: string[];
   channels: Channel[];
   pendingChannels: NewChannel[];
+  isOpenCreateChannelDrawer: boolean;
 };
 
 const initialState: ChannelState = {
@@ -32,6 +34,7 @@ const initialState: ChannelState = {
   },
   mutedChannels: [],
   pendingChannels: [],
+  isOpenCreateChannelDrawer: false,
 };
 
 const slice = createSlice({
@@ -98,6 +101,12 @@ const slice = createSlice({
 
       targetChannel?.messages.unshift(message);
     },
+    setOpenDrawer: (state: ChannelState, { payload: status }) => {
+      state.isOpenCreateChannelDrawer = status;
+    },
+    setLoading: (state: ChannelState, { payload: status }) => {
+      state.isLoading = status;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(findChannels.pending, (state) => {
@@ -140,5 +149,6 @@ export const {
   hideChannel,
   unhideChannel,
   addNewMessage,
+  setOpenDrawer: setOpenCreateChannelDrawer,
 } = slice.actions;
 export const channelReducer = slice.reducer;

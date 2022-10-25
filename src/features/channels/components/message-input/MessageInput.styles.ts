@@ -3,8 +3,17 @@ import { createStyles, makeStyles } from '@mui/styles';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
+    emojiPicker: {
+      display: 'flex',
+      flexDirection: 'row-reverse',
+      padding: '1rem',
+      position: 'absolute',
+      bottom: '1.5rem',
+      right: '1rem',
+    },
     footerInputStyle: {
-      padding: '1rem 0',
+      padding: '1rem 1rem',
+      position: 'relative',
     },
     button: {
       display: 'flex',

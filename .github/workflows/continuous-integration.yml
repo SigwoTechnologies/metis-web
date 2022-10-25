@@ -8,6 +8,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
+      - uses: actions/setup-node@v3
+        with:
+          node-version: lts/*
+          cache: yarn
 
       - name: Install Dependencies
         run: yarn
@@ -23,6 +27,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
+      - uses: actions/setup-node@v3
+        with:
+          node-version: lts/*
+          cache: yarn
 
       - name: Install Dependencies
         run: yarn
@@ -35,9 +43,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
+      - uses: actions/setup-node@v3
+        with:
+          node-version: lts/*
+          cache: yarn
 
       - name: Install Dependencies
         run: yarn
 
-      - name: Build
+      - name: Install Dependencies
         run: yarn build

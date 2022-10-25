@@ -5,7 +5,7 @@ export interface Message {
   attachmentObj: AttachmentObj | null;
   createdAt: number;
   message: string;
-  messageType: 'message' | 'invitation';
+  messageType: 'message' | 'invitation' | 'attachment';
   recordType: string;
   decryptedReplyMessage: string;
   replyMessage: string;

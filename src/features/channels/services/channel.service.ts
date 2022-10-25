@@ -1,15 +1,13 @@
-/* eslint-disable quotes */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import httpService from '@metis/common/services/http.service';
 import EncryiptionService from '@metis/features/auth/services/encryption.service';
 import { openToast } from '@metis/store/ui/ui.slice';
 import { AxiosError } from 'axios';
-import { enums } from 'openpgp';
 import { Channel } from '../types/channel';
 import { ChannelDTO } from '../types/channelDTO';
 import { ChannelMember } from '../types/ChannelMember';
 import { ChannelsMessagesResponse } from '../types/ChannelsMessagesResponse';
 import { Message } from '../types/Message';
-import { Reply } from '../types/Reply';
 
 type LoadChannelsMessagesProps = {
   privateKeyArmored: string;
@@ -48,7 +46,6 @@ const loadChannelsMessages = async ({
 
   return filteredData;
 };
-
 const findChannels = async (args: null, { getState, dispatch, rejectWithValue }: any) => {
   const {
     auth: {
@@ -78,8 +75,8 @@ const findChannels = async (args: null, { getState, dispatch, rejectWithValue }:
 };
 
 const create = async (channel: ChannelDTO): Promise<Channel> => {
-  const response = await httpService.post('/v1/api/channel', channel);
-  return response.data;
+  const { data } = await httpService.post('/v1/api/channel', channel);
+  return data;
 };
 
 export type InviteToChannel = {
@@ -88,14 +85,15 @@ export type InviteToChannel = {
 };
 
 const inviteToSelectedChannel = async (payload: InviteToChannel): Promise<Channel> => {
-  const response = await httpService.post('/v1/api/channel/invite', payload);
-  return response.data;
+  const { data } = await httpService.post('/v1/api/channel/invite', payload);
+  return data;
 };
-
 const getMutedChannelAddresses = async (args: null, { dispatch, rejectWithValue }: any) => {
   try {
-    const response = await httpService.get('/v1/api/pn/mute-channels');
-    const { mutedChannelAddressList } = response.data;
+    const {
+      data: { mutedChannelAddressList },
+    } = await httpService.get('/v1/api/pn/mute-channels');
+
     return mutedChannelAddressList;
   } catch (error) {
     const err = error as AxiosError;
@@ -103,17 +101,17 @@ const getMutedChannelAddresses = async (args: null, { dispatch, rejectWithValue 
     return rejectWithValue(err.response);
   }
 };
-
 const toggleMuteChannel = async (channelAddress: string, { getState, dispatch }: any) => {
   const isMuted = getState().channel.mutedChannels.includes(channelAddress);
   try {
-    const response = await httpService.put('/v1/api/pn/mute-channels', {
+    const {
+      data: {
+        notification: { mutedChannelAddressList },
+      },
+    } = await httpService.put('/v1/api/pn/mute-channels', {
       channelAddress,
       isMuted,
     });
-    const {
-      notification: { mutedChannelAddressList },
-    } = response.data;
 
     dispatch(
       openToast({ type: 'info', text: `The channel's been ${isMuted ? 'unmuted' : 'muted'}` })
@@ -124,7 +122,6 @@ const toggleMuteChannel = async (channelAddress: string, { getState, dispatch }:
     dispatch(
       openToast({ type: 'error', text: `We couldn't ${isMuted ? 'unmute' : 'mute'} the channel` })
     );
-    console.log(err.response);
     return err.response;
   }
 };
@@ -134,14 +131,9 @@ const getChannelMembers = async (channelAddress: string) => {
   return response.data;
 };
 
-const sendMessage = async (channelAddress: string, text: string, reply: Reply) => {
+const sendMessage = async (channelAddress: string, message: any) => {
   try {
-    const message = {
-      message: text,
-      ...reply,
-      version: '1.0',
-    };
-    const response = await httpService.post(`/v1/api/channels/${channelAddress}/messages`, message);
+    await httpService.post(`/v1/api/channels/${channelAddress}/messages`, message);
 
     return message;
   } catch (error) {

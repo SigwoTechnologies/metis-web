@@ -1,7 +1,13 @@
+import appConfig from '@metis/common/configuration/app.config';
+import constants from '@metis/common/configuration/constants';
+import { saveToken } from '@metis/common/services/token.service';
 import LoginError from '../../enums/login-error.enum';
+import LoginFlow from '../../enums/login-flow.enum';
 import IAuthService from '../../services/interfaces/auth-service.interface';
 import IMetaMaskService from '../../services/interfaces/metamask-service.interface';
+import { ExistingAccountSignResponse } from '../../types/existing-account-sign-response';
 import LoginState from '../../types/login-state';
+import ValidateSignatureResponse from '../../types/validate-signature-response';
 import ICommand from './command.interface';
 
 export default class SignChallengeCommand implements ICommand<LoginState> {
@@ -20,8 +26,7 @@ export default class SignChallengeCommand implements ICommand<LoginState> {
     if (!state.challengeMessage) return { ...state, error: LoginError.RequiredChallengeMessage };
 
     const signature = await this.metaMaskService.signMessage(state.challengeMessage, state.address);
-
-    const isValid = await this.authService.validateSignature({
+    const data = await this.authService.validateSignature({
       challenge: state.challenge,
       signature,
       publicKey: state.publicKeyArmored,
@@ -30,7 +35,42 @@ export default class SignChallengeCommand implements ICommand<LoginState> {
       address: state.address,
     });
 
-    if (!isValid) return { ...state, error: LoginError.InvalidSignature };
+    if (state.flow === LoginFlow.NewAccount) {
+      const {
+        verified,
+        job: { id },
+      } = data as ValidateSignatureResponse;
+      if (!verified) return { ...state, error: LoginError.InvalidSignature };
+
+      localStorage.setItem('SIGNUP_JOB_ID', String(id));
+    }
+
+    if (state.flow === LoginFlow.ExistingAccountSameDevice) {
+      const { alias, accountRS, token } = data as ExistingAccountSignResponse;
+      saveToken(token);
+      state.alias = alias;
+      state.jupAddress = accountRS;
+      state.isLoggedIn = true;
+    }
+
+    if (state.flow === LoginFlow.LegacyAccount) {
+      const { alias, accountRS, token } = data as ExistingAccountSignResponse;
+      saveToken(token);
+      state.alias = alias;
+      state.jupAddress = accountRS;
+      state.isLoggedIn = true;
+
+      await fetch(`${appConfig.api.baseUrl}/v1/api/users/${accountRS}/e2e-public-keys`, {
+        method: 'PUT',
+        headers: {
+          'Content-type': 'application/json',
+          Authorization: `Bearer ${token}`, // notice the Bearer before your token
+        },
+        body: JSON.stringify({
+          e2ePublicKey: state.publicKeyArmored,
+        }),
+      });
+    }
 
     return state;
   }

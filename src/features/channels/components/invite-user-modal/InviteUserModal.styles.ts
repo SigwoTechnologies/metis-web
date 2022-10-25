@@ -1,7 +1,6 @@
-import { Theme } from '@mui/material';
 import { createStyles, makeStyles } from '@mui/styles';
 
-const useStyles = makeStyles((theme: Theme) =>
+const useStyles = makeStyles(() =>
   createStyles({
     button: {
       width: '100%',

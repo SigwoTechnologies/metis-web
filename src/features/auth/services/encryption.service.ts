@@ -1,18 +1,17 @@
 import {
-  enums,
-  readPrivateKey,
-  decryptKey,
-  generateKey,
   createMessage,
-  Message,
-  PublicKey,
+  decrypt,
+  decryptKey,
   encrypt,
+  enums,
+  generateKey,
+  Message,
   PartialConfig,
+  PublicKey,
   readKey,
   readMessage,
+  readPrivateKey,
   WebStream,
-  decrypt,
-  PrivateKey,
 } from 'openpgp';
 import IEncryptionService from './interfaces/encryption-service.interface';
 

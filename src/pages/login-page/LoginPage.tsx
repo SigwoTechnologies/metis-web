@@ -1,103 +1,166 @@
-import SquareGroup from '@metis/assets/images/misc/square-group.png';
+import MetisLogo from '@metis/assets/images/misc/metis-logo.svg';
 import Modal from '@metis/common/components/ui/Modal';
 import constants from '@metis/common/configuration/constants';
+import httpService from '@metis/common/services/http.service';
 import connectSocket from '@metis/common/services/socket.service';
-import useMetamask from '@metis/features/auth/hooks/useMetamask';
-import { addPublicKey, login } from '@metis/features/auth/store/auth.actions';
-import {
-  setIsCreatingAccount,
-  setJupAccount,
-  setLoggedIn,
-} from '@metis/features/auth/store/auth.slice';
-import { useAppDispatch, useAppSelector } from '@metis/store/hooks';
-import { openToast } from '@metis/store/ui/ui.slice';
-import PeopleIcon from '@mui/icons-material/People';
+import { SignInButton } from '@metis/features/auth/components/SignInButton/SignInButton';
+import { SignUpButton } from '@metis/features/auth/components/SignUpButton/SignUpButton';
+import { useMetamask } from '@metis/features/auth/hooks/useMetamask';
+import { useAppSelector } from '@metis/store/hooks';
 import { LoadingButton } from '@mui/lab';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Socket } from 'socket.io-client';
 import useStyles from './LoginPage.styles';
 
-type SignUpSuccessfulEventResponse = {
-  createdAt: number;
-  token: string;
-  address: string;
-  alias: string;
-};
-
 const LoginPage = () => {
-  const dispatch = useAppDispatch();
   const classes = useStyles();
-  const { account, connect } = useMetamask();
-  const { isConnectingToMetamask, isCreatingAccount } = useAppSelector((state) => state.auth);
+  const [alreadyRegistered, setAlreadyRegistered] = useState(false);
+  const [credentials, setCredentials] = useState(false);
+  const [syncDeviceRequested, setSyncDeviceRequested] = useState(false);
+  const { ethAccount } = useAppSelector((state) => state.auth);
+  const [socketConnected, setSocketConnected] = useState<Socket>();
+  const navigate = useNavigate();
+  useMetamask();
 
-  const handleLogin = async () => {
-    await connect();
+  useEffect(() => {
+    const socket = connectSocket({
+      query: {
+        room: `sync-devices-${ethAccount}`, // address of the current user
+        user: ethAccount, // address of the current user
+      },
+    }).socket('/sync-devices');
+
+    if (socket) {
+      setSocketConnected(socket);
+    }
+
+    socket.on('sync-devices-requested', () => {
+      setSyncDeviceRequested(true);
+    });
+
+    socket.on('sync-devices-granted', (data) => {
+      window.localStorage.setItem(constants.CREDENTIALS, data.credentials);
+      window.location.reload();
+    });
+  }, [ethAccount]);
+
+  const sendSyncRequest = () => {
+    socketConnected?.emit('sync-devices-request', { ethAccount });
+  };
+
+  const sendGrantSync = () => {
+    const credentialsFound = window.localStorage.getItem(constants.CREDENTIALS);
+    socketConnected?.emit('sync-devices-grant', { credentials: credentialsFound });
+  };
+
+  const sendRejectSync = () => {
+    socketConnected?.emit('sync-devices-reject');
   };
 
   useEffect(() => {
-    if (account) {
-      dispatch(login(account));
-
-      const socket = connectSocket({
-        query: {
-          room: `sign-up-${account}`, // address of the current user
-          user: account, // address of the current user
-        },
-      }).socket('/sign-up');
-
-      socket.on(
-        'signUpSuccessful',
-        async ({ token, address, alias }: SignUpSuccessfulEventResponse) => {
-          // TODO: because the service does JSON.stringify too we end up with a weird string, fix this
-          const stringifiedToken = JSON.stringify({ access_token: token });
-          localStorage.setItem(constants.TOKEN, JSON.stringify(stringifiedToken));
-
-          dispatch(addPublicKey({ jupUserAddress: address, jwtToken: token })).then(() => {
-            dispatch(setJupAccount({ address, alias }));
-            dispatch(openToast({ text: 'Your account was created successfuly', type: 'success' }));
-            dispatch(setIsCreatingAccount(false));
-            dispatch(setLoggedIn(true));
-          });
-        }
-      );
-
-      socket.on('signUpFailed', ({ message }: { message: string }) => {
-        dispatch(openToast({ text: message, type: 'error' }));
-        dispatch(setIsCreatingAccount(false));
-      });
-
-      return () => {
-        socket.off('signUpSuccessful');
-        socket.off('signUpFailed');
-      };
+    if (ethAccount) {
+      httpService
+        .get(`/v1/api/crypto/get-account/${ethAccount}`)
+        .then(() => setAlreadyRegistered(true))
+        .catch(() => setAlreadyRegistered(false));
     }
 
-    return undefined;
-  }, [account]);
+    const credentialsFound = window.localStorage.getItem(constants.CREDENTIALS);
+    if (credentialsFound) {
+      setCredentials(true);
+    }
+  }, [ethAccount]);
 
   return (
     <>
-      <Modal open={isCreatingAccount}>
-        <div className={classes.iconContainer}>
-          <PeopleIcon className={classes.icon} color="primary" />
-        </div>
-        <div className={classes.loading}>We&apos;re creating your new account...</div>
-      </Modal>
+      {syncDeviceRequested && credentials && (
+        <Modal open>
+          <Box style={{ textAlign: 'center' }}>
+            <span>Someone has requested a synchronization</span>
+            <br />
+            <br />
+            <Box style={{ display: 'flex', gap: '1rem' }}>
+              <LoadingButton
+                fullWidth
+                variant="contained"
+                style={{
+                  width: '25rem',
+                }}
+                onClick={sendGrantSync}
+              >
+                <span className={classes.span}>Grant</span>
+              </LoadingButton>
+
+              <LoadingButton
+                fullWidth
+                variant="contained"
+                style={{
+                  width: '25rem',
+                }}
+                onClick={sendRejectSync}
+              >
+                <span className={classes.span}>Reject</span>
+              </LoadingButton>
+            </Box>
+          </Box>
+        </Modal>
+      )}
+
+      {alreadyRegistered && !credentials && (
+        <Modal open>
+          <Box style={{ textAlign: 'center' }}>
+            <span>We have detected this account is already registered</span>
+            <br />
+            <br />
+            <Box style={{ display: 'flex', gap: '1rem' }}>
+              <LoadingButton
+                fullWidth
+                variant="contained"
+                style={{
+                  width: '25rem',
+                }}
+                onClick={sendSyncRequest}
+              >
+                <span className={classes.span}>Sync with old device</span>
+              </LoadingButton>
+
+              <LoadingButton
+                fullWidth
+                variant="contained"
+                style={{
+                  width: '25rem',
+                }}
+                onClick={() => navigate('/auth/legacy')}
+              >
+                <span className={classes.span}>Associate legacy account</span>
+              </LoadingButton>
+            </Box>
+          </Box>
+        </Modal>
+      )}
+
       <Box height="100vh" className={classes.wrapper}>
         <Container maxWidth="xl" component="main" className={classes.container}>
-          <Box component="form" noValidate maxWidth="md">
-            <Box component="img" src={SquareGroup} alt="login" className={classes.image} />
-            <LoadingButton
-              loading={isConnectingToMetamask}
-              loadingPosition="start"
-              fullWidth
-              variant="contained"
-              onClick={handleLogin}
-            >
-              {isConnectingToMetamask ? 'Connecting to Metamask' : 'Log In with Metamask'}
-            </LoadingButton>
+          <Box component="img" src={MetisLogo} alt="login" className={classes.image} />
+
+          {ethAccount && <Box className={classes.associate}>Account Selected: {ethAccount}</Box>}
+
+          <br />
+
+          <Box
+            style={{
+              display: 'flex',
+              gap: '1rem',
+            }}
+          >
+            {!alreadyRegistered && <SignUpButton />}
+
+            {alreadyRegistered && <SignInButton />}
           </Box>
+          <br />
         </Container>
       </Box>
     </>

@@ -1,3 +1,4 @@
+/* eslint-disable security/detect-object-injection */
 import { AlertColor } from '@mui/material';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { toast } from 'react-toastify';

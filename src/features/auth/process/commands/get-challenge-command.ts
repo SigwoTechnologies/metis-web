@@ -1,7 +1,7 @@
 import BusinessError from '@metis/common/exceptions/business-error';
 import LoginError from '../../enums/login-error.enum';
-import LoginFlow from '../../enums/login-flow.enum';
 import IAuthService from '../../services/interfaces/auth-service.interface';
+import { ExistingAccountChallengeResponse } from '../../types/existing-account-challenge-response';
 import LoginState from '../../types/login-state';
 import ICommand from './command.interface';
 
@@ -23,9 +23,12 @@ export default class GetChallengeCommand implements ICommand<LoginState> {
     } catch (err: unknown) {
       if (err instanceof BusinessError) {
         // TODO: Change hardcoded codes by enums
-        if (err.getError().name === 'existing_account') {
-          state.error = LoginError.DifferentFlow;
-          state.flow = LoginFlow.ExistingAccountDifferentDevice;
+        const { name: errorName, error } = err.getError();
+        if (errorName === 'existing_account') {
+          const { challenge } = error as ExistingAccountChallengeResponse;
+          state.challenge = challenge;
+          state.challengeMessage = this.authService.getChallengeMessage(state.challenge);
+
           return state;
         }
       }

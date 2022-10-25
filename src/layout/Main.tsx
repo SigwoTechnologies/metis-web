@@ -37,7 +37,7 @@ const Main = () => {
           <Grid item xs={12} md={4} className={classes.gridRow}>
             <LeftColumn />
           </Grid>
-          <Grid item md={8} className={classes.gridRow}>
+          <Grid item md={8} className={classes.gridRow} sx={{ paddingLeft: '0px !important' }}>
             <RightColumn />
           </Grid>
         </Grid>
