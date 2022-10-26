@@ -1,7 +1,9 @@
 import { yupResolver } from '@hookform/resolvers/yup';
+import appConfig from '@metis/common/configuration/app.config';
 import Form from '@metis/common/components/ui/Form/Form';
 import Modal from '@metis/common/components/ui/Modal';
 import TextInput from '@metis/common/components/ui/TextInput/TextInput';
+import { ethers } from 'ethers';
 import { useAppDispatch, useAppSelector } from '@metis/store/hooks';
 import { openNotification } from '@metis/store/ui/ui.slice';
 import PeopleIcon from '@mui/icons-material/People';
@@ -18,11 +20,11 @@ type Props = {
 };
 
 type AliasOrId = {
-  inviteeAddressOrAlias: string;
+  inviteAccount: string;
 };
 
 const schema = yup.object({
-  inviteeAddressOrAlias: yup.string().required('This field is required'),
+  inviteAccount: yup.string().required('This field is required'),
 });
 
 const InviteUserModal: React.FC<Props> = ({ closeModal, open }) => {
@@ -32,24 +34,33 @@ const InviteUserModal: React.FC<Props> = ({ closeModal, open }) => {
   } = useAppSelector((state) => state.channel);
   const dispatch = useAppDispatch();
   const [loading, setLoading] = useState(false);
+  const provider = new ethers.providers.JsonRpcProvider(appConfig.providerENS.url);
 
-  const onSubmit = ({ inviteeAddressOrAlias }: AliasOrId) => {
+  const onSubmit = async ({ inviteAccount }: AliasOrId) => {
     setLoading(true);
-    useSendInvitation({ inviteeAddressOrAlias, channelAddress })
-      .then(() => {
-        dispatch(openNotification({ text: 'Invite sent!', type: 'success' }));
-        closeModal();
-      })
-      .catch((error) => {
-        const { message } = error.response.data;
-        dispatch(
-          openNotification({
-            text: message || 'Something went wrong, please try again.',
-            type: 'error',
-          })
-        );
-      })
-      .finally(() => setLoading(false));
+
+    const inviteeAddressOrAlias = await provider
+      .getResolver(inviteAccount)
+      .then((resolvedName) => resolvedName?.address ?? inviteAccount);
+
+    if (!inviteeAddressOrAlias) setLoading(false);
+    if (inviteeAddressOrAlias) {
+      useSendInvitation({ inviteeAddressOrAlias, channelAddress })
+        .then(() => {
+          dispatch(openNotification({ text: 'Invite sent!', type: 'success' }));
+          closeModal();
+        })
+        .catch((error) => {
+          const { message } = error.response.data;
+          dispatch(
+            openNotification({
+              text: message || 'Something went wrong, please try again.',
+              type: 'error',
+            })
+          );
+        })
+        .finally(() => setLoading(false));
+    }
   };
 
   return (
@@ -58,11 +69,11 @@ const InviteUserModal: React.FC<Props> = ({ closeModal, open }) => {
         <PeopleIcon className={classes.icon} color="primary" />
       </div>
       <p>
-        To invite another user to join this channel enter their Alias or Account ID and click
+        To invite another user to join this channel enter their ENS, Alias or Account ID and click
         &quot;invite&quot;
       </p>
       <Form onSubmit={onSubmit} form={{ resolver: yupResolver(schema) }}>
-        <TextInput name="inviteeAddressOrAlias" label="Enter alias or Account ID here" />
+        <TextInput name="inviteAccount" label="Enter ENS, alias or Account ID here" />
         <LoadingButton
           loading={loading}
           type="submit"
