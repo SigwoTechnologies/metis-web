@@ -10,6 +10,7 @@ import { useAppSelector } from '@metis/store/hooks';
 import { LoadingButton } from '@mui/lab';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
+import CircularProgress from '@mui/material/CircularProgress';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Socket } from 'socket.io-client';
@@ -44,6 +45,10 @@ const LoginPage = () => {
     socket.on('sync-devices-granted', (data) => {
       window.localStorage.setItem(constants.CREDENTIALS, data.credentials);
       window.location.reload();
+    });
+
+    socket.on('sync-devices-rejected', () => {
+      setSyncDeviceRequested(false);
     });
   }, [ethAccount]);
 
@@ -115,28 +120,33 @@ const LoginPage = () => {
             <span>We have detected this account is already registered</span>
             <br />
             <br />
+            {syncDeviceRequested && <CircularProgress className={classes.spinner} />}
             <Box style={{ display: 'flex', gap: '1rem' }}>
-              <LoadingButton
-                fullWidth
-                variant="contained"
-                style={{
-                  width: '25rem',
-                }}
-                onClick={sendSyncRequest}
-              >
-                <span className={classes.span}>Sync with old device</span>
-              </LoadingButton>
+              {!syncDeviceRequested && (
+                <>
+                  <LoadingButton
+                    fullWidth
+                    variant="contained"
+                    style={{
+                      width: '25rem',
+                    }}
+                    onClick={sendSyncRequest}
+                  >
+                    <span className={classes.span}>Sync with old device</span>
+                  </LoadingButton>
 
-              <LoadingButton
-                fullWidth
-                variant="contained"
-                style={{
-                  width: '25rem',
-                }}
-                onClick={() => navigate('/auth/legacy')}
-              >
-                <span className={classes.span}>Associate legacy account</span>
-              </LoadingButton>
+                  <LoadingButton
+                    fullWidth
+                    variant="contained"
+                    style={{
+                      width: '25rem',
+                    }}
+                    onClick={() => navigate('/auth/legacy')}
+                  >
+                    <span className={classes.span}>Associate legacy account</span>
+                  </LoadingButton>
+                </>
+              )}
             </Box>
           </Box>
         </Modal>

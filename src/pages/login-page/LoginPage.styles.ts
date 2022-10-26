@@ -37,6 +37,9 @@ const useStyles = makeStyles((theme: Theme) =>
         clipPath: 'inset(0 -1ch 0 0)',
       },
     },
+    spinner: {
+      alignSelf: 'center',
+    },
   })
 );
 
