@@ -1,4 +1,5 @@
 import { yupResolver } from '@hookform/resolvers/yup';
+import appConfig from '@metis/common/configuration/app.config';
 import Form from '@metis/common/components/ui/Form/Form';
 import Modal from '@metis/common/components/ui/Modal';
 import TextInput from '@metis/common/components/ui/TextInput/TextInput';
@@ -13,20 +14,17 @@ import * as yup from 'yup';
 import { useSendInvitation } from '../../hooks/useSendInvitation';
 import useStyles from './InviteUserModal.styles';
 
-const url = import.meta.env.VITE_METIS_ENS_PROVIDER_URL;
-const provider = new ethers.providers.JsonRpcProvider(url);
-
 type Props = {
   closeModal: () => void;
   open: boolean;
 };
 
 type AliasOrId = {
-  inviteeAddress: string;
+  inviteAccount: string;
 };
 
 const schema = yup.object({
-  inviteeAddress: yup.string().required('This field is required'),
+  inviteAccount: yup.string().required('This field is required'),
 });
 
 const InviteUserModal: React.FC<Props> = ({ closeModal, open }) => {
@@ -36,13 +34,14 @@ const InviteUserModal: React.FC<Props> = ({ closeModal, open }) => {
   } = useAppSelector((state) => state.channel);
   const dispatch = useAppDispatch();
   const [loading, setLoading] = useState(false);
+  const provider = new ethers.providers.JsonRpcProvider(appConfig.providerENS.url);
 
-  const onSubmit = async ({ inviteeAddress }: AliasOrId) => {
+  const onSubmit = async ({ inviteAccount }: AliasOrId) => {
     setLoading(true);
 
     const inviteeAddressOrAlias = await provider
-      .getResolver(inviteeAddress)
-      .then((resolvedName) => resolvedName?.address ?? inviteeAddress);
+      .getResolver(inviteAccount)
+      .then((resolvedName) => resolvedName?.address ?? inviteAccount);
 
     if (!inviteeAddressOrAlias) setLoading(false);
     if (inviteeAddressOrAlias) {
@@ -74,7 +73,7 @@ const InviteUserModal: React.FC<Props> = ({ closeModal, open }) => {
         &quot;invite&quot;
       </p>
       <Form onSubmit={onSubmit} form={{ resolver: yupResolver(schema) }}>
-        <TextInput name="inviteeAddress" label="Enter alias or Account ID here" />
+        <TextInput name="inviteAccount" label="Enter ENS, alias or Account ID here" />
         <LoadingButton
           loading={loading}
           type="submit"
