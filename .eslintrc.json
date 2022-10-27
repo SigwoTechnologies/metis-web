@@ -9,6 +9,7 @@
     "airbnb",
     "plugin:security/recommended",
     "plugin:import/typescript",
+    "plugin:prettier/recommended",
     "prettier"
   ],
   "parser": "@typescript-eslint/parser",
@@ -28,6 +29,12 @@
       {
         "ts": "never",
         "tsx": "never"
+      }
+    ],
+    "prettier/prettier": [
+      "error",
+      {
+        "endOfLine": "auto"
       }
     ],
     "react/jsx-props-no-spreading": "off",
