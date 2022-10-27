@@ -4,7 +4,7 @@ import TextInput from '@metis/common/components/ui/TextInput/TextInput';
 import httpService from '@metis/common/services/http.service';
 import { getToken } from '@metis/common/services/token.service';
 import { convertJupToNQT, convertNQTToJup } from '@metis/common/utils/utils';
-import fetchBalance from '@metis/features/wallet/services/fetchBalance';
+import { fetchBalance } from '@metis/features/wallet/store/wallet.actions';
 import { useAppDispatch, useAppSelector } from '@metis/store/hooks';
 import { openToast } from '@metis/store/ui/ui.slice';
 import { LoadingButton } from '@mui/lab';
@@ -70,9 +70,7 @@ const SendJup = () => {
 
     dispatch(
       openToast({
-        text: `${convertNQTToJup(
-          Number(convertJupToNQT(amount))
-        )} JUP Sent to ${recipient} successfully`,
+        text: `${convertNQTToJup(Number(convertJupToNQT(amount)))} JUP is Sending to ${recipient}`,
         type: 'success',
       })
     );
