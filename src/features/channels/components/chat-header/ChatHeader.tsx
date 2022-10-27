@@ -103,7 +103,7 @@ const ChatHeader = () => {
           variant="h5"
           sx={{ mb: '1rem' }}
         >{`Mute ${selectedChannel.channelName}?`}</Typography>
-        <Typography component="p" variant="body2" sx={{ mb: '1rem' }}>
+        <Typography component="div" variant="body2" sx={{ mb: '1rem' }}>
           You won&apos;t receive notifications from this channel. Do you want to proceed?
         </Typography>
         <Box display="flex" justifyContent="center" gap="1rem">

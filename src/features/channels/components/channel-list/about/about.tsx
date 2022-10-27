@@ -69,7 +69,7 @@ const About = ({ title, message, onClick }: Props) => {
               <Divider />
               {info &&
                 info.map(({ name, version }) => (
-                  <Grid>
+                  <Grid key={name}>
                     <Grid className={styles.infoLine}>
                       <Grid className={styles.infoLineLeft}>{name}</Grid>
                       <Grid className={styles.infoLineRight}>{version}</Grid>
