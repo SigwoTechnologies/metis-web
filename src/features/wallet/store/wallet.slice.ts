@@ -1,11 +1,11 @@
 import type { RootState } from '@metis/store/types';
 import { createSlice } from '@reduxjs/toolkit';
-import fetchBalance from '../services/fetchBalance';
-import fetchTransactions from '../services/fetchTransactions';
+import { fetchBalance, fetchTransactions } from './wallet.actions';
 import { TTransaction } from '../types/TTransaction';
 
 export type TWalletState = {
   isLoading: boolean;
+  isLoadingTransaction: boolean;
   isOpenWallet: boolean;
   transactions: TTransaction[];
   balance: number;
@@ -13,6 +13,7 @@ export type TWalletState = {
 
 const initialState: TWalletState = {
   isLoading: false,
+  isLoadingTransaction: false,
   isOpenWallet: false,
   transactions: [],
   balance: 0,
@@ -30,11 +31,15 @@ const slice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(fetchBalance.fulfilled, (state, action) => {
-      state.balance = action.payload;
+    builder.addCase(fetchBalance.fulfilled, (state, { payload }) => {
+      state.balance = payload;
     });
-    builder.addCase(fetchTransactions.fulfilled, (state, action) => {
-      state.transactions = action.payload;
+    builder.addCase(fetchTransactions.pending, (state) => {
+      state.isLoadingTransaction = true;
+    });
+    builder.addCase(fetchTransactions.fulfilled, (state, { payload }) => {
+      state.isLoadingTransaction = false;
+      state.transactions = payload;
     });
   },
 });
