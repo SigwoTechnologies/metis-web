@@ -11,7 +11,7 @@ import { LoadingButton } from '@mui/lab';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 import CircularProgress from '@mui/material/CircularProgress';
-import { useEffect, useState } from 'react';
+import { useEffect, useLayoutEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Socket } from 'socket.io-client';
 import useStyles from './LoginPage.styles';
@@ -19,6 +19,7 @@ import useStyles from './LoginPage.styles';
 const LoginPage = () => {
   const classes = useStyles();
   const [alreadyRegistered, setAlreadyRegistered] = useState(false);
+  const [checkStatus, setCheckStatus] = useState(false);
   const [credentials, setCredentials] = useState(false);
   const [syncDeviceRequested, setSyncDeviceRequested] = useState(false);
   const { ethAccount } = useAppSelector((state) => state.auth);
@@ -65,12 +66,18 @@ const LoginPage = () => {
     socketConnected?.emit('sync-devices-reject');
   };
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (ethAccount) {
       httpService
         .get(`/v1/api/crypto/get-account/${ethAccount}`)
-        .then(() => setAlreadyRegistered(true))
-        .catch(() => setAlreadyRegistered(false));
+        .then(() => {
+          setCheckStatus(true);
+          setAlreadyRegistered(true);
+        })
+        .catch(() => {
+          setCheckStatus(true);
+          setAlreadyRegistered(false);
+        });
     }
 
     const credentialsFound = window.localStorage.getItem(constants.CREDENTIALS);
@@ -166,9 +173,9 @@ const LoginPage = () => {
               gap: '1rem',
             }}
           >
-            {!alreadyRegistered && <SignUpButton />}
+            {!checkStatus && <CircularProgress className={classes.spinner} />}
 
-            {alreadyRegistered && <SignInButton />}
+            {checkStatus && (alreadyRegistered ? <SignInButton /> : <SignUpButton />)}
           </Box>
           <br />
         </Container>
