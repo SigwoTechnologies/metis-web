@@ -1,13 +1,13 @@
 import MetisLogo from '@metis/assets/images/misc/metis-logo.svg';
 import Modal from '@metis/common/components/ui/Modal';
 import constants from '@metis/common/configuration/constants';
-import httpService from '@metis/common/services/http.service';
 import connectSocket from '@metis/common/services/socket.service';
+import { getAccount } from '@metis/features/auth/store/auth.actions';
 import { SignInButton } from '@metis/features/auth/components/SignInButton/SignInButton';
 import { SignUpButton } from '@metis/features/auth/components/SignUpButton/SignUpButton';
 import { useMetamask } from '@metis/features/auth/hooks/useMetamask';
-import { useAppSelector } from '@metis/store/hooks';
 import { LoadingButton } from '@mui/lab';
+import { useAppDispatch, useAppSelector } from '@metis/store/hooks';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 import CircularProgress from '@mui/material/CircularProgress';
@@ -18,13 +18,12 @@ import useStyles from './LoginPage.styles';
 
 const LoginPage = () => {
   const classes = useStyles();
-  const [alreadyRegistered, setAlreadyRegistered] = useState(false);
-  const [checkStatus, setCheckStatus] = useState(false);
   const [credentials, setCredentials] = useState(false);
   const [syncDeviceRequested, setSyncDeviceRequested] = useState(false);
-  const { ethAccount } = useAppSelector((state) => state.auth);
+  const { ethAccount, isAlreadyRegistered, isCheckStatus } = useAppSelector((state) => state.auth);
   const [socketConnected, setSocketConnected] = useState<Socket>();
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
   useMetamask();
 
   useEffect(() => {
@@ -68,16 +67,7 @@ const LoginPage = () => {
 
   useLayoutEffect(() => {
     if (ethAccount) {
-      httpService
-        .get(`/v1/api/crypto/get-account/${ethAccount}`)
-        .then(() => {
-          setCheckStatus(true);
-          setAlreadyRegistered(true);
-        })
-        .catch(() => {
-          setCheckStatus(true);
-          setAlreadyRegistered(false);
-        });
+      dispatch(getAccount(ethAccount));
     }
 
     const credentialsFound = window.localStorage.getItem(constants.CREDENTIALS);
@@ -121,7 +111,7 @@ const LoginPage = () => {
         </Modal>
       )}
 
-      {alreadyRegistered && !credentials && (
+      {isAlreadyRegistered && !credentials && (
         <Modal open>
           <Box style={{ textAlign: 'center' }}>
             <span>We have detected this account is already registered</span>
@@ -173,9 +163,9 @@ const LoginPage = () => {
               gap: '1rem',
             }}
           >
-            {!checkStatus && <CircularProgress className={classes.spinner} />}
+            {!isCheckStatus && <CircularProgress className={classes.spinner} />}
 
-            {checkStatus && (alreadyRegistered ? <SignInButton /> : <SignUpButton />)}
+            {isCheckStatus && (isAlreadyRegistered ? <SignInButton /> : <SignUpButton />)}
           </Box>
           <br />
         </Container>
