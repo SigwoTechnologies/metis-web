@@ -13,7 +13,7 @@ const Spinner: React.FC<Props> = ({ children, isLoading }) => {
   return (
     <Box className={classes.container}>
       {!isLoading && children}
-      {!isLoading && <CircularProgress className={classes.spinner} />}
+      {isLoading && <CircularProgress className={classes.spinner} />}
     </Box>
   );
 };
