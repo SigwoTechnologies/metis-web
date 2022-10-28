@@ -79,11 +79,12 @@ const Message = ({
           />
         )}
         <Box className={classes.message}>
-          <Typography variant="body2">
+          <Typography component="span" variant="body2">
             <Box>{decryptedMessage}</Box>
             {attachmentObj && <Attachment attachmentObj={attachmentObj} />}
           </Typography>
           <Typography
+            component="span"
             variant="caption"
             className={classes.date}
             title={dayjs(createdAt).format('MM/DD/YYYY hh:mm:ssa')}
