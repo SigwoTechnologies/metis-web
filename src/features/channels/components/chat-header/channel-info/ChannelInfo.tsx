@@ -108,19 +108,8 @@ const ChannelInfo = ({ selectedChannel }: Props) => {
                         </ListItemAvatar>
                         <ListItemText
                           primary={e.memberAccountAddress}
-                          secondary={
-                            <div
-                              style={{
-                                width: '15rem',
-                                marginBottom: '0.5rem',
-                                whiteSpace: 'nowrap',
-                                textOverflow: 'ellipsis',
-                                overflow: 'hidden',
-                              }}
-                            >
-                              a{e.memberAccountAlias}
-                            </div>
-                          }
+                          secondary={e.memberAccountAlias}
+                          className={classes.member}
                         />
                       </ListItemButton>
                     </ListItem>

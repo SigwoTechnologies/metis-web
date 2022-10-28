@@ -65,6 +65,13 @@ const useStyles = makeStyles((theme: Theme) =>
       gap: '1rem',
       fontSize: '1.4rem',
     },
+    member: {
+      width: '15rem',
+      marginBottom: '0.5rem',
+      whiteSpace: 'nowrap',
+      textOverflow: 'ellipsis',
+      overflow: 'hidden',
+    },
   })
 );
 
