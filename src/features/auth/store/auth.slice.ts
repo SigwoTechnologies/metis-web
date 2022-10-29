@@ -133,6 +133,7 @@ const authSlice = createSlice({
     });
     builder.addCase(findImage.fulfilled, (state, { payload }) => {
       state.imageAccount = payload;
+    });
     builder.addCase(verifyAlreadyRegistered.fulfilled, (state, { payload }) => {
       state.isAlreadyRegistered = payload;
       state.isCheckStatus = true;
