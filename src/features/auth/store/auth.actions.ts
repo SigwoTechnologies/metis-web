@@ -2,6 +2,8 @@
 import appConfig from '@metis/common/configuration/app.config';
 import constants from '@metis/common/configuration/constants';
 import BusinessError from '@metis/common/exceptions/business-error';
+import httpService from '@metis/common/services/http.service';
+import { AxiosError } from 'axios';
 import ErrorResponse from '@metis/common/types/error-response';
 import { openToast } from '@metis/store/ui/ui.slice';
 import { createAsyncThunk } from '@reduxjs/toolkit';
@@ -122,5 +124,12 @@ export const addPublicKey = createAsyncThunk(
     }
   }
 );
+
+export const findImage = createAsyncThunk('auth/findImage', async (url: string) => {
+  const { data } = await httpService.get(url, {
+    responseType: 'blob',
+  });
+  return URL.createObjectURL(data);
+});
 
 export default { login };

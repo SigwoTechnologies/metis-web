@@ -1,7 +1,9 @@
 import { signOut } from '@metis/features/auth/store/auth.slice';
 import { setOpenCreateChannelDrawer } from '@metis/features/channels/store/channel.slice';
-import { useAppDispatch } from '@metis/store/hooks';
+import { useAppDispatch, useAppSelector } from '@metis/store/hooks';
 import { openToast } from '@metis/store/ui/ui.slice';
+import { findImage } from '@metis/features/auth/store/auth.actions';
+import appConfig from '@metis/common/configuration/app.config';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import IndeterminateCheckBoxIcon from '@mui/icons-material/IndeterminateCheckBox';
 import LogoutIcon from '@mui/icons-material/Logout';
@@ -19,7 +21,7 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import Typography from '@mui/material/Typography';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import About from '../about/about';
 import ModalHiddenList from '../modal-hidden-list/ModalHiddenList';
 import ProfileAvatar from '../profile-avatar/ProfileAvatar';
@@ -31,6 +33,17 @@ const ChannelList = () => {
   const [drawer, setDrawer] = useState(false);
   const [open, setOpen] = useState(false);
   const dispatch = useAppDispatch();
+  const {
+    jupAccount: { address },
+    imageAccount,
+  } = useAppSelector((state) => state.auth);
+
+  useEffect(() => {
+    if (!imageAccount) {
+      const url = `${appConfig.api.baseUrl}/jim/v1/api/users/${address}/files/public-profile`;
+      dispatch(findImage(url));
+    }
+  }, [imageAccount]);
 
   const handleSignOut = () => {
     dispatch(signOut());
@@ -79,24 +92,6 @@ const ChannelList = () => {
             </ListItem>
 
             <ModalHiddenList open={open} onClose={() => setOpen(false)} />
-            {/*
-            <ListItem disablePadding>
-              <ListItemButton>
-                <ListItemIcon className={styles.listItemIcon}>
-                  <SettingsIcon />
-                </ListItemIcon>
-                <ListItemText primary="Settings" />
-              </ListItemButton>
-            </ListItem>
-            <ListItem disablePadding>
-              <ListItemButton>
-                <ListItemIcon className={styles.listItemIcon}>
-                  <DarkModeIcon />
-                </ListItemIcon>
-                <Switch defaultChecked />
-              </ListItemButton>
-            </ListItem>
- */}
             <ListItem disablePadding>
               <ListItemButton onClick={handleShareMetis}>
                 <ListItemIcon className={styles.listItemIcon}>
@@ -138,24 +133,6 @@ const ChannelList = () => {
               <MenuIcon />
             </IconButton>
           </Grid>
-          {/* 
-          <Grid item xs={10}>
-            <FormControl variant="standard" fullWidth>
-              <InputLabel>Search</InputLabel>
-              <Input
-                className={styles.inputText}
-                disableUnderline
-                endAdornment={
-                  <InputAdornment position="end">
-                    <IconButton aria-label="search in channels">
-                      <SearchIcon />
-                    </IconButton>
-                  </InputAdornment>
-                }
-              />
-            </FormControl>
-          </Grid>
-          */}
         </Grid>
       </Container>
     </>

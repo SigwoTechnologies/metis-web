@@ -135,36 +135,39 @@ const slice = createSlice({
     builder.addCase(findChannels.pending, (state) => {
       state.isLoading = true;
     });
+
     builder.addCase(findChannels.fulfilled, (state, { payload }) => {
       const hiddenChannels = getHiddenChannels();
       state.hiddenChannels = hiddenChannels;
       state.channels = payload;
       state.isLoading = false;
     });
+
     builder.addCase(findChannels.rejected, (state) => {
       state.isLoading = false;
     });
 
-    // Get channels messages ----------------------------------------------------------
     builder.addCase(useGetMessages.pending, (state, { payload: messages }) => {
       state.isLoadingMessages = true;
     });
+
     builder.addCase(useGetMessages.fulfilled, (state, { payload: messages }) => {
       state.selectedChannel.messages = messages;
       state.isLoadingMessages = false;
     });
-    // Get muted channels ----------------------------------------------------------
+
     builder.addCase(getMutedChannelAddresses.pending, (state) => {
       state.isLoading = true;
     });
+
     builder.addCase(getMutedChannelAddresses.fulfilled, (state, { payload }) => {
       state.mutedChannels = payload;
     });
+
     builder.addCase(getMutedChannelAddresses.rejected, (state) => {
       state.isLoading = false;
     });
 
-    // Mute or unmute channel -------------------------------------------------------
     builder.addCase(usToggleMuteChannel.fulfilled, (state, { payload }) => {
       state.mutedChannels = payload;
     });

@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { RootState } from '@metis/store/types';
-import { login, register } from './auth.actions';
+import { login, register, findImage } from './auth.actions';
 import EncryptedCredentials from '../types/encrypted-credentials';
 import { JupAccount } from '../types/JupAccount';
 
@@ -13,6 +13,7 @@ export type AuthState = {
   hasMetamask: boolean;
   userData: EncryptedCredentials;
   jupAccount: JupAccount;
+  imageAccount: string;
 };
 
 const initialState: AuthState = {
@@ -32,6 +33,7 @@ const initialState: AuthState = {
     address: '',
     alias: '',
   },
+  imageAccount: '',
 };
 
 const authSlice = createSlice({
@@ -124,6 +126,9 @@ const authSlice = createSlice({
     });
     builder.addCase(register.rejected, (state) => {
       state.isConnectingToMetamask = false;
+    });
+    builder.addCase(findImage.fulfilled, (state, { payload }) => {
+      state.imageAccount = payload;
     });
   },
 });
