@@ -2,10 +2,10 @@ import connect from '@metis/common/services/socket.service';
 import { useAppSelector } from '@metis/store/hooks';
 import { useEffect, useRef } from 'react';
 import { Socket } from 'socket.io-client';
-import { Message } from '../types/Message';
+import { IMessage } from '../types/message.interface';
 
 type ChatSocketResponse = {
-  message: Message;
+  message: IMessage;
 };
 
 export default (channelAddress: string) => {
@@ -32,7 +32,7 @@ export default (channelAddress: string) => {
     return undefined;
   }, []);
 
-  const onSendMessage = (callback: (message: Message) => void) =>
+  const onSendMessage = (callback: (message: IMessage) => void) =>
     socketRef.current?.on('createMessage', ({ message }: ChatSocketResponse) => {
       callback(message);
     });

@@ -1,6 +1,6 @@
 import { findMembers } from '@metis/features/channels/store/channel.actions';
 import { useAppDispatch, useAppSelector } from '@metis/store/hooks';
-import { Channel } from '@metis/features/channels/types/channel';
+import { IChannel } from '@metis/features/channels/types/channel.interface';
 import CloseIcon from '@mui/icons-material/Close';
 import {
   Avatar,
@@ -20,7 +20,7 @@ import { Fragment, useEffect, useState } from 'react';
 import useStyles from './ChannelInfo.styles';
 
 type Props = {
-  selectedChannel: Channel;
+  selectedChannel: IChannel;
 };
 const ChannelInfo = ({ selectedChannel }: Props) => {
   const classes = useStyles();

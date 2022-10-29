@@ -1,4 +1,4 @@
-export interface Members {
+export interface IMembers {
   memberAccountAddress: string;
   memberAccountAlias: string;
 }

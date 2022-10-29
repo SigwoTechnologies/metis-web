@@ -1,18 +1,10 @@
-import { createAsyncThunk } from '@reduxjs/toolkit';
 import httpService from '@metis/common/services/http.service';
-import { getToken } from '@metis/common/services/token.service';
+import { createAsyncThunk } from '@reduxjs/toolkit';
 import { AxiosError } from 'axios';
 
 const getMembers = async (channelAddress: string) => {
   try {
-    const headers = {
-      'Content-Type': 'application/json',
-      Accept: 'application/json',
-      Authorization: `Bearer ${getToken()}`,
-    };
-    const { data } = await httpService.get(`/v1/api/${channelAddress}/members`, {
-      headers,
-    });
+    const { data } = await httpService.get(`/v1/api/${channelAddress}/members`);
 
     return data;
   } catch (error) {

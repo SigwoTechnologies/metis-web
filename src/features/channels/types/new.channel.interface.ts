@@ -1,4 +1,4 @@
-export type NewChannel = {
+export interface INewChannel {
   channelAddress: string;
   channelName: string;
   channelPublicKey: string;
@@ -7,4 +7,4 @@ export type NewChannel = {
     createdAt: number;
     href: string;
   };
-};
+}

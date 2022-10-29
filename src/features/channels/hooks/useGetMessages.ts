@@ -3,7 +3,7 @@ import EncryiptionService from '@metis/features/auth/services/encryption.service
 import { AuthState } from '@metis/features/auth/store/auth.slice';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { ChannelsMessagesResponse } from '../types/ChannelsMessagesResponse';
-import { Message } from '../types/Message';
+import { IMessage } from '../types/message.interface';
 
 type LoadChannelsMessagesProps = {
   channelAddress: string;
@@ -16,7 +16,7 @@ export const useGetMessages = createAsyncThunk(
   async (
     { channelAddress, pageNumber = 0, pageSize = 20 }: LoadChannelsMessagesProps,
     { getState }
-  ): Promise<Message[]> => {
+  ): Promise<IMessage[]> => {
     const {
       auth: {
         userData: { privateKeyArmored: privateKey, passphrase: passP },

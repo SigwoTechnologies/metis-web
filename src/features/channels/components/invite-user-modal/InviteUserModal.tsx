@@ -38,10 +38,6 @@ const InviteUserModal: React.FC<Props> = ({ closeModal, open }) => {
   } = useAppSelector((state) => state.auth);
   const dispatch = useAppDispatch();
   const [loading, setLoading] = useState(false);
-  const [validAccount, setValidAccount] = useState({
-    status: false,
-    error: '',
-  });
   const provider = new ethers.providers.JsonRpcProvider(appConfig.providerENS.url);
 
   useEffect(() => {
@@ -50,58 +46,52 @@ const InviteUserModal: React.FC<Props> = ({ closeModal, open }) => {
     }
   }, [open]);
 
-  useEffect(() => {
-    if (open && !validAccount.status) {
+  const onSubmit = async ({ inviteAccount }: AliasOrId) => {
+    if ([alias, address].includes(inviteAccount)) {
       dispatch(
         openNotification({
-          text: validAccount.error,
+          text: 'You cant invite yourself',
           type: 'error',
         })
       );
-      setLoading(false);
-    }
-  }, [validAccount]);
-
-  const onSubmit = async ({ inviteAccount }: AliasOrId) => {
-    setLoading(true);
-
-    if ([alias, address].includes(inviteAccount)) {
-      setValidAccount({ status: false, error: 'You cant invite yourself' });
-      setLoading(false);
       return;
     }
     const existMember = members.find(
       (e) => e.memberAccountAddress === inviteAccount || e.memberAccountAlias === inviteAccount
     );
+
     if (existMember) {
-      setValidAccount({ status: false, error: 'This account is already on the channel' });
-      setLoading(false);
+      dispatch(
+        openNotification({
+          text: 'This account is already on the channel',
+          type: 'error',
+        })
+      );
       return;
     }
-    setValidAccount({ status: true, error: '' });
 
     const inviteeAddressOrAlias = await provider
       .getResolver(inviteAccount)
       .then((resolvedName) => resolvedName?.address ?? inviteAccount);
 
-    if (!inviteeAddressOrAlias) setLoading(false);
-    if (inviteeAddressOrAlias) {
-      useSendInvitation({ inviteeAddressOrAlias, channelAddress })
-        .then(() => {
-          dispatch(openNotification({ text: 'Invite sent!', type: 'success' }));
-          closeModal();
-        })
-        .catch((error) => {
-          const { message } = error.response.data;
-          dispatch(
-            openNotification({
-              text: message || 'Something went wrong, please try again.',
-              type: 'error',
-            })
-          );
-        })
-        .finally(() => setLoading(false));
-    }
+    if (!inviteeAddressOrAlias) return;
+
+    setLoading(true);
+    useSendInvitation({ inviteeAddressOrAlias, channelAddress })
+      .then(() => {
+        dispatch(openNotification({ text: 'Invite sent!', type: 'success' }));
+        closeModal();
+      })
+      .catch((error) => {
+        const { message } = error.response.data;
+        dispatch(
+          openNotification({
+            text: message || 'Something went wrong, please try again.',
+            type: 'error',
+          })
+        );
+      })
+      .finally(() => setLoading(false));
   };
 
   return (

@@ -1,4 +1,4 @@
-export interface AttachmentObj {
+export interface IAttachmentObj {
   mimetype: string;
   originalname: string;
   size: number;

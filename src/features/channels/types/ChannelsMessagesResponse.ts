@@ -1,7 +1,7 @@
-import { Message } from './Message';
+import { IMessage } from './message.interface';
 
 export interface ChannelsMessagesResponse {
-  message: Message;
+  message: IMessage;
   tag: string;
   transactionId: string;
 }

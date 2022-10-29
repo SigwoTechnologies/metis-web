@@ -5,7 +5,7 @@ import { useAppDispatch, useAppSelector } from '@metis/store/hooks';
 import { openToast } from '@metis/store/ui/ui.slice';
 import { PublicKey } from 'openpgp';
 import { useEffect, useState } from 'react';
-import { AttachmentObj } from '../types/AttachmentObj';
+import { IAttachmentObj } from '../types/attachment.obj.interface';
 import { useGetChannelMembers } from './useGetChannelMembers';
 
 export default () => {
@@ -78,7 +78,7 @@ export default () => {
   const sendEncryptedMessageWithAttachment = async ({
     attachmentObj,
   }: {
-    attachmentObj: AttachmentObj;
+    attachmentObj: IAttachmentObj;
   }) => {
     const message = {
       message: 'attachment',
