@@ -1,3 +1,4 @@
+import { findMembers } from '@metis/features/channels/store/channel.actions';
 import { yupResolver } from '@hookform/resolvers/yup';
 import appConfig from '@metis/common/configuration/app.config';
 import Form from '@metis/common/components/ui/Form/Form';
@@ -9,7 +10,7 @@ import { openNotification } from '@metis/store/ui/ui.slice';
 import PeopleIcon from '@mui/icons-material/People';
 import { LoadingButton } from '@mui/lab';
 import { Button } from '@mui/material';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import * as yup from 'yup';
 import { useSendInvitation } from '../../hooks/useSendInvitation';
 import useStyles from './InviteUserModal.styles';
@@ -30,14 +31,54 @@ const schema = yup.object({
 const InviteUserModal: React.FC<Props> = ({ closeModal, open }) => {
   const classes = useStyles();
   const {
-    selectedChannel: { channelAddress },
+    selectedChannel: { channelAddress, members },
   } = useAppSelector((state) => state.channel);
+  const {
+    jupAccount: { address, alias },
+  } = useAppSelector((state) => state.auth);
   const dispatch = useAppDispatch();
   const [loading, setLoading] = useState(false);
+  const [validAccount, setValidAccount] = useState({
+    status: false,
+    error: '',
+  });
   const provider = new ethers.providers.JsonRpcProvider(appConfig.providerENS.url);
+
+  useEffect(() => {
+    if (open) {
+      dispatch(findMembers(channelAddress));
+    }
+  }, [open]);
+
+  useEffect(() => {
+    if (open && !validAccount.status) {
+      dispatch(
+        openNotification({
+          text: validAccount.error,
+          type: 'error',
+        })
+      );
+      setLoading(false);
+    }
+  }, [validAccount]);
 
   const onSubmit = async ({ inviteAccount }: AliasOrId) => {
     setLoading(true);
+
+    if ([alias, address].includes(inviteAccount)) {
+      setValidAccount({ status: false, error: 'You cant invite yourself' });
+      setLoading(false);
+      return;
+    }
+    const existMember = members.find(
+      (e) => e.memberAccountAddress === inviteAccount || e.memberAccountAlias === inviteAccount
+    );
+    if (existMember) {
+      setValidAccount({ status: false, error: 'This account is already on the channel' });
+      setLoading(false);
+      return;
+    }
+    setValidAccount({ status: true, error: '' });
 
     const inviteeAddressOrAlias = await provider
       .getResolver(inviteAccount)

@@ -9,6 +9,7 @@ import { usToggleMuteChannel } from '../hooks/useToggleMuteChannel';
 import { getHiddenChannels, localStorageKeyHiddenChannel } from '../hooks/useGetHiddenChannels';
 import { useGetMessages } from '../hooks/useGetMessages';
 import { findChannels } from '../hooks/useGetChannels';
+import { findMembers } from './channel.actions';
 
 const initialChannelState = {
   channelAddress: '',
@@ -17,6 +18,7 @@ const initialChannelState = {
   createdBy: '',
   createdAt: 0,
   messages: [],
+  members: [],
 };
 
 export type ChannelState = {
@@ -69,6 +71,7 @@ const slice = createSlice({
           // TODO: change this for the user's address
           createdBy: 'JUP-7DXL-L46R-8LHH-HWFN2',
           messages: [],
+          members: [],
         };
 
         state.channels.unshift(channelCreated);
@@ -164,6 +167,10 @@ const slice = createSlice({
     // Mute or unmute channel -------------------------------------------------------
     builder.addCase(usToggleMuteChannel.fulfilled, (state, { payload }) => {
       state.mutedChannels = payload;
+    });
+
+    builder.addCase(findMembers.fulfilled, (state, { payload }) => {
+      state.selectedChannel.members = payload;
     });
   },
 });

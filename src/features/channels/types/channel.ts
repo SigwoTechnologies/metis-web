@@ -1,4 +1,5 @@
 import { Message } from './Message';
+import { Members } from './Members';
 
 export type Channel = {
   channelAddress: string;
@@ -7,4 +8,5 @@ export type Channel = {
   createdBy: string;
   createdAt: number;
   messages: Message[];
+  members: Members[];
 };

@@ -82,21 +82,6 @@ const ChatHeader = () => {
       >
         <MenuItem onClick={openInviteUserModal}>Invite user</MenuItem>
         <MenuItem onClick={hideChannel}>Hide channel</MenuItem>
-        {/* 
-        {isMuted && (
-          <MenuItem onClick={unmuteChannel}>
-            Unmute channel
-            {loading && (
-              <CircularProgress
-                color="inherit"
-                size="1.1428571428571428rem"
-                sx={{ marginLeft: '10px' }}
-              />
-            )}
-          </MenuItem>
-        )}
-        {!isMuted && <MenuItem onClick={openMuteModal}>Mute channel</MenuItem>}
-        */}
       </Menu>
       <Modal open={muteModalOpen} onClose={() => setMuteModalOpen(false)}>
         <Typography

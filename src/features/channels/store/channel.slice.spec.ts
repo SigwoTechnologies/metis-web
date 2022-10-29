@@ -14,6 +14,7 @@ describe('Channel Slice', () => {
       createdBy: '',
       createdAt: 0,
       messages: [],
+      members: [],
     };
 
     initialState = {
