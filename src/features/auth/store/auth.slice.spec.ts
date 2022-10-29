@@ -24,6 +24,8 @@ describe('Auth Slice', () => {
         address: '',
         alias: '',
       },
+      isAlreadyRegistered: false,
+      isCheckStatus: false,
     };
   });
 

@@ -2,6 +2,7 @@
 import appConfig from '@metis/common/configuration/app.config';
 import constants from '@metis/common/configuration/constants';
 import BusinessError from '@metis/common/exceptions/business-error';
+import httpService from '@metis/common/services/http.service';
 import ErrorResponse from '@metis/common/types/error-response';
 import { openToast } from '@metis/store/ui/ui.slice';
 import { createAsyncThunk } from '@reduxjs/toolkit';
@@ -120,6 +121,17 @@ export const addPublicKey = createAsyncThunk(
       console.log('addPublicKey|error', err);
       throw err;
     }
+  }
+);
+
+export const verifyAlreadyRegistered = createAsyncThunk(
+  'auth/verifyAlreadyRegistered',
+  async (ethAccount: string) => {
+    const status = await httpService
+      .get(`/v1/api/crypto/get-account/${ethAccount}`)
+      .then(() => true)
+      .catch(() => false);
+    return status;
   }
 );
 
