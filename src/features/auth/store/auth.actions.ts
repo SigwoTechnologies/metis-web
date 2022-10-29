@@ -124,12 +124,15 @@ export const addPublicKey = createAsyncThunk(
   }
 );
 
-export const getAccount = createAsyncThunk('auth/getAccount', async (ethAccount: string) => {
-  const status = await httpService
-    .get(`/v1/api/crypto/get-account/${ethAccount}`)
-    .then(() => true)
-    .catch(() => false);
-  return status;
-});
+export const verifyAlreadyRegistered = createAsyncThunk(
+  'auth/verifyAlreadyRegistered',
+  async (ethAccount: string) => {
+    const status = await httpService
+      .get(`/v1/api/crypto/get-account/${ethAccount}`)
+      .then(() => true)
+      .catch(() => false);
+    return status;
+  }
+);
 
 export default { login };

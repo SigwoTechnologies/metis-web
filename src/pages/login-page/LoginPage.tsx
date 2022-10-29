@@ -2,7 +2,8 @@ import MetisLogo from '@metis/assets/images/misc/metis-logo.svg';
 import Modal from '@metis/common/components/ui/Modal';
 import constants from '@metis/common/configuration/constants';
 import connectSocket from '@metis/common/services/socket.service';
-import { getAccount } from '@metis/features/auth/store/auth.actions';
+import Spinner from '@metis/common/components/ui/spinner/Spinner';
+import { verifyAlreadyRegistered } from '@metis/features/auth/store/auth.actions';
 import { SignInButton } from '@metis/features/auth/components/SignInButton/SignInButton';
 import { SignUpButton } from '@metis/features/auth/components/SignUpButton/SignUpButton';
 import { useMetamask } from '@metis/features/auth/hooks/useMetamask';
@@ -67,7 +68,7 @@ const LoginPage = () => {
 
   useLayoutEffect(() => {
     if (ethAccount) {
-      dispatch(getAccount(ethAccount));
+      dispatch(verifyAlreadyRegistered(ethAccount));
     }
 
     const credentialsFound = window.localStorage.getItem(constants.CREDENTIALS);
@@ -163,9 +164,9 @@ const LoginPage = () => {
               gap: '1rem',
             }}
           >
-            {!isCheckStatus && <CircularProgress className={classes.spinner} />}
-
-            {isCheckStatus && (isAlreadyRegistered ? <SignInButton /> : <SignUpButton />)}
+            <Spinner isLoading={!isCheckStatus}>
+              {isAlreadyRegistered ? <SignInButton /> : <SignUpButton />}
+            </Spinner>
           </Box>
           <br />
         </Container>

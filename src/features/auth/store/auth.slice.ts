@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { RootState } from '@metis/store/types';
-import { login, register, getAccount } from './auth.actions';
+import { login, register, verifyAlreadyRegistered } from './auth.actions';
 import EncryptedCredentials from '../types/encrypted-credentials';
 import { JupAccount } from '../types/JupAccount';
 
@@ -129,7 +129,7 @@ const authSlice = createSlice({
     builder.addCase(register.rejected, (state) => {
       state.isConnectingToMetamask = false;
     });
-    builder.addCase(getAccount.fulfilled, (state, { payload }) => {
+    builder.addCase(verifyAlreadyRegistered.fulfilled, (state, { payload }) => {
       state.isAlreadyRegistered = payload;
       state.isCheckStatus = true;
     });
