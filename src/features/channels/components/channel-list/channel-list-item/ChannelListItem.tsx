@@ -78,7 +78,7 @@ const ChannelListItem = ({ channel, avatar = channel.channelName, selected = fal
         className={classes.listItemButton}
         onClick={onSelectChannel}
         alignItems="flex-start"
-        selected={selected}
+        selected={channel.channelAddress === selectedChannel.channelAddress}
       >
         <ListItemAvatar>
           <Avatar alt={channel.channelName} src={avatar} className={classes.avatar} />
