@@ -3,7 +3,7 @@ import EncryiptionService from '@metis/features/auth/services/encryption.service
 import useChat from '@metis/features/channels/hooks/useChat';
 import { useGetMessages } from '@metis/features/channels/hooks/useGetMessages';
 import { addNewMessage, setSelectedChannel } from '@metis/features/channels/store/channel.slice';
-import { Channel } from '@metis/features/channels/types/channel';
+import { IChannel } from '@metis/features/channels/types/channel.interface';
 import { useAppDispatch, useAppSelector } from '@metis/store/hooks';
 import VolumeOffIcon from '@mui/icons-material/VolumeOff';
 import Avatar from '@mui/material/Avatar';
@@ -17,7 +17,7 @@ import { useNavigate } from 'react-router-dom';
 import useStyles from './ChannelListItem.styles';
 
 type Props = {
-  channel: Channel;
+  channel: IChannel;
   avatar?: string;
   selected?: boolean;
 };

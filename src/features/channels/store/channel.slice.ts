@@ -1,14 +1,15 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import type { RootState } from '@metis/store/types';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { Channel } from '../types/channel';
-import { NewChannel } from '../types/newChannel';
-import { Reply } from '../types/Reply';
+import { IChannel } from '../types/channel.interface';
+import { INewChannel } from '../types/new.channel.interface';
+import { IReply } from '../types/reply.interface';
 import { getMutedChannelAddresses } from '../hooks/useGetMutedChannelAddresses';
 import { usToggleMuteChannel } from '../hooks/useToggleMuteChannel';
 import { getHiddenChannels, localStorageKeyHiddenChannel } from '../hooks/useGetHiddenChannels';
 import { useGetMessages } from '../hooks/useGetMessages';
 import { findChannels } from '../hooks/useGetChannels';
+import { findMembers } from './channel.actions';
 
 const initialChannelState = {
   channelAddress: '',
@@ -17,17 +18,18 @@ const initialChannelState = {
   createdBy: '',
   createdAt: 0,
   messages: [],
+  members: [],
 };
 
 export type ChannelState = {
   isLoading: boolean;
   isLoadingMessages: boolean;
-  hiddenChannels: Channel[];
-  reply: Reply;
+  hiddenChannels: IChannel[];
+  reply: IReply;
   mutedChannels: string[];
-  channels: Channel[];
-  selectedChannel: Channel;
-  pendingChannels: NewChannel[];
+  channels: IChannel[];
+  selectedChannel: IChannel;
+  pendingChannels: INewChannel[];
   isOpenCreateChannelDrawer: boolean;
 };
 
@@ -63,12 +65,13 @@ const slice = createSlice({
 
       if (channelJustCreated) {
         const { job, ...rest } = channelJustCreated;
-        const channelCreated: Channel = {
+        const channelCreated: IChannel = {
           ...rest,
           createdAt: Date.now(),
           // TODO: change this for the user's address
           createdBy: 'JUP-7DXL-L46R-8LHH-HWFN2',
           messages: [],
+          members: [],
         };
 
         state.channels.unshift(channelCreated);
@@ -91,7 +94,7 @@ const slice = createSlice({
     },
     hideChannel: (state: ChannelState, { payload }) => {
       const isChannelAlreadyHidden = state.hiddenChannels.find(
-        (chc: Channel) => chc?.channelAddress === payload.channelAddress
+        (chc: IChannel) => chc?.channelAddress === payload.channelAddress
       );
 
       if (!isChannelAlreadyHidden) {
@@ -101,7 +104,7 @@ const slice = createSlice({
     },
     unhideChannel: (state: ChannelState, { payload }) => {
       const isChannelHidden = state.hiddenChannels.find(
-        (chc: Channel) => chc?.channelAddress === payload
+        (chc: IChannel) => chc?.channelAddress === payload
       );
 
       if (isChannelHidden) {
@@ -164,6 +167,10 @@ const slice = createSlice({
     // Mute or unmute channel -------------------------------------------------------
     builder.addCase(usToggleMuteChannel.fulfilled, (state, { payload }) => {
       state.mutedChannels = payload;
+    });
+
+    builder.addCase(findMembers.fulfilled, (state, { payload }) => {
+      state.selectedChannel.members = payload;
     });
   },
 });

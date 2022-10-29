@@ -1,3 +1,4 @@
+import { findMembers } from '@metis/features/channels/store/channel.actions';
 import { yupResolver } from '@hookform/resolvers/yup';
 import appConfig from '@metis/common/configuration/app.config';
 import Form from '@metis/common/components/ui/Form/Form';
@@ -9,7 +10,7 @@ import { openNotification } from '@metis/store/ui/ui.slice';
 import PeopleIcon from '@mui/icons-material/People';
 import { LoadingButton } from '@mui/lab';
 import { Button } from '@mui/material';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import * as yup from 'yup';
 import { useSendInvitation } from '../../hooks/useSendInvitation';
 import useStyles from './InviteUserModal.styles';
@@ -30,37 +31,67 @@ const schema = yup.object({
 const InviteUserModal: React.FC<Props> = ({ closeModal, open }) => {
   const classes = useStyles();
   const {
-    selectedChannel: { channelAddress },
+    selectedChannel: { channelAddress, members },
   } = useAppSelector((state) => state.channel);
+  const {
+    jupAccount: { address, alias },
+  } = useAppSelector((state) => state.auth);
   const dispatch = useAppDispatch();
   const [loading, setLoading] = useState(false);
   const provider = new ethers.providers.JsonRpcProvider(appConfig.providerENS.url);
 
+  useEffect(() => {
+    if (open) {
+      dispatch(findMembers(channelAddress));
+    }
+  }, [open]);
+
   const onSubmit = async ({ inviteAccount }: AliasOrId) => {
-    setLoading(true);
+    if ([alias, address].includes(inviteAccount)) {
+      dispatch(
+        openNotification({
+          text: 'You cant invite yourself',
+          type: 'error',
+        })
+      );
+      return;
+    }
+    const existMember = members.find(
+      (e) => e.memberAccountAddress === inviteAccount || e.memberAccountAlias === inviteAccount
+    );
+
+    if (existMember) {
+      dispatch(
+        openNotification({
+          text: 'This account is already on the channel',
+          type: 'error',
+        })
+      );
+      return;
+    }
 
     const inviteeAddressOrAlias = await provider
       .getResolver(inviteAccount)
       .then((resolvedName) => resolvedName?.address ?? inviteAccount);
 
-    if (!inviteeAddressOrAlias) setLoading(false);
-    if (inviteeAddressOrAlias) {
-      useSendInvitation({ inviteeAddressOrAlias, channelAddress })
-        .then(() => {
-          dispatch(openNotification({ text: 'Invite sent!', type: 'success' }));
-          closeModal();
-        })
-        .catch((error) => {
-          const { message } = error.response.data;
-          dispatch(
-            openNotification({
-              text: message || 'Something went wrong, please try again.',
-              type: 'error',
-            })
-          );
-        })
-        .finally(() => setLoading(false));
-    }
+    if (!inviteeAddressOrAlias) return;
+
+    setLoading(true);
+    useSendInvitation({ inviteeAddressOrAlias, channelAddress })
+      .then(() => {
+        dispatch(openNotification({ text: 'Invite sent!', type: 'success' }));
+        closeModal();
+      })
+      .catch((error) => {
+        const { message } = error.response.data;
+        dispatch(
+          openNotification({
+            text: message || 'Something went wrong, please try again.',
+            type: 'error',
+          })
+        );
+      })
+      .finally(() => setLoading(false));
   };
 
   return (

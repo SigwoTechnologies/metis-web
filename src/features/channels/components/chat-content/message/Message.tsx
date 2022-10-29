@@ -1,5 +1,5 @@
 import { updateReply } from '@metis/features/channels/store/channel.slice';
-import { Message as MessageType } from '@metis/features/channels/types/Message';
+import { IMessage as MessageType } from '@metis/features/channels/types/message.interface';
 import { useAppDispatch, useAppSelector } from '@metis/store/hooks';
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';

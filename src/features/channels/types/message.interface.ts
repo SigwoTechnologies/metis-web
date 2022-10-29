@@ -1,8 +1,8 @@
-import { AttachmentObj } from './AttachmentObj';
+import { IAttachmentObj } from './attachment.obj.interface';
 
-export interface Message {
+export interface IMessage {
   decryptedMessage: string;
-  attachmentObj: AttachmentObj | null;
+  attachmentObj: IAttachmentObj | null;
   createdAt: number;
   message: string;
   messageType: 'message' | 'invitation' | 'attachment';

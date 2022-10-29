@@ -8,8 +8,8 @@ import {
   createChannel,
   setOpenCreateChannelDrawer,
 } from '@metis/features/channels/store/channel.slice';
-import { Channel } from '@metis/features/channels/types/channel';
-import { ChannelDTO } from '@metis/features/channels/types/channelDTO';
+import { IChannel } from '@metis/features/channels/types/channel.interface';
+import { IChannelDTO } from '@metis/features/channels/types/channel.dto';
 import { useAppDispatch, useAppSelector } from '@metis/store/hooks';
 import { openToast } from '@metis/store/ui/ui.slice';
 import CloseIcon from '@mui/icons-material/Close';
@@ -49,7 +49,7 @@ const CreateButton = () => {
       }
     }
   };
-  const createNewChannel = async (data: ChannelDTO) => {
+  const createNewChannel = async (data: IChannelDTO) => {
     if (!data.channelName.trim()) {
       return;
     }
@@ -59,7 +59,7 @@ const CreateButton = () => {
 
       const { data: channelCreated } = await httpService.post('/v1/api/channel', data);
 
-      dispatch(createChannel(channelCreated as Channel));
+      dispatch(createChannel(channelCreated as IChannel));
       dispatch(openToast({ text: 'We are creating your channel', type: 'info' }));
       closeDrawer();
     } catch (error) {
@@ -75,7 +75,7 @@ const CreateButton = () => {
           <IconButton aria-label="close" onClick={closeDrawer} className={classes.closeButton}>
             <CloseIcon />
           </IconButton>
-          <Form<ChannelDTO> onSubmit={createNewChannel} form={{ resolver: yupResolver(schema) }}>
+          <Form<IChannelDTO> onSubmit={createNewChannel} form={{ resolver: yupResolver(schema) }}>
             <TextInput label="Channel name here" name="channelName" />
             <LoadingButton
               loading={loading}

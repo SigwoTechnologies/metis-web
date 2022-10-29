@@ -4,7 +4,7 @@ import { AuthState } from '@metis/features/auth/store/auth.slice';
 import { openToast } from '@metis/store/ui/ui.slice';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { AxiosError } from 'axios';
-import { Channel } from '../types/channel';
+import { IChannel } from '../types/channel.interface';
 import { ChannelsMessagesResponse } from '../types/ChannelsMessagesResponse';
 
 export const findChannels = createAsyncThunk(
@@ -17,7 +17,7 @@ export const findChannels = createAsyncThunk(
         },
       } = getState() as { auth: AuthState };
 
-      const { data } = await httpService.get<Channel[]>('/v1/api/channels');
+      const { data } = await httpService.get<IChannel[]>('/v1/api/channels');
       const channels = await Promise.all(
         data.map(async (channel) => {
           const encryptionService = new EncryiptionService();

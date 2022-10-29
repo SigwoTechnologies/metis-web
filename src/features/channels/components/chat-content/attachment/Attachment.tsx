@@ -1,13 +1,13 @@
 import httpService from '@metis/common/services/http.service';
 import { getToken } from '@metis/common/services/token.service';
-import { AttachmentObj } from '@metis/features/channels/types/AttachmentObj';
+import { IAttachmentObj } from '@metis/features/channels/types/attachment.obj.interface';
 import Box from '@mui/material/Box';
 import CircularProgress from '@mui/material/CircularProgress';
 import { memo, useEffect, useState } from 'react';
 import useStyles from './Attachment.styles';
 
 type Props = {
-  attachmentObj: AttachmentObj;
+  attachmentObj: IAttachmentObj;
 };
 
 const Attachment = ({ attachmentObj }: Props) => {
