@@ -8,11 +8,18 @@ const useStyles = makeStyles((theme: Theme) =>
       flexDirection: 'row-reverse',
       padding: '1rem',
       position: 'absolute',
-      bottom: '1.5rem',
-      right: '1rem',
+      bottom: '1.8rem',
+    },
+    emojiIcon: { position: 'absolute', left: '12px', bottom: '5px', zIndex: '1', fontSize: '1px' },
+    attachmenIcon: {
+      position: 'absolute',
+      left: '50px',
+      bottom: '5px',
+      zIndex: '1',
+      fontSize: '1px',
     },
     footerInputStyle: {
-      padding: '1rem 1rem',
+      padding: '1rem 1rem 1rem 5.5rem',
       position: 'relative',
     },
     button: {

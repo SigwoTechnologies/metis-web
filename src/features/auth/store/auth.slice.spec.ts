@@ -25,6 +25,8 @@ describe('Auth Slice', () => {
         alias: '',
       },
       imageAccount: '',
+      isAlreadyRegistered: false,
+      isCheckStatus: false,
     };
   });
 

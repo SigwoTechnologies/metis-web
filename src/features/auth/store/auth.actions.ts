@@ -3,7 +3,6 @@ import appConfig from '@metis/common/configuration/app.config';
 import constants from '@metis/common/configuration/constants';
 import BusinessError from '@metis/common/exceptions/business-error';
 import httpService from '@metis/common/services/http.service';
-import { AxiosError } from 'axios';
 import ErrorResponse from '@metis/common/types/error-response';
 import { openToast } from '@metis/store/ui/ui.slice';
 import { createAsyncThunk } from '@reduxjs/toolkit';
@@ -131,5 +130,17 @@ export const findImage = createAsyncThunk('auth/findImage', async (url: string) 
   });
   return URL.createObjectURL(data);
 });
+
+
+export const verifyAlreadyRegistered = createAsyncThunk(
+  'auth/verifyAlreadyRegistered',
+  async (ethAccount: string) => {
+    const status = await httpService
+      .get(`/v1/api/crypto/get-account/${ethAccount}`)
+      .then(() => true)
+      .catch(() => false);
+    return status;
+  }
+);
 
 export default { login };

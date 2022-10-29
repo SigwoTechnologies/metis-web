@@ -158,11 +158,34 @@ const MessageInput = () => {
     <form onSubmit={handleSubmit(onSubmit)} style={{ position: 'relative' }}>
       {selectedFile && <img src={preview} alt="Alo" style={{ width: '100px', height: '100px' }} />}
       <IconButton
+        disabled={loading}
+        edge="start"
+        size="medium"
+        sx={{ padding: 1.5 }}
+        onClick={() => setEmojiPickerVisible(!emojiPickerVisible)}
+        className={classes.emojiIcon}
+      >
+        {emojiPickerVisible && (
+          <div className={classes.emojiPicker}>
+            <Picker
+              onEmojiClick={onEmojiClick}
+              pickerStyle={{ border: 'none', boxShadow: 'none' }}
+              disableSearchBar
+              disableSkinTonePicker
+              groupVisibility={{
+                flags: false,
+              }}
+            />
+          </div>
+        )}
+        <EmojiEmotions />
+      </IconButton>
+      <IconButton
         aria-label="send message"
         edge="start"
         size="medium"
         sx={{ p: 1.5 }}
-        style={{ position: 'absolute', left: '12px', bottom: '5px', zIndex: '1', fontSize: '1px' }}
+        className={classes.attachmenIcon}
       >
         <Files
           className="files-dropzone"
@@ -180,18 +203,6 @@ const MessageInput = () => {
         autoComplete="off"
         disabled={uploadingImage}
         className={classes.button}
-        startAdornment={
-          <InputAdornment position="start">
-            {/* <IconButton
-              aria-label="send message"
-              edge="start"
-              size="medium"
-              sx={{ p: 1.5, mr: 0.5 }}
-            >
-              <VideocamOutlinedIcon />
-            </IconButton> */}
-          </InputAdornment>
-        }
         inputProps={{ className: classes.footerInputStyle }}
         endAdornment={
           <InputAdornment position="end">
@@ -204,30 +215,6 @@ const MessageInput = () => {
               sx={{ padding: 1.5 }}
             >
               <SendIcon />
-            </IconButton>
-
-            <IconButton
-              disabled={loading}
-              edge="start"
-              size="medium"
-              sx={{ padding: 1.5 }}
-              onClick={() => setEmojiPickerVisible(!emojiPickerVisible)}
-              style={{ position: 'relative' }}
-            >
-              {emojiPickerVisible && (
-                <div className={classes.emojiPicker}>
-                  <Picker
-                    onEmojiClick={onEmojiClick}
-                    pickerStyle={{ border: 'none', boxShadow: 'none' }}
-                    disableSearchBar
-                    disableSkinTonePicker
-                    groupVisibility={{
-                      flags: false,
-                    }}
-                  />
-                </div>
-              )}
-              <EmojiEmotions />
             </IconButton>
           </InputAdornment>
         }
