@@ -55,7 +55,10 @@ const InvitesList = () => {
       },
     }).socket('/invite');
 
-    socket.on('newInvite', fetchInvites);
+    socket.on('newInvite', () => {
+      fetchInvites();
+      dispatch(openToast({ type: 'success', text: 'Invite received' }));
+    });
 
     fetchInvites();
   });
