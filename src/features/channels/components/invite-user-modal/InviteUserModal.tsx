@@ -83,10 +83,14 @@ const InviteUserModal: React.FC<Props> = ({ closeModal, open }) => {
         closeModal();
       })
       .catch((error) => {
-        const { message } = error.response.data;
         dispatch(
           openNotification({
-            text: message || 'Something went wrong, please try again.',
+            text: `
+            Something went wrong
+            ${inviteeAddressOrAlias.includes('.eth') ? 'with your ENS' : ''}
+            ${inviteeAddressOrAlias.includes('0x') ? 'with your ETH Address' : ''}
+            ${inviteeAddressOrAlias.includes('JUP') ? 'with your Jupiter Address' : ' '}
+            `,
             type: 'error',
           })
         );
@@ -99,10 +103,7 @@ const InviteUserModal: React.FC<Props> = ({ closeModal, open }) => {
       <div className={classes.iconContainer}>
         <PeopleIcon className={classes.icon} color="primary" />
       </div>
-      <p>
-        To invite another user to join this channel enter their ENS, Alias or Account ID and click
-        &quot;invite&quot;
-      </p>
+      <p>To invite another user to this channel enter their ENS, Alias, or Account ID</p>
       <Form onSubmit={onSubmit} form={{ resolver: yupResolver(schema) }}>
         <TextInput name="inviteAccount" label="Enter ENS, alias or Account ID here" />
         <LoadingButton

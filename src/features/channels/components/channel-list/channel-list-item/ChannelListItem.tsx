@@ -1,5 +1,6 @@
 import useOnMount from '@metis/common/hooks/useOnMount';
 import EncryiptionService from '@metis/features/auth/services/encryption.service';
+import ImageIcon from '@mui/icons-material/Image';
 import useChat from '@metis/features/channels/hooks/useChat';
 import { useGetMessages } from '@metis/features/channels/hooks/useGetMessages';
 import { addNewMessage, setSelectedChannel } from '@metis/features/channels/store/channel.slice';
@@ -61,6 +62,8 @@ const ChannelListItem = ({ channel, avatar = channel.channelName, selected = fal
         })
       );
     });
+
+    console.log(channel);
   });
 
   const onSelectChannel = () => {
@@ -97,9 +100,9 @@ const ChannelListItem = ({ channel, avatar = channel.channelName, selected = fal
                     variant="caption"
                     color="text.secondary"
                     fontSize="small"
-                    title={dayjs(channel.createdAt).format('MM/DD/YYYY hh:mm:ssa')}
+                    title={dayjs(channel.messages[0].createdAt).format('MM/DD/YYYY hh:mm:ss A')}
                   >
-                    {dayjs(channel.createdAt).format('MM/DD/YYYY')}
+                    {dayjs(channel.messages[0].createdAt).format('hh:mm A')}
                   </Typography>
                 </Box>
               </Box>
@@ -108,7 +111,22 @@ const ChannelListItem = ({ channel, avatar = channel.channelName, selected = fal
           secondary={
             <Box display="flex">
               <Typography noWrap component="span" variant="caption" color="text.secondary">
-                {channel.messages.length ? channel.messages[0].decryptedMessage : ''}
+                {!!channel.messages.length && (
+                  <>
+                    {channel.messages[0].messageType === 'attachment' && (
+                      <div
+                        style={{
+                          display: 'flex',
+                          fontSize: '1rem',
+                        }}
+                      >
+                        <ImageIcon fontSize="small" /> Image
+                      </div>
+                    )}
+
+                    {channel.messages[0].decryptedMessage}
+                  </>
+                )}
               </Typography>
               {isMuted && <VolumeOffIcon className={classes.mutedIcon} fontSize="small" />}
             </Box>

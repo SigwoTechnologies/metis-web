@@ -190,9 +190,9 @@ const MessageInput = () => {
         <Files
           className="files-dropzone"
           onChange={handleSelectFile}
-          accepts={['image/*']}
+          accepts={['image/jpg', 'image/png', 'image/jpeg']}
           multiple
-          maxFileSize={10000000}
+          maxFileSize={5000000} // size en bytes
           minFileSize={0}
           clickable
         >
