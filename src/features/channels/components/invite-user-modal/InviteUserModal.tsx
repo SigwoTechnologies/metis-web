@@ -82,7 +82,7 @@ const InviteUserModal: React.FC<Props> = ({ closeModal, open }) => {
         dispatch(openNotification({ text: 'Invite sent!', type: 'success' }));
         closeModal();
       })
-      .catch((error) => {
+      .catch(() => {
         dispatch(
           openNotification({
             text: `
