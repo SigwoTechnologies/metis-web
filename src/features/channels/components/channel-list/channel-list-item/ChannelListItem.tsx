@@ -26,7 +26,7 @@ type Props = {
 const ChannelListItem = ({ channel, avatar = channel.channelName, selected = false }: Props) => {
   const classes = useStyles();
   const {
-    channel: { mutedChannels },
+    channel: { mutedChannels, selectedChannel },
     auth: {
       userData: { privateKeyArmored, passphrase },
     },
@@ -62,14 +62,14 @@ const ChannelListItem = ({ channel, avatar = channel.channelName, selected = fal
         })
       );
     });
-
-    console.log(channel);
   });
 
   const onSelectChannel = () => {
     navigate(`/main/${channel.channelAddress}`);
-    dispatch(setSelectedChannel(channel.channelAddress));
-    dispatch(useGetMessages({ channelAddress: channel.channelAddress }));
+    if (channel.channelAddress !== selectedChannel.channelAddress) {
+      dispatch(setSelectedChannel(channel.channelAddress));
+      dispatch(useGetMessages({ channelAddress: channel.channelAddress }));
+    }
   };
 
   return (
