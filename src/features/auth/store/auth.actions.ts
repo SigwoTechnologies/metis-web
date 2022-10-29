@@ -124,6 +124,13 @@ export const addPublicKey = createAsyncThunk(
   }
 );
 
+export const findImage = createAsyncThunk('auth/findImage', async (url: string) => {
+  const { data } = await httpService.get(url, {
+    responseType: 'blob',
+  });
+  return URL.createObjectURL(data);
+});
+
 export const verifyAlreadyRegistered = createAsyncThunk(
   'auth/verifyAlreadyRegistered',
   async (ethAccount: string) => {
