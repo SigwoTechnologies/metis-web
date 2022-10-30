@@ -5,7 +5,7 @@ import { AxiosError } from 'axios';
 
 export const getMutedChannelAddresses = createAsyncThunk(
   'channels/getMutedChannelAddresses',
-  async (args: null, { dispatch, rejectWithValue }: any) => {
+  async (_, { dispatch, rejectWithValue }: any) => {
     try {
       const {
         data: { mutedChannelAddressList },

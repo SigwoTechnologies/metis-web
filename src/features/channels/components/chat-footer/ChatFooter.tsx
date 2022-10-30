@@ -27,11 +27,12 @@ const ChatFooter = () => {
         <Box className={classes.replyContainer}>
           <Box className={classes.replyColumn}>
             <MessageReply
-              name={replyRecipientAlias}
-              message={decryptedReplyMessage}
               color="#A36300"
+              message={decryptedReplyMessage}
+              name={replyRecipientAlias}
             />
           </Box>
+
           <Box className={classes.closeButtonContainer}>
             <IconButton className={classes.closeButton} onClick={() => dispatch(discardReply())}>
               <CloseIcon />
@@ -39,7 +40,8 @@ const ChatFooter = () => {
           </Box>
         </Box>
       )}
-      <FormControl variant="standard" fullWidth>
+
+      <FormControl fullWidth variant="standard">
         <MessageInput />
       </FormControl>
     </>

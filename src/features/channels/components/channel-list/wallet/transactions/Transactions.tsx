@@ -4,7 +4,7 @@
 import { convertNQTToJup } from '@metis/common/utils/utils';
 import { fetchTransactions } from '@metis/features/wallet/store/wallet.actions';
 import { useAppDispatch, useAppSelector } from '@metis/store/hooks';
-import Spinner from '@metis/common/components/ui/spinner/Spinner';
+import { SpinnerContainer } from '@metis/common/components/ui/spinner-container/SpinnerContainer';
 import SendIcon from '@mui/icons-material/Send';
 import {
   Avatar,
@@ -38,7 +38,7 @@ const Transactions = () => {
     <Box>
       Transactions
       <List>
-        <Spinner isLoading={isLoadingTransaction}>
+        <SpinnerContainer isLoading={isLoadingTransaction}>
           {transactions.map((e) => (
             <Fragment key={e.block}>
               <ListItem disablePadding>
@@ -61,7 +61,7 @@ const Transactions = () => {
               <Divider />
             </Fragment>
           ))}
-        </Spinner>
+        </SpinnerContainer>
       </List>
     </Box>
   );

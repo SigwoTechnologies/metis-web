@@ -40,7 +40,7 @@ const InvitesList = () => {
       dispatch(openToast({ type: 'success', text: 'Invite accepted' }));
       const updatedInvites = invites.filter((invite) => invite.channelAddress !== channelAddress);
       setInvites(updatedInvites);
-      dispatch(findChannels(null));
+      dispatch(findChannels());
     } catch (error) {
       dispatch(openToast({ type: 'error', text: 'There was a problem accepting the invite' }));
     }
@@ -55,7 +55,10 @@ const InvitesList = () => {
       },
     }).socket('/invite');
 
-    socket.on('newInvite', fetchInvites);
+    socket.on('newInvite', () => {
+      fetchInvites();
+      dispatch(openToast({ type: 'success', text: 'Invite received' }));
+    });
 
     fetchInvites();
   });
