@@ -192,7 +192,7 @@ const MessageInput = () => {
           onChange={handleSelectFile}
           accepts={['image/jpg', 'image/png', 'image/jpeg']}
           multiple
-          maxFileSize={5000000} // size en bytes
+          maxFileSize={1_600_000}
           minFileSize={0}
           clickable
         >

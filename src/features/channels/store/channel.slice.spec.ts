@@ -20,7 +20,10 @@ describe('Channel Slice', () => {
     initialState = {
       isLoading: false,
       isLoadingMessages: false,
+      isLoadingInvites: false,
       channels: [],
+      declinedInvites: [],
+      invites: [],
       hiddenChannels: [],
       selectedChannel: initialChannelState,
       reply: {
