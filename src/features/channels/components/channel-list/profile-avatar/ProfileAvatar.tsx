@@ -1,6 +1,6 @@
 import PlaceholderAvatar from '@metis/assets/images/avatars/astronaut.png';
 import connectSocket from '@metis/common/services/socket.service';
-import Spinner from '@metis/common/components/ui/spinner/Spinner';
+import { SpinnerContainer } from '@metis/common/components/ui/spinner-container/SpinnerContainer';
 import { findImage } from '@metis/features/auth/store/auth.actions';
 import { useUploadImageProfile } from '@metis/features/channels/hooks/useUploadImageProfile';
 import { useAppDispatch, useAppSelector } from '@metis/store/hooks';
@@ -55,7 +55,7 @@ const ProfileAvatar = () => {
     useUploadImageProfile({ file, address });
   };
   return (
-    <Spinner isLoading={uploadingImage}>
+    <SpinnerContainer isLoading={uploadingImage}>
       <IconButton
         aria-label="send message"
         edge="start"
@@ -82,7 +82,7 @@ const ProfileAvatar = () => {
           </Box>
         </Files>
       </IconButton>
-    </Spinner>
+    </SpinnerContainer>
   );
 };
 export default ProfileAvatar;

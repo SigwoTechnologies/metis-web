@@ -1,6 +1,6 @@
-import useOnMount from '@metis/common/hooks/useOnMount';
+import { SpinnerContainer } from '@metis/common/components/ui/spinner-container/SpinnerContainer';
 import { useAppDispatch, useAppSelector } from '@metis/store/hooks';
-import { CircularProgress } from '@mui/material';
+import { useEffect } from 'react';
 import { findChannels } from '../../hooks/useGetChannels';
 import { getMutedChannelAddresses } from '../../hooks/useGetMutedChannelAddresses';
 import ChannelListItem from './channel-list-item/ChannelListItem';
@@ -8,26 +8,22 @@ import ChannelListItem from './channel-list-item/ChannelListItem';
 const ChannelList = () => {
   const dispatch = useAppDispatch();
   const { channels, isLoading, hiddenChannels } = useAppSelector((state) => state.channel);
-  const hiddenChannelsAddreses = hiddenChannels.map((channel) => channel.channelAddress);
+  const hiddenChannelsAddress = hiddenChannels.map((channel) => channel.channelAddress);
 
-  useOnMount(() => {
-    dispatch(findChannels(null));
-    dispatch(getMutedChannelAddresses(null));
-  });
-
-  if (isLoading) {
-    return <CircularProgress />;
-  }
+  useEffect(() => {
+    dispatch(findChannels());
+    dispatch(getMutedChannelAddresses());
+  }, []);
 
   return (
-    <>
+    <SpinnerContainer isLoading={isLoading}>
       {channels.map(
         (channel) =>
-          !hiddenChannelsAddreses.includes(channel.channelAddress) && (
+          !hiddenChannelsAddress.includes(channel.channelAddress) && (
             <ChannelListItem channel={channel} key={channel.channelAddress} />
           )
       )}
-    </>
+    </SpinnerContainer>
   );
 };
 

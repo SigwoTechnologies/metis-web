@@ -49,6 +49,7 @@
     "camelcase": "error",
     "spaced-comment": "error",
     "quotes": ["error", "single"],
+    "react/jsx-no-useless-fragment": "off",
     "no-duplicate-imports": "error",
     "react/require-default-props": "off",
     "no-param-reassign": ["error", { "props": true, "ignorePropertyModificationsFor": ["state"] }],

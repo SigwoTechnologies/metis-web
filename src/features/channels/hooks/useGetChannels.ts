@@ -9,7 +9,7 @@ import { ChannelsMessagesResponse } from '../types/ChannelsMessagesResponse';
 
 export const findChannels = createAsyncThunk(
   'channels/findChannels',
-  async (args: null, { dispatch, rejectWithValue, getState }: any) => {
+  async (_, { dispatch, rejectWithValue, getState }: any) => {
     try {
       const {
         auth: {

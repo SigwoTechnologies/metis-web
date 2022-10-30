@@ -56,7 +56,7 @@ const ChannelList = () => {
   };
 
   const handleShareMetis = () => {
-    dispatch(openToast({ text: 'Invitation copied in clipboard', type: 'info' }));
+    dispatch(openToast({ text: 'Try out Metis! http://www.jup.io', type: 'info' }));
     navigator.clipboard.writeText('Try out Metis! http://www.jup.io');
   };
 

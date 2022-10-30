@@ -1,5 +1,5 @@
 import ChannelList from '@metis/features/channels/components/channel-list/ChannelList';
-import CreateButton from '@metis/features/channels/components/channel-list/create-channel/CreateButton';
+import { CreateChannel } from '@metis/features/channels/components/channel-list/create-channel/CreateChannel';
 import SearchChannel from '@metis/features/channels/components/channel-list/search-channel/SearchChannel';
 import PendingChannelsList from '@metis/features/channels/components/pending-channels-list/PendingChannelsList';
 import InvitesList from '@metis/features/invites/components/InvitesList/InvitesList';
@@ -18,7 +18,7 @@ const LeftColumn = () => (
       <ChannelList />
     </MainSection>
     <FooterSection>
-      <CreateButton />
+      <CreateChannel />
     </FooterSection>
   </>
 );

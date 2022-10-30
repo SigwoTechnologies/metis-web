@@ -38,6 +38,20 @@ const useStyles = makeStyles((theme: Theme) =>
       top: 8,
       color: theme.palette.grey[500],
     },
+    avatar: {
+      flexGrow: 1,
+      alignSelf: 'center',
+      width: '9rem',
+      height: '9rem',
+      fontSize: '5rem',
+    },
+    avatarBox: {
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      gap: '1rem',
+      fontSize: '1.2rem',
+    },
   })
 );
 
