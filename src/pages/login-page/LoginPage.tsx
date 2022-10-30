@@ -14,6 +14,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import { useEffect, useLayoutEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Socket } from 'socket.io-client';
+import { UnlinkButton } from '@metis/features/auth/components/UnlinkAccount/UnlinkButton';
 import { SpinnerContainer } from '@metis/common/components/ui/spinner-container/SpinnerContainer';
 import useStyles from './LoginPage.styles';
 
@@ -152,6 +153,7 @@ const LoginPage = () => {
 
       <Box height="100vh" className={classes.wrapper}>
         <Container maxWidth="xl" component="main" className={classes.container}>
+          <UnlinkButton />
           <Box component="img" src={MetisLogo} alt="login" className={classes.image} />
 
           {ethAccount && <Box className={classes.associate}>Account Selected: {ethAccount}</Box>}
