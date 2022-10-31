@@ -18,7 +18,7 @@ import { useAppDispatch, useAppSelector } from '@metis/store/hooks';
 import { openToast } from '@metis/store/ui/ui.slice';
 import PeopleIcon from '@mui/icons-material/People';
 import { LoadingButton } from '@mui/lab';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import useStyles from './SignUpButton.styles';
 
 type SignUpSuccessfulEventResponse = {
@@ -31,6 +31,7 @@ type SignUpSuccessfulEventResponse = {
 export const SignUpButton = () => {
   const dispatch = useAppDispatch();
   const classes = useStyles();
+  const [blocks, setBlocks] = useState(0);
   const { isConnectingToMetamask, isCreatingAccount, hasMetamask, ethAccount } = useAppSelector(
     (state) => state.auth
   );
@@ -75,6 +76,10 @@ export const SignUpButton = () => {
         useAddPublicKey({ token, address, alias });
       }
     );
+
+    socket.on('signUpProcess', async ({ process }: { process: number }) => {
+      setBlocks(process);
+    });
 
     const jobId = localStorage.getItem(constants.JOB_ID);
     if (jobId) {
@@ -138,6 +143,7 @@ export const SignUpButton = () => {
           <PeopleIcon className={classes.icon} color="primary" />
         </div>
         <div className={classes.loading}>We&apos;re creating your new account...</div>
+        {!!blocks && <div style={{ textAlign: 'center' }}>Mined Blocks: {blocks}</div>}
       </Modal>
     </>
   );
