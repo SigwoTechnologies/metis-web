@@ -16,14 +16,20 @@ import { useState } from 'react';
 type Props = {
   invite: Invite;
   acceptInvite: (channelAddress: string) => Promise<void>;
+  DeclineInvite: (channelAddress: string) => Promise<void>;
 };
 
-const InviteListItem = ({ invite, acceptInvite }: Props) => {
+const InviteListItem = ({ invite, acceptInvite, DeclineInvite }: Props) => {
   const [loading, setLoading] = useState(false);
 
   const handleAcceptInvite = () => {
     setLoading(true);
     acceptInvite(invite.channelAddress).finally(() => setLoading(false));
+  };
+
+  const handleDeclineInvite = () => {
+    setLoading(true);
+    DeclineInvite(invite.channelAddress).finally(() => setLoading(false));
   };
 
   return (
@@ -35,7 +41,7 @@ const InviteListItem = ({ invite, acceptInvite }: Props) => {
               <IconButton onClick={handleAcceptInvite} color="success">
                 <DoneIcon />
               </IconButton>
-              <IconButton color="error">
+              <IconButton onClick={handleDeclineInvite} color="error">
                 <CloseIcon />
               </IconButton>
             </Box>

@@ -26,7 +26,15 @@ const InvitesList = () => {
   const fetchInvites = () => {
     inviteService
       .getUsersInvites()
-      .then(setInvites)
+      .then((userInvites) => {
+        const declinedChannels =
+          JSON.parse(String(localStorage.getItem('DECLINED_CHANNELS'))) ?? [];
+
+        const invitePending = userInvites.filter(
+          ({ channelAddress }) => !declinedChannels.includes(channelAddress)
+        );
+        setInvites(invitePending);
+      })
       .catch(() => {
         dispatch(
           openToast({ type: 'error', text: 'There was a problem when getting the pending invites' })
@@ -41,6 +49,20 @@ const InvitesList = () => {
       const updatedInvites = invites.filter((invite) => invite.channelAddress !== channelAddress);
       setInvites(updatedInvites);
       dispatch(findChannels(null));
+    } catch (error) {
+      dispatch(openToast({ type: 'error', text: 'There was a problem accepting the invite' }));
+    }
+  };
+
+  const DeclineInvite = async (channelAddress: string) => {
+    try {
+      const declinedChannels = JSON.parse(String(localStorage.getItem('DECLINED_CHANNELS'))) ?? [];
+      declinedChannels.push(channelAddress);
+      localStorage.setItem('DECLINED_CHANNELS', JSON.stringify(declinedChannels));
+
+      dispatch(openToast({ type: 'success', text: 'Invite declined' }));
+      const updatedInvites = invites.filter((invite) => invite.channelAddress !== channelAddress);
+      setInvites(updatedInvites);
     } catch (error) {
       dispatch(openToast({ type: 'error', text: 'There was a problem accepting the invite' }));
     }
@@ -89,7 +111,12 @@ const InvitesList = () => {
         </AccordionSummary>
         <AccordionDetails>
           {invites.map((invite) => (
-            <InviteListItem key={invite.invitationId} acceptInvite={acceptInvite} invite={invite} />
+            <InviteListItem
+              key={invite.invitationId}
+              acceptInvite={acceptInvite}
+              DeclineInvite={DeclineInvite}
+              invite={invite}
+            />
           ))}
           {!invites.length && <Typography variant="body2">There are no pending invites</Typography>}
         </AccordionDetails>
