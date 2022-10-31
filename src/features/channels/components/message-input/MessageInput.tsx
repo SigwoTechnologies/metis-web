@@ -59,7 +59,7 @@ const MessageInput = () => {
       },
     }).socket('/upload');
 
-    if (channelAddress)
+    if (channelAddress) {
       socket.on(
         'uploadCreated',
         async ({
@@ -89,10 +89,11 @@ const MessageInput = () => {
           });
         }
       );
-
-    return () => {
-      socket.off('uploadCreated');
-    };
+      socket.on('uploadFailed', async ({ errorMessage }: { errorMessage: string }) => {
+        setUploadingImage(false);
+        dispatch(openToast({ text: errorMessage, type: 'error' }));
+      });
+    }
   }, [channelAddress]);
 
   const sendFileMessage = async (file: TFile) => {
@@ -151,7 +152,20 @@ const MessageInput = () => {
   };
 
   const handleSelectFile = async ([file]: [TFile]) => {
-    setSelectedFile(file);
+    if (file) {
+      setSelectedFile(file);
+    }
+  };
+
+  const onFilesError = (error: Error) => {
+    dispatch(
+      openToast({
+        text: `
+        ${error.message}${error.message.includes(' is too large') ? ', maximum size 1.6MB' : ''}
+        `,
+        type: 'error',
+      })
+    );
   };
 
   return (
@@ -193,6 +207,7 @@ const MessageInput = () => {
           accepts={['image/jpg', 'image/png', 'image/jpeg']}
           multiple
           maxFileSize={1_600_000}
+          onError={onFilesError}
           minFileSize={0}
           clickable
         >

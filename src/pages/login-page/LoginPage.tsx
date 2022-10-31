@@ -16,6 +16,9 @@ import { useNavigate } from 'react-router-dom';
 import { Socket } from 'socket.io-client';
 import { UnlinkButton } from '@metis/features/auth/components/UnlinkAccount/UnlinkButton';
 import { SpinnerContainer } from '@metis/common/components/ui/spinner-container/SpinnerContainer';
+import { localStorageKeyDeclinedInvites } from '@metis/features/channels/hooks/useGetDeclinedInvites';
+import { localStorageKeyHiddenChannel } from '@metis/features/channels/hooks/useGetHiddenChannels';
+import { openToast } from '@metis/store/ui/ui.slice';
 import useStyles from './LoginPage.styles';
 
 const LoginPage = () => {
@@ -46,11 +49,25 @@ const LoginPage = () => {
 
     socket.on('sync-devices-granted', (data) => {
       window.localStorage.setItem(constants.CREDENTIALS, data.credentials);
+      window.localStorage.setItem(localStorageKeyDeclinedInvites, data.hiddenChannels);
+      window.localStorage.setItem(localStorageKeyHiddenChannel, data.declinedInvites);
+      dispatch(
+        openToast({
+          text: 'Devices synced successfully',
+          type: 'success',
+        })
+      );
       window.location.reload();
     });
 
     socket.on('sync-devices-rejected', () => {
       setSyncDeviceRequested(false);
+      dispatch(
+        openToast({
+          text: 'Sync request rejected',
+          type: 'error',
+        })
+      );
     });
   }, [ethAccount]);
 
@@ -60,7 +77,13 @@ const LoginPage = () => {
 
   const sendGrantSync = () => {
     const credentialsFound = window.localStorage.getItem(constants.CREDENTIALS);
-    socketConnected?.emit('sync-devices-grant', { credentials: credentialsFound });
+    const declinedInvites = window.localStorage.getItem(localStorageKeyDeclinedInvites);
+    const hiddenChannels = window.localStorage.getItem(localStorageKeyHiddenChannel);
+    socketConnected?.emit('sync-devices-grant', {
+      credentials: credentialsFound,
+      hiddenChannels,
+      declinedInvites,
+    });
   };
 
   const sendRejectSync = () => {

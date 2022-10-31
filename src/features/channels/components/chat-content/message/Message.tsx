@@ -32,7 +32,10 @@ const Message = ({
 }: Props) => {
   const classes = useStyles();
   const [style, setStyle] = useState({ display: 'none' });
-  const { alias: currentUserAlias } = useAppSelector((state) => state.auth.jupAccount);
+  const {
+    jupAccount: { alias: currentUserAlias },
+    imageAccount,
+  } = useAppSelector((state) => state.auth);
   const isYours = senderAlias === currentUserAlias;
   const dispatch = useAppDispatch();
 
@@ -53,7 +56,7 @@ const Message = ({
   return (
     <Box className={isYours ? classes.userContainer : classes.container}>
       <Box className={classes.avatarContainer}>
-        <Avatar alt="pomp" src={avatar} className={classes.avatar} />
+        <Avatar alt="pomp" src={imageAccount || avatar} className={classes.avatar} />
       </Box>
 
       <Box

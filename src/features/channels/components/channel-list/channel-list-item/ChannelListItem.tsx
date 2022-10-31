@@ -20,10 +20,9 @@ import useStyles from './ChannelListItem.styles';
 type Props = {
   channel: IChannel;
   avatar?: string;
-  selected?: boolean;
 };
 
-const ChannelListItem = ({ channel, avatar = channel.channelName, selected = false }: Props) => {
+export const ChannelListItem = ({ channel, avatar = channel.channelName }: Props) => {
   const classes = useStyles();
   const {
     channel: { mutedChannels, selectedChannel },
@@ -136,5 +135,3 @@ const ChannelListItem = ({ channel, avatar = channel.channelName, selected = fal
     </Box>
   );
 };
-
-export default ChannelListItem;

@@ -18,6 +18,7 @@ export const UnlinkButton = () => {
 
   const onUnlinkAccount = () => {
     localStorage.clear();
+    window.location.reload();
   };
 
   return (
