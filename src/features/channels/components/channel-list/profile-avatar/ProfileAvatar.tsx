@@ -1,6 +1,6 @@
 import PlaceholderAvatar from '@metis/assets/images/avatars/astronaut.png';
 import connectSocket from '@metis/common/services/socket.service';
-import Spinner from '@metis/common/components/ui/spinner/Spinner';
+import { SpinnerContainer } from '@metis/common/components/ui/spinner-container/SpinnerContainer';
 import { findImage } from '@metis/features/auth/store/auth.actions';
 import { useUploadImageProfile } from '@metis/features/channels/hooks/useUploadImageProfile';
 import { useAppDispatch, useAppSelector } from '@metis/store/hooks';
@@ -41,21 +41,36 @@ const ProfileAvatar = () => {
       socket.on('uploadCreated', async ({ url }: { url: string }) => {
         dispatch(findImage(url));
         setUploadingImage(false);
-        socket.off('uploadCreated');
+      });
+
+      socket.on('uploadFailed', async ({ errorMessage }: { errorMessage: string }) => {
+        setUploadingImage(false);
+        dispatch(openToast({ text: errorMessage, type: 'error' }));
       });
     }
   }, [uploadingImage]);
 
   const handleSelectFile = async ([file]: [TFile]) => {
-    if (!file) {
-      throw new Error('[sendFileMessage]: File not provided');
+    if (file) {
+      setUploadingImage(true);
+      dispatch(openToast({ text: 'Uploading image, please wait', type: 'info' }));
+      useUploadImageProfile({ file, address });
     }
-    setUploadingImage(true);
-    dispatch(openToast({ text: 'Uploading image, please wait', type: 'info' }));
-    useUploadImageProfile({ file, address });
   };
+
+  const onFilesError = (error: Error) => {
+    dispatch(
+      openToast({
+        text: `
+        ${error.message}${error.message.includes(' is too large') ? ', maximum size 1.6MB' : ''}
+        `,
+        type: 'error',
+      })
+    );
+  };
+
   return (
-    <Spinner isLoading={uploadingImage}>
+    <SpinnerContainer isLoading={uploadingImage}>
       <IconButton
         aria-label="send message"
         edge="start"
@@ -68,8 +83,9 @@ const ProfileAvatar = () => {
           onChange={handleSelectFile}
           accepts={['image/*']}
           multiple
-          maxFileSize={10000000}
+          maxFileSize={1_600_000}
           minFileSize={0}
+          onError={onFilesError}
           clickable
         >
           <Avatar
@@ -82,7 +98,7 @@ const ProfileAvatar = () => {
           </Box>
         </Files>
       </IconButton>
-    </Spinner>
+    </SpinnerContainer>
   );
 };
 export default ProfileAvatar;

@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import type { RootState } from '@metis/store/types';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { TInvite, useGetUsersInvites } from '@metis/features/invites/services/invite.service';
 import { IChannel } from '../types/channel.interface';
 import { INewChannel } from '../types/new.channel.interface';
 import { IReply } from '../types/reply.interface';
@@ -10,6 +11,7 @@ import { getHiddenChannels, localStorageKeyHiddenChannel } from '../hooks/useGet
 import { useGetMessages } from '../hooks/useGetMessages';
 import { findChannels } from '../hooks/useGetChannels';
 import { findMembers } from './channel.actions';
+import { useGetDeclinedInvites } from '../hooks/useGetDeclinedInvites';
 
 const initialChannelState = {
   channelAddress: '',
@@ -24,6 +26,9 @@ const initialChannelState = {
 export type ChannelState = {
   isLoading: boolean;
   isLoadingMessages: boolean;
+  isLoadingInvites: boolean;
+  declinedInvites: number[];
+  invites: TInvite[];
   hiddenChannels: IChannel[];
   reply: IReply;
   mutedChannels: string[];
@@ -36,8 +41,11 @@ export type ChannelState = {
 const initialState: ChannelState = {
   isLoading: false,
   isLoadingMessages: false,
+  isLoadingInvites: false,
   channels: [],
   hiddenChannels: [],
+  invites: [],
+  declinedInvites: [],
   selectedChannel: initialChannelState,
   reply: {
     replyMessage: '',
@@ -162,6 +170,18 @@ const slice = createSlice({
 
     builder.addCase(getMutedChannelAddresses.fulfilled, (state, { payload }) => {
       state.mutedChannels = payload;
+    });
+    builder.addCase(useGetUsersInvites.pending, (state, { payload }) => {
+      state.isLoadingInvites = true;
+    });
+    builder.addCase(useGetUsersInvites.fulfilled, (state, { payload }) => {
+      const declinedInvites = useGetDeclinedInvites();
+
+      state.invites = payload
+        .filter((e) => (declinedInvites.includes(e.invitationId) ? null : e))
+        .filter(Boolean);
+
+      state.isLoadingInvites = false;
     });
 
     builder.addCase(getMutedChannelAddresses.rejected, (state) => {

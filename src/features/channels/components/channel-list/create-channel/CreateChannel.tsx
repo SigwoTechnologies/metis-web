@@ -14,12 +14,12 @@ import { useAppDispatch, useAppSelector } from '@metis/store/hooks';
 import { openToast } from '@metis/store/ui/ui.slice';
 import CloseIcon from '@mui/icons-material/Close';
 import { LoadingButton } from '@mui/lab';
-import { Drawer, IconButton } from '@mui/material';
+import { Avatar, Drawer, IconButton } from '@mui/material';
 import Box from '@mui/material/Box';
 import emojiRegex from 'emoji-regex';
 import { useState } from 'react';
 import * as yup from 'yup';
-import useStyles from './CreateButton.styles';
+import useStyles from './CreateChannel.styles';
 
 const schema = yup.object({
   channelName: yup
@@ -28,7 +28,7 @@ const schema = yup.object({
     .max(25, 'The channel name can not have more than 25 characters'),
 });
 
-const CreateButton = () => {
+export const CreateChannel = () => {
   const classes = useStyles();
   const dispatch = useAppDispatch();
   const { isOpenCreateChannelDrawer } = useAppSelector((state) => state.channel);
@@ -75,6 +75,13 @@ const CreateButton = () => {
           <IconButton aria-label="close" onClick={closeDrawer} className={classes.closeButton}>
             <CloseIcon />
           </IconButton>
+
+          <Box className={classes.avatarBox}>
+            <Avatar alt="!" src="!" className={classes.avatar} />
+
+            <p>To create a channel enter their name</p>
+          </Box>
+
           <Form<IChannelDTO> onSubmit={createNewChannel} form={{ resolver: yupResolver(schema) }}>
             <TextInput label="Channel name here" name="channelName" />
             <LoadingButton
@@ -98,5 +105,3 @@ const CreateButton = () => {
     </>
   );
 };
-
-export default CreateButton;

@@ -1,6 +1,7 @@
 import httpService from '@metis/common/services/http.service';
+import { createAsyncThunk } from '@reduxjs/toolkit';
 
-export type Invite = {
+export type TInvite = {
   invitationId: number;
   channelName: string;
   channelAddress: string;
@@ -9,14 +10,20 @@ export type Invite = {
   invitationSentAt: number;
 };
 
-const getUsersInvites = async (): Promise<Invite[]> => {
-  const { data } = await httpService.get('/v1/api/channel/invites');
-  return data;
-};
+export const useGetUsersInvites = createAsyncThunk(
+  'channels/useGetUsersInvites',
+  async (): Promise<TInvite[]> => {
+    const { data } = await httpService.get('/v1/api/channel/invites');
+    return data;
+  }
+);
 
-const acceptInvite = async (channelAddress: string) => {
+export const useAcceptInvite = async (channelAddress: string) => {
   const { data } = await httpService.post('/v1/api/channel/invite/accept', { channelAddress });
   return data;
 };
 
-export default { acceptInvite, getUsersInvites };
+export const useDeclineInvite = async (channelAddress: string) => {
+  const { data } = await httpService.post('/v1/api/channel/invite/accept', { channelAddress });
+  return data;
+};

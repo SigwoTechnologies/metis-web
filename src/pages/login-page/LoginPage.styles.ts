@@ -40,6 +40,27 @@ const useStyles = makeStyles((theme: Theme) =>
     spinner: {
       alignSelf: 'center',
     },
+    accountLetter: {
+      textAlign: 'center',
+      fontSize: '1rem',
+      color: 'gray',
+    },
+    eth: {
+      textAlign: 'center',
+      fontSize: '0.85rem',
+      color: 'gray',
+      transition: 'all 0.3s ease',
+      '&:hover:before': {
+        transform: 'scale(1.2)',
+        boxShadow: '0 0 20px green',
+        filter: 'blur(3px)',
+      },
+      '&:hover': {
+        color: '#AAFF00',
+        textShadow: '0 0 15px white',
+        fontSize: '1rem',
+      },
+    },
   })
 );
 

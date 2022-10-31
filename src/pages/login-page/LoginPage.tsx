@@ -2,7 +2,6 @@ import MetisLogo from '@metis/assets/images/misc/metis-logo.svg';
 import Modal from '@metis/common/components/ui/Modal';
 import constants from '@metis/common/configuration/constants';
 import connectSocket from '@metis/common/services/socket.service';
-import Spinner from '@metis/common/components/ui/spinner/Spinner';
 import { verifyAlreadyRegistered } from '@metis/features/auth/store/auth.actions';
 import { SignInButton } from '@metis/features/auth/components/SignInButton/SignInButton';
 import { SignUpButton } from '@metis/features/auth/components/SignUpButton/SignUpButton';
@@ -15,6 +14,11 @@ import CircularProgress from '@mui/material/CircularProgress';
 import { useEffect, useLayoutEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Socket } from 'socket.io-client';
+import { UnlinkButton } from '@metis/features/auth/components/UnlinkAccount/UnlinkButton';
+import { SpinnerContainer } from '@metis/common/components/ui/spinner-container/SpinnerContainer';
+import { localStorageKeyDeclinedInvites } from '@metis/features/channels/hooks/useGetDeclinedInvites';
+import { localStorageKeyHiddenChannel } from '@metis/features/channels/hooks/useGetHiddenChannels';
+import { openToast } from '@metis/store/ui/ui.slice';
 import useStyles from './LoginPage.styles';
 
 const LoginPage = () => {
@@ -45,11 +49,25 @@ const LoginPage = () => {
 
     socket.on('sync-devices-granted', (data) => {
       window.localStorage.setItem(constants.CREDENTIALS, data.credentials);
+      window.localStorage.setItem(localStorageKeyDeclinedInvites, data.hiddenChannels);
+      window.localStorage.setItem(localStorageKeyHiddenChannel, data.declinedInvites);
+      dispatch(
+        openToast({
+          text: 'Devices synced successfully',
+          type: 'success',
+        })
+      );
       window.location.reload();
     });
 
     socket.on('sync-devices-rejected', () => {
       setSyncDeviceRequested(false);
+      dispatch(
+        openToast({
+          text: 'Sync request rejected',
+          type: 'error',
+        })
+      );
     });
   }, [ethAccount]);
 
@@ -59,7 +77,13 @@ const LoginPage = () => {
 
   const sendGrantSync = () => {
     const credentialsFound = window.localStorage.getItem(constants.CREDENTIALS);
-    socketConnected?.emit('sync-devices-grant', { credentials: credentialsFound });
+    const declinedInvites = window.localStorage.getItem(localStorageKeyDeclinedInvites);
+    const hiddenChannels = window.localStorage.getItem(localStorageKeyHiddenChannel);
+    socketConnected?.emit('sync-devices-grant', {
+      credentials: credentialsFound,
+      hiddenChannels,
+      declinedInvites,
+    });
   };
 
   const sendRejectSync = () => {
@@ -152,9 +176,15 @@ const LoginPage = () => {
 
       <Box height="100vh" className={classes.wrapper}>
         <Container maxWidth="xl" component="main" className={classes.container}>
+          <UnlinkButton />
           <Box component="img" src={MetisLogo} alt="login" className={classes.image} />
 
-          {ethAccount && <Box className={classes.associate}>Account Selected: {ethAccount}</Box>}
+          {ethAccount && (
+            <Box className={classes.associate}>
+              <Box className={classes.accountLetter}>Account Selected:</Box>
+              <Box className={classes.eth}>{ethAccount}</Box>
+            </Box>
+          )}
 
           <br />
 
@@ -164,9 +194,9 @@ const LoginPage = () => {
               gap: '1rem',
             }}
           >
-            <Spinner isLoading={!isCheckStatus}>
+            <SpinnerContainer isLoading={!isCheckStatus}>
               {isAlreadyRegistered ? <SignInButton /> : <SignUpButton />}
-            </Spinner>
+            </SpinnerContainer>
           </Box>
           <br />
         </Container>

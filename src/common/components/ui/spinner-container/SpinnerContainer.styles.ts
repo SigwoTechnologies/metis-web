@@ -4,9 +4,10 @@ const useStyles = makeStyles(() =>
   createStyles({
     container: {
       position: 'relative',
-    },
-    spinner: {
-      alignSelf: 'center',
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      height: '50%',
     },
   })
 );
