@@ -1,8 +1,10 @@
 import Modal from '@metis/common/components/ui/Modal';
 import { login } from '@metis/features/auth/store/auth.actions';
+import { setIsConnectingToMetamask } from '@metis/features/auth/store/auth.slice';
 import { useAppDispatch, useAppSelector } from '@metis/store/hooks';
 import PeopleIcon from '@mui/icons-material/People';
 import { LoadingButton } from '@mui/lab';
+import React, { useRef } from 'react';
 import useStyles from './SignInButton.styles';
 
 export const SignInButton = () => {
@@ -12,8 +14,16 @@ export const SignInButton = () => {
     (state) => state.auth
   );
 
+  // eslint-disable-next-line no-undef
+  const debounceRef = useRef<NodeJS.Timeout>();
+
   const onClick = () => {
-    dispatch(login(ethAccount));
+    if (debounceRef.current) clearTimeout(debounceRef.current);
+
+    debounceRef.current = setTimeout(() => {
+      dispatch(setIsConnectingToMetamask(true));
+      dispatch(login(ethAccount));
+    }, 500);
   };
 
   return (

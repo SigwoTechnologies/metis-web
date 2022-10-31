@@ -1,7 +1,6 @@
-import httpService from '@metis/common/services/http.service';
-import { getToken } from '@metis/common/services/token.service';
-import { Channel } from '@metis/features/channels/types/channel';
-import { ChannelMember } from '@metis/features/channels/types/ChannelMember';
+import { findMembers } from '@metis/features/channels/store/channel.actions';
+import { useAppDispatch, useAppSelector } from '@metis/store/hooks';
+import { IChannel } from '@metis/features/channels/types/channel.interface';
 import CloseIcon from '@mui/icons-material/Close';
 import {
   Avatar,
@@ -21,29 +20,20 @@ import { Fragment, useEffect, useState } from 'react';
 import useStyles from './ChannelInfo.styles';
 
 type Props = {
-  selectedChannel: Channel;
+  selectedChannel: IChannel;
 };
 const ChannelInfo = ({ selectedChannel }: Props) => {
   const classes = useStyles();
+  const dispatch = useAppDispatch();
   const [isOpenWallet, setIsOpenWallet] = useState(false);
-  const [members, setMembers] = useState<ChannelMember[]>([]);
-
-  const getMembers = async () => {
-    const headers = {
-      'Content-Type': 'application/json',
-      Accept: 'application/json',
-      Authorization: `Bearer ${getToken()}`,
-    };
-    const { data } = await httpService.get(`/v1/api/${selectedChannel.channelAddress}/members`, {
-      headers,
-    });
-
-    setMembers(data);
-  };
+  const {
+    selectedChannel: { members },
+  } = useAppSelector((state) => state.channel);
+  const { channelAddress } = selectedChannel;
 
   useEffect(() => {
     if (isOpenWallet) {
-      getMembers();
+      dispatch(findMembers(channelAddress));
     }
   }, [isOpenWallet]);
 
@@ -74,7 +64,7 @@ const ChannelInfo = ({ selectedChannel }: Props) => {
             />
 
             <Box>
-              Channel {selectedChannel.channelName} · {members.length} participants
+              Channel {selectedChannel.channelName} · {members?.length} participants
             </Box>
           </Box>
 
@@ -108,19 +98,8 @@ const ChannelInfo = ({ selectedChannel }: Props) => {
                         </ListItemAvatar>
                         <ListItemText
                           primary={e.memberAccountAddress}
-                          secondary={
-                            <div
-                              style={{
-                                width: '15rem',
-                                marginBottom: '0.5rem',
-                                whiteSpace: 'nowrap',
-                                textOverflow: 'ellipsis',
-                                overflow: 'hidden',
-                              }}
-                            >
-                              a{e.memberAccountAlias}
-                            </div>
-                          }
+                          secondary={e.memberAccountAlias}
+                          className={classes.member}
                         />
                       </ListItemButton>
                     </ListItem>

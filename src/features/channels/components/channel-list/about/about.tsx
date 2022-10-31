@@ -4,7 +4,6 @@ import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
-import Divider from '@mui/material/Divider';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import { useState } from 'react';
@@ -47,7 +46,7 @@ const About = ({ title, message, onClick }: Props) => {
   };
 
   return (
-    <div>
+    <>
       <Typography
         variant="caption"
         display="block"
@@ -64,24 +63,22 @@ const About = ({ title, message, onClick }: Props) => {
       >
         <DialogTitle id="alert-dialog-title">{title}</DialogTitle>
         <DialogContent>
-          <DialogContentText id="alert-dialog-description">
-            <Grid className={styles.infoBox}>
-              <Divider />
+          <DialogContentText component="div" id="alert-dialog-description">
+            <Grid component="div" className={styles.infoBox}>
               {info &&
                 info.map(({ name, version }) => (
-                  <Grid>
+                  <Grid key={name}>
                     <Grid className={styles.infoLine}>
                       <Grid className={styles.infoLineLeft}>{name}</Grid>
                       <Grid className={styles.infoLineRight}>{version}</Grid>
                     </Grid>
-                    <Divider />
                   </Grid>
                 ))}
             </Grid>
           </DialogContentText>
         </DialogContent>
       </Dialog>
-    </div>
+    </>
   );
 };
 export default About;

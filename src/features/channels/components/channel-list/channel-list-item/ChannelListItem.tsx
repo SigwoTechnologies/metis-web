@@ -1,8 +1,10 @@
 import useOnMount from '@metis/common/hooks/useOnMount';
 import EncryiptionService from '@metis/features/auth/services/encryption.service';
+import ImageIcon from '@mui/icons-material/Image';
 import useChat from '@metis/features/channels/hooks/useChat';
-import { addNewMessage } from '@metis/features/channels/store/channel.slice';
-import { Channel } from '@metis/features/channels/types/channel';
+import { useGetMessages } from '@metis/features/channels/hooks/useGetMessages';
+import { addNewMessage, setSelectedChannel } from '@metis/features/channels/store/channel.slice';
+import { IChannel } from '@metis/features/channels/types/channel.interface';
 import { useAppDispatch, useAppSelector } from '@metis/store/hooks';
 import VolumeOffIcon from '@mui/icons-material/VolumeOff';
 import Avatar from '@mui/material/Avatar';
@@ -12,28 +14,24 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 import Typography from '@mui/material/Typography';
 import dayjs from 'dayjs';
+import { useNavigate } from 'react-router-dom';
 import useStyles from './ChannelListItem.styles';
 
 type Props = {
-  channel: Channel;
+  channel: IChannel;
   avatar?: string;
-  onClick?: () => void;
-  selected?: boolean;
 };
 
-const ChannelListItem = ({
-  channel,
-  avatar = channel.channelName,
-  onClick,
-  selected = false,
-}: Props) => {
+export const ChannelListItem = ({ channel, avatar = channel.channelName }: Props) => {
   const classes = useStyles();
   const {
-    channel: { mutedChannels },
+    channel: { mutedChannels, selectedChannel },
     auth: {
       userData: { privateKeyArmored, passphrase },
     },
   } = useAppSelector((state) => state);
+  const navigate = useNavigate();
+
   const isMuted = mutedChannels.includes(channel.channelAddress);
   const { onSendMessage } = useChat(channel.channelAddress);
   const dispatch = useAppDispatch();
@@ -43,10 +41,8 @@ const ChannelListItem = ({
   useOnMount(() => {
     onSendMessage(async (message) => {
       const encryptionService = new EncryiptionService();
-
       dispatch(
         addNewMessage({
-          channelAddress: channel.channelAddress,
           message: {
             ...message,
             decryptedMessage: await encryptionService.decryptMessage(
@@ -67,13 +63,21 @@ const ChannelListItem = ({
     });
   });
 
+  const onSelectChannel = () => {
+    navigate(`/main/${channel.channelAddress}`);
+    if (channel.channelAddress !== selectedChannel.channelAddress) {
+      dispatch(setSelectedChannel(channel.channelAddress));
+      dispatch(useGetMessages({ channelAddress: channel.channelAddress }));
+    }
+  };
+
   return (
     <Box display="flex" alignItems="center">
       <ListItemButton
         className={classes.listItemButton}
-        onClick={onClick}
+        onClick={onSelectChannel}
         alignItems="flex-start"
-        selected={selected}
+        selected={channel.channelAddress === selectedChannel.channelAddress}
       >
         <ListItemAvatar>
           <Avatar alt={channel.channelName} src={avatar} className={classes.avatar} />
@@ -95,9 +99,9 @@ const ChannelListItem = ({
                     variant="caption"
                     color="text.secondary"
                     fontSize="small"
-                    title={dayjs(channel.createdAt).format('MM/DD/YYYY hh:mm:ssa')}
+                    title={dayjs(channel.messages[0]?.createdAt).format('MM/DD/YYYY hh:mm:ss A')}
                   >
-                    {dayjs(channel.createdAt).format('MM/DD/YYYY')}
+                    {dayjs(channel.messages[0]?.createdAt).format('hh:mm A')}
                   </Typography>
                 </Box>
               </Box>
@@ -106,7 +110,22 @@ const ChannelListItem = ({
           secondary={
             <Box display="flex">
               <Typography noWrap component="span" variant="caption" color="text.secondary">
-                {channel.messages.length ? channel.messages[0].decryptedMessage : ''}
+                {!!channel.messages.length && (
+                  <>
+                    {channel.messages[0].messageType === 'attachment' && (
+                      <div
+                        style={{
+                          display: 'flex',
+                          fontSize: '1rem',
+                        }}
+                      >
+                        <ImageIcon fontSize="small" /> Image
+                      </div>
+                    )}
+
+                    {channel.messages[0].decryptedMessage}
+                  </>
+                )}
               </Typography>
               {isMuted && <VolumeOffIcon className={classes.mutedIcon} fontSize="small" />}
             </Box>
@@ -116,5 +135,3 @@ const ChannelListItem = ({
     </Box>
   );
 };
-
-export default ChannelListItem;

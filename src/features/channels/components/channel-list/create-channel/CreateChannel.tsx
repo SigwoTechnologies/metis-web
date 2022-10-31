@@ -3,23 +3,23 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import PlusButton from '@metis/assets/images/misc/plus-button.png';
 import Form from '@metis/common/components/ui/Form/Form';
 import TextInput from '@metis/common/components/ui/TextInput/TextInput';
-import channelService from '@metis/features/channels/services/channel.service';
+import httpService from '@metis/common/services/http.service';
 import {
   createChannel,
   setOpenCreateChannelDrawer,
 } from '@metis/features/channels/store/channel.slice';
-import { Channel } from '@metis/features/channels/types/channel';
-import { ChannelDTO } from '@metis/features/channels/types/channelDTO';
+import { IChannel } from '@metis/features/channels/types/channel.interface';
+import { IChannelDTO } from '@metis/features/channels/types/channel.dto';
 import { useAppDispatch, useAppSelector } from '@metis/store/hooks';
 import { openToast } from '@metis/store/ui/ui.slice';
 import CloseIcon from '@mui/icons-material/Close';
 import { LoadingButton } from '@mui/lab';
-import { Drawer, IconButton } from '@mui/material';
+import { Avatar, Drawer, IconButton } from '@mui/material';
 import Box from '@mui/material/Box';
 import emojiRegex from 'emoji-regex';
 import { useState } from 'react';
 import * as yup from 'yup';
-import useStyles from './CreateButton.styles';
+import useStyles from './CreateChannel.styles';
 
 const schema = yup.object({
   channelName: yup
@@ -28,7 +28,7 @@ const schema = yup.object({
     .max(25, 'The channel name can not have more than 25 characters'),
 });
 
-const CreateButton = () => {
+export const CreateChannel = () => {
   const classes = useStyles();
   const dispatch = useAppDispatch();
   const { isOpenCreateChannelDrawer } = useAppSelector((state) => state.channel);
@@ -49,23 +49,23 @@ const CreateButton = () => {
       }
     }
   };
-  const createNewChannel = (data: ChannelDTO) => {
+  const createNewChannel = async (data: IChannelDTO) => {
     if (!data.channelName.trim()) {
       return;
     }
-    checkEmojiIndex(data.channelName);
-    setLoading(true);
-    channelService
-      .create(data)
-      .then((channel: Channel) => {
-        dispatch(createChannel(channel));
-        dispatch(openToast({ text: 'We are creating your channel', type: 'info' }));
-        closeDrawer();
-      })
-      .catch(() => {
-        dispatch(openToast({ text: 'There was a problem creating your channel', type: 'error' }));
-      })
-      .finally(() => setLoading(false));
+    try {
+      checkEmojiIndex(data.channelName);
+      setLoading(true);
+
+      const { data: channelCreated } = await httpService.post('/v1/api/channel', data);
+
+      dispatch(createChannel(channelCreated as IChannel));
+      dispatch(openToast({ text: 'We are creating your channel', type: 'info' }));
+      closeDrawer();
+    } catch (error) {
+      dispatch(openToast({ text: 'There was a problem creating your channel', type: 'error' }));
+    }
+    setLoading(false);
   };
 
   return (
@@ -75,7 +75,14 @@ const CreateButton = () => {
           <IconButton aria-label="close" onClick={closeDrawer} className={classes.closeButton}>
             <CloseIcon />
           </IconButton>
-          <Form<ChannelDTO> onSubmit={createNewChannel} form={{ resolver: yupResolver(schema) }}>
+
+          <Box className={classes.avatarBox}>
+            <Avatar alt="!" src="!" className={classes.avatar} />
+
+            <p>To create a channel enter their name</p>
+          </Box>
+
+          <Form<IChannelDTO> onSubmit={createNewChannel} form={{ resolver: yupResolver(schema) }}>
             <TextInput label="Channel name here" name="channelName" />
             <LoadingButton
               loading={loading}
@@ -98,5 +105,3 @@ const CreateButton = () => {
     </>
   );
 };
-
-export default CreateButton;

@@ -9,6 +9,7 @@
     "airbnb",
     "plugin:security/recommended",
     "plugin:import/typescript",
+    "plugin:prettier/recommended",
     "prettier"
   ],
   "parser": "@typescript-eslint/parser",
@@ -30,6 +31,12 @@
         "tsx": "never"
       }
     ],
+    "prettier/prettier": [
+      "error",
+      {
+        "endOfLine": "auto"
+      }
+    ],
     "react/jsx-props-no-spreading": "off",
     "no-shadow": "off",
     "@typescript-eslint/no-shadow": ["error"],
@@ -42,6 +49,7 @@
     "camelcase": "error",
     "spaced-comment": "error",
     "quotes": ["error", "single"],
+    "react/jsx-no-useless-fragment": "off",
     "no-duplicate-imports": "error",
     "react/require-default-props": "off",
     "no-param-reassign": ["error", { "props": true, "ignorePropertyModificationsFor": ["state"] }],

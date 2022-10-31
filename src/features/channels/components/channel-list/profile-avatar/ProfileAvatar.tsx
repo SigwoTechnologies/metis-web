@@ -1,12 +1,12 @@
-import PLaceholderAvatar from '@metis/assets/images/avatars/astronaut.png';
-import appConfig from '@metis/common/configuration/app.config';
-import httpService from '@metis/common/services/http.service';
+import PlaceholderAvatar from '@metis/assets/images/avatars/astronaut.png';
 import connectSocket from '@metis/common/services/socket.service';
-import { getToken } from '@metis/common/services/token.service';
+import { SpinnerContainer } from '@metis/common/components/ui/spinner-container/SpinnerContainer';
+import { findImage } from '@metis/features/auth/store/auth.actions';
+import { useUploadImageProfile } from '@metis/features/channels/hooks/useUploadImageProfile';
 import { useAppDispatch, useAppSelector } from '@metis/store/hooks';
 import { openToast } from '@metis/store/ui/ui.slice';
 import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
-import { Avatar, Box, CircularProgress, IconButton } from '@mui/material';
+import { Avatar, Box, IconButton } from '@mui/material';
 import { useEffect, useState } from 'react';
 import Files from 'react-files';
 import useStyles from './ProfileAvatar.styles';
@@ -25,114 +25,80 @@ const ProfileAvatar = () => {
   const dispatch = useAppDispatch();
   const {
     jupAccount: { address },
-  } = useAppSelector((s) => s.auth);
-  const [selectedFile, setSelectedFile] = useState<TFile>();
-  const [preview, setPreview] = useState('');
+    imageAccount,
+  } = useAppSelector((state) => state.auth);
   const [uploadingImage, setUploadingImage] = useState(false);
 
-  const getImage = async (url: string) => {
-    const headers = {
-      'Content-Type': 'application/json',
-      Accept: 'application/json',
-      Authorization: `Bearer ${getToken()}`,
-    };
-    const { data } = await httpService.get(url, {
-      headers,
-      responseType: 'blob',
-    });
-
-    const objectUrl = URL.createObjectURL(data);
-    setPreview(objectUrl);
-  };
-
   useEffect(() => {
-    const socket = connectSocket({
-      query: {
-        room: `upload-${address}`, // address of the current user
-        user: address, // address of the current user
-      },
-    }).socket('/upload');
+    if (uploadingImage) {
+      const socket = connectSocket({
+        query: {
+          room: `upload-${address}`,
+          user: address,
+        },
+      }).socket('/upload');
 
-    if (address)
       socket.on('uploadCreated', async ({ url }: { url: string }) => {
-        await getImage(url);
+        dispatch(findImage(url));
         setUploadingImage(false);
       });
 
-    return () => {
-      socket.off('uploadCreated');
-    };
-  }, []);
-
-  useEffect(() => {
-    if (!selectedFile) {
-      getImage(`${appConfig.api.baseUrl}/jim/v1/api/users/${address}/files/public-profile`);
-      return undefined;
+      socket.on('uploadFailed', async ({ errorMessage }: { errorMessage: string }) => {
+        setUploadingImage(false);
+        dispatch(openToast({ text: errorMessage, type: 'error' }));
+      });
     }
+  }, [uploadingImage]);
 
-    const objectUrl = URL.createObjectURL(selectedFile as unknown as Blob);
-    setPreview(objectUrl);
-
-    return () => URL.revokeObjectURL(objectUrl);
-  }, [selectedFile]);
-
-  const sendProfileAvatar = async (file: TFile) => {
-    if (!file) {
-      throw new Error('[sendFileMessage]: File not provided');
-    }
-
-    const formData = new FormData();
-    formData.append('file', file as never);
-    formData.append('originalFileType', String(selectedFile?.type));
-    formData.append('attachToJupiterAddress', String(address));
-    formData.append('fileCategory', 'public-profile');
-    formData.append('name', 'file');
-
-    const headers = {
-      'Content-Type': 'multipart/form-data',
-      Accept: 'application/json',
-      Authorization: `Bearer ${getToken()}`,
-    };
-    setUploadingImage(true);
-    dispatch(openToast({ text: 'Uploading image, please wait', type: 'info' }));
-    setSelectedFile(undefined);
-    setPreview('');
-
-    return httpService.post('/jim/v2/api/files', formData, { headers });
-  };
   const handleSelectFile = async ([file]: [TFile]) => {
-    setSelectedFile(file);
-    await sendProfileAvatar(file);
+    if (file) {
+      setUploadingImage(true);
+      dispatch(openToast({ text: 'Uploading image, please wait', type: 'info' }));
+      useUploadImageProfile({ file, address });
+    }
   };
-  return uploadingImage ? (
-    <CircularProgress className={styles.spinner} />
-  ) : (
-    <IconButton
-      aria-label="send message"
-      edge="start"
-      size="medium"
-      sx={{ p: 1.5 }}
-      className={styles.container}
-    >
-      <Files
-        className="files-dropzone"
-        onChange={handleSelectFile}
-        accepts={['image/*']}
-        multiple
-        maxFileSize={10000000}
-        minFileSize={0}
-        clickable
+
+  const onFilesError = (error: Error) => {
+    dispatch(
+      openToast({
+        text: `
+        ${error.message}${error.message.includes(' is too large') ? ', maximum size 1.6MB' : ''}
+        `,
+        type: 'error',
+      })
+    );
+  };
+
+  return (
+    <SpinnerContainer isLoading={uploadingImage}>
+      <IconButton
+        aria-label="send message"
+        edge="start"
+        size="medium"
+        sx={{ p: 1.5 }}
+        className={styles.container}
       >
-        <Avatar
-          alt="Channel Avatar"
-          src={preview || PLaceholderAvatar}
-          className={styles.accountAvatar}
-        />
-        <Box>
-          <AddAPhotoIcon className={styles.icon} />
-        </Box>
-      </Files>
-    </IconButton>
+        <Files
+          className="files-dropzone"
+          onChange={handleSelectFile}
+          accepts={['image/*']}
+          multiple
+          maxFileSize={1_600_000}
+          minFileSize={0}
+          onError={onFilesError}
+          clickable
+        >
+          <Avatar
+            alt="Channel Avatar"
+            src={imageAccount || PlaceholderAvatar}
+            className={styles.accountAvatar}
+          />
+          <Box>
+            <AddAPhotoIcon className={styles.icon} />
+          </Box>
+        </Files>
+      </IconButton>
+    </SpinnerContainer>
   );
 };
 export default ProfileAvatar;

@@ -1,27 +1,16 @@
-import hasStringJsonStructure from '@metis/common/utils/utils';
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import channelService from '../services/channel.service';
+import httpService from '@metis/common/services/http.service';
+import { AxiosError } from 'axios';
 
-export const localStorageKeyHiddenChannel = '@hiddenChannels';
-
-export const findChannels = createAsyncThunk('channels/findChannels', channelService.findChannels);
-export const getMutedChannelAddresses = createAsyncThunk(
-  'channels/getMutedChannelAddresses',
-  channelService.getMutedChannelAddresses
+export const findMembers = createAsyncThunk(
+  'channel/findMembers',
+  async (channelAddress: string) => {
+    try {
+      const { data } = await httpService.get(`/v1/api/${channelAddress}/members`);
+      return data;
+    } catch (error) {
+      const err = error as AxiosError;
+      return err.response;
+    }
+  }
 );
-export const toggleMuteChannel = createAsyncThunk(
-  'channels/toggleMuteChannel',
-  channelService.toggleMuteChannel
-);
-
-export const getHiddenChannels = () => {
-  const hiddenChannels = localStorage.getItem(localStorageKeyHiddenChannel);
-  return hasStringJsonStructure(hiddenChannels) ? JSON.parse(<string>hiddenChannels) : [];
-};
-
-export default {
-  findChannels,
-  getMutedChannelAddresses,
-  toggleMuteChannel,
-  getHiddenChannels,
-};

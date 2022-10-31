@@ -1,8 +1,5 @@
 import Modal from '@metis/common/components/ui/Modal';
-import {
-  useAppDispatch,
-  // useAppSelector
-} from '@metis/store/hooks';
+import { useAppDispatch, useAppSelector } from '@metis/store/hooks';
 import { openToast } from '@metis/store/ui/ui.slice';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import { LoadingButton } from '@mui/lab';
@@ -13,12 +10,8 @@ import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import { MouseEvent, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import useSelectedChannel from '../../hooks/useSelectedChannel';
-import { toggleMuteChannel } from '../../store/channel.actions';
-import {
-  hideChannel as hideChannelAction,
-  // selectState
-} from '../../store/channel.slice';
+import { usToggleMuteChannel } from '../../hooks/useToggleMuteChannel';
+import { hideChannel as hideChannelAction } from '../../store/channel.slice';
 import InviteUserModal from '../invite-user-modal/InviteUserModal';
 import ChannelInfo from './channel-info/ChannelInfo';
 import useStyles from './ChatHeader.styles';
@@ -31,8 +24,7 @@ const ChatHeader = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  // const { mutedChannels } = useAppSelector(selectState);
-  const selectedChannel = useSelectedChannel();
+  const { selectedChannel } = useAppSelector((state) => state.channel);
   // const isMuted = mutedChannels.includes(selectedChannel.channelAddress);
 
   const menu = Boolean(anchorEl);
@@ -63,7 +55,7 @@ const ChatHeader = () => {
 
   const muteChannel = () => {
     setLoading(true);
-    dispatch(toggleMuteChannel(selectedChannel.channelAddress)).then(() => {
+    dispatch(usToggleMuteChannel(selectedChannel.channelAddress)).then(() => {
       setMuteModalOpen(false);
       setLoading(false);
     });
@@ -90,21 +82,6 @@ const ChatHeader = () => {
       >
         <MenuItem onClick={openInviteUserModal}>Invite user</MenuItem>
         <MenuItem onClick={hideChannel}>Hide channel</MenuItem>
-        {/* 
-        {isMuted && (
-          <MenuItem onClick={unmuteChannel}>
-            Unmute channel
-            {loading && (
-              <CircularProgress
-                color="inherit"
-                size="1.1428571428571428rem"
-                sx={{ marginLeft: '10px' }}
-              />
-            )}
-          </MenuItem>
-        )}
-        {!isMuted && <MenuItem onClick={openMuteModal}>Mute channel</MenuItem>}
-        */}
       </Menu>
       <Modal open={muteModalOpen} onClose={() => setMuteModalOpen(false)}>
         <Typography

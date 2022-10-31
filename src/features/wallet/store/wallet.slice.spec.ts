@@ -7,6 +7,7 @@ describe('Wallet Slice', () => {
   beforeEach(() => {
     initialState = {
       isLoading: false,
+      isLoadingTransaction: false,
       isOpenWallet: false,
       transactions: [],
       balance: 0,

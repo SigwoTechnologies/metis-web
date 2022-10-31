@@ -1,31 +1,52 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import type { RootState } from '@metis/store/types';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { Channel } from '../types/channel';
-import { NewChannel } from '../types/newChannel';
-import { Reply } from '../types/Reply';
-import {
-  findChannels,
-  getHiddenChannels,
-  getMutedChannelAddresses,
-  localStorageKeyHiddenChannel,
-  toggleMuteChannel,
-} from './channel.actions';
+import { TInvite, useGetUsersInvites } from '@metis/features/invites/services/invite.service';
+import { IChannel } from '../types/channel.interface';
+import { INewChannel } from '../types/new.channel.interface';
+import { IReply } from '../types/reply.interface';
+import { getMutedChannelAddresses } from '../hooks/useGetMutedChannelAddresses';
+import { usToggleMuteChannel } from '../hooks/useToggleMuteChannel';
+import { getHiddenChannels, localStorageKeyHiddenChannel } from '../hooks/useGetHiddenChannels';
+import { useGetMessages } from '../hooks/useGetMessages';
+import { findChannels } from '../hooks/useGetChannels';
+import { findMembers } from './channel.actions';
+import { useGetDeclinedInvites } from '../hooks/useGetDeclinedInvites';
+
+const initialChannelState = {
+  channelAddress: '',
+  channelPublicKey: '',
+  channelName: '',
+  createdBy: '',
+  createdAt: 0,
+  messages: [],
+  members: [],
+};
 
 export type ChannelState = {
   isLoading: boolean;
-  hiddenChannels: Channel[];
-  reply: Reply;
+  isLoadingMessages: boolean;
+  isLoadingInvites: boolean;
+  declinedInvites: number[];
+  invites: TInvite[];
+  hiddenChannels: IChannel[];
+  reply: IReply;
   mutedChannels: string[];
-  channels: Channel[];
-  pendingChannels: NewChannel[];
+  channels: IChannel[];
+  selectedChannel: IChannel;
+  pendingChannels: INewChannel[];
   isOpenCreateChannelDrawer: boolean;
 };
 
 const initialState: ChannelState = {
   isLoading: false,
+  isLoadingMessages: false,
+  isLoadingInvites: false,
   channels: [],
   hiddenChannels: [],
+  invites: [],
+  declinedInvites: [],
+  selectedChannel: initialChannelState,
   reply: {
     replyMessage: '',
     decryptedReplyMessage: '',
@@ -46,16 +67,19 @@ const slice = createSlice({
     },
     // TODO: is there a way to not iterate the array two times?
     finishChannelCreation: (state: ChannelState, { payload }: PayloadAction<number>) => {
-      const newChannel = state.pendingChannels.find((channel) => channel.job.id === payload);
+      const channelJustCreated = state.pendingChannels.find(
+        (channel) => channel.job.id === payload
+      );
 
-      if (newChannel) {
-        const { job, ...rest } = newChannel;
-        const channelCreated: Channel = {
+      if (channelJustCreated) {
+        const { job, ...rest } = channelJustCreated;
+        const channelCreated: IChannel = {
           ...rest,
           createdAt: Date.now(),
           // TODO: change this for the user's address
           createdBy: 'JUP-7DXL-L46R-8LHH-HWFN2',
           messages: [],
+          members: [],
         };
 
         state.channels.unshift(channelCreated);
@@ -63,6 +87,12 @@ const slice = createSlice({
           (channel) => channel.job.id !== payload
         );
       }
+    },
+    setSelectedChannel: (state: ChannelState, { payload: channelAddress }) => {
+      const targetChannel = state.channels.find(
+        (channel) => channel.channelAddress === channelAddress
+      );
+      state.selectedChannel = targetChannel || initialChannelState;
     },
     updateReply: (state: ChannelState, { payload }) => {
       state.reply = payload;
@@ -72,7 +102,7 @@ const slice = createSlice({
     },
     hideChannel: (state: ChannelState, { payload }) => {
       const isChannelAlreadyHidden = state.hiddenChannels.find(
-        (chc: Channel) => chc?.channelAddress === payload.channelAddress
+        (chc: IChannel) => chc?.channelAddress === payload.channelAddress
       );
 
       if (!isChannelAlreadyHidden) {
@@ -82,7 +112,7 @@ const slice = createSlice({
     },
     unhideChannel: (state: ChannelState, { payload }) => {
       const isChannelHidden = state.hiddenChannels.find(
-        (chc: Channel) => chc?.channelAddress === payload
+        (chc: IChannel) => chc?.channelAddress === payload
       );
 
       if (isChannelHidden) {
@@ -93,12 +123,13 @@ const slice = createSlice({
       }
     },
     addNewMessage: (state: ChannelState, { payload }) => {
-      const { channelAddress, message } = payload;
+      const { message } = payload;
 
       const targetChannel = state.channels.find(
-        (channel) => channel.channelAddress === channelAddress
+        (channel) => channel.channelAddress === state.selectedChannel.channelAddress
       );
 
+      state.selectedChannel.messages.push(message);
       targetChannel?.messages.unshift(message);
     },
     setOpenDrawer: (state: ChannelState, { payload: status }) => {
@@ -112,30 +143,57 @@ const slice = createSlice({
     builder.addCase(findChannels.pending, (state) => {
       state.isLoading = true;
     });
+
     builder.addCase(findChannels.fulfilled, (state, { payload }) => {
       const hiddenChannels = getHiddenChannels();
       state.hiddenChannels = hiddenChannels;
       state.channels = payload;
       state.isLoading = false;
     });
+
     builder.addCase(findChannels.rejected, (state) => {
       state.isLoading = false;
     });
 
-    // Get muted channels ----------------------------------------------------------
+    builder.addCase(useGetMessages.pending, (state, { payload: messages }) => {
+      state.isLoadingMessages = true;
+    });
+
+    builder.addCase(useGetMessages.fulfilled, (state, { payload: messages }) => {
+      state.selectedChannel.messages = messages;
+      state.isLoadingMessages = false;
+    });
+
     builder.addCase(getMutedChannelAddresses.pending, (state) => {
       state.isLoading = true;
     });
+
     builder.addCase(getMutedChannelAddresses.fulfilled, (state, { payload }) => {
       state.mutedChannels = payload;
     });
+    builder.addCase(useGetUsersInvites.pending, (state, { payload }) => {
+      state.isLoadingInvites = true;
+    });
+    builder.addCase(useGetUsersInvites.fulfilled, (state, { payload }) => {
+      const declinedInvites = useGetDeclinedInvites();
+
+      state.invites = payload
+        .filter((e) => (declinedInvites.includes(e.invitationId) ? null : e))
+        .filter(Boolean);
+
+      state.isLoadingInvites = false;
+    });
+
     builder.addCase(getMutedChannelAddresses.rejected, (state) => {
       state.isLoading = false;
     });
 
-    // Mute or unmute channel -------------------------------------------------------
-    builder.addCase(toggleMuteChannel.fulfilled, (state, { payload }) => {
+    builder.addCase(usToggleMuteChannel.fulfilled, (state, { payload }) => {
       state.mutedChannels = payload;
+    });
+
+    builder.addCase(findMembers.fulfilled, (state, { payload }) => {
+      state.selectedChannel.members = payload;
     });
   },
 });
@@ -149,6 +207,7 @@ export const {
   hideChannel,
   unhideChannel,
   addNewMessage,
+  setSelectedChannel,
   setOpenDrawer: setOpenCreateChannelDrawer,
 } = slice.actions;
 export const channelReducer = slice.reducer;

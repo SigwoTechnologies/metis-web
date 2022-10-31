@@ -2,8 +2,9 @@
 /* eslint-disable camelcase */
 /* eslint-disable quotes */
 import { convertNQTToJup } from '@metis/common/utils/utils';
-import fetchTransactions from '@metis/features/wallet/services/fetchTransactions';
+import { fetchTransactions } from '@metis/features/wallet/store/wallet.actions';
 import { useAppDispatch, useAppSelector } from '@metis/store/hooks';
+import { SpinnerContainer } from '@metis/common/components/ui/spinner-container/SpinnerContainer';
 import SendIcon from '@mui/icons-material/Send';
 import {
   Avatar,
@@ -22,7 +23,7 @@ import useStyles from './Transactions.styles';
 const Transactions = () => {
   const classes = useStyles();
   const { jupAccount } = useAppSelector((state) => state.auth);
-  const { transactions, balance } = useAppSelector((state) => state.wallet);
+  const { transactions, balance, isLoadingTransaction } = useAppSelector((state) => state.wallet);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -37,28 +38,30 @@ const Transactions = () => {
     <Box>
       Transactions
       <List>
-        {transactions.map((e) => (
-          <Fragment key={e.block}>
-            <ListItem disablePadding>
-              <ListItemButton>
-                <ListItemAvatar className={classes.listItemIcon}>
-                  <Avatar>
-                    <SendIcon />
-                  </Avatar>
-                </ListItemAvatar>
-                <ListItemText
-                  primary={e.senderRS === jupAccount.address ? 'Sent JUP' : 'Received JUP'}
-                  secondary={`You has ${
-                    e.senderRS === jupAccount.address ? 'Sent' : 'Received'
-                  } ${convertNQTToJup(Number(e.amountNQT))} JUP ${
-                    e.senderRS === jupAccount.address ? 'to' : 'from'
-                  } ${e.senderRS === jupAccount.address ? e.recipientRS : e.senderRS} `}
-                />
-              </ListItemButton>
-            </ListItem>
-            <Divider />
-          </Fragment>
-        ))}
+        <SpinnerContainer isLoading={isLoadingTransaction}>
+          {transactions.map((e) => (
+            <Fragment key={e.block}>
+              <ListItem disablePadding>
+                <ListItemButton>
+                  <ListItemAvatar className={classes.listItemIcon}>
+                    <Avatar>
+                      <SendIcon />
+                    </Avatar>
+                  </ListItemAvatar>
+                  <ListItemText
+                    primary={e.senderRS === jupAccount.address ? 'Sent JUP' : 'Received JUP'}
+                    secondary={`You has ${
+                      e.senderRS === jupAccount.address ? 'Sent' : 'Received'
+                    } ${convertNQTToJup(Number(e.amountNQT))} JUP ${
+                      e.senderRS === jupAccount.address ? 'to' : 'from'
+                    } ${e.senderRS === jupAccount.address ? e.recipientRS : e.senderRS} `}
+                  />
+                </ListItemButton>
+              </ListItem>
+              <Divider />
+            </Fragment>
+          ))}
+        </SpinnerContainer>
       </List>
     </Box>
   );

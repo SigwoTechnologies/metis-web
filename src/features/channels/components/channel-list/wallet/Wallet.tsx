@@ -1,4 +1,4 @@
-import fetchBalance from '@metis/features/wallet/services/fetchBalance';
+import { fetchBalance } from '@metis/features/wallet/store/wallet.actions';
 import { setIsOpenWallet } from '@metis/features/wallet/store/wallet.slice';
 import { useAppDispatch, useAppSelector } from '@metis/store/hooks';
 import AllInboxIcon from '@mui/icons-material/AllInbox';

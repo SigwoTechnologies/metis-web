@@ -1,6 +1,7 @@
+import { SpinnerContainer } from '@metis/common/components/ui/spinner-container/SpinnerContainer';
 import useOnMount from '@metis/common/hooks/useOnMount';
 import connect from '@metis/common/services/socket.service';
-import { findChannels } from '@metis/features/channels/store/channel.actions';
+import { findChannels } from '@metis/features/channels/hooks/useGetChannels';
 import { useAppDispatch, useAppSelector } from '@metis/store/hooks';
 import { openToast } from '@metis/store/ui/ui.slice';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
@@ -9,38 +10,26 @@ import {
   Accordion,
   AccordionDetails,
   AccordionSummary,
+  Badge,
   Box,
   List,
   Typography,
-  Badge,
 } from '@mui/material';
-import { useState } from 'react';
-import inviteService, { Invite } from '../../services/invite.service';
+import { useAcceptInvite, useGetUsersInvites } from '../../services/invite.service';
 import InviteListItem from './InviteListItem/InviteListItem';
 
 const InvitesList = () => {
-  const [invites, setInvites] = useState<Invite[]>([]);
   const { alias, address } = useAppSelector((state) => state.auth.jupAccount);
+  const { invites, isLoadingInvites } = useAppSelector((state) => state.channel);
   const dispatch = useAppDispatch();
-
-  const fetchInvites = () => {
-    inviteService
-      .getUsersInvites()
-      .then(setInvites)
-      .catch(() => {
-        dispatch(
-          openToast({ type: 'error', text: 'There was a problem when getting the pending invites' })
-        );
-      });
-  };
 
   const acceptInvite = async (channelAddress: string) => {
     try {
-      await inviteService.acceptInvite(channelAddress);
+      await useAcceptInvite(channelAddress);
       dispatch(openToast({ type: 'success', text: 'Invite accepted' }));
-      const updatedInvites = invites.filter((invite) => invite.channelAddress !== channelAddress);
-      setInvites(updatedInvites);
-      dispatch(findChannels(null));
+      // const updatedInvites = invites.filter((invite) => invite.channelAddress !== channelAddress);
+      dispatch(useGetUsersInvites());
+      dispatch(findChannels());
     } catch (error) {
       dispatch(openToast({ type: 'error', text: 'There was a problem accepting the invite' }));
     }
@@ -55,9 +44,11 @@ const InvitesList = () => {
       },
     }).socket('/invite');
 
-    socket.on('newInvite', fetchInvites);
+    socket.on('newInvite', () => {
+      dispatch(useGetUsersInvites());
+    });
 
-    fetchInvites();
+    dispatch(useGetUsersInvites());
   });
 
   return (
@@ -88,10 +79,18 @@ const InvitesList = () => {
           </Box>
         </AccordionSummary>
         <AccordionDetails>
-          {invites.map((invite) => (
-            <InviteListItem key={invite.invitationId} acceptInvite={acceptInvite} invite={invite} />
-          ))}
-          {!invites.length && <Typography variant="body2">There are no pending invites</Typography>}
+          <SpinnerContainer isLoading={isLoadingInvites}>
+            {invites.map((invite) => (
+              <InviteListItem
+                key={invite.invitationId}
+                acceptInvite={acceptInvite}
+                invite={invite}
+              />
+            ))}
+            {!invites.length && (
+              <Typography variant="body2">There are no pending invites</Typography>
+            )}
+          </SpinnerContainer>
         </AccordionDetails>
       </Accordion>
     </List>

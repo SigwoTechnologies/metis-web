@@ -1,26 +1,28 @@
+import httpService from '@metis/common/services/http.service';
 import connect from '@metis/common/services/socket.service';
-import EncryiptionService from '@metis/features/auth/services/encryption.service';
+import EncryptionService from '@metis/features/auth/services/encryption.service';
 import { useAppDispatch, useAppSelector } from '@metis/store/hooks';
 import { openToast } from '@metis/store/ui/ui.slice';
 import { PublicKey } from 'openpgp';
 import { useEffect, useState } from 'react';
-import channelService from '../services/channel.service';
-import { AttachmentObj } from '../types/AttachmentObj';
-import useSelectedChannel from './useSelectedChannel';
+import { IAttachmentObj } from '../types/attachment.obj.interface';
+import { useGetChannelMembers } from './useGetChannelMembers';
 
 export default () => {
   const { reply } = useAppSelector((state) => state.channel);
-  const { channelAddress: selectedChannelAddress } = useSelectedChannel();
   const [publicKeys, setPublicKeys] = useState<PublicKey[]>([]);
   const [loading, setLoading] = useState(false);
-  const encryptionService = new EncryiptionService();
+  const encryptionService = new EncryptionService();
   const dispatch = useAppDispatch();
   const { alias } = useAppSelector((state) => state.auth.jupAccount);
+  const {
+    selectedChannel: { channelAddress },
+  } = useAppSelector((state) => state.channel);
 
   const fetchPublicKeys = async () => {
     setLoading(true);
     try {
-      const channelMembers = await channelService.getChannelMembers(selectedChannelAddress);
+      const channelMembers = await useGetChannelMembers(channelAddress);
 
       const publicKeysResponse = await Promise.all(
         channelMembers.map((member) => encryptionService.read(member.e2ePublicKey))
@@ -44,7 +46,7 @@ export default () => {
   useEffect(() => {
     const socket = connect({
       query: {
-        room: selectedChannelAddress, // address of the current channel
+        room: channelAddress, // address of the current channel
         user: alias,
         event: 'newMemberChannel',
       },
@@ -52,8 +54,8 @@ export default () => {
 
     socket.on('newMemberChannel', () => fetchPublicKeys());
 
-    if (selectedChannelAddress) fetchPublicKeys();
-  }, [selectedChannelAddress]);
+    if (channelAddress) fetchPublicKeys();
+  }, [channelAddress]);
 
   const sendEncryptedMessage = async ({ text }: { text: string }) => {
     const message = await encryptionService.createMsg(text);
@@ -61,20 +63,22 @@ export default () => {
 
     const dataSendMessage = {
       message: armoredEncryptedMessage || text,
-      address: selectedChannelAddress,
+      address: channelAddress,
       mentions: [],
       ...reply,
     };
 
-    return channelService.sendMessage(selectedChannelAddress, dataSendMessage);
+    const response = await httpService.post(
+      `/v1/api/channels/${channelAddress}/messages`,
+      dataSendMessage
+    );
+    return response;
   };
 
   const sendEncryptedMessageWithAttachment = async ({
     attachmentObj,
-    channelAddress,
   }: {
-    attachmentObj: AttachmentObj;
-    channelAddress: string;
+    attachmentObj: IAttachmentObj;
   }) => {
     const message = {
       message: 'attachment',
@@ -85,7 +89,8 @@ export default () => {
       ...reply,
     };
 
-    return channelService.sendMessage(channelAddress, message);
+    const response = await httpService.post(`/v1/api/channels/${channelAddress}/messages`, message);
+    return response;
   };
 
   return { sendEncryptedMessage, sendEncryptedMessageWithAttachment, loading };
