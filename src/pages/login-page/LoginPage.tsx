@@ -179,7 +179,12 @@ const LoginPage = () => {
           <UnlinkButton />
           <Box component="img" src={MetisLogo} alt="login" className={classes.image} />
 
-          {ethAccount && <Box className={classes.associate}>Account Selected: {ethAccount}</Box>}
+          {ethAccount && (
+            <Box className={classes.associate}>
+              <Box className={classes.accountLetter}>Account Selected:</Box>
+              <Box className={classes.eth}>{ethAccount}</Box>
+            </Box>
+          )}
 
           <br />
 
