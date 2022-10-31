@@ -41,19 +41,34 @@ const ProfileAvatar = () => {
       socket.on('uploadCreated', async ({ url }: { url: string }) => {
         dispatch(findImage(url));
         setUploadingImage(false);
-        socket.off('uploadCreated');
+      });
+
+      socket.on('uploadFailed', async ({ errorMessage }: { errorMessage: string }) => {
+        setUploadingImage(false);
+        dispatch(openToast({ text: errorMessage, type: 'error' }));
       });
     }
   }, [uploadingImage]);
 
   const handleSelectFile = async ([file]: [TFile]) => {
-    if (!file) {
-      throw new Error('[sendFileMessage]: File not provided');
+    if (file) {
+      setUploadingImage(true);
+      dispatch(openToast({ text: 'Uploading image, please wait', type: 'info' }));
+      useUploadImageProfile({ file, address });
     }
-    setUploadingImage(true);
-    dispatch(openToast({ text: 'Uploading image, please wait', type: 'info' }));
-    useUploadImageProfile({ file, address });
   };
+
+  const onFilesError = (error: Error) => {
+    dispatch(
+      openToast({
+        text: `
+        ${error.message}${error.message.includes(' is too large') ? ', maximum size 1.6MB' : ''}
+        `,
+        type: 'error',
+      })
+    );
+  };
+
   return (
     <SpinnerContainer isLoading={uploadingImage}>
       <IconButton
@@ -68,8 +83,9 @@ const ProfileAvatar = () => {
           onChange={handleSelectFile}
           accepts={['image/*']}
           multiple
-          maxFileSize={10000000}
+          maxFileSize={1_600_000}
           minFileSize={0}
+          onError={onFilesError}
           clickable
         >
           <Avatar
