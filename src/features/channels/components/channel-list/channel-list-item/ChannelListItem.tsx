@@ -99,9 +99,9 @@ export const ChannelListItem = ({ channel, avatar = channel.channelName }: Props
                     variant="caption"
                     color="text.secondary"
                     fontSize="small"
-                    title={dayjs(channel.messages[0].createdAt).format('MM/DD/YYYY hh:mm:ss A')}
+                    title={dayjs(channel.messages[0]?.createdAt).format('MM/DD/YYYY hh:mm:ss A')}
                   >
-                    {dayjs(channel.messages[0].createdAt).format('hh:mm A')}
+                    {dayjs(channel.messages[0]?.createdAt).format('hh:mm A')}
                   </Typography>
                 </Box>
               </Box>
