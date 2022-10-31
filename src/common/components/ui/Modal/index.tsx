@@ -12,7 +12,11 @@ type props = {
 const Modal: React.FC<props> = ({ children, open, title, onClose }) => {
   const styles = useStyles();
   return (
-    <Dialog onClose={onClose} open={open}>
+    <Dialog
+      onClose={onClose}
+      open={open}
+      BackdropProps={{ style: { backgroundColor: 'rgba(0,0,0,.9)' } }}
+    >
       <section className={styles.container}>
         {title && <DialogTitle>{title}</DialogTitle>}
         {children}
