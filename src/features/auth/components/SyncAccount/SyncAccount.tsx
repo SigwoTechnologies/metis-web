@@ -1,4 +1,5 @@
 import Modal from '@metis/common/components/ui/Modal';
+// import Modal from '@mui/material/Modal';
 import connectSocket from '@metis/common/services/socket.service';
 import constants from '@metis/common/configuration/constants';
 import { verifyAlreadyRegistered } from '@metis/features/auth/store/auth.actions';
@@ -12,7 +13,7 @@ import { useAppSelector, useAppDispatch } from '@metis/store/hooks';
 import { localStorageKeyHiddenChannel } from '@metis/features/channels/hooks/useGetHiddenChannels';
 import { openToast } from '@metis/store/ui/ui.slice';
 import Box from '@mui/material/Box';
-import useStyles from '@metis/pages/login-page/LoginPage.styles';
+import useStyles from './SyncAccount.styles';
 
 export const SyncAccount = () => {
   const [syncDeviceRequested, setSyncDeviceRequested] = useState(false);
@@ -104,23 +105,18 @@ export const SyncAccount = () => {
               <LoadingButton
                 fullWidth
                 variant="contained"
-                style={{
-                  width: '25rem',
-                }}
-                onClick={sendGrantSync}
+                onClick={sendRejectSync}
+                className={classes.reject}
               >
-                <span className={classes.span}>Grant</span>
+                <span className={classes.span}>Reject</span>
               </LoadingButton>
-
               <LoadingButton
                 fullWidth
                 variant="contained"
-                style={{
-                  width: '25rem',
-                }}
-                onClick={sendRejectSync}
+                onClick={sendGrantSync}
+                className={classes.grant}
               >
-                <span className={classes.span}>Reject</span>
+                <span className={classes.span}>Grant</span>
               </LoadingButton>
             </Box>
           </Box>
