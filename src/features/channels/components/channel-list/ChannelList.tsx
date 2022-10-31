@@ -3,7 +3,7 @@ import { useAppDispatch, useAppSelector } from '@metis/store/hooks';
 import { useEffect } from 'react';
 import { findChannels } from '../../hooks/useGetChannels';
 import { getMutedChannelAddresses } from '../../hooks/useGetMutedChannelAddresses';
-import ChannelListItem from './channel-list-item/ChannelListItem';
+import { ChannelListItem } from './channel-list-item/ChannelListItem';
 
 const ChannelList = () => {
   const dispatch = useAppDispatch();

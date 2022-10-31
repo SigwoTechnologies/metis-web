@@ -10,7 +10,7 @@ import CardContent from '@mui/material/CardContent';
 import Divider from '@mui/material/Divider';
 import { useMemo } from 'react';
 import { selectState, unhideChannel } from '../../../store/channel.slice';
-import ChannelListItem from '../channel-list-item/ChannelListItem';
+import { ChannelListItem } from '../channel-list-item/ChannelListItem';
 import useStyles from './ModalHiddenList.styles';
 
 type Props = {

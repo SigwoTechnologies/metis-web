@@ -64,6 +64,8 @@ export const useMetamask = () => {
     if (window.ethereum) {
       window.ethereum.on('accountsChanged', ([selectedAccount]: string[]) => {
         dispatch(setEthAccount(selectedAccount));
+        dispatch(setEthAccount(selectedAccount));
+        window.location.reload();
       });
       window.ethereum.on('accountsChanged', ([selectedAccount]: string[]) => {
         if (!selectedAccount) {
