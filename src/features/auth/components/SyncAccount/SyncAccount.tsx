@@ -97,7 +97,7 @@ export const SyncAccount = () => {
       {syncDeviceRequested && credentials && (
         <Modal open>
           <Box style={{ textAlign: 'center' }}>
-            <span>Someone has requested a synchronization</span>
+            <span>Someone wants to log in to this account through another device</span>
             <br />
             <br />
             <Box style={{ display: 'flex', gap: '1rem' }}>
@@ -130,7 +130,10 @@ export const SyncAccount = () => {
       {isAlreadyRegistered && !credentials && (
         <Modal open>
           <Box style={{ textAlign: 'center' }}>
-            <span>We have detected this account is already registered</span>
+            <span>
+              We have detected this account is already registered in another device, to proceed go
+              to your other device to grant permission.
+            </span>
             <br />
             <br />
             {syncDeviceRequested && <CircularProgress className={classes.spinner} />}

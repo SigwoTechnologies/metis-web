@@ -39,7 +39,7 @@ export const SignInButton = () => {
         }}
       >
         <span className={classes.span}>
-          {isConnectingToMetamask ? 'Connecting to Metamask' : 'Sign In with Metamask'}
+          {isConnectingToMetamask ? 'Connecting to Metamask' : 'Sign In to Metis with Metamask'}
         </span>
       </LoadingButton>
 
