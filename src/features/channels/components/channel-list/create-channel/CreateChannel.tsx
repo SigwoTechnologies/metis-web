@@ -4,6 +4,7 @@ import PlusButton from '@metis/assets/images/misc/plus-button.png';
 import Form from '@metis/common/components/ui/Form/Form';
 import TextInput from '@metis/common/components/ui/TextInput/TextInput';
 import httpService from '@metis/common/services/http.service';
+import GroupsIcon from '@mui/icons-material/Groups';
 import {
   createChannel,
   setOpenCreateChannelDrawer,
@@ -14,7 +15,7 @@ import { useAppDispatch, useAppSelector } from '@metis/store/hooks';
 import { openToast } from '@metis/store/ui/ui.slice';
 import CloseIcon from '@mui/icons-material/Close';
 import { LoadingButton } from '@mui/lab';
-import { Avatar, Drawer, IconButton } from '@mui/material';
+import { Drawer, IconButton } from '@mui/material';
 import Box from '@mui/material/Box';
 import emojiRegex from 'emoji-regex';
 import { useState } from 'react';
@@ -77,7 +78,7 @@ export const CreateChannel = () => {
           </IconButton>
 
           <Box className={classes.avatarBox}>
-            <Avatar alt="!" src="!" className={classes.avatar} />
+            <GroupsIcon className={classes.avatar} />
 
             <p>To create a channel enter their name</p>
           </Box>
