@@ -34,6 +34,9 @@ type TForm = {
 const SendJup = () => {
   const dispatch = useAppDispatch();
   const { balance } = useAppSelector((state) => state.wallet);
+  const {
+    jupAccount: { address, alias },
+  } = useAppSelector((state) => state.auth);
   const [open, setOpen] = useState(false);
   const classes = useStyles();
 
@@ -50,6 +53,16 @@ const SendJup = () => {
       dispatch(
         openToast({
           text: 'Insufficient Funds',
+          type: 'error',
+        })
+      );
+      return;
+    }
+
+    if ([alias, address].includes(recipient)) {
+      dispatch(
+        openNotification({
+          text: 'You cant send JUP to yourself',
           type: 'error',
         })
       );
