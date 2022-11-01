@@ -2,11 +2,10 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import Form from '@metis/common/components/ui/Form/Form';
 import TextInput from '@metis/common/components/ui/TextInput/TextInput';
 import httpService from '@metis/common/services/http.service';
-import { getToken } from '@metis/common/services/token.service';
 import { convertJupToNQT, convertNQTToJup } from '@metis/common/utils/utils';
 import { fetchBalance } from '@metis/features/wallet/store/wallet.actions';
 import { useAppDispatch, useAppSelector } from '@metis/store/hooks';
-import { openToast } from '@metis/store/ui/ui.slice';
+import { openToast, openNotification } from '@metis/store/ui/ui.slice';
 import { LoadingButton } from '@mui/lab';
 import { Box } from '@mui/material';
 import Dialog from '@mui/material/Dialog';
@@ -57,16 +56,20 @@ const SendJup = () => {
       return;
     }
 
-    const headers = {
-      'Content-Type': 'application/json',
-      Accept: 'application/json',
-      Authorization: `Bearer ${getToken()}`,
-    };
-    await httpService.post(
-      '/v1/api/transfer-money',
-      { recipient, amount: convertJupToNQT(amount) },
-      { headers }
-    );
+    try {
+      await httpService.post('/v1/api/transfer-money', {
+        recipient,
+        amount: convertJupToNQT(amount),
+      });
+    } catch (error) {
+      dispatch(
+        openNotification({
+          text: 'This account is not registered',
+          type: 'error',
+        })
+      );
+      return;
+    }
 
     dispatch(
       openToast({
