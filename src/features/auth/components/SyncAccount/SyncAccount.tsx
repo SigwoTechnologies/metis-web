@@ -162,7 +162,6 @@ export const SyncAccount = () => {
             <span>
               If you cannot recover your account by any of these ways, your account will be lost.
             </span>
-
           </Box>
         </Modal>
       )}
