@@ -12,6 +12,7 @@ import { useGetMessages } from '../hooks/useGetMessages';
 import { findChannels } from '../hooks/useGetChannels';
 import { findMembers } from './channel.actions';
 import { useGetDeclinedInvites } from '../hooks/useGetDeclinedInvites';
+import { IMessage } from '../types/message.interface';
 
 const initialChannelState = {
   channelAddress: '',
@@ -21,6 +22,7 @@ const initialChannelState = {
   createdAt: 0,
   messages: [],
   members: [],
+  lastMessage: {} as IMessage,
 };
 
 export type ChannelState = {
@@ -80,6 +82,7 @@ const slice = createSlice({
           createdBy: 'JUP-7DXL-L46R-8LHH-HWFN2',
           messages: [],
           members: [],
+          lastMessage: {} as IMessage,
         };
 
         state.channels.unshift(channelCreated);
@@ -161,11 +164,7 @@ const slice = createSlice({
 
     builder.addCase(useGetMessages.fulfilled, (state, { payload: messages }) => {
       if (messages.length === 10) {
-        state.selectedChannel.messages.pop();
-        // eslint-disable-next-line no-restricted-syntax
-        for (const e of messages) {
-          state.selectedChannel.messages.push(e);
-        }
+        state.selectedChannel.messages = messages;
       }
 
       if (messages.length === 5) {

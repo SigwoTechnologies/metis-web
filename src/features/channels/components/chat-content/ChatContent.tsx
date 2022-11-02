@@ -6,9 +6,8 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import { Box, Button, CircularProgress, Paper } from '@mui/material';
 import { animated, config, useTransition } from '@react-spring/web';
-import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
-import { useParams } from 'react-router-dom';
 import debounce from 'just-debounce-it';
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { useGetMessages } from '../../hooks/useGetMessages';
 import useStyles from './ChatContent.styles';
 import Message from './message/Message';
@@ -20,9 +19,8 @@ export const ChatContent = () => {
   const [page, setPage] = useState(initialPage);
   const [visible, setVisible] = useState(false);
   const visorRef = useRef(null);
-  const { channelAddress } = useParams();
   const {
-    selectedChannel: { messages },
+    selectedChannel: { messages, channelAddress },
     isLoadingMessages,
   } = useAppSelector((state) => state.channel);
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -63,7 +61,7 @@ export const ChatContent = () => {
         useGetMessages({ channelAddress: String(channelAddress), pageNumber: page, pageSize: 5 })
       );
     }, 500),
-    [setPage, page]
+    [setPage, page, channelAddress]
   );
 
   // Scroll smoothly to last message when there's a new message and the scrollbar
@@ -105,9 +103,10 @@ export const ChatContent = () => {
       )}
       <Paper onScroll={onScroll} ref={containerRef} className={classes.main} square>
         <div ref={visorRef} />
-        {messages.map((message, index) => (
-          <Message key={index} message={message} color="#A36300" />
-        ))}
+        {!!messages &&
+          messages.map((message, index) => (
+            <Message key={index} message={message} color="#A36300" />
+          ))}
         {transition(
           (styles, item) =>
             !item && (
