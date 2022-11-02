@@ -4,7 +4,7 @@ import connectSocket from '@metis/common/services/socket.service';
 import constants from '@metis/common/configuration/constants';
 import { verifyAlreadyRegistered } from '@metis/features/auth/store/auth.actions';
 import { LoadingButton } from '@mui/lab';
-import CircularProgress from '@mui/material/CircularProgress';
+import { SpinnerContainer } from '@metis/common/components/ui/spinner-container/SpinnerContainer';
 import { useEffect, useState, useLayoutEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Socket } from 'socket.io-client';
@@ -132,34 +132,37 @@ export const SyncAccount = () => {
             </span>
             <br />
             <br />
-            {syncDeviceRequested && <CircularProgress className={classes.spinner} />}
-            <Box style={{ display: 'flex', gap: '1rem' }}>
-              {!syncDeviceRequested && (
-                <>
-                  <LoadingButton
-                    fullWidth
-                    variant="contained"
-                    style={{
-                      width: '25rem',
-                    }}
-                    onClick={sendSyncRequest}
-                  >
-                    <span className={classes.span}>Sync with Old Device</span>
-                  </LoadingButton>
 
-                  <LoadingButton
-                    fullWidth
-                    variant="contained"
-                    style={{
-                      width: '25rem',
-                    }}
-                    onClick={() => navigate('/auth/legacy')}
-                  >
-                    <span className={classes.span}>Associate Legacy Account</span>
-                  </LoadingButton>
-                </>
-              )}
-            </Box>
+            <SpinnerContainer isLoading={syncDeviceRequested}>
+              <Box style={{ display: 'flex', gap: '1rem' }}>
+                <LoadingButton
+                  fullWidth
+                  variant="contained"
+                  style={{
+                    width: '25rem',
+                  }}
+                  onClick={sendSyncRequest}
+                >
+                  <span className={classes.span}>Sync with Another Device</span>
+                </LoadingButton>
+
+                <LoadingButton
+                  fullWidth
+                  variant="contained"
+                  style={{
+                    width: '25rem',
+                  }}
+                  onClick={() => navigate('/auth/legacy')}
+                >
+                  <span className={classes.span}>Associate Legacy Account</span>
+                </LoadingButton>
+              </Box>
+            </SpinnerContainer>
+            <br />
+            <span>
+              If you cannot recover your account by any of these ways, your account will be lost.
+            </span>
+
           </Box>
         </Modal>
       )}
