@@ -22,6 +22,7 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     span: {
       fontWeight: 700,
+      textTransform: 'none',
     },
     associate: {
       color: '#ccc',
@@ -30,6 +31,7 @@ const useStyles = makeStyles((theme: Theme) =>
     loading: {
       clipPath: 'inset(0 1ch 0 0)',
       animation: '$l 1s steps(4) infinite',
+      textTransform: 'none',
     },
     '@keyframes l': {
       to: {

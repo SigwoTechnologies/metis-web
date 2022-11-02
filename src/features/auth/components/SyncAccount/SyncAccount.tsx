@@ -144,7 +144,7 @@ export const SyncAccount = () => {
                     }}
                     onClick={sendSyncRequest}
                   >
-                    <span className={classes.span}>Sync with old device</span>
+                    <span className={classes.span}>Sync with Old Device</span>
                   </LoadingButton>
 
                   <LoadingButton
@@ -155,7 +155,7 @@ export const SyncAccount = () => {
                     }}
                     onClick={() => navigate('/auth/legacy')}
                   >
-                    <span className={classes.span}>Associate legacy account</span>
+                    <span className={classes.span}>Associate Legacy Account</span>
                   </LoadingButton>
                 </>
               )}

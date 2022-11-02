@@ -35,6 +35,7 @@ const useStyles = makeStyles(() =>
     span: {
       fontWeight: 700,
       fontSize: '14px',
+      textTransform: 'none',
     },
     spinner: {
       alignSelf: 'center',
