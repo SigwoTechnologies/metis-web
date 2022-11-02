@@ -8,8 +8,7 @@ const getImageProfile = async (address: string) => {
   const { data } = await httpService.get(url, {
     responseType: 'blob',
   });
-  const imageProfle = URL.createObjectURL(data);
-  return imageProfle;
+  return URL.createObjectURL(data);
 };
 
 export const findMembers = createAsyncThunk(

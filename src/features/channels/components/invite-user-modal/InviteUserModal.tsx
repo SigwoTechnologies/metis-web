@@ -57,7 +57,8 @@ const InviteUserModal: React.FC<Props> = ({ closeModal, open }) => {
       return;
     }
     const existMember = members.find(
-      (e) => e.memberAccountAddress === inviteAccount || e.memberAccountAlias === inviteAccount
+      (member) =>
+        member.memberAccountAddress === inviteAccount || member.memberAccountAlias === inviteAccount
     );
 
     if (existMember) {
@@ -80,6 +81,7 @@ const InviteUserModal: React.FC<Props> = ({ closeModal, open }) => {
     useSendInvitation({ inviteeAddressOrAlias, channelAddress })
       .then(() => {
         dispatch(openNotification({ text: 'Invite sent!', type: 'success' }));
+        dispatch(findMembers(channelAddress));
         closeModal();
       })
       .catch(() => {

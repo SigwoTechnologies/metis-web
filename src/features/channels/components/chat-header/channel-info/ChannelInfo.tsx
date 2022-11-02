@@ -1,5 +1,4 @@
-import { findMembers } from '@metis/features/channels/store/channel.actions';
-import { useAppDispatch, useAppSelector } from '@metis/store/hooks';
+import { useAppSelector } from '@metis/store/hooks';
 import { IChannel } from '@metis/features/channels/types/channel.interface';
 import CloseIcon from '@mui/icons-material/Close';
 import {
@@ -16,7 +15,7 @@ import {
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import dayjs from 'dayjs';
-import { Fragment, useEffect, useState } from 'react';
+import { Fragment, useState } from 'react';
 import useStyles from './ChannelInfo.styles';
 
 type Props = {
@@ -24,18 +23,10 @@ type Props = {
 };
 const ChannelInfo = ({ selectedChannel }: Props) => {
   const classes = useStyles();
-  const dispatch = useAppDispatch();
   const [isOpenWallet, setIsOpenWallet] = useState(false);
   const {
     selectedChannel: { members },
   } = useAppSelector((state) => state.channel);
-  const { channelAddress } = selectedChannel;
-
-  useEffect(() => {
-    if (isOpenWallet) {
-      dispatch(findMembers(channelAddress));
-    }
-  }, [isOpenWallet]);
 
   const closeDrawer = () => {
     setIsOpenWallet(false);
@@ -89,16 +80,16 @@ const ChannelInfo = ({ selectedChannel }: Props) => {
             Participants
             <List>
               {members &&
-                members.map((e) => (
-                  <Fragment key={e.memberAccountAddress}>
+                members.map((account) => (
+                  <Fragment key={account.memberAccountAddress}>
                     <ListItem disablePadding>
                       <ListItemButton>
                         <ListItemAvatar>
-                          <Avatar alt={e.memberAccountAddress} src={e.imageProfile} />
+                          <Avatar alt={account.memberAccountAddress} src={account.imageProfile} />
                         </ListItemAvatar>
                         <ListItemText
-                          primary={e.memberAccountAddress}
-                          secondary={e.memberAccountAlias}
+                          primary={account.memberAccountAddress}
+                          secondary={account.memberAccountAlias}
                           className={classes.member}
                         />
                       </ListItemButton>
