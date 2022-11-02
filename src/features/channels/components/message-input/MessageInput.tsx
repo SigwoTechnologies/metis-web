@@ -179,21 +179,21 @@ const MessageInput = () => {
         onClick={() => setEmojiPickerVisible(!emojiPickerVisible)}
         className={classes.emojiIcon}
       >
-        {emojiPickerVisible && (
-          <div className={classes.emojiPicker}>
-            <Picker
-              onEmojiClick={onEmojiClick}
-              pickerStyle={{ border: 'none', boxShadow: 'none' }}
-              disableSearchBar
-              disableSkinTonePicker
-              groupVisibility={{
-                flags: false,
-              }}
-            />
-          </div>
-        )}
         <EmojiEmotions />
       </IconButton>
+      {emojiPickerVisible && (
+        <div className={classes.emojiPicker}>
+          <Picker
+            onEmojiClick={onEmojiClick}
+            pickerStyle={{ border: 'none', boxShadow: 'none' }}
+            disableSearchBar
+            disableSkinTonePicker
+            groupVisibility={{
+              flags: false,
+            }}
+          />
+        </div>
+      )}
       <IconButton
         aria-label="send message"
         edge="start"
