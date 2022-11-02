@@ -6,8 +6,9 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import { Box, Button, CircularProgress, Paper } from '@mui/material';
 import { animated, config, useTransition } from '@react-spring/web';
-import { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import debounce from 'just-debounce-it';
 import { useGetMessages } from '../../hooks/useGetMessages';
 import useStyles from './ChatContent.styles';
 import Message from './message/Message';
@@ -18,6 +19,7 @@ export const ChatContent = () => {
   const initialPage = 2;
   const [page, setPage] = useState(initialPage);
   const [visible, setVisible] = useState(false);
+  const visorRef = useRef(null);
   const { channelAddress } = useParams();
   const {
     selectedChannel: { messages },
@@ -54,36 +56,39 @@ export const ChatContent = () => {
     setPage(initialPage);
   }, [channelAddress]);
 
+  const getMoreMessages = useCallback(
+    debounce(() => {
+      setPage((prev) => prev + 1);
+      dispatch(
+        useGetMessages({ channelAddress: String(channelAddress), pageNumber: page, pageSize: 5 })
+      );
+    }, 500),
+    [setPage, page]
+  );
+
   // Scroll smoothly to last message when there's a new message and the scrollbar
   // is at the bottom
   useEffect(() => {
     if (isBottom) {
       scrollSmoothlyToBottom();
     }
-
-    if (containerRef?.current && containerRef?.current.firstChild) {
-      const onChange = (entries: any, observer: any) => {
-        if (entries[0].isIntersecting) {
-          setVisible(true);
-        } else {
-          setVisible(false);
-        }
-      };
-
-      const observer = new IntersectionObserver(onChange, {
-        rootMargin: '0px',
-      });
-
-      observer.observe(containerRef.current.firstChild as any);
-    }
   }, [messages]);
 
-  const getMoreMessages = () => {
-    setPage(page + 1);
-    dispatch(
-      useGetMessages({ channelAddress: String(channelAddress), pageNumber: page, pageSize: 5 })
-    );
-  };
+  useEffect(() => {
+    const onChange = ([entries]: any, observer: any) => {
+      if (entries.isIntersecting) {
+        setVisible(true);
+      } else {
+        setVisible(false);
+      }
+    };
+
+    const observer = new IntersectionObserver(onChange, {
+      rootMargin: '200px',
+    });
+
+    if (visorRef?.current) observer.observe(visorRef.current);
+  });
 
   return (
     <>
@@ -92,7 +97,14 @@ export const ChatContent = () => {
           <KeyboardArrowUpIcon />
         </Button>
       )}
+
+      {isLoadingMessages && (
+        <Box style={{ display: 'flex', justifyContent: 'center' }}>
+          <CircularProgress />
+        </Box>
+      )}
       <Paper onScroll={onScroll} ref={containerRef} className={classes.main} square>
+        <div ref={visorRef} />
         {messages.map((message, index) => (
           <Message key={index} message={message} color="#A36300" />
         ))}
