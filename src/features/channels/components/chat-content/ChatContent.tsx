@@ -64,12 +64,7 @@ export const ChatContent = () => {
   return (
     <Paper onScroll={onScroll} ref={containerRef} className={classes.main} square>
       {messages.map((message, index) => (
-        <Message
-          // TODO: the backend is not giving us any way to differentiate between messages... Too bad!
-          key={index}
-          message={message}
-          color="#A36300"
-        />
+        <Message key={index} message={message} color="#A36300" />
       ))}
       {transition(
         (styles, item) =>

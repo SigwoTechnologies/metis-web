@@ -27,7 +27,6 @@ const InvitesList = () => {
     try {
       await useAcceptInvite(channelAddress);
       dispatch(openToast({ type: 'success', text: 'Invite accepted' }));
-      // const updatedInvites = invites.filter((invite) => invite.channelAddress !== channelAddress);
       dispatch(useGetUsersInvites());
       dispatch(findChannels());
     } catch (error) {

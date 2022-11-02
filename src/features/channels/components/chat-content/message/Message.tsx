@@ -5,7 +5,7 @@ import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import dayjs from 'dayjs';
-import { memo, useState } from 'react';
+import { memo, useState, useEffect } from 'react';
 import Attachment from '../attachment/Attachment';
 import MessageReply from '../message-reply/MessageReply';
 import useStyles from './Message.styles';
@@ -13,7 +13,6 @@ import useStyles from './Message.styles';
 type Props = {
   message: MessageType;
   color: string;
-  avatar?: string;
 };
 
 const Message = ({
@@ -28,14 +27,16 @@ const Message = ({
     attachmentObj,
   },
   color,
-  avatar = senderAlias,
 }: Props) => {
   const classes = useStyles();
   const [style, setStyle] = useState({ display: 'none' });
+  const [imageProfile, setImageProfile] = useState('');
   const {
     jupAccount: { alias: currentUserAlias },
-    imageAccount,
   } = useAppSelector((state) => state.auth);
+  const {
+    selectedChannel: { members },
+  } = useAppSelector((state) => state.channel);
   const isYours = senderAlias === currentUserAlias;
   const dispatch = useAppDispatch();
 
@@ -53,10 +54,17 @@ const Message = ({
   const handleMouseEnter = () => setStyle({ display: 'block' });
   const handleMouseLeave = () => setStyle({ display: 'none' });
 
+  useEffect(() => {
+    if (members) {
+      const account = members.find((m) => m.memberAccountAddress === senderAddress);
+      if (account) setImageProfile(account.imageProfile);
+    }
+  }, [members]);
+
   return (
     <Box className={isYours ? classes.userContainer : classes.container}>
       <Box className={classes.avatarContainer}>
-        <Avatar alt="pomp" src={imageAccount || avatar} className={classes.avatar} />
+        <Avatar alt="pomp" src={imageProfile} className={classes.avatar} />
       </Box>
 
       <Box
