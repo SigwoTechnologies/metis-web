@@ -32,6 +32,8 @@ export function useCheckMetamask() {
     if (!window.ethereum) {
       toast.error(MetamaskNotice, {
         theme: 'colored',
+        autoClose: false,
+        hideProgressBar: false,
       });
     }
     if (window.ethereum) {
