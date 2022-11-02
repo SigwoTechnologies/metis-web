@@ -94,7 +94,7 @@ const ChannelInfo = ({ selectedChannel }: Props) => {
                     <ListItem disablePadding>
                       <ListItemButton>
                         <ListItemAvatar>
-                          <Avatar />
+                          <Avatar alt={e.memberAccountAddress} src={e.imageProfile} />
                         </ListItemAvatar>
                         <ListItemText
                           primary={e.memberAccountAddress}

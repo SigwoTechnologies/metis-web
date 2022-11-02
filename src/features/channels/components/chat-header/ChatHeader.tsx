@@ -1,4 +1,5 @@
 import Modal from '@metis/common/components/ui/Modal';
+import { findMembers } from '@metis/features/channels/store/channel.actions';
 import { useAppDispatch, useAppSelector } from '@metis/store/hooks';
 import { openToast } from '@metis/store/ui/ui.slice';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
@@ -8,7 +9,7 @@ import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
-import { MouseEvent, useState } from 'react';
+import { MouseEvent, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { usToggleMuteChannel } from '../../hooks/useToggleMuteChannel';
 import { hideChannel as hideChannelAction } from '../../store/channel.slice';
@@ -25,7 +26,12 @@ const ChatHeader = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const { selectedChannel } = useAppSelector((state) => state.channel);
-  // const isMuted = mutedChannels.includes(selectedChannel.channelAddress);
+
+  useEffect(() => {
+    if (selectedChannel.channelAddress) {
+      dispatch(findMembers(selectedChannel.channelAddress));
+    }
+  }, [selectedChannel.channelAddress]);
 
   const menu = Boolean(anchorEl);
   const openMenu = (event: MouseEvent<HTMLButtonElement>) => {
