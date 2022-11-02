@@ -152,6 +152,7 @@ export const SignUpButton = () => {
               justifyContent: 'center',
               alignItems: 'center',
               flexDirection: 'column',
+              textTransform: 'none',
             }}
           >
             Mined Blocks

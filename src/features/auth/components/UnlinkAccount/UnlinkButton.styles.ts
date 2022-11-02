@@ -16,6 +16,7 @@ const useStyles = makeStyles((theme: Theme) =>
     span: {
       fontWeight: 700,
       fontSize: '.8rem',
+      textTransform: 'none',
     },
     associate: {
       color: '#ccc',

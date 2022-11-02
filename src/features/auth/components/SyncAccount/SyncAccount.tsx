@@ -97,7 +97,7 @@ export const SyncAccount = () => {
     <>
       {syncDeviceRequested && credentials && (
         <Modal open>
-          <Box style={{ textAlign: 'center' }}>
+          <Box style={{ textAlign: 'center', textTransform: 'none' }}>
             <span>Someone wants to log in to this account through another device</span>
             <br />
             <br />
@@ -132,6 +132,7 @@ export const SyncAccount = () => {
             </span>
             <br />
             <br />
+
             <SpinnerContainer isLoading={syncDeviceRequested}>
               <Box style={{ display: 'flex', gap: '1rem' }}>
                 <LoadingButton
@@ -142,7 +143,7 @@ export const SyncAccount = () => {
                   }}
                   onClick={sendSyncRequest}
                 >
-                  <span className={classes.span}>Sync with another device</span>
+                  <span className={classes.span}>Sync with Another Device</span>
                 </LoadingButton>
 
                 <LoadingButton
@@ -153,7 +154,7 @@ export const SyncAccount = () => {
                   }}
                   onClick={() => navigate('/auth/legacy')}
                 >
-                  <span className={classes.span}>Associate legacy account</span>
+                  <span className={classes.span}>Associate Legacy Account</span>
                 </LoadingButton>
               </Box>
             </SpinnerContainer>
