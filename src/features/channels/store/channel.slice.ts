@@ -160,7 +160,21 @@ const slice = createSlice({
     });
 
     builder.addCase(useGetMessages.fulfilled, (state, { payload: messages }) => {
-      state.selectedChannel.messages = messages;
+      if (messages.length === 10) {
+        state.selectedChannel.messages.pop();
+        // eslint-disable-next-line no-restricted-syntax
+        for (const e of messages) {
+          state.selectedChannel.messages.push(e);
+        }
+      }
+
+      if (messages.length === 5) {
+        // eslint-disable-next-line no-restricted-syntax
+        for (const e of messages) {
+          state.selectedChannel.messages.unshift(e);
+        }
+      }
+
       state.isLoadingMessages = false;
     });
 
