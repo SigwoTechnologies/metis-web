@@ -97,7 +97,7 @@ export const SyncAccount = () => {
     <>
       {syncDeviceRequested && credentials && (
         <Modal open>
-          <Box style={{ textAlign: 'center' }}>
+          <Box style={{ textAlign: 'center', textTransform: 'none' }}>
             <span>Someone wants to log in to this account through another device</span>
             <br />
             <br />
