@@ -1,4 +1,5 @@
-import { useAppSelector } from '@metis/store/hooks';
+import { findMembers } from '@metis/features/channels/store/channel.actions';
+import { useAppSelector, useAppDispatch } from '@metis/store/hooks';
 import { IChannel } from '@metis/features/channels/types/channel.interface';
 import CloseIcon from '@mui/icons-material/Close';
 import {
@@ -15,7 +16,7 @@ import {
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import dayjs from 'dayjs';
-import { Fragment, useState } from 'react';
+import { Fragment, useState, useEffect } from 'react';
 import useStyles from './ChannelInfo.styles';
 
 type Props = {
@@ -23,10 +24,17 @@ type Props = {
 };
 const ChannelInfo = ({ selectedChannel }: Props) => {
   const classes = useStyles();
+  const dispatch = useAppDispatch();
   const [isOpenWallet, setIsOpenWallet] = useState(false);
   const {
-    selectedChannel: { members },
+    selectedChannel: { members, channelAddress },
   } = useAppSelector((state) => state.channel);
+
+  useEffect(() => {
+    if (isOpenWallet) {
+      dispatch(findMembers(channelAddress));
+    }
+  }, [isOpenWallet]);
 
   const closeDrawer = () => {
     setIsOpenWallet(false);
