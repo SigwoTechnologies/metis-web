@@ -62,7 +62,7 @@ const SendJup = () => {
     if ([alias, address].includes(recipient)) {
       dispatch(
         openNotification({
-          text: 'You cant send JUP to yourself',
+          text: 'You can`t send JUP to yourself',
           type: 'error',
         })
       );
