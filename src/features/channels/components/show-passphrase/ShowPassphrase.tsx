@@ -5,6 +5,7 @@ import { LoadingButton } from '@mui/lab';
 import Modal from '@metis/common/components/ui/Modal';
 import VpnKeyIcon from '@mui/icons-material/VpnKey';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
+import constants from '@metis/common/configuration/constants';
 import { Grid } from '@mui/material';
 import useStyles from './ShowPassphrase.styles';
 
@@ -17,12 +18,12 @@ const ShowPassphrase = () => {
   } = useAppSelector((state) => state.auth);
 
   useEffect(() => {
-    const display = localStorage.getItem('DISPLAYED_PASSPHRASE');
+    const display = localStorage.getItem(constants.RECOVERY_CREDS);
     if (!display || display === 'false') setShow(false);
   }, []);
 
   const onDisplayed = () => {
-    localStorage.setItem('DISPLAYED_PASSPHRASE', 'true');
+    localStorage.setItem(constants.RECOVERY_CREDS, 'true');
     setShow(true);
   };
 
