@@ -29,6 +29,7 @@ export type ChannelState = {
   isLoading: boolean;
   isLoadingMessages: boolean;
   isLoadingInvites: boolean;
+  hasMore: boolean;
   declinedInvites: number[];
   invites: TInvite[];
   hiddenChannels: IChannel[];
@@ -44,6 +45,7 @@ const initialState: ChannelState = {
   isLoading: false,
   isLoadingMessages: false,
   isLoadingInvites: false,
+  hasMore: false,
   channels: [],
   hiddenChannels: [],
   invites: [],
@@ -160,11 +162,15 @@ const slice = createSlice({
 
     builder.addCase(useGetMessages.pending, (state, { payload: messages }) => {
       state.isLoadingMessages = true;
+      state.hasMore = true;
     });
 
     builder.addCase(useGetMessages.fulfilled, (state, { payload: messages }) => {
+      state.isLoadingMessages = false;
       if (messages.length === 10) {
         state.selectedChannel.messages = messages;
+        state.hasMore = true;
+        return;
       }
 
       if (messages.length === 5) {
@@ -172,9 +178,11 @@ const slice = createSlice({
         for (const e of messages) {
           state.selectedChannel.messages.unshift(e);
         }
+        state.hasMore = true;
+        return;
       }
 
-      state.isLoadingMessages = false;
+      state.hasMore = false;
     });
 
     builder.addCase(getMutedChannelAddresses.pending, (state) => {

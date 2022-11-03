@@ -24,27 +24,26 @@ export const useGetMessages = createAsyncThunk(
     } = getState() as { auth: AuthState };
 
     const encryptionService = new EncryiptionService();
-    const response = await httpService.get<ChannelsMessagesResponse[]>(
+    const { data } = await httpService.get<ChannelsMessagesResponse[]>(
       `/v1/api/channels/${channelAddress}/messages?pageNumber=${pageNumber}&pageSize=${pageSize}`
     );
     const messages = await Promise.all(
-      response.data
-        .map(async (item) => ({
-          ...item.message,
-          decryptedReplyMessage: await encryptionService.decryptMessage(
-            item.message.replyMessage,
-            passP,
-            privateKey
-          ),
+      data.map(async ({ message }) => {
+        const decryptedReplyMessage =
+          message.replyMessage &&
+          (await encryptionService.decryptMessage(message.replyMessage, passP, privateKey));
+        return {
+          ...message,
+          decryptedReplyMessage,
           decryptedMessage: await encryptionService.decryptMessage(
-            item.message.message,
+            message.message,
             passP,
             privateKey
           ),
-        }))
-        .reverse()
+        };
+      })
     );
 
-    return messages;
+    return messages.reverse();
   }
 );

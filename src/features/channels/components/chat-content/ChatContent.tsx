@@ -3,11 +3,10 @@
 /* eslint-disable react/no-array-index-key */
 import { useAppDispatch, useAppSelector } from '@metis/store/hooks';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import { Box, Button, CircularProgress, Paper } from '@mui/material';
 import { animated, config, useTransition } from '@react-spring/web';
-import debounce from 'just-debounce-it';
-import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import InfiniteScroll from 'react-infinite-scroller';
 import { useGetMessages } from '../../hooks/useGetMessages';
 import useStyles from './ChatContent.styles';
 import Message from './message/Message';
@@ -15,12 +14,9 @@ import Message from './message/Message';
 export const ChatContent = () => {
   const classes = useStyles();
   const dispatch = useAppDispatch();
-  const initialPage = 2;
-  const [page, setPage] = useState(initialPage);
-  const [visible, setVisible] = useState(false);
-  const visorRef = useRef(null);
   const {
     selectedChannel: { messages, channelAddress },
+    hasMore,
     isLoadingMessages,
   } = useAppSelector((state) => state.channel);
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -51,18 +47,7 @@ export const ChatContent = () => {
   useLayoutEffect(() => {
     onScroll();
     scrollInstantlyToBottom();
-    setPage(initialPage);
   }, [channelAddress]);
-
-  const getMoreMessages = useCallback(
-    debounce(() => {
-      setPage((prev) => prev + 1);
-      dispatch(
-        useGetMessages({ channelAddress: String(channelAddress), pageNumber: page, pageSize: 5 })
-      );
-    }, 500),
-    [setPage, page, channelAddress]
-  );
 
   // Scroll smoothly to last message when there's a new message and the scrollbar
   // is at the bottom
@@ -72,58 +57,61 @@ export const ChatContent = () => {
     }
   }, [messages]);
 
-  useEffect(() => {
-    const onChange = ([entries]: any, observer: any) => {
-      if (entries.isIntersecting) {
-        setVisible(true);
-      } else {
-        setVisible(false);
-      }
-    };
+  const getMoreMessages = (pageNumber: number) => {
+    if (!isLoadingMessages) {
+      dispatch(
+        useGetMessages({
+          channelAddress: String(channelAddress),
+          pageNumber,
+          pageSize: 5,
+        })
+      );
+    }
+  };
 
-    const observer = new IntersectionObserver(onChange, {
-      rootMargin: '200px',
-    });
+  if (messages) {
+    return (
+      <>
+        <Paper onScroll={onScroll} ref={containerRef} className={classes.main} square>
+          <div style={{ height: '100%', overflow: 'auto' }}>
+            <InfiniteScroll
+              pageStart={0}
+              loadMore={getMoreMessages}
+              isReverse
+              hasMore={hasMore}
+              loader={
+                <Box style={{ display: 'flex', justifyContent: 'center' }}>
+                  <CircularProgress />
+                </Box>
+              }
+              useWindow={false}
+            >
+              {messages.map((message, index) => (
+                <Message key={index} message={message} color="#A36300" />
+              ))}
+            </InfiniteScroll>
+          </div>
 
-    if (visorRef?.current) observer.observe(visorRef.current);
-  });
+          {transition(
+            (styles, item) =>
+              !item && (
+                <animated.div style={styles} className={classes.scrollToBottomButton}>
+                  <Button
+                    onClick={scrollInstantlyToBottom}
+                    color="primary"
+                    variant="contained"
+                    component="label"
+                  >
+                    <KeyboardArrowDownIcon />
+                  </Button>
+                </animated.div>
+              )
+          )}
+          <div ref={scrollRef} />
+        </Paper>
+      </>
+    );
+  }
 
-  return (
-    <>
-      {visible && !isLoadingMessages && (
-        <Button onClick={getMoreMessages} color="primary" variant="contained" component="label">
-          <KeyboardArrowUpIcon />
-        </Button>
-      )}
-
-      {isLoadingMessages && (
-        <Box style={{ display: 'flex', justifyContent: 'center' }}>
-          <CircularProgress />
-        </Box>
-      )}
-      <Paper onScroll={onScroll} ref={containerRef} className={classes.main} square>
-        <div ref={visorRef} />
-        {!!messages &&
-          messages.map((message, index) => (
-            <Message key={index} message={message} color="#A36300" />
-          ))}
-        {transition(
-          (styles, item) =>
-            !item && (
-              <animated.div style={styles} className={classes.scrollToBottomButton}>
-                <Button
-                  onClick={scrollInstantlyToBottom}
-                  color="primary"
-                  variant="contained"
-                  component="label"
-                >
-                  <KeyboardArrowDownIcon />
-                </Button>
-              </animated.div>
-            )
-        )}
-        <div ref={scrollRef} />
-      </Paper>
-    </>
-  );
+  return null;
 };

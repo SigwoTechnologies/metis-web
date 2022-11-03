@@ -34,14 +34,14 @@ export const findChannels = createAsyncThunk(
               decryptedReplyMessage:
                 lastMessage &&
                 (await encryptionService.decryptMessage(
-                  lastMessage?.message.replyMessage,
+                  lastMessage?.message?.replyMessage,
                   passP,
                   privateKey
                 )),
               decryptedMessage:
                 lastMessage &&
                 (await encryptionService.decryptMessage(
-                  lastMessage?.message.message,
+                  lastMessage?.message?.message,
                   passP,
                   privateKey
                 )),
