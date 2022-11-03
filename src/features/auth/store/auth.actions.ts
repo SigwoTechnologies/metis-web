@@ -124,16 +124,22 @@ export const addPublicKey = createAsyncThunk(
   }
 );
 
-export const findImage = createAsyncThunk('auth/findImage', async (url: string) => {
-  try {
-    const { data } = await httpService.get(url, {
-      responseType: 'blob',
-    });
-    return URL.createObjectURL(data);
-  } catch (error) {
-    return '';
+export const findImage = createAsyncThunk(
+  'auth/findImage',
+  async (url: string, { rejectWithValue }) => {
+    try {
+      const { data } = await httpService.get(url, {
+        responseType: 'blob',
+      });
+      return URL.createObjectURL(data);
+    } catch (err: unknown) {
+      if (err instanceof BusinessError) {
+        return rejectWithValue(err.getError());
+      }
+      throw err;
+    }
   }
-});
+);
 
 export const verifyAlreadyRegistered = createAsyncThunk(
   'auth/verifyAlreadyRegistered',
