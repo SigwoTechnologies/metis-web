@@ -3,6 +3,7 @@ import { TInvite, useGetUsersInvites } from '@metis/features/invites/services/in
 import { useAppDispatch } from '@metis/store/hooks';
 import CloseIcon from '@mui/icons-material/Close';
 import DoneIcon from '@mui/icons-material/Done';
+import { SpinnerContainer } from '@metis/common/components/ui/spinner-container/SpinnerContainer';
 import {
   Avatar,
   Badge,
@@ -16,9 +17,10 @@ import {
 type Props = {
   invite: TInvite;
   acceptInvite: (channelAddress: string) => Promise<void>;
+  proccessInvite: boolean;
 };
 
-const InviteListItem = ({ invite, acceptInvite }: Props) => {
+const InviteListItem = ({ invite, acceptInvite, proccessInvite }: Props) => {
   const dispatch = useAppDispatch();
 
   const handleAcceptInvite = () => {
@@ -34,12 +36,14 @@ const InviteListItem = ({ invite, acceptInvite }: Props) => {
     <ListItem
       secondaryAction={
         <Box display="flex" gap="0.3rem">
-          <IconButton onClick={handleAcceptInvite} color="success">
-            <DoneIcon />
-          </IconButton>
-          <IconButton onClick={declineInvite} color="error">
-            <CloseIcon />
-          </IconButton>
+          <SpinnerContainer isLoading={proccessInvite}>
+            <IconButton onClick={handleAcceptInvite} color="success">
+              <DoneIcon />
+            </IconButton>
+            <IconButton onClick={declineInvite} color="error">
+              <CloseIcon />
+            </IconButton>
+          </SpinnerContainer>
         </Box>
       }
     >
