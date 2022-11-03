@@ -99,9 +99,9 @@ export const ChannelListItem = ({ channel, avatar = channel.channelName }: Props
                     variant="caption"
                     color="text.secondary"
                     fontSize="small"
-                    title={dayjs(channel.messages[0]?.createdAt).format('MM/DD/YYYY hh:mm:ss A')}
+                    title={dayjs(channel.lastMessage?.createdAt).format('MM/DD/YYYY hh:mm:ss A')}
                   >
-                    {dayjs(channel.messages[0]?.createdAt).format('hh:mm A')}
+                    {dayjs(channel.lastMessage?.createdAt).format('hh:mm A')}
                   </Typography>
                 </Box>
               </Box>
@@ -110,22 +110,18 @@ export const ChannelListItem = ({ channel, avatar = channel.channelName }: Props
           secondary={
             <Box display="flex">
               <Typography noWrap component="span" variant="caption" color="text.secondary">
-                {!!channel.messages.length && (
-                  <>
-                    {channel.messages[0].messageType === 'attachment' && (
-                      <div
-                        style={{
-                          display: 'flex',
-                          fontSize: '1rem',
-                        }}
-                      >
-                        <ImageIcon fontSize="small" /> Image
-                      </div>
-                    )}
-
-                    {channel.messages[0].decryptedMessage}
-                  </>
+                {channel.lastMessage?.messageType === 'attachment' && (
+                  <div
+                    style={{
+                      display: 'flex',
+                      fontSize: '1rem',
+                    }}
+                  >
+                    <ImageIcon fontSize="small" /> Image
+                  </div>
                 )}
+
+                {channel.lastMessage?.decryptedMessage}
               </Typography>
               {isMuted && <VolumeOffIcon className={classes.mutedIcon} fontSize="small" />}
             </Box>

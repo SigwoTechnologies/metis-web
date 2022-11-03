@@ -1,18 +1,26 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable react/no-array-index-key */
-import { useAppSelector } from '@metis/store/hooks';
+import { useAppDispatch, useAppSelector } from '@metis/store/hooks';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import { Button, Paper, CircularProgress, Box } from '@mui/material';
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+import { Box, Button, CircularProgress, Paper } from '@mui/material';
 import { animated, config, useTransition } from '@react-spring/web';
-import { useEffect, useLayoutEffect, useRef, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import debounce from 'just-debounce-it';
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { useGetMessages } from '../../hooks/useGetMessages';
 import useStyles from './ChatContent.styles';
 import Message from './message/Message';
 
 export const ChatContent = () => {
   const classes = useStyles();
-  const { channelAddress } = useParams();
+  const dispatch = useAppDispatch();
+  const initialPage = 2;
+  const [page, setPage] = useState(initialPage);
+  const [visible, setVisible] = useState(false);
+  const visorRef = useRef(null);
   const {
-    selectedChannel: { messages },
+    selectedChannel: { messages, channelAddress },
     isLoadingMessages,
   } = useAppSelector((state) => state.channel);
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -43,7 +51,18 @@ export const ChatContent = () => {
   useLayoutEffect(() => {
     onScroll();
     scrollInstantlyToBottom();
+    setPage(initialPage);
   }, [channelAddress]);
+
+  const getMoreMessages = useCallback(
+    debounce(() => {
+      setPage((prev) => prev + 1);
+      dispatch(
+        useGetMessages({ channelAddress: String(channelAddress), pageNumber: page, pageSize: 5 })
+      );
+    }, 500),
+    [setPage, page, channelAddress]
+  );
 
   // Scroll smoothly to last message when there's a new message and the scrollbar
   // is at the bottom
@@ -53,35 +72,58 @@ export const ChatContent = () => {
     }
   }, [messages]);
 
-  if (isLoadingMessages) {
-    return (
-      <Box className={classes.isLoadingMessages}>
-        <CircularProgress />
-      </Box>
-    );
-  }
+  useEffect(() => {
+    const onChange = ([entries]: any, observer: any) => {
+      if (entries.isIntersecting) {
+        setVisible(true);
+      } else {
+        setVisible(false);
+      }
+    };
+
+    const observer = new IntersectionObserver(onChange, {
+      rootMargin: '200px',
+    });
+
+    if (visorRef?.current) observer.observe(visorRef.current);
+  });
 
   return (
-    <Paper onScroll={onScroll} ref={containerRef} className={classes.main} square>
-      {messages.map((message, index) => (
-        <Message key={index} message={message} color="#A36300" />
-      ))}
-      {transition(
-        (styles, item) =>
-          !item && (
-            <animated.div style={styles} className={classes.scrollToBottomButton}>
-              <Button
-                onClick={scrollInstantlyToBottom}
-                color="primary"
-                variant="contained"
-                component="label"
-              >
-                <KeyboardArrowDownIcon />
-              </Button>
-            </animated.div>
-          )
+    <>
+      {visible && !isLoadingMessages && (
+        <Button onClick={getMoreMessages} color="primary" variant="contained" component="label">
+          <KeyboardArrowUpIcon />
+        </Button>
       )}
-      <div ref={scrollRef} />
-    </Paper>
+
+      {isLoadingMessages && (
+        <Box style={{ display: 'flex', justifyContent: 'center' }}>
+          <CircularProgress />
+        </Box>
+      )}
+      <Paper onScroll={onScroll} ref={containerRef} className={classes.main} square>
+        <div ref={visorRef} />
+        {!!messages &&
+          messages.map((message, index) => (
+            <Message key={index} message={message} color="#A36300" />
+          ))}
+        {transition(
+          (styles, item) =>
+            !item && (
+              <animated.div style={styles} className={classes.scrollToBottomButton}>
+                <Button
+                  onClick={scrollInstantlyToBottom}
+                  color="primary"
+                  variant="contained"
+                  component="label"
+                >
+                  <KeyboardArrowDownIcon />
+                </Button>
+              </animated.div>
+            )
+        )}
+        <div ref={scrollRef} />
+      </Paper>
+    </>
   );
 };
