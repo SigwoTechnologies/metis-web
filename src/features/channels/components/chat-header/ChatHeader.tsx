@@ -2,7 +2,8 @@ import Modal from '@metis/common/components/ui/Modal';
 import { findMembers } from '@metis/features/channels/store/channel.actions';
 import { useAppDispatch, useAppSelector } from '@metis/store/hooks';
 import { openToast } from '@metis/store/ui/ui.slice';
-import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
+import GroupAddIcon from '@mui/icons-material/GroupAdd';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import { LoadingButton } from '@mui/lab';
 import { Button, Menu, MenuItem } from '@mui/material';
 import Avatar from '@mui/material/Avatar';
@@ -64,18 +65,6 @@ const ChatHeader = () => {
 
   return (
     <>
-      <Menu
-        id="basic-menu"
-        anchorEl={anchorEl}
-        open={menu}
-        onClose={closeMenu}
-        MenuListProps={{
-          'aria-labelledby': 'basic-button',
-        }}
-      >
-        <MenuItem onClick={openInviteUserModal}>Invite user</MenuItem>
-        <MenuItem onClick={hideChannel}>Hide channel</MenuItem>
-      </Menu>
       <Modal open={muteModalOpen} onClose={() => setMuteModalOpen(false)}>
         <Typography
           variant="h5"
@@ -104,9 +93,14 @@ const ChatHeader = () => {
 
           <ChannelInfo selectedChannel={selectedChannel} />
         </Box>
-        <IconButton onClick={openMenu} aria-label="channel settings" size="large">
-          <MoreHorizIcon />
-        </IconButton>
+        <Box display="flex">
+          <IconButton onClick={hideChannel} aria-label="channel settings" size="large">
+            <VisibilityOffIcon />
+          </IconButton>
+          <IconButton onClick={openInviteUserModal} aria-label="channel settings" size="large">
+            <GroupAddIcon />
+          </IconButton>
+        </Box>
       </Box>
     </>
   );
