@@ -1,5 +1,6 @@
-import { findMembers } from '@metis/features/channels/store/channel.actions';
 import { useAppSelector, useAppDispatch } from '@metis/store/hooks';
+import { findMembers } from '@metis/features/channels/store/channel.actions';
+import PlaceholderAvatar from '@metis/assets/images/avatars/astronaut.png';
 import { IChannel } from '@metis/features/channels/types/channel.interface';
 import CloseIcon from '@mui/icons-material/Close';
 import {
@@ -93,7 +94,10 @@ const ChannelInfo = ({ selectedChannel }: Props) => {
                     <ListItem disablePadding>
                       <ListItemButton>
                         <ListItemAvatar>
-                          <Avatar alt={account.memberAccountAddress} src={account.imageProfile} />
+                          <Avatar
+                            alt={account.memberAccountAddress}
+                            src={account.imageProfile || PlaceholderAvatar}
+                          />
                         </ListItemAvatar>
                         <ListItemText
                           primary={account.memberAccountAddress}
