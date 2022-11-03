@@ -72,9 +72,11 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     logout: {
       color: '#ec5151',
+      textAlign: 'left',
     },
     unlink: {
       color: 'yellow',
+      textAlign: 'left',
     },
     wrapper: {
       backgroundColor: theme.palette.background.default,

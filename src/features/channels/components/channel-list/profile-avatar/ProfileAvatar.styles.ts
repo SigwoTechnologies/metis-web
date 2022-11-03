@@ -7,16 +7,7 @@ const useStyles = makeStyles(() =>
       height: '4rem',
       justifyContent: 'flex-start',
     },
-    container: {
-      '&:hover .icon': {
-        opacity: '0.3',
-      },
-    },
     icon: {
-      opacity: '0',
-      '&:hover': {
-        opacity: '1',
-      },
       color: 'white',
       fontSize: '96%',
       position: 'absolute',
@@ -25,9 +16,11 @@ const useStyles = makeStyles(() =>
       transform: 'translate(-50%, -50%)',
       '-ms-transform': 'translate(-50%, -50%)',
       textAlign: 'center',
-    },
-    spinner: {
-      alignSelf: 'center',
+      opacity: '0',
+      transition: 'all 0.2s ease',
+      '&:hover': {
+        opacity: '1',
+      },
     },
   })
 );

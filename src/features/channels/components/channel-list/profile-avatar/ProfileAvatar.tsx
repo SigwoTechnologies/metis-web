@@ -6,7 +6,7 @@ import { useUploadImageProfile } from '@metis/features/channels/hooks/useUploadI
 import { useAppDispatch, useAppSelector } from '@metis/store/hooks';
 import { openToast } from '@metis/store/ui/ui.slice';
 import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
-import { Avatar, Box, IconButton } from '@mui/material';
+import { Avatar, IconButton } from '@mui/material';
 import { useEffect, useState } from 'react';
 import Files from 'react-files';
 import useStyles from './ProfileAvatar.styles';
@@ -71,33 +71,24 @@ const ProfileAvatar = () => {
 
   return (
     <SpinnerContainer isLoading={uploadingImage}>
-      <IconButton
-        aria-label="send message"
-        edge="start"
-        size="medium"
-        sx={{ p: 1.5 }}
-        className={styles.container}
+      <Files
+        onChange={handleSelectFile}
+        accepts={['image/*']}
+        multiple
+        maxFileSize={1_600_000}
+        minFileSize={0}
+        onError={onFilesError}
+        clickable
       >
-        <Files
-          className="files-dropzone"
-          onChange={handleSelectFile}
-          accepts={['image/*']}
-          multiple
-          maxFileSize={1_600_000}
-          minFileSize={0}
-          onError={onFilesError}
-          clickable
-        >
+        <IconButton edge="start" size="medium" sx={{ p: 1.3 }}>
           <Avatar
-            alt="Channel Avatar"
+            alt="Profile Picture"
             src={imageAccount || PlaceholderAvatar}
             className={styles.accountAvatar}
           />
-          <Box>
-            <AddAPhotoIcon className={styles.icon} />
-          </Box>
-        </Files>
-      </IconButton>
+          <AddAPhotoIcon className={styles.icon} />
+        </IconButton>
+      </Files>
     </SpinnerContainer>
   );
 };

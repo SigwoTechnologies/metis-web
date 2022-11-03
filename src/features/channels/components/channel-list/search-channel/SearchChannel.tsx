@@ -7,7 +7,7 @@ import Modal from '@metis/common/components/ui/Modal';
 import appConfig from '@metis/common/configuration/app.config';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import IndeterminateCheckBoxIcon from '@mui/icons-material/IndeterminateCheckBox';
-import LogoutIcon from '@mui/icons-material/Logout';
+import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import PhonelinkEraseIcon from '@mui/icons-material/PhonelinkErase';
 import MenuIcon from '@mui/icons-material/Menu';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
@@ -128,7 +128,7 @@ const ChannelList = () => {
         <ListItem disablePadding>
           <ListItemButton onClick={handleSignOut}>
             <ListItemIcon className={styles.logout}>
-              <LogoutIcon />
+              <ExitToAppIcon />
             </ListItemIcon>
             <ListItemText className={styles.logout} primary="Sign out" />
           </ListItemButton>
