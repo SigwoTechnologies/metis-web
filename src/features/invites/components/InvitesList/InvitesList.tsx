@@ -15,16 +15,19 @@ import {
   List,
   Typography,
 } from '@mui/material';
+import { useState } from 'react';
 import { useAcceptInvite, useGetUsersInvites } from '../../services/invite.service';
 import InviteListItem from './InviteListItem/InviteListItem';
 
 const InvitesList = () => {
   const { alias, address } = useAppSelector((state) => state.auth.jupAccount);
   const { invites, isLoadingInvites } = useAppSelector((state) => state.channel);
+  const [proccessInvite, setProccessInvite] = useState(false);
   const dispatch = useAppDispatch();
 
   const acceptInvite = async (channelAddress: string) => {
     try {
+      setProccessInvite(true);
       await useAcceptInvite(channelAddress);
       dispatch(openToast({ type: 'success', text: 'Invite accepted' }));
       dispatch(useGetUsersInvites());
@@ -32,6 +35,7 @@ const InvitesList = () => {
     } catch (error) {
       dispatch(openToast({ type: 'error', text: 'There was a problem accepting the invite' }));
     }
+    setProccessInvite(false);
   };
 
   useOnMount(() => {
@@ -59,7 +63,7 @@ const InvitesList = () => {
           id="panel1a-header"
         >
           <Box display="flex" gap="1rem">
-            {invites.length ? (
+            {(invites.length && (
               <Badge
                 color="error"
                 badgeContent={invites.length}
@@ -70,9 +74,8 @@ const InvitesList = () => {
               >
                 <InboxIcon />
               </Badge>
-            ) : (
-              ''
-            )}
+            )) ||
+              ''}
             {!invites.length && <InboxIcon />}
             <Typography>Invites</Typography>
           </Box>
@@ -83,6 +86,7 @@ const InvitesList = () => {
               <InviteListItem
                 key={invite.invitationId}
                 acceptInvite={acceptInvite}
+                proccessInvite={proccessInvite}
                 invite={invite}
               />
             ))}
