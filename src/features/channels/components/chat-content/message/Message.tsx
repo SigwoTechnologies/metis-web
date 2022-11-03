@@ -1,4 +1,5 @@
 import { updateReply } from '@metis/features/channels/store/channel.slice';
+import PlaceholderAvatar from '@metis/assets/images/avatars/astronaut.png';
 import { IMessage as MessageType } from '@metis/features/channels/types/message.interface';
 import { useAppDispatch, useAppSelector } from '@metis/store/hooks';
 import Avatar from '@mui/material/Avatar';
@@ -30,7 +31,7 @@ const Message = ({
 }: Props) => {
   const classes = useStyles();
   const [style, setStyle] = useState({ display: 'none' });
-  const [imageProfile, setImageProfile] = useState('');
+  const [imageProfile, setImageProfile] = useState(PlaceholderAvatar);
   const {
     jupAccount: { alias: currentUserAlias },
   } = useAppSelector((state) => state.auth);
@@ -64,7 +65,7 @@ const Message = ({
   return (
     <Box className={isYours ? classes.userContainer : classes.container}>
       <Box className={classes.avatarContainer}>
-        <Avatar alt="pomp" src={imageProfile} className={classes.avatar} />
+        <Avatar alt="pomp" src={imageProfile || PlaceholderAvatar} className={classes.avatar} />
       </Box>
 
       <Box

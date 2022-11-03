@@ -54,11 +54,6 @@ const ChatHeader = () => {
     closeMenu();
   };
 
-  // const openMuteModal = () => {
-  //   setMuteModalOpen(true);
-  //   closeMenu();
-  // };
-
   const muteChannel = () => {
     setLoading(true);
     dispatch(usToggleMuteChannel(selectedChannel.channelAddress)).then(() => {
@@ -66,14 +61,6 @@ const ChatHeader = () => {
       setLoading(false);
     });
   };
-
-  // const unmuteChannel = () => {
-  //   setLoading(true);
-  //   dispatch(toggleMuteChannel(selectedChannel.channelAddress)).then(() => {
-  //     closeMenu();
-  //     setLoading(false);
-  //   });
-  // };
 
   return (
     <>
