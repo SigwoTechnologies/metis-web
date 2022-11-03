@@ -12,7 +12,9 @@ import {
   ListItem,
   ListItemAvatar,
   ListItemText,
+  Typography,
 } from '@mui/material';
+import useStyles from './InviteListItem.styles';
 
 type Props = {
   invite: TInvite;
@@ -22,6 +24,7 @@ type Props = {
 
 const InviteListItem = ({ invite, acceptInvite, proccessInvite }: Props) => {
   const dispatch = useAppDispatch();
+  const classes = useStyles();
 
   const handleAcceptInvite = () => {
     acceptInvite(invite.channelAddress);
@@ -59,7 +62,19 @@ const InviteListItem = ({ invite, acceptInvite, proccessInvite }: Props) => {
           <Avatar alt={invite.channelName} src={invite.channelName} />
         </Badge>
       </ListItemAvatar>
-      <ListItemText primary={invite.channelName} secondary={invite.channelAddress} />
+      <ListItemText
+        primary={invite.channelName}
+        secondary={
+          <Typography
+            component="span"
+            variant="caption"
+            color="text.primary"
+            className={classes.text}
+          >
+            {invite.channelAddress}
+          </Typography>
+        }
+      />
     </ListItem>
   );
 };
