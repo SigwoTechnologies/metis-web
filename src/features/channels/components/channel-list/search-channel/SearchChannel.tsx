@@ -3,10 +3,12 @@ import { setOpenCreateChannelDrawer } from '@metis/features/channels/store/chann
 import { useAppDispatch, useAppSelector } from '@metis/store/hooks';
 import { openToast } from '@metis/store/ui/ui.slice';
 import { findImage } from '@metis/features/auth/store/auth.actions';
+import Modal from '@metis/common/components/ui/Modal';
 import appConfig from '@metis/common/configuration/app.config';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import IndeterminateCheckBoxIcon from '@mui/icons-material/IndeterminateCheckBox';
 import LogoutIcon from '@mui/icons-material/Logout';
+import PhonelinkEraseIcon from '@mui/icons-material/PhonelinkErase';
 import MenuIcon from '@mui/icons-material/Menu';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import Box from '@mui/material/Box';
@@ -21,7 +23,10 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import Typography from '@mui/material/Typography';
+import CloseIcon from '@mui/icons-material/Close';
+import WarningIcon from '@mui/icons-material/Warning';
 import { useState, useEffect } from 'react';
+import { LoadingButton } from '@mui/lab';
 import About from '../about/about';
 import ModalHiddenList from '../modal-hidden-list/ModalHiddenList';
 import ProfileAvatar from '../profile-avatar/ProfileAvatar';
@@ -32,6 +37,7 @@ const ChannelList = () => {
   const styles = useStyles();
   const [drawer, setDrawer] = useState(false);
   const [open, setOpen] = useState(false);
+  const [isOpenUnlink, setIsOpenUnlink] = useState(false);
   const dispatch = useAppDispatch();
   const {
     jupAccount: { address },
@@ -48,6 +54,15 @@ const ChannelList = () => {
   const handleSignOut = () => {
     dispatch(signOut());
     dispatch(openToast({ text: 'Sign out successful', type: 'info' }));
+  };
+
+  const handleUnlink = () => {
+    setIsOpenUnlink(!isOpenUnlink);
+  };
+
+  const onUnlinkAccount = () => {
+    localStorage.clear();
+    window.location.reload();
   };
 
   const openCreateChannel = () => {
@@ -103,6 +118,14 @@ const ChannelList = () => {
           </List>
         </Box>
         <ListItem disablePadding>
+          <ListItemButton onClick={handleUnlink}>
+            <ListItemIcon className={styles.unlink}>
+              <PhonelinkEraseIcon />
+            </ListItemIcon>
+            <ListItemText className={styles.unlink} primary="Unlink Account" />
+          </ListItemButton>
+        </ListItem>
+        <ListItem disablePadding>
           <ListItemButton onClick={handleSignOut}>
             <ListItemIcon className={styles.logout}>
               <LogoutIcon />
@@ -135,6 +158,30 @@ const ChannelList = () => {
           </Grid>
         </Grid>
       </Container>
+
+      <Modal open={isOpenUnlink}>
+        <div className={styles.iconContainerUnlink}>
+          <WarningIcon className={styles.icon} color="primary" />
+          <span>Are you sure to unlink your account?</span>
+          <span>This action is irreversible.</span>
+          <span>You could lose your Metis account.</span>
+        </div>
+
+        <IconButton aria-label="close" onClick={handleUnlink} className={styles.closeButton}>
+          <CloseIcon />
+        </IconButton>
+
+        <LoadingButton
+          fullWidth
+          variant="contained"
+          onClick={onUnlinkAccount}
+          style={{
+            width: '20rem',
+          }}
+        >
+          <span className={styles.span}>Unlink your account</span>
+        </LoadingButton>
+      </Modal>
     </>
   );
 };
