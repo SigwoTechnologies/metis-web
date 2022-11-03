@@ -87,7 +87,7 @@ const ChannelList = () => {
           <Divider />
           <List>
             <ListItem disablePadding>
-              <ListItemButton>
+              <ListItemButton className={styles.listItemButton}>
                 <ListItemIcon className={styles.listItemIcon}>
                   <AddCircleIcon />
                 </ListItemIcon>
@@ -98,7 +98,7 @@ const ChannelList = () => {
             <Wallet />
 
             <ListItem disablePadding>
-              <ListItemButton onClick={() => setOpen(true)}>
+              <ListItemButton onClick={() => setOpen(true)} className={styles.listItemButton}>
                 <ListItemIcon className={styles.listItemIcon}>
                   <IndeterminateCheckBoxIcon />
                 </ListItemIcon>
@@ -108,7 +108,7 @@ const ChannelList = () => {
 
             <ModalHiddenList open={open} onClose={() => setOpen(false)} />
             <ListItem disablePadding>
-              <ListItemButton onClick={handleShareMetis}>
+              <ListItemButton onClick={handleShareMetis} className={styles.listItemButton}>
                 <ListItemIcon className={styles.listItemIcon}>
                   <PersonAddIcon />
                 </ListItemIcon>
@@ -118,7 +118,7 @@ const ChannelList = () => {
           </List>
         </Box>
         <ListItem disablePadding>
-          <ListItemButton onClick={handleUnlink}>
+          <ListItemButton onClick={handleUnlink} className={styles.listItemButton}>
             <ListItemIcon className={styles.unlink}>
               <PhonelinkEraseIcon />
             </ListItemIcon>
@@ -126,7 +126,7 @@ const ChannelList = () => {
           </ListItemButton>
         </ListItem>
         <ListItem disablePadding>
-          <ListItemButton onClick={handleSignOut}>
+          <ListItemButton onClick={handleSignOut} className={styles.listItemButton}>
             <ListItemIcon className={styles.logout}>
               <ExitToAppIcon />
             </ListItemIcon>

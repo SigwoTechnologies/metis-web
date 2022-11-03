@@ -21,7 +21,8 @@ const useStyles = makeStyles(() =>
       marginLeft: '1rem',
     },
     listItemButton: {
-      padding: '1rem',
+      padding: '.8rem',
+      transition: 'all 1s ease',
     },
   })
 );
