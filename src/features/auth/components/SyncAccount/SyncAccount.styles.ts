@@ -5,6 +5,7 @@ const useStyles = makeStyles(() =>
     reject: {
       width: '13rem',
       backgroundColor: '#b21c12',
+      color: '#ffff',
       transition: 'all 0.2s ease',
       '&:hover:before': {
         transform: 'scale(1.2)',
@@ -19,6 +20,7 @@ const useStyles = makeStyles(() =>
     },
     grant: {
       width: '13rem',
+      color: '#ffff',
       backgroundColor: '#378e1a',
       transition: 'all 0.2s ease',
       '&:hover:before': {

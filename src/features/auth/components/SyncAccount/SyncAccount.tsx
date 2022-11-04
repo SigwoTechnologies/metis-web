@@ -11,7 +11,7 @@ import { Socket } from 'socket.io-client';
 import { localStorageKeyDeclinedInvites } from '@metis/features/channels/hooks/useGetDeclinedInvites';
 import { useAppSelector, useAppDispatch } from '@metis/store/hooks';
 import { localStorageKeyHiddenChannel } from '@metis/features/channels/hooks/useGetHiddenChannels';
-import { openToast } from '@metis/store/ui/ui.slice';
+import { openNotification } from '@metis/store/ui/ui.slice';
 import Box from '@mui/material/Box';
 import useStyles from './SyncAccount.styles';
 
@@ -20,6 +20,8 @@ export const SyncAccount = () => {
   const [socketConnected, setSocketConnected] = useState<Socket>();
   const { ethAccount, isAlreadyRegistered } = useAppSelector((state) => state.auth);
   const [credentials, setCredentials] = useState(false);
+  const [synchronized, setSynchronized] = useState(false);
+  const [modalOpen, setModalOpen] = useState(true);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const classes = useStyles();
@@ -53,21 +55,23 @@ export const SyncAccount = () => {
 
     socket.on('sync-devices-granted', (data) => {
       window.localStorage.setItem(constants.CREDENTIALS, data.credentials);
+      // window.localStorage.setItem(constants.RECOVERY_CREDS, data.recoveryCreds);
       window.localStorage.setItem(localStorageKeyDeclinedInvites, data.hiddenChannels);
       window.localStorage.setItem(localStorageKeyHiddenChannel, data.declinedInvites);
       dispatch(
-        openToast({
-          text: 'Devices synced successfully',
+        openNotification({
+          text: 'Sync request granted',
           type: 'success',
         })
       );
-      window.location.reload();
+      setSyncDeviceRequested(false);
+      setSynchronized(true);
     });
 
     socket.on('sync-devices-rejected', () => {
       setSyncDeviceRequested(false);
       dispatch(
-        openToast({
+        openNotification({
           text: 'Sync request rejected',
           type: 'error',
         })
@@ -81,10 +85,12 @@ export const SyncAccount = () => {
 
   const sendGrantSync = () => {
     const credentialsFound = window.localStorage.getItem(constants.CREDENTIALS);
+    // const recoveryCreds = window.localStorage.getItem(constants.RECOVERY_CREDS);
     const declinedInvites = window.localStorage.getItem(localStorageKeyDeclinedInvites);
     const hiddenChannels = window.localStorage.getItem(localStorageKeyHiddenChannel);
     socketConnected?.emit('sync-devices-grant', {
       credentials: credentialsFound,
+      // recoveryCreds,
       hiddenChannels,
       declinedInvites,
     });
@@ -125,43 +131,84 @@ export const SyncAccount = () => {
 
       {isAlreadyRegistered && !credentials && (
         <Modal open>
+          {!synchronized && (
+            <Box style={{ textAlign: 'center' }}>
+              <SpinnerContainer isLoading={syncDeviceRequested}>
+                <span>
+                  We have detected this account is already registered in another device, to proceed
+                  go to your other device to grant permission.
+                </span>
+                <br />
+                <br />
+
+                <Box style={{ display: 'flex', gap: '1rem' }}>
+                  <LoadingButton
+                    fullWidth
+                    variant="contained"
+                    style={{
+                      width: '25rem',
+                    }}
+                    onClick={sendSyncRequest}
+                  >
+                    <span className={classes.span}>Sync with Another Device</span>
+                  </LoadingButton>
+
+                  <LoadingButton
+                    fullWidth
+                    variant="contained"
+                    style={{
+                      width: '25rem',
+                    }}
+                    onClick={() => navigate('/auth/legacy')}
+                  >
+                    <span className={classes.span}>Associate Legacy Account</span>
+                  </LoadingButton>
+                </Box>
+                <br />
+                <span>
+                  If you cannot recover your account by any of these ways, your account will be
+                  lost.
+                </span>
+              </SpinnerContainer>
+            </Box>
+          )}
+          {syncDeviceRequested && (
+            <Box>
+              <br /> <span>You are syncing. Waiting to be approved on the other device.</span>
+            </Box>
+          )}
+        </Modal>
+      )}
+      {!syncDeviceRequested && synchronized && (
+        <Modal open={modalOpen}>
           <Box style={{ textAlign: 'center' }}>
-            <span>
-              We have detected this account is already registered in another device, to proceed go
-              to your other device to grant permission.
-            </span>
+            <span>The account has been successfully synchronized.</span>
             <br />
             <br />
-
-            <SpinnerContainer isLoading={syncDeviceRequested}>
-              <Box style={{ display: 'flex', gap: '1rem' }}>
-                <LoadingButton
-                  fullWidth
-                  variant="contained"
-                  style={{
-                    width: '25rem',
-                  }}
-                  onClick={sendSyncRequest}
-                >
-                  <span className={classes.span}>Sync with Another Device</span>
-                </LoadingButton>
-
-                <LoadingButton
-                  fullWidth
-                  variant="contained"
-                  style={{
-                    width: '25rem',
-                  }}
-                  onClick={() => navigate('/auth/legacy')}
-                >
-                  <span className={classes.span}>Associate Legacy Account</span>
-                </LoadingButton>
-              </Box>
-            </SpinnerContainer>
-            <br />
-            <span>
-              If you cannot recover your account by any of these ways, your account will be lost.
-            </span>
+            {!credentials && (
+              <LoadingButton
+                fullWidth
+                variant="contained"
+                style={{
+                  width: '25rem',
+                }}
+                onClick={() => window.location.reload()}
+              >
+                <span className={classes.span}>Ok</span>
+              </LoadingButton>
+            )}
+            {credentials && (
+              <LoadingButton
+                fullWidth
+                variant="contained"
+                style={{
+                  width: '25rem',
+                }}
+                onClick={() => setModalOpen(false)}
+              >
+                <span className={classes.span}>Ok</span>
+              </LoadingButton>
+            )}
           </Box>
         </Modal>
       )}
