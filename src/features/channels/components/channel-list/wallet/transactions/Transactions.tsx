@@ -1,10 +1,11 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable camelcase */
 /* eslint-disable quotes */
-import { convertNQTToJup } from '@metis/common/utils/utils';
-import { fetchTransactions } from '@metis/features/wallet/store/wallet.actions';
-import { useAppDispatch, useAppSelector } from '@metis/store/hooks';
 import { SpinnerContainer } from '@metis/common/components/ui/spinner-container/SpinnerContainer';
+import httpService from '@metis/common/services/http.service';
+import { convertNQTToJup } from '@metis/common/utils/utils';
+import { TTransaction } from '@metis/features/wallet/types/TTransaction';
+import { useAppSelector } from '@metis/store/hooks';
 import SendIcon from '@mui/icons-material/Send';
 import {
   Avatar,
@@ -17,32 +18,25 @@ import {
   ListItemText,
 } from '@mui/material';
 import Box from '@mui/material/Box';
-import { Fragment, useEffect } from 'react';
+import { Fragment } from 'react';
+import useSWR from 'swr';
 import useStyles from './Transactions.styles';
 
 const Transactions = () => {
   const classes = useStyles();
   const { jupAccount } = useAppSelector((state) => state.auth);
-  const { transactions, balance, isLoadingTransaction } = useAppSelector((state) => state.wallet);
-  const dispatch = useAppDispatch();
 
-  useEffect(() => {
-    dispatch(fetchTransactions());
-  }, [balance]);
-
-  if (!transactions.length) {
-    return <CircularProgress className={classes.spinner} />;
-  }
+  const { data } = useSWR<{ transactions: TTransaction[] }>('/v1/api/recent-transactions');
 
   return (
     <Box>
       Transactions
       <List>
-        <SpinnerContainer isLoading={isLoadingTransaction}>
-          {transactions.map((e) => (
+        <SpinnerContainer isLoading={!data}>
+          {data?.transactions.map((e) => (
             <Fragment key={e.block}>
               <ListItem disablePadding>
-                <ListItemButton>
+                <ListItemButton className={classes.listItemButton}>
                   <ListItemAvatar className={classes.listItemIcon}>
                     <Avatar>
                       <SendIcon />

@@ -1,19 +1,18 @@
 import { updateReply } from '@metis/features/channels/store/channel.slice';
+import PlaceholderAvatar from '@metis/assets/images/avatars/astronaut.png';
 import { IMessage as MessageType } from '@metis/features/channels/types/message.interface';
 import { useAppDispatch, useAppSelector } from '@metis/store/hooks';
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import dayjs from 'dayjs';
-import { memo, useState } from 'react';
+import { memo, useState, useEffect } from 'react';
 import Attachment from '../attachment/Attachment';
 import MessageReply from '../message-reply/MessageReply';
 import useStyles from './Message.styles';
 
 type Props = {
   message: MessageType;
-  color: string;
-  avatar?: string;
 };
 
 const Message = ({
@@ -27,15 +26,16 @@ const Message = ({
     replyRecipientAlias,
     attachmentObj,
   },
-  color,
-  avatar = senderAlias,
 }: Props) => {
   const classes = useStyles();
   const [style, setStyle] = useState({ display: 'none' });
+  const [imageProfile, setImageProfile] = useState(PlaceholderAvatar);
   const {
     jupAccount: { alias: currentUserAlias },
-    imageAccount,
   } = useAppSelector((state) => state.auth);
+  const {
+    selectedChannel: { members },
+  } = useAppSelector((state) => state.channel);
   const isYours = senderAlias === currentUserAlias;
   const dispatch = useAppDispatch();
 
@@ -53,10 +53,17 @@ const Message = ({
   const handleMouseEnter = () => setStyle({ display: 'block' });
   const handleMouseLeave = () => setStyle({ display: 'none' });
 
+  useEffect(() => {
+    if (members) {
+      const account = members.find((m) => m.memberAccountAddress === senderAddress);
+      if (account) setImageProfile(account.imageProfile);
+    }
+  }, [members]);
+
   return (
     <Box className={isYours ? classes.userContainer : classes.container}>
       <Box className={classes.avatarContainer}>
-        <Avatar alt="pomp" src={imageAccount || avatar} className={classes.avatar} />
+        <Avatar alt="pomp" src={imageProfile || PlaceholderAvatar} className={classes.avatar} />
       </Box>
 
       <Box
@@ -71,7 +78,12 @@ const Message = ({
         <Box className={classes.replyButton} style={style} onClick={handleReplyClick}>
           Reply
         </Box>
-        <Typography variant="body2" fontWeight="bold" className={classes.userName} sx={{ color }}>
+        <Typography
+          variant="body2"
+          fontWeight="bold"
+          className={classes.userName}
+          sx={{ color: '#A36300' }}
+        >
           {senderAlias}
         </Typography>
         {decryptedReplyMessage && replyRecipientAlias && (

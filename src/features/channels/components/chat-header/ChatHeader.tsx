@@ -1,14 +1,16 @@
 import Modal from '@metis/common/components/ui/Modal';
+import { findMembers } from '@metis/features/channels/store/channel.actions';
 import { useAppDispatch, useAppSelector } from '@metis/store/hooks';
 import { openToast } from '@metis/store/ui/ui.slice';
-import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
+import GroupAddIcon from '@mui/icons-material/GroupAdd';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import { LoadingButton } from '@mui/lab';
-import { Button, Menu, MenuItem } from '@mui/material';
+import { Button } from '@mui/material';
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
-import { MouseEvent, useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { usToggleMuteChannel } from '../../hooks/useToggleMuteChannel';
 import { hideChannel as hideChannelAction } from '../../store/channel.slice';
@@ -21,23 +23,17 @@ const ChatHeader = () => {
   const [open, setOpen] = useState(false);
   const [muteModalOpen, setMuteModalOpen] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const { selectedChannel } = useAppSelector((state) => state.channel);
-  // const isMuted = mutedChannels.includes(selectedChannel.channelAddress);
 
-  const menu = Boolean(anchorEl);
-  const openMenu = (event: MouseEvent<HTMLButtonElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const closeMenu = () => {
-    setAnchorEl(null);
-  };
+  useEffect(() => {
+    if (selectedChannel.channelAddress) {
+      dispatch(findMembers(selectedChannel.channelAddress));
+    }
+  }, [selectedChannel.channelAddress]);
 
   const openInviteUserModal = () => {
-    closeMenu();
     setOpen(true);
   };
 
@@ -45,13 +41,7 @@ const ChatHeader = () => {
     dispatch(hideChannelAction(selectedChannel));
     dispatch(openToast({ type: 'info', text: 'The channel was hidden successfully' }));
     navigate('/main');
-    closeMenu();
   };
-
-  // const openMuteModal = () => {
-  //   setMuteModalOpen(true);
-  //   closeMenu();
-  // };
 
   const muteChannel = () => {
     setLoading(true);
@@ -61,28 +51,8 @@ const ChatHeader = () => {
     });
   };
 
-  // const unmuteChannel = () => {
-  //   setLoading(true);
-  //   dispatch(toggleMuteChannel(selectedChannel.channelAddress)).then(() => {
-  //     closeMenu();
-  //     setLoading(false);
-  //   });
-  // };
-
   return (
     <>
-      <Menu
-        id="basic-menu"
-        anchorEl={anchorEl}
-        open={menu}
-        onClose={closeMenu}
-        MenuListProps={{
-          'aria-labelledby': 'basic-button',
-        }}
-      >
-        <MenuItem onClick={openInviteUserModal}>Invite user</MenuItem>
-        <MenuItem onClick={hideChannel}>Hide channel</MenuItem>
-      </Menu>
       <Modal open={muteModalOpen} onClose={() => setMuteModalOpen(false)}>
         <Typography
           variant="h5"
@@ -111,9 +81,14 @@ const ChatHeader = () => {
 
           <ChannelInfo selectedChannel={selectedChannel} />
         </Box>
-        <IconButton onClick={openMenu} aria-label="channel settings" size="large">
-          <MoreHorizIcon />
-        </IconButton>
+        <Box display="flex">
+          <IconButton onClick={hideChannel} aria-label="channel settings" size="large">
+            <VisibilityOffIcon />
+          </IconButton>
+          <IconButton onClick={openInviteUserModal} aria-label="channel settings" size="large">
+            <GroupAddIcon />
+          </IconButton>
+        </Box>
       </Box>
     </>
   );

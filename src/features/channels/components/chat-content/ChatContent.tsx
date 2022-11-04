@@ -1,18 +1,21 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable react/no-array-index-key */
-import { useAppSelector } from '@metis/store/hooks';
+import { useAppDispatch, useAppSelector } from '@metis/store/hooks';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import { Button, Paper, CircularProgress, Box } from '@mui/material';
+import { Box, Button, CircularProgress, Paper } from '@mui/material';
 import { animated, config, useTransition } from '@react-spring/web';
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import InfiniteScroll from 'react-infinite-scroller';
+import { useGetMessages } from '../../hooks/useGetMessages';
 import useStyles from './ChatContent.styles';
 import Message from './message/Message';
 
 export const ChatContent = () => {
   const classes = useStyles();
-  const { channelAddress } = useParams();
+  const dispatch = useAppDispatch();
   const {
-    selectedChannel: { messages },
+    selectedChannel: { messages, channelAddress },
     isLoadingMessages,
   } = useAppSelector((state) => state.channel);
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -53,40 +56,46 @@ export const ChatContent = () => {
     }
   }, [messages]);
 
-  if (isLoadingMessages) {
-    return (
-      <Box className={classes.isLoadingMessages}>
-        <CircularProgress />
-      </Box>
-    );
-  }
+  const getMoreMessages = (pageNumber: number) => {
+    if (!isLoadingMessages) {
+      dispatch(
+        useGetMessages({
+          channelAddress: String(channelAddress),
+          pageNumber,
+          pageSize: 5,
+        })
+      );
+    }
+  };
 
   return (
-    <Paper onScroll={onScroll} ref={containerRef} className={classes.main} square>
-      {messages.map((message, index) => (
-        <Message
-          // TODO: the backend is not giving us any way to differentiate between messages... Too bad!
-          key={index}
-          message={message}
-          color="#A36300"
-        />
-      ))}
-      {transition(
-        (styles, item) =>
-          !item && (
-            <animated.div style={styles} className={classes.scrollToBottomButton}>
-              <Button
-                onClick={scrollInstantlyToBottom}
-                color="primary"
-                variant="contained"
-                component="label"
-              >
-                <KeyboardArrowDownIcon />
-              </Button>
-            </animated.div>
-          )
-      )}
-      <div ref={scrollRef} />
-    </Paper>
+    <>
+      <Paper onScroll={onScroll} ref={containerRef} className={classes.main} square>
+        {isLoadingMessages && (
+          <Box style={{ display: 'flex', justifyContent: 'center' }}>
+            <CircularProgress />
+          </Box>
+        )}
+
+        {messages && messages.map((message, index) => <Message key={index} message={message} />)}
+
+        {transition(
+          (styles, item) =>
+            !item && (
+              <animated.div style={styles} className={classes.scrollToBottomButton}>
+                <Button
+                  onClick={scrollInstantlyToBottom}
+                  color="primary"
+                  variant="contained"
+                  component="label"
+                >
+                  <KeyboardArrowDownIcon />
+                </Button>
+              </animated.div>
+            )
+        )}
+        <div ref={scrollRef} />
+      </Paper>
+    </>
   );
 };

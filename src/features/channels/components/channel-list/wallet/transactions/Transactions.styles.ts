@@ -47,6 +47,10 @@ const useStyles = makeStyles((theme: Theme) =>
     spinner: {
       alignSelf: 'center',
     },
+    listItemButton: {
+      padding: '.8rem',
+      transition: 'all 1s ease',
+    },
   })
 );
 

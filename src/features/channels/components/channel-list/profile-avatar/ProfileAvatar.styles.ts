@@ -7,16 +7,7 @@ const useStyles = makeStyles(() =>
       height: '4rem',
       justifyContent: 'flex-start',
     },
-    container: {
-      '&:hover .icon': {
-        opacity: '0.3',
-      },
-    },
     icon: {
-      opacity: '0',
-      '&:hover': {
-        opacity: '1',
-      },
       color: 'white',
       fontSize: '96%',
       position: 'absolute',
@@ -25,9 +16,57 @@ const useStyles = makeStyles(() =>
       transform: 'translate(-50%, -50%)',
       '-ms-transform': 'translate(-50%, -50%)',
       textAlign: 'center',
+      opacity: '0',
+      transition: 'all 0.2s ease',
+      '&:hover': {
+        opacity: '1',
+      },
     },
-    spinner: {
-      alignSelf: 'center',
+    buttonLayout: {
+      display: 'flex',
+      flex: '2',
+    },
+    buttonID: {
+      border: 'none',
+      background: 'none',
+      color: '#fff',
+      padding: '0',
+      fontSize: '11px',
+      cursor: 'pointer',
+    },
+    iconTwo: {
+      flex: '1',
+      display: 'flex',
+      justifyContent: 'flex-end',
+      fontSize: '1rem',
+    },
+    alias: {
+      color: 'grey',
+      fontSize: '1rem',
+      paddingLeft: '0.8rem',
+    },
+    buttonLeftAlias: {
+      display: 'flex',
+      justifyContent: 'flex-start ',
+    },
+    buttonRightAlias: {
+      display: 'none',
+      justifyContent: 'flex-end',
+      flex: '1',
+    },
+    id: {
+      color: 'grey',
+      fontSize: '1rem',
+      paddingLeft: '0.8rem',
+    },
+    buttonLeftID: {
+      display: 'flex',
+      justifyContent: 'flex-start ',
+    },
+    buttonRightID: {
+      display: 'none',
+      justifyContent: 'flex-end',
+      flex: '1',
     },
   })
 );

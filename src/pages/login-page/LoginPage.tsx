@@ -5,7 +5,6 @@ import { useMetamask } from '@metis/features/auth/hooks/useMetamask';
 import { useAppSelector } from '@metis/store/hooks';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
-import { UnlinkButton } from '@metis/features/auth/components/UnlinkAccount/UnlinkButton';
 import { SpinnerContainer } from '@metis/common/components/ui/spinner-container/SpinnerContainer';
 import useStyles from './LoginPage.styles';
 
@@ -19,7 +18,6 @@ const LoginPage = () => {
     <>
       <Box height="100vh" className={classes.wrapper}>
         <Container maxWidth="xl" component="main" className={classes.container}>
-          <UnlinkButton />
           <Box component="img" src={MetisLogo} alt="login" className={classes.image} />
 
           {ethAccount && (

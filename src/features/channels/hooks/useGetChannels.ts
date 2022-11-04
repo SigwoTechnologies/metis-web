@@ -21,30 +21,31 @@ export const findChannels = createAsyncThunk(
       const channels = await Promise.all(
         data.map(async (channel) => {
           const encryptionService = new EncryiptionService();
-          const response = await httpService.get<ChannelsMessagesResponse[]>(
+          const { data: messages } = await httpService.get<ChannelsMessagesResponse[]>(
             `/v1/api/channels/${channel.channelAddress}/messages?pageNumber=0&pageSize=1`
           );
-          const messages = await Promise.all(
-            response.data
-              .map(async (item) => ({
-                ...item.message,
-                decryptedReplyMessage: await encryptionService.decryptMessage(
-                  item.message.replyMessage,
-                  passP,
-                  privateKey
-                ),
-                decryptedMessage: await encryptionService.decryptMessage(
-                  item.message.message,
-                  passP,
-                  privateKey
-                ),
-              }))
-              .reverse()
-          );
+
+          const lastMessage = messages[0];
 
           return {
             ...channel,
-            messages,
+            lastMessage: lastMessage && {
+              ...lastMessage,
+              decryptedReplyMessage:
+                lastMessage &&
+                (await encryptionService.decryptMessage(
+                  lastMessage?.message?.replyMessage,
+                  passP,
+                  privateKey
+                )),
+              decryptedMessage:
+                lastMessage &&
+                (await encryptionService.decryptMessage(
+                  lastMessage?.message?.message,
+                  passP,
+                  privateKey
+                )),
+            },
           };
         })
       );
@@ -52,6 +53,7 @@ export const findChannels = createAsyncThunk(
       return channels;
     } catch (error) {
       const err = error as AxiosError;
+      console.log(err);
       dispatch(openToast({ type: 'error', text: 'There was a problem getting the channels' }));
       return rejectWithValue(err.response);
     }

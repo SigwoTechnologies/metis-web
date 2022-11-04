@@ -13,7 +13,7 @@ export const SpinnerContainer: React.FC<Props> = ({ children, isLoading }) => {
   if (isLoading) {
     return (
       <Box className={classes.container}>
-        <CircularProgress size="5rem" />
+        <CircularProgress size="3rem" />
       </Box>
     );
   }

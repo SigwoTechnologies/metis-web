@@ -18,6 +18,7 @@ import { useAppDispatch, useAppSelector } from '@metis/store/hooks';
 import { openToast } from '@metis/store/ui/ui.slice';
 import PeopleIcon from '@mui/icons-material/People';
 import { LoadingButton } from '@mui/lab';
+import { CircularProgress } from '@mui/material';
 import { useEffect, useState } from 'react';
 import useStyles from './SignUpButton.styles';
 
@@ -143,7 +144,21 @@ export const SignUpButton = () => {
           <PeopleIcon className={classes.icon} color="primary" />
         </div>
         <div className={classes.loading}>We&apos;re creating your new account...</div>
-        {!!blocks && <div style={{ textAlign: 'center' }}>Mined Blocks: {blocks}</div>}
+        {!!blocks && (
+          <div
+            style={{
+              display: 'flex',
+              textAlign: 'center',
+              justifyContent: 'center',
+              alignItems: 'center',
+              flexDirection: 'column',
+              textTransform: 'none',
+            }}
+          >
+            Mined Blocks
+            <CircularProgress variant="determinate" value={blocks} />
+          </div>
+        )}
       </Modal>
     </>
   );

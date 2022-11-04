@@ -2,6 +2,7 @@ import { AnyAction } from '@reduxjs/toolkit';
 import store from '@metis/store';
 // import { Channel } from '../types/channel';
 import { channelReducer, ChannelState, selectState } from './channel.slice';
+import { IMessage } from '../types/message.interface';
 
 describe('Channel Slice', () => {
   let initialState: ChannelState;
@@ -15,6 +16,7 @@ describe('Channel Slice', () => {
       createdAt: 0,
       messages: [],
       members: [],
+      lastMessage: {} as IMessage,
     };
 
     initialState = {

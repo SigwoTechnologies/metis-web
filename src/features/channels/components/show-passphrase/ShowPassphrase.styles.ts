@@ -1,5 +1,5 @@
-import { Theme } from '@mui/material';
 import { createStyles, makeStyles } from '@mui/styles';
+import { Theme } from '@mui/material';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -16,6 +16,7 @@ const useStyles = makeStyles((theme: Theme) =>
     span: {
       fontWeight: 700,
       fontSize: '.8rem',
+      textTransform: 'none',
     },
     associate: {
       color: '#ccc',
@@ -30,20 +31,44 @@ const useStyles = makeStyles((theme: Theme) =>
         clipPath: 'inset(0 -1ch 0 0)',
       },
     },
-    icon: {
+    iconHeader: {
       fontSize: '6rem',
+    },
+    icon: {
+      flex: '1',
+      display: 'flex',
+      justifyContent: 'flex-end',
+      fontSize: '1.2rem',
     },
     closeButton: {
       position: 'absolute',
       top: '0',
       right: '0',
     },
-    iconContainer: {
+    subtitle: { color: 'grey', fontSize: '1rem', textAlign: 'center' },
+    text: {
+      textAlign: 'center',
+      paddingBottom: '1rem',
+    },
+    buttonLayout: {
       display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-      flexDirection: 'column',
-      marginBottom: '1rem',
+    },
+    buttonID: {
+      border: 'none',
+      background: 'none',
+      color: '#fff',
+      padding: '0',
+      fontSize: '16px',
+      cursor: 'pointer',
+    },
+    buttonLeft: {
+      display: 'flex',
+      justifyContent: 'flex-start ',
+    },
+    buttonRight: {
+      display: 'flex',
+      justifyContent: 'flex-end',
+      flex: '1',
     },
   })
 );

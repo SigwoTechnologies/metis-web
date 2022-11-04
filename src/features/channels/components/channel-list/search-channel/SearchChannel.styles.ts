@@ -8,6 +8,14 @@ const useStyles = makeStyles((theme: Theme) =>
       justifyContent: 'center',
       alignItems: 'end',
     },
+
+    iconContainerUnlink: {
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      flexDirection: 'column',
+      marginBottom: '1rem',
+    },
     account: {
       position: 'relative',
       paddingLeft: '0.75rem',
@@ -64,6 +72,51 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     logout: {
       color: '#ec5151',
+      textAlign: 'left',
+    },
+    unlink: {
+      color: 'yellow',
+      textAlign: 'left',
+    },
+    wrapper: {
+      backgroundColor: theme.palette.background.default,
+    },
+    container: {
+      height: '100%',
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    span: {
+      fontWeight: 700,
+      fontSize: '.8rem',
+      textTransform: 'none',
+    },
+    associate: {
+      color: '#ccc',
+      textDecoration: 'none',
+    },
+    loading: {
+      clipPath: 'inset(0 1ch 0 0)',
+      animation: '$l 1s steps(4) infinite',
+    },
+    '@keyframes l': {
+      to: {
+        clipPath: 'inset(0 -1ch 0 0)',
+      },
+    },
+    icon: {
+      fontSize: '6rem',
+    },
+    closeButton: {
+      position: 'absolute',
+      top: '0',
+      right: '0',
+    },
+    listItemButton: {
+      padding: '.8rem',
+      transition: 'all 1s ease',
     },
   })
 );

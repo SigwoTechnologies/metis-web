@@ -3,6 +3,7 @@ import { TInvite, useGetUsersInvites } from '@metis/features/invites/services/in
 import { useAppDispatch } from '@metis/store/hooks';
 import CloseIcon from '@mui/icons-material/Close';
 import DoneIcon from '@mui/icons-material/Done';
+import { SpinnerContainer } from '@metis/common/components/ui/spinner-container/SpinnerContainer';
 import {
   Avatar,
   Badge,
@@ -11,15 +12,19 @@ import {
   ListItem,
   ListItemAvatar,
   ListItemText,
+  Typography,
 } from '@mui/material';
+import useStyles from './InviteListItem.styles';
 
 type Props = {
   invite: TInvite;
   acceptInvite: (channelAddress: string) => Promise<void>;
+  proccessInvite: boolean;
 };
 
-const InviteListItem = ({ invite, acceptInvite }: Props) => {
+const InviteListItem = ({ invite, acceptInvite, proccessInvite }: Props) => {
   const dispatch = useAppDispatch();
+  const classes = useStyles();
 
   const handleAcceptInvite = () => {
     acceptInvite(invite.channelAddress);
@@ -34,12 +39,14 @@ const InviteListItem = ({ invite, acceptInvite }: Props) => {
     <ListItem
       secondaryAction={
         <Box display="flex" gap="0.3rem">
-          <IconButton onClick={handleAcceptInvite} color="success">
-            <DoneIcon />
-          </IconButton>
-          <IconButton onClick={declineInvite} color="error">
-            <CloseIcon />
-          </IconButton>
+          <SpinnerContainer isLoading={proccessInvite}>
+            <IconButton onClick={handleAcceptInvite} color="success">
+              <DoneIcon />
+            </IconButton>
+            <IconButton onClick={declineInvite} color="error">
+              <CloseIcon />
+            </IconButton>
+          </SpinnerContainer>
         </Box>
       }
     >
@@ -55,7 +62,19 @@ const InviteListItem = ({ invite, acceptInvite }: Props) => {
           <Avatar alt={invite.channelName} src={invite.channelName} />
         </Badge>
       </ListItemAvatar>
-      <ListItemText primary={invite.channelName} secondary={invite.channelAddress} />
+      <ListItemText
+        primary={invite.channelName}
+        secondary={
+          <Typography
+            component="span"
+            variant="caption"
+            color="text.primary"
+            className={classes.text}
+          >
+            {invite.channelAddress}
+          </Typography>
+        }
+      />
     </ListItem>
   );
 };

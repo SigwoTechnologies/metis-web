@@ -9,4 +9,5 @@ export type IChannel = {
   createdAt: number;
   messages: IMessage[];
   members: IMembers[];
+  lastMessage: IMessage;
 };

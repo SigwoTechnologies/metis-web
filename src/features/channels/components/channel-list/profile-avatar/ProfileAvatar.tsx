@@ -6,9 +6,10 @@ import { useUploadImageProfile } from '@metis/features/channels/hooks/useUploadI
 import { useAppDispatch, useAppSelector } from '@metis/store/hooks';
 import { openToast } from '@metis/store/ui/ui.slice';
 import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
-import { Avatar, Box, IconButton } from '@mui/material';
+import { Avatar, Grid, IconButton } from '@mui/material';
 import { useEffect, useState } from 'react';
 import Files from 'react-files';
+import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import useStyles from './ProfileAvatar.styles';
 
 type TFile = {
@@ -24,7 +25,7 @@ const ProfileAvatar = () => {
   const styles = useStyles();
   const dispatch = useAppDispatch();
   const {
-    jupAccount: { address },
+    jupAccount: { address, alias },
     imageAccount,
   } = useAppSelector((state) => state.auth);
   const [uploadingImage, setUploadingImage] = useState(false);
@@ -68,37 +69,67 @@ const ProfileAvatar = () => {
       })
     );
   };
+  const copyToClipboard = (textCopy: string, text: string) => {
+    navigator.clipboard.writeText(textCopy);
+    dispatch(openToast({ text: `${text} copied to clipboard`, type: 'success' }));
+  };
 
   return (
-    <SpinnerContainer isLoading={uploadingImage}>
-      <IconButton
-        aria-label="send message"
-        edge="start"
-        size="medium"
-        sx={{ p: 1.5 }}
-        className={styles.container}
-      >
+    <>
+      <SpinnerContainer isLoading={uploadingImage}>
         <Files
-          className="files-dropzone"
           onChange={handleSelectFile}
           accepts={['image/*']}
           multiple
-          maxFileSize={1_600_000}
+          maxFileSize={1600000}
           minFileSize={0}
           onError={onFilesError}
           clickable
         >
-          <Avatar
-            alt="Channel Avatar"
-            src={imageAccount || PlaceholderAvatar}
-            className={styles.accountAvatar}
-          />
-          <Box>
+          <IconButton edge="start" size="medium" sx={{ p: 1.3 }}>
+            <Avatar
+              alt="Profile Picture"
+              src={imageAccount || PlaceholderAvatar}
+              className={styles.accountAvatar}
+            />
             <AddAPhotoIcon className={styles.icon} />
-          </Box>
+          </IconButton>
         </Files>
-      </IconButton>
-    </SpinnerContainer>
+      </SpinnerContainer>
+      <Grid>
+        <Grid sx={{ paddingLeft: '1.5rem' }}>
+          <button
+            type="button"
+            onClick={() => copyToClipboard(alias, 'Alias')}
+            className={styles.buttonID}
+          >
+            <Grid className={styles.buttonLayout}>
+              <Grid className={styles.buttonLeftAlias}>
+                <ContentCopyIcon className={styles.iconTwo} />
+              </Grid>
+              <Grid className={styles.alias}>Alias </Grid>
+            </Grid>
+            <Grid className={styles.buttonRightAlias}> &nbsp; {alias}</Grid>
+          </button>
+        </Grid>
+
+        <Grid sx={{ paddingLeft: '1.5rem' }}>
+          <button
+            type="button"
+            onClick={() => copyToClipboard(address, 'Account ID')}
+            className={styles.buttonID}
+          >
+            <Grid className={styles.buttonLayout}>
+              <Grid className={styles.buttonLeftID}>
+                <ContentCopyIcon className={styles.iconTwo} />
+              </Grid>
+              <Grid className={styles.id}>Account ID </Grid>
+            </Grid>
+            <Grid className={styles.buttonRightID}> &nbsp; {address}</Grid>
+          </button>
+        </Grid>
+      </Grid>
+    </>
   );
 };
 export default ProfileAvatar;

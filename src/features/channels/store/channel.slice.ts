@@ -1,17 +1,18 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
+import { TInvite, useGetUsersInvites } from '@metis/features/invites/services/invite.service';
 import type { RootState } from '@metis/store/types';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { TInvite, useGetUsersInvites } from '@metis/features/invites/services/invite.service';
-import { IChannel } from '../types/channel.interface';
-import { INewChannel } from '../types/new.channel.interface';
-import { IReply } from '../types/reply.interface';
-import { getMutedChannelAddresses } from '../hooks/useGetMutedChannelAddresses';
-import { usToggleMuteChannel } from '../hooks/useToggleMuteChannel';
+import { findChannels } from '../hooks/useGetChannels';
+import { useGetDeclinedInvites } from '../hooks/useGetDeclinedInvites';
 import { getHiddenChannels, localStorageKeyHiddenChannel } from '../hooks/useGetHiddenChannels';
 import { useGetMessages } from '../hooks/useGetMessages';
-import { findChannels } from '../hooks/useGetChannels';
+import { getMutedChannelAddresses } from '../hooks/useGetMutedChannelAddresses';
+import { usToggleMuteChannel } from '../hooks/useToggleMuteChannel';
+import { IChannel } from '../types/channel.interface';
+import { IMessage } from '../types/message.interface';
+import { INewChannel } from '../types/new.channel.interface';
+import { IReply } from '../types/reply.interface';
 import { findMembers } from './channel.actions';
-import { useGetDeclinedInvites } from '../hooks/useGetDeclinedInvites';
 
 const initialChannelState = {
   channelAddress: '',
@@ -21,6 +22,7 @@ const initialChannelState = {
   createdAt: 0,
   messages: [],
   members: [],
+  lastMessage: {} as IMessage,
 };
 
 export type ChannelState = {
@@ -80,6 +82,7 @@ const slice = createSlice({
           createdBy: 'JUP-7DXL-L46R-8LHH-HWFN2',
           messages: [],
           members: [],
+          lastMessage: {} as IMessage,
         };
 
         state.channels.unshift(channelCreated);
@@ -125,12 +128,14 @@ const slice = createSlice({
     addNewMessage: (state: ChannelState, { payload }) => {
       const { message } = payload;
 
-      const targetChannel = state.channels.find(
-        (channel) => channel.channelAddress === state.selectedChannel.channelAddress
-      );
+      // eslint-disable-next-line no-restricted-syntax
+      for (const e of state.channels) {
+        if (e.channelAddress === state.selectedChannel.channelAddress) {
+          e.lastMessage = message;
+        }
+      }
 
       state.selectedChannel.messages.push(message);
-      targetChannel?.messages.unshift(message);
     },
     setOpenDrawer: (state: ChannelState, { payload: status }) => {
       state.isOpenCreateChannelDrawer = status;
@@ -160,8 +165,8 @@ const slice = createSlice({
     });
 
     builder.addCase(useGetMessages.fulfilled, (state, { payload: messages }) => {
-      state.selectedChannel.messages = messages;
       state.isLoadingMessages = false;
+      state.selectedChannel.messages = messages;
     });
 
     builder.addCase(getMutedChannelAddresses.pending, (state) => {
