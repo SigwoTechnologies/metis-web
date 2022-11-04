@@ -38,8 +38,8 @@ const ShowPassphrase = () => {
         <VpnKeyIcon className={classes.iconHeader} color="primary" />
 
         <span className={classes.text}>
-          Save this data securely, in case you lose access to your account could be retrieved using
-          this Passphrase y Password.
+          Save your Passphrase and Password securely. It will be needed in case you lose access to
+          your account.
         </span>
         <span className={classes.text}>
           Warning: do not reveal your backup phrase. Anyone who gets this data, can log into your
