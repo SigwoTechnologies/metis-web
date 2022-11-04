@@ -16,7 +16,6 @@ export const ChatContent = () => {
   const dispatch = useAppDispatch();
   const {
     selectedChannel: { messages, channelAddress },
-    hasMore,
     isLoadingMessages,
   } = useAppSelector((state) => state.channel);
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -69,49 +68,34 @@ export const ChatContent = () => {
     }
   };
 
-  if (messages) {
-    return (
-      <>
-        <Paper onScroll={onScroll} ref={containerRef} className={classes.main} square>
-          <div style={{ height: '100%', overflow: 'auto' }}>
-            <InfiniteScroll
-              pageStart={0}
-              loadMore={getMoreMessages}
-              isReverse
-              hasMore={hasMore}
-              loader={
-                <Box style={{ display: 'flex', justifyContent: 'center' }}>
-                  <CircularProgress />
-                </Box>
-              }
-              useWindow={false}
-            >
-              {messages.map((message, index) => (
-                <Message key={index} message={message} color="#A36300" />
-              ))}
-            </InfiniteScroll>
-          </div>
+  return (
+    <>
+      <Paper onScroll={onScroll} ref={containerRef} className={classes.main} square>
+        {isLoadingMessages && (
+          <Box style={{ display: 'flex', justifyContent: 'center' }}>
+            <CircularProgress />
+          </Box>
+        )}
 
-          {transition(
-            (styles, item) =>
-              !item && (
-                <animated.div style={styles} className={classes.scrollToBottomButton}>
-                  <Button
-                    onClick={scrollInstantlyToBottom}
-                    color="primary"
-                    variant="contained"
-                    component="label"
-                  >
-                    <KeyboardArrowDownIcon />
-                  </Button>
-                </animated.div>
-              )
-          )}
-          <div ref={scrollRef} />
-        </Paper>
-      </>
-    );
-  }
+        {messages && messages.map((message, index) => <Message key={index} message={message} />)}
 
-  return null;
+        {transition(
+          (styles, item) =>
+            !item && (
+              <animated.div style={styles} className={classes.scrollToBottomButton}>
+                <Button
+                  onClick={scrollInstantlyToBottom}
+                  color="primary"
+                  variant="contained"
+                  component="label"
+                >
+                  <KeyboardArrowDownIcon />
+                </Button>
+              </animated.div>
+            )
+        )}
+        <div ref={scrollRef} />
+      </Paper>
+    </>
+  );
 };
