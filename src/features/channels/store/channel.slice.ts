@@ -1,18 +1,18 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
+import { TInvite, useGetUsersInvites } from '@metis/features/invites/services/invite.service';
 import type { RootState } from '@metis/store/types';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { TInvite, useGetUsersInvites } from '@metis/features/invites/services/invite.service';
-import { IChannel } from '../types/channel.interface';
-import { INewChannel } from '../types/new.channel.interface';
-import { IReply } from '../types/reply.interface';
-import { getMutedChannelAddresses } from '../hooks/useGetMutedChannelAddresses';
-import { usToggleMuteChannel } from '../hooks/useToggleMuteChannel';
+import { findChannels } from '../hooks/useGetChannels';
+import { useGetDeclinedInvites } from '../hooks/useGetDeclinedInvites';
 import { getHiddenChannels, localStorageKeyHiddenChannel } from '../hooks/useGetHiddenChannels';
 import { useGetMessages } from '../hooks/useGetMessages';
-import { findChannels } from '../hooks/useGetChannels';
-import { findMembers } from './channel.actions';
-import { useGetDeclinedInvites } from '../hooks/useGetDeclinedInvites';
+import { getMutedChannelAddresses } from '../hooks/useGetMutedChannelAddresses';
+import { usToggleMuteChannel } from '../hooks/useToggleMuteChannel';
+import { IChannel } from '../types/channel.interface';
 import { IMessage } from '../types/message.interface';
+import { INewChannel } from '../types/new.channel.interface';
+import { IReply } from '../types/reply.interface';
+import { findMembers } from './channel.actions';
 
 const initialChannelState = {
   channelAddress: '',
@@ -29,7 +29,6 @@ export type ChannelState = {
   isLoading: boolean;
   isLoadingMessages: boolean;
   isLoadingInvites: boolean;
-  hasMore: boolean;
   declinedInvites: number[];
   invites: TInvite[];
   hiddenChannels: IChannel[];
@@ -45,7 +44,6 @@ const initialState: ChannelState = {
   isLoading: false,
   isLoadingMessages: false,
   isLoadingInvites: false,
-  hasMore: false,
   channels: [],
   hiddenChannels: [],
   invites: [],
@@ -130,12 +128,14 @@ const slice = createSlice({
     addNewMessage: (state: ChannelState, { payload }) => {
       const { message } = payload;
 
-      const targetChannel = state.channels.find(
-        (channel) => channel.channelAddress === state.selectedChannel.channelAddress
-      );
+      // eslint-disable-next-line no-restricted-syntax
+      for (const e of state.channels) {
+        if (e.channelAddress === state.selectedChannel.channelAddress) {
+          e.lastMessage = message;
+        }
+      }
 
       state.selectedChannel.messages.push(message);
-      targetChannel?.messages.unshift(message);
     },
     setOpenDrawer: (state: ChannelState, { payload: status }) => {
       state.isOpenCreateChannelDrawer = status;
@@ -162,27 +162,11 @@ const slice = createSlice({
 
     builder.addCase(useGetMessages.pending, (state, { payload: messages }) => {
       state.isLoadingMessages = true;
-      state.hasMore = true;
     });
 
     builder.addCase(useGetMessages.fulfilled, (state, { payload: messages }) => {
       state.isLoadingMessages = false;
-      if (messages.length === 10) {
-        state.selectedChannel.messages = messages;
-        state.hasMore = true;
-        return;
-      }
-
-      if (messages.length === 5) {
-        // eslint-disable-next-line no-restricted-syntax
-        for (const e of messages) {
-          state.selectedChannel.messages.unshift(e);
-        }
-        state.hasMore = true;
-        return;
-      }
-
-      state.hasMore = false;
+      state.selectedChannel.messages = messages;
     });
 
     builder.addCase(getMutedChannelAddresses.pending, (state) => {

@@ -14,7 +14,7 @@ type LoadChannelsMessagesProps = {
 export const useGetMessages = createAsyncThunk(
   'channels/getMessages',
   async (
-    { channelAddress, pageNumber = 0, pageSize = 10 }: LoadChannelsMessagesProps,
+    { channelAddress, pageNumber = 0, pageSize = 20 }: LoadChannelsMessagesProps,
     { getState }
   ): Promise<IMessage[]> => {
     const {

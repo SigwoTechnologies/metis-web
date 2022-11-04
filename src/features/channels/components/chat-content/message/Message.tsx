@@ -13,7 +13,6 @@ import useStyles from './Message.styles';
 
 type Props = {
   message: MessageType;
-  color: string;
 };
 
 const Message = ({
@@ -27,7 +26,6 @@ const Message = ({
     replyRecipientAlias,
     attachmentObj,
   },
-  color,
 }: Props) => {
   const classes = useStyles();
   const [style, setStyle] = useState({ display: 'none' });
@@ -80,7 +78,12 @@ const Message = ({
         <Box className={classes.replyButton} style={style} onClick={handleReplyClick}>
           Reply
         </Box>
-        <Typography variant="body2" fontWeight="bold" className={classes.userName} sx={{ color }}>
+        <Typography
+          variant="body2"
+          fontWeight="bold"
+          className={classes.userName}
+          sx={{ color: '#A36300' }}
+        >
           {senderAlias}
         </Typography>
         {decryptedReplyMessage && replyRecipientAlias && (
