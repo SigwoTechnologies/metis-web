@@ -22,6 +22,52 @@ const useStyles = makeStyles(() =>
         opacity: '1',
       },
     },
+    buttonLayout: {
+      display: 'flex',
+      flex: '2',
+    },
+    buttonID: {
+      border: 'none',
+      background: 'none',
+      color: '#fff',
+      padding: '0',
+      fontSize: '11px',
+      cursor: 'pointer',
+    },
+    iconTwo: {
+      flex: '1',
+      display: 'flex',
+      justifyContent: 'flex-end',
+      fontSize: '1rem',
+    },
+    alias: {
+      color: 'grey',
+      fontSize: '1rem',
+      paddingLeft: '0.8rem',
+    },
+    buttonLeftAlias: {
+      display: 'flex',
+      justifyContent: 'flex-start ',
+    },
+    buttonRightAlias: {
+      display: 'none',
+      justifyContent: 'flex-end',
+      flex: '1',
+    },
+    id: {
+      color: 'grey',
+      fontSize: '1rem',
+      paddingLeft: '0.8rem',
+    },
+    buttonLeftID: {
+      display: 'flex',
+      justifyContent: 'flex-start ',
+    },
+    buttonRightID: {
+      display: 'none',
+      justifyContent: 'flex-end',
+      flex: '1',
+    },
   })
 );
 
