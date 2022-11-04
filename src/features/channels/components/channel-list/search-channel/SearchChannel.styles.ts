@@ -114,6 +114,10 @@ const useStyles = makeStyles((theme: Theme) =>
       top: '0',
       right: '0',
     },
+    listItemButton: {
+      padding: '.8rem',
+      transition: 'all 1s ease',
+    },
   })
 );
 

@@ -36,7 +36,7 @@ const Transactions = () => {
           {data?.transactions.map((e) => (
             <Fragment key={e.block}>
               <ListItem disablePadding>
-                <ListItemButton>
+                <ListItemButton className={classes.listItemButton}>
                   <ListItemAvatar className={classes.listItemIcon}>
                     <Avatar>
                       <SendIcon />
