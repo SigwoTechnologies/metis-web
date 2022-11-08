@@ -10,8 +10,8 @@ import connectSocket from '@metis/common/services/socket.service';
 import constants from '@metis/common/configuration/constants';
 import { AccountSynchronized } from './SyncModals/AccountSynchronized';
 import { EnterCode } from './SyncModals/EnterCode';
-import { SyncRequested } from './SyncModals/SyncRequested';
 import { SyncRequest } from './SyncModals/SyncRequest';
+import { SyncRequested } from './SyncModals/SyncRequested';
 import { ICode } from '../../types/code.inteface';
 
 export const SyncAccount = () => {
@@ -139,7 +139,7 @@ export const SyncAccount = () => {
   return (
     <>
       {syncDeviceRequested && credentials && (
-        <SyncRequest
+        <SyncRequested
           deviceFeatureRequest={deviceFeatureRequest}
           setModalSecurityStep={setModalSecurityStep}
           sendRejectSync={sendRejectSync}
@@ -147,7 +147,7 @@ export const SyncAccount = () => {
       )}
 
       {isAlreadyRegistered && !credentials && (
-        <SyncRequested
+        <SyncRequest
           synchronized={synchronized}
           syncDeviceRequested={syncDeviceRequested}
           sendSyncRequest={sendSyncRequest}
