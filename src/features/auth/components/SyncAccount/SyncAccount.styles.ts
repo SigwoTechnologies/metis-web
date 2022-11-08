@@ -39,9 +39,16 @@ const useStyles = makeStyles(() =>
       fontSize: '14px',
       textTransform: 'none',
     },
+    textCenter: { textAlign: 'center' },
     spinner: {
       alignSelf: 'center',
     },
+    button: {
+      width: '100%',
+      marginBottom: '1rem',
+      textTransform: 'capitalize',
+    },
+    box: { display: 'flex', gap: '1rem' },
   })
 );
 

@@ -1,3 +1,5 @@
+import { detect } from 'detect-browser';
+
 export default function hasStringJsonStructure(str: string | null) {
   if (!str) return false;
   try {
@@ -41,4 +43,13 @@ export function convertNQTToJup(nqt: number) {
   }
 
   return +nqt / baseNQT;
+}
+
+export function randomNumbers(qty: number) {
+  return Math.floor(Math.random() * 90000) + 2000 * qty;
+}
+
+export function browserFeatures() {
+  const browser = detect();
+  return browser && `${browser.name} ${browser.version} on ${browser.os}`;
 }
