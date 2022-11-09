@@ -7,13 +7,11 @@ const useStyles = makeStyles((theme: Theme) =>
       justifyContent: 'center',
       alignItems: 'center',
       width: '100%',
-      height: '100%',
     },
     image: {
-      height: '100%',
       width: '100%',
+      height: '400px',
       objectFit: 'cover',
-      border: '1px solid white',
       borderRadius: '10px',
     },
     span: {
@@ -21,38 +19,23 @@ const useStyles = makeStyles((theme: Theme) =>
       textTransform: 'none',
     },
     subtitle: {
-      textTransform: 'none',
-      padding: '20rem 0',
-    },
-    icon: {
-      fontSize: '6rem',
-    },
-    iconContainer: {
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
+      paddingBottom: '20px',
+      display: 'block',
     },
     button: {
       margin: '20px 20px',
       justifyContent: 'center',
+    },
+    getStarted: {
+      margin: '40% auto',
+      justifyContent: 'center',
+      display: 'flex',
     },
     closeButton: {
       position: 'absolute',
       right: 8,
       top: 8,
       color: theme.palette.grey[500],
-    },
-    infoLine: {
-      display: 'flex',
-    },
-    infoLineLeft: {
-      display: 'flex',
-      justifyContent: 'flex-start',
-    },
-    infoLineRight: {
-      display: 'flex',
-      justifyContent: 'flex-end',
-      flex: '1',
     },
   })
 );
