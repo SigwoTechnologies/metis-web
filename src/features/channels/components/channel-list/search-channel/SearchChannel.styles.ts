@@ -8,7 +8,14 @@ const useStyles = makeStyles((theme: Theme) =>
       justifyContent: 'center',
       alignItems: 'end',
     },
-
+    textField: {
+      width: '100%',
+      marginBottom: '0',
+      size: '2rem',
+    },
+    button: {
+      alignItems: 'end',
+    },
     iconContainerUnlink: {
       display: 'flex',
       justifyContent: 'center',

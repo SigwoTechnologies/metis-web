@@ -7,8 +7,11 @@ import { ChannelListItem } from './channel-list-item/ChannelListItem';
 
 const ChannelList = () => {
   const dispatch = useAppDispatch();
-  const { channels, isLoading, hiddenChannels } = useAppSelector((state) => state.channel);
+  const { channels, searchChannels, isLoading, hiddenChannels } = useAppSelector(
+    (state) => state.channel
+  );
   const hiddenChannelsAddress = hiddenChannels.map((channel) => channel.channelAddress);
+  const channelList = searchChannels.length ? searchChannels : channels;
 
   useEffect(() => {
     dispatch(findChannels());
@@ -17,7 +20,7 @@ const ChannelList = () => {
 
   return (
     <SpinnerContainer isLoading={isLoading}>
-      {channels.map(
+      {channelList.map(
         (channel) =>
           !hiddenChannelsAddress.includes(channel.channelAddress) && (
             <ChannelListItem channel={channel} key={channel.channelAddress} />
