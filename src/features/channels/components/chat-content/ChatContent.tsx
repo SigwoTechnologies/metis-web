@@ -2,11 +2,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable react/no-array-index-key */
 import { useAppDispatch, useAppSelector } from '@metis/store/hooks';
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import ArrowCircleDownIcon from '@mui/icons-material/ArrowCircleDown';
+import ArrowDropDownCircleIcon from '@mui/icons-material/ArrowDropDownCircle';
 import { Box, Button, CircularProgress, Paper } from '@mui/material';
 import { animated, config, useTransition } from '@react-spring/web';
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
-import InfiniteScroll from 'react-infinite-scroller';
+import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import { useGetMessages } from '../../hooks/useGetMessages';
 import useStyles from './ChatContent.styles';
 import Message from './message/Message';
@@ -88,8 +89,9 @@ export const ChatContent = () => {
                   color="primary"
                   variant="contained"
                   component="label"
+                  sx={{ height: '30px' }}
                 >
-                  <KeyboardArrowDownIcon />
+                  <ArrowDownwardIcon />
                 </Button>
               </animated.div>
             )
