@@ -1,6 +1,7 @@
 import MetisLogo from '@metis/assets/images/misc/metis-logo.svg';
 import { SignInButton } from '@metis/features/auth/components/SignInButton/SignInButton';
 import { SignUpButton } from '@metis/features/auth/components/SignUpButton/SignUpButton';
+import { Tutorial } from '@metis/features/auth/components/Tutorial/Tutorial';
 import { useMetamask } from '@metis/features/auth/hooks/useMetamask';
 import { useAppSelector } from '@metis/store/hooks';
 import Box from '@mui/material/Box';
@@ -18,6 +19,7 @@ const LoginPage = () => {
     <>
       <Box height="100vh" className={classes.wrapper}>
         <Container maxWidth="xl" component="main" className={classes.container}>
+          <Tutorial />
           <Box component="img" src={MetisLogo} alt="login" className={classes.image} />
 
           {ethAccount && (
