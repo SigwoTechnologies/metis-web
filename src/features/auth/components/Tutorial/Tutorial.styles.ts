@@ -10,7 +10,7 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     image: {
       width: '100%',
-      height: '400px',
+      height: '100%',
       objectFit: 'cover',
       borderRadius: '10px',
     },
@@ -25,11 +25,9 @@ const useStyles = makeStyles((theme: Theme) =>
     button: {
       margin: '20px 20px',
       justifyContent: 'center',
-    },
-    getStarted: {
-      margin: '40% auto',
-      justifyContent: 'center',
-      display: 'flex',
+      position: 'absolute',
+      top: 0,
+      left: 0,
     },
     closeButton: {
       position: 'absolute',

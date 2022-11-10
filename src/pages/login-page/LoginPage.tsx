@@ -18,8 +18,8 @@ const LoginPage = () => {
   return (
     <>
       <Box height="100vh" className={classes.wrapper}>
-        <Tutorial />
         <Container maxWidth="xl" component="main" className={classes.container}>
+          <Tutorial />
           <Box component="img" src={MetisLogo} alt="login" className={classes.image} />
 
           {ethAccount && (
