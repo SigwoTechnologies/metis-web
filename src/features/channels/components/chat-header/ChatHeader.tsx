@@ -72,7 +72,7 @@ const ChatHeader = () => {
       </Modal>
       <InviteUserModal closeModal={() => setOpen(false)} open={open} />
       <Box className={classes.titleContainer}>
-        <Box display="flex" justifyContent="center" alignItems="center">
+        <Box display="flex" justifyContent="center" alignItems="center" fontSize="0.2rem">
           <Avatar
             alt={selectedChannel.channelName}
             src={selectedChannel.channelName}
@@ -83,10 +83,24 @@ const ChatHeader = () => {
         </Box>
         <Box display="flex">
           <IconButton onClick={hideChannel} aria-label="channel settings" size="large">
-            <VisibilityOffIcon />
+            <VisibilityOffIcon
+              sx={{
+                '@media (max-width:900px)': {
+                  height: '20px',
+                  width: '20px',
+                },
+              }}
+            />
           </IconButton>
           <IconButton onClick={openInviteUserModal} aria-label="channel settings" size="large">
-            <GroupAddIcon />
+            <GroupAddIcon
+              sx={{
+                '@media (max-width:900px)': {
+                  height: '20px',
+                  width: '20px',
+                },
+              }}
+            />
           </IconButton>
         </Box>
       </Box>

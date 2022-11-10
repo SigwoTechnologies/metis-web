@@ -9,7 +9,18 @@ type Props = {
 const HeaderSection = ({ children }: Props) => {
   const classes = useStyles();
   return (
-    <Paper className={classes.header} square>
+    <Paper
+      className={classes.header}
+      square
+      sx={{
+        paddingLeft: '0 !important',
+        '@media (max-width:900px)': {
+          // eslint-disable-line no-useless-computed-key
+          height: '40px',
+          position: 'static',
+        },
+      }}
+    >
       {children}
     </Paper>
   );

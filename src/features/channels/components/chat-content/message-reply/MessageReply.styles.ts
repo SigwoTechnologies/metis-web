@@ -27,8 +27,10 @@ const useStyles = makeStyles((theme: Theme) =>
       textAlign: 'right',
     },
     replyContainer: {
-      marginBottom: '0.5rem',
-      marginTop: '0.5rem',
+      // marginBottom: '0.5rem',
+      // marginTop: '0.5rem',
+      display: 'flex',
+      alignItems: 'flex-start',
     },
     reply: {
       width: '100%',

@@ -3,9 +3,14 @@ import { createStyles, makeStyles } from '@mui/styles';
 const useStyles = makeStyles(() =>
   createStyles({
     header: {
-      height: '5rem',
+      height: '80px',
       position: 'relative',
+      '@media (max-width:900px)': {
+        // eslint-disable-line no-useless-computed-key
+        height: '40px',
+      },
     },
+
     '@global': {
       '*::-webkit-scrollbar': {
         width: '0.4em',

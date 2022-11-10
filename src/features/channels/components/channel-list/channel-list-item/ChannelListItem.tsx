@@ -76,7 +76,7 @@ export const ChannelListItem = ({ channel, avatar = channel.channelName }: Props
       <ListItemButton
         className={classes.listItemButton}
         onClick={onSelectChannel}
-        alignItems="flex-start"
+        // alignItems="flex-start"
         selected={channel.channelAddress === selectedChannel.channelAddress}
       >
         <ListItemAvatar>
