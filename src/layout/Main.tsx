@@ -31,13 +31,20 @@ const Main = () => {
   }, [getHttpService, requestInterceptor, responseInterceptor]);
 
   return (
-    <Box height="100vh" className={classes.wrapper}>
-      <Container maxWidth="xl" component="main" className={classes.container}>
+    <Box height="100%" className={classes.wrapper}>
+      <Container
+        maxWidth="xl"
+        component="main"
+        className={classes.container}
+        sx={{
+          backgroundColor: 'black',
+        }}
+      >
         <Grid container columnSpacing={5} className={classes.grid}>
-          <Grid item xs={12} md={4} className={classes.gridRow}>
+          <Grid item xs={12} md={4} className={classes.gridRowL}>
             <LeftColumn />
           </Grid>
-          <Grid item md={8} className={classes.gridRow} sx={{ paddingLeft: '0px !important' }}>
+          <Grid item xs={12} md={8} className={classes.gridRowR}>
             <RightColumn />
           </Grid>
         </Grid>

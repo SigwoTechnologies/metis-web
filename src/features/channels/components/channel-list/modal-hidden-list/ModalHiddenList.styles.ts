@@ -11,10 +11,16 @@ const useStyles = makeStyles(() =>
     },
     cardContent: {
       justifyContent: 'flex-start',
-      alignContent: 'center',
+      alignItems: 'center',
       fontSize: '1.5rem',
       pointerEvents: 'none',
+      width: '100%',
     },
+    // info: {
+    //   display: 'flex',
+    //   justifyContent: 'space-between',
+    //   alignItems: 'center',
+    // },
     actionContainer: {
       justifyContent: 'flex-end',
       padding: '0.8rem',
