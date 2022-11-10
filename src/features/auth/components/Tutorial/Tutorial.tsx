@@ -48,7 +48,7 @@ export const Tutorial = () => {
           <Slider {...settings}>
             {contentSlider.map((content) => {
               return (
-                <div>
+                <div key={content.title}>
                   <span className={classes.span}>{content.title}</span>
                   <br />
                   <p className={classes.subtitle}>{content.text}</p>

@@ -1,5 +1,8 @@
 import { signOut } from '@metis/features/auth/store/auth.slice';
-import { setOpenCreateChannelDrawer } from '@metis/features/channels/store/channel.slice';
+import {
+  setOpenCreateChannelDrawer,
+  searchChannel,
+} from '@metis/features/channels/store/channel.slice';
 import { useAppDispatch, useAppSelector } from '@metis/store/hooks';
 import { openToast } from '@metis/store/ui/ui.slice';
 import { findImage } from '@metis/features/auth/store/auth.actions';
@@ -10,6 +13,7 @@ import IndeterminateCheckBoxIcon from '@mui/icons-material/IndeterminateCheckBox
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import PhonelinkEraseIcon from '@mui/icons-material/PhonelinkErase';
 import MenuIcon from '@mui/icons-material/Menu';
+import { TextField } from '@mui/material';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
@@ -25,7 +29,8 @@ import ListItemText from '@mui/material/ListItemText';
 import Typography from '@mui/material/Typography';
 import CloseIcon from '@mui/icons-material/Close';
 import WarningIcon from '@mui/icons-material/Warning';
-import { useState, useEffect } from 'react';
+import debounce from 'just-debounce-it';
+import React, { useState, useEffect } from 'react';
 import { LoadingButton } from '@mui/lab';
 import About from '../about/about';
 import ModalHiddenList from '../modal-hidden-list/ModalHiddenList';
@@ -74,6 +79,10 @@ const ChannelList = () => {
     dispatch(openToast({ text: 'Try out Metis! http://www.jup.io', type: 'info' }));
     navigator.clipboard.writeText('Try out Metis! http://www.jup.io');
   };
+
+  const onSearchChannel = debounce(({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
+    dispatch(searchChannel(value));
+  }, 500);
 
   return (
     <>
@@ -155,6 +164,15 @@ const ChannelList = () => {
             <IconButton onClick={() => setDrawer(true)}>
               <MenuIcon />
             </IconButton>
+          </Grid>
+          <Grid item xs={10} className={styles.iconContainer}>
+            <TextField
+              autoComplete="off"
+              variant="standard"
+              placeholder="Search Channel"
+              type="text"
+              onChange={onSearchChannel}
+            />
           </Grid>
         </Grid>
       </Container>

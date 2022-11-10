@@ -35,6 +35,7 @@ export type ChannelState = {
   reply: IReply;
   mutedChannels: string[];
   channels: IChannel[];
+  searchChannels: IChannel[];
   selectedChannel: IChannel;
   pendingChannels: INewChannel[];
   isOpenCreateChannelDrawer: boolean;
@@ -45,6 +46,7 @@ const initialState: ChannelState = {
   isLoadingMessages: false,
   isLoadingInvites: false,
   channels: [],
+  searchChannels: [],
   hiddenChannels: [],
   invites: [],
   declinedInvites: [],
@@ -96,6 +98,15 @@ const slice = createSlice({
         (channel) => channel.channelAddress === channelAddress
       );
       state.selectedChannel = targetChannel || initialChannelState;
+    },
+    searchChannel: (state: ChannelState, { payload }) => {
+      if (!payload.length) {
+        state.searchChannels = [];
+        return;
+      }
+      state.searchChannels = state.channels.filter((channel) =>
+        channel.channelName.includes(payload)
+      );
     },
     updateReply: (state: ChannelState, { payload }) => {
       state.reply = payload;
@@ -213,6 +224,15 @@ export const {
   unhideChannel,
   addNewMessage,
   setSelectedChannel,
+  searchChannel,
   setOpenDrawer: setOpenCreateChannelDrawer,
 } = slice.actions;
 export const channelReducer = slice.reducer;
+
+/* export const selectChannelsFiltered = (state: RootState, key: string) => {
+  const { channels } = state.channel;
+  return channels.filter((e) =>
+    e.channelName.toLocaleLowerCase().includes(key.toLocaleLowerCase())
+  );
+};
+ */
