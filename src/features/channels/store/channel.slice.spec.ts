@@ -25,7 +25,7 @@ describe('Channel Slice', () => {
       isLoadingInvites: false,
       failedSearch: false,
       channels: [],
-      searchChannels: [],
+      filteredChannels: [],
       declinedInvites: [],
       invites: [],
       hiddenChannels: [],
@@ -39,6 +39,7 @@ describe('Channel Slice', () => {
       mutedChannels: [],
       pendingChannels: [],
       isOpenCreateChannelDrawer: false,
+      isOpenChannelDrawer: false,
     };
   });
 

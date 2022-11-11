@@ -3,6 +3,14 @@ import { Theme } from '@mui/material/styles';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
+    header: {
+      height: '80px',
+      position: 'relative',
+      '@media (max-width:900px)': {
+        // eslint-disable-line no-useless-computed-key
+        height: '40px',
+      },
+    },
     iconContainer: {
       display: 'flex',
       justifyContent: 'center',
