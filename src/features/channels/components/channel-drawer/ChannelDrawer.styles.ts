@@ -3,6 +3,14 @@ import { Theme } from '@mui/material/styles';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
+    header: {
+      height: '80px',
+      position: 'relative',
+      '@media (max-width:900px)': {
+        // eslint-disable-line no-useless-computed-key
+        height: '40px',
+      },
+    },
     iconContainer: {
       display: 'flex',
       justifyContent: 'center',
@@ -124,6 +132,15 @@ const useStyles = makeStyles((theme: Theme) =>
     listItemButton: {
       padding: '.8rem',
       transition: 'all 1s ease',
+    },
+    inputSearch: {
+      paddingTop: '.8rem',
+      width: '100%',
+      height: '90%',
+      top: '0',
+      '& input::placeholder': {
+        fontSize: '15px',
+      },
     },
   })
 );

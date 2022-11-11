@@ -3,15 +3,14 @@ import { useAppDispatch, useAppSelector } from '@metis/store/hooks';
 import { useEffect } from 'react';
 import { findChannels } from '../../hooks/useGetChannels';
 import { getMutedChannelAddresses } from '../../hooks/useGetMutedChannelAddresses';
+import { selectChannelsVisibles } from '../../store/channel.slice';
 import { ChannelListItem } from './channel-list-item/ChannelListItem';
 
 const ChannelList = () => {
   const dispatch = useAppDispatch();
-  const { channels, searchChannels, isLoading, hiddenChannels } = useAppSelector(
-    (state) => state.channel
-  );
-  const hiddenChannelsAddress = hiddenChannels.map((channel) => channel.channelAddress);
-  const channelList = searchChannels.length ? searchChannels : channels;
+  const { filteredChannels, isLoading } = useAppSelector((state) => state.channel);
+  const channelsVisibles = useAppSelector((state) => selectChannelsVisibles(state));
+  const channelList = filteredChannels.length ? filteredChannels : channelsVisibles;
 
   useEffect(() => {
     dispatch(findChannels());
@@ -20,12 +19,9 @@ const ChannelList = () => {
 
   return (
     <SpinnerContainer isLoading={isLoading}>
-      {channelList.map(
-        (channel) =>
-          !hiddenChannelsAddress.includes(channel.channelAddress) && (
-            <ChannelListItem channel={channel} key={channel.channelAddress} />
-          )
-      )}
+      {channelList.map((channel) => (
+        <ChannelListItem channel={channel} key={channel.channelAddress} />
+      ))}
     </SpinnerContainer>
   );
 };

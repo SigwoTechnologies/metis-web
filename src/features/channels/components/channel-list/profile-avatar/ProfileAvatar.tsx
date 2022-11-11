@@ -10,6 +10,7 @@ import { Avatar, Grid, IconButton } from '@mui/material';
 import { useEffect, useState } from 'react';
 import Files from 'react-files';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
+import appConfig from '@metis/common/configuration/app.config';
 import useStyles from './ProfileAvatar.styles';
 
 type TFile = {
@@ -51,6 +52,11 @@ const ProfileAvatar = () => {
     }
   }, [uploadingImage]);
 
+  useEffect(() => {
+    const url = `${appConfig.api.baseUrl}/jim/v1/api/users/${address}/files/public-profile`;
+    dispatch(findImage(url));
+  }, []);
+
   const handleSelectFile = async ([file]: [TFile]) => {
     if (file) {
       setUploadingImage(true);
@@ -69,6 +75,7 @@ const ProfileAvatar = () => {
       })
     );
   };
+
   const copyToClipboard = (textCopy: string, text: string) => {
     navigator.clipboard.writeText(textCopy);
     dispatch(openToast({ text: `${text} copied to clipboard`, type: 'success' }));
