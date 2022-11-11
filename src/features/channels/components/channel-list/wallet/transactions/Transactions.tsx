@@ -29,8 +29,8 @@ const Transactions = () => {
   const { data } = useSWR<{ transactions: TTransaction[] }>('/v1/api/recent-transactions');
 
   return (
-    <Box>
-      Transactions
+    <Box className={classes.transaction}>
+      <Divider>Transactions</Divider>
       <List>
         <SpinnerContainer isLoading={!data}>
           {data?.transactions.map((e) => (
