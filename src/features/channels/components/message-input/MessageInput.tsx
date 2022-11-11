@@ -51,50 +51,54 @@ const MessageInput = () => {
   const [uploadingImage, setUploadingImage] = useState(false);
 
   useEffect(() => {
-    clearInput();
-    const socket = connectSocket({
-      query: {
-        room: `upload-${channelAddress}`, // address of the current user
-        user: channelAddress, // address of the current user
-      },
-    }).socket('/upload');
+    if (uploadingImage) {
+      clearInput();
+      const socket = connectSocket({
+        query: {
+          room: `upload-${channelAddress}`, // address of the current user
+          user: channelAddress, // address of the current user
+        },
+      }).socket('/upload');
 
-    if (channelAddress) {
-      socket.on(
-        'uploadCreated',
-        async ({
-          url,
-          fileName,
-          mimeType,
-          size,
-          originalFileType,
-        }: {
-          url: string;
-          fileName: string;
-          mimeType: string;
-          size: number;
-          originalFileType: string;
-        }) => {
-          sendEncryptedMessageWithAttachment({
-            attachmentObj: {
-              url,
-              originalname: fileName,
-              mimetype: originalFileType || mimeType,
-              size,
-            },
-          }).then(() => {
-            dispatch(discardReply());
-            clearInput();
-            setUploadingImage(false);
-          });
-        }
-      );
-      socket.on('uploadFailed', async ({ errorMessage }: { errorMessage: string }) => {
-        setUploadingImage(false);
-        dispatch(openToast({ text: errorMessage, type: 'error' }));
-      });
+      if (channelAddress) {
+        socket.on(
+          'uploadCreated',
+          async ({
+            url,
+            fileName,
+            mimeType,
+            size,
+            originalFileType,
+          }: {
+            url: string;
+            fileName: string;
+            mimeType: string;
+            size: number;
+            originalFileType: string;
+          }) => {
+            sendEncryptedMessageWithAttachment({
+              attachmentObj: {
+                url,
+                originalname: fileName,
+                mimetype: originalFileType || mimeType,
+                size,
+              },
+            }).then(() => {
+              dispatch(discardReply());
+              clearInput();
+              setUploadingImage(false);
+            });
+            socket.close();
+          }
+        );
+        socket.on('uploadFailed', async ({ errorMessage }: { errorMessage: string }) => {
+          setUploadingImage(false);
+          dispatch(openToast({ text: errorMessage, type: 'error' }));
+          socket.close();
+        });
+      }
     }
-  }, [channelAddress]);
+  }, [uploadingImage]);
 
   const sendFileMessage = async (file: TFile) => {
     if (!file) {

@@ -1,3 +1,4 @@
+import appConfig from '@metis/common/configuration/app.config';
 import httpService from '@metis/common/services/http.service';
 import EncryiptionService from '@metis/features/auth/services/encryption.service';
 import { openToast } from '@metis/store/ui/ui.slice';
@@ -25,10 +26,24 @@ export const findChannels = createAsyncThunk(
             `/v1/api/channels/${channel.channelAddress}/messages?pageNumber=0&pageSize=1`
           );
 
+          let imageChannel;
+          try {
+            const { data: image } = await httpService.get(
+              `${appConfig.api.baseUrl}/jim/v1/api/users/${channel.channelAddress}/files/public-profile`,
+              {
+                responseType: 'blob',
+              }
+            );
+            imageChannel = URL.createObjectURL(image);
+          } catch (error) {
+            imageChannel = '';
+          }
+
           const lastMessage = messages[0];
 
           return {
             ...channel,
+            imageChannel,
             lastMessage: lastMessage && {
               ...lastMessage,
               decryptedReplyMessage:
