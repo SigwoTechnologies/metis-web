@@ -23,6 +23,7 @@ describe('Channel Slice', () => {
       isLoading: false,
       isLoadingMessages: false,
       isLoadingInvites: false,
+      failedSearch: false,
       channels: [],
       searchChannels: [],
       declinedInvites: [],

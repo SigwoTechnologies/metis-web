@@ -125,6 +125,15 @@ const useStyles = makeStyles((theme: Theme) =>
       padding: '.8rem',
       transition: 'all 1s ease',
     },
+    inputSearch: {
+      paddingTop: '.8rem',
+      width: '100%',
+      height: '90%',
+      top: '0',
+      '& input::placeholder': {
+        fontSize: '15px',
+      },
+    },
   })
 );
 

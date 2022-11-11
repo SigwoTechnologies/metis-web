@@ -82,7 +82,7 @@ const ChannelList = () => {
 
   const onSearchChannel = debounce(({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
     dispatch(searchChannel(value));
-  }, 500);
+  }, 1000);
 
   return (
     <>
@@ -172,6 +172,7 @@ const ChannelList = () => {
               placeholder="Search Channel"
               type="text"
               onChange={onSearchChannel}
+              className={styles.inputSearch}
             />
           </Grid>
         </Grid>

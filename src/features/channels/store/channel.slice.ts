@@ -29,6 +29,7 @@ export type ChannelState = {
   isLoading: boolean;
   isLoadingMessages: boolean;
   isLoadingInvites: boolean;
+  failedSearch: boolean;
   declinedInvites: number[];
   invites: TInvite[];
   hiddenChannels: IChannel[];
@@ -45,6 +46,7 @@ const initialState: ChannelState = {
   isLoading: false,
   isLoadingMessages: false,
   isLoadingInvites: false,
+  failedSearch: false,
   channels: [],
   searchChannels: [],
   hiddenChannels: [],
@@ -100,13 +102,15 @@ const slice = createSlice({
       state.selectedChannel = targetChannel || initialChannelState;
     },
     searchChannel: (state: ChannelState, { payload }) => {
+      state.failedSearch = false;
       if (!payload.length) {
         state.searchChannels = [];
         return;
       }
-      state.searchChannels = state.channels.filter((channel) =>
-        channel.channelName.includes(payload)
+      state.searchChannels = state.channels.filter(({ channelName }) =>
+        channelName.toLocaleLowerCase().includes(payload.toLocaleLowerCase())
       );
+      if (!state.searchChannels.length) state.failedSearch = true;
     },
     updateReply: (state: ChannelState, { payload }) => {
       state.reply = payload;

@@ -18,7 +18,7 @@ export const SignInButton = () => {
   const onClick = debounce(() => {
     dispatch(setIsConnectingToMetamask(true));
     dispatch(login(ethAccount));
-  }, 500);
+  }, 1000);
 
   return (
     <>
