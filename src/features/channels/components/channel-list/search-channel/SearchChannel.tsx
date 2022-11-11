@@ -163,13 +163,14 @@ const ChannelList = () => {
               <MenuIcon />
             </IconButton>
           </Grid>
-          <Grid item xs={10} className={styles.iconContainer}>
+          <Grid item xs={10} className={styles.iconContainer} sx={{ height: '0 !important' }}>
             <TextField
               autoComplete="off"
               variant="standard"
               placeholder="Search Channel"
               type="text"
               onChange={onSearchChannel}
+              sx={{ display: 'flex', height: '100%' }}
             />
           </Grid>
         </Grid>
