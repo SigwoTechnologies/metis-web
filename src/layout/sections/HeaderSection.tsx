@@ -5,7 +5,6 @@ import useStyles from './Section.styles';
 type Props = {
   children: React.ReactNode;
 };
-
 const HeaderSection = ({ children }: Props) => {
   const classes = useStyles();
   return (
@@ -15,9 +14,7 @@ const HeaderSection = ({ children }: Props) => {
       sx={{
         paddingLeft: '0 !important',
         '@media (max-width:900px)': {
-          // eslint-disable-line no-useless-computed-key
           height: '40px',
-          position: 'static',
         },
       }}
     >
@@ -25,5 +22,4 @@ const HeaderSection = ({ children }: Props) => {
     </Paper>
   );
 };
-
 export default HeaderSection;

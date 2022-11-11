@@ -1,12 +1,14 @@
 import httpService from '@metis/common/services/http.service';
 import { openToast } from '@metis/store/ui/ui.slice';
+import type { RootState } from '@metis/store/types';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { AxiosError } from 'axios';
 
 export const usToggleMuteChannel = createAsyncThunk(
   'channels/toggleMuteChannel',
-  async (channelAddress: string, { getState, dispatch }: any) => {
-    const isMuted = getState().channel.mutedChannels.includes(channelAddress);
+  async (channelAddress: string, { getState, dispatch }) => {
+    const state = getState() as RootState;
+    const isMuted = state.channel.mutedChannels.includes(channelAddress);
     try {
       const {
         data: {

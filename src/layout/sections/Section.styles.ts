@@ -10,7 +10,6 @@ const useStyles = makeStyles(() =>
         height: '40px',
       },
     },
-
     '@global': {
       '*::-webkit-scrollbar': {
         width: '0.4em',
@@ -23,7 +22,6 @@ const useStyles = makeStyles(() =>
         outline: '1px solid slategrey',
       },
     },
-
     main: {
       flex: 1,
       overflowY: 'auto',
@@ -37,5 +35,4 @@ const useStyles = makeStyles(() =>
     },
   })
 );
-
 export default useStyles;
