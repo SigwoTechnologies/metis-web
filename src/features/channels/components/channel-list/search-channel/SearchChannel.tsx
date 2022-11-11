@@ -48,42 +48,34 @@ const ChannelList = () => {
     jupAccount: { address },
     imageAccount,
   } = useAppSelector((state) => state.auth);
-
   useEffect(() => {
     if (!imageAccount) {
       const url = `${appConfig.api.baseUrl}/jim/v1/api/users/${address}/files/public-profile`;
       dispatch(findImage(url));
     }
   }, [imageAccount]);
-
   const handleSignOut = () => {
     dispatch(signOut());
     dispatch(openToast({ text: 'Sign out successful', type: 'info' }));
   };
-
   const handleUnlink = () => {
     setIsOpenUnlink(!isOpenUnlink);
   };
-
   const onUnlinkAccount = () => {
     localStorage.clear();
     window.location.reload();
   };
-
   const openCreateChannel = () => {
     setDrawer(false);
     dispatch(setOpenCreateChannelDrawer(true));
   };
-
   const handleShareMetis = () => {
     dispatch(openToast({ text: 'Try out Metis! http://www.jup.io', type: 'info' }));
     navigator.clipboard.writeText('Try out Metis! http://www.jup.io');
   };
-
   const onSearchChannel = debounce(({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
     dispatch(searchChannel(value));
   }, 500);
-
   return (
     <>
       <Drawer anchor="left" open={drawer} onClose={() => setDrawer(false)}>
@@ -92,7 +84,6 @@ const ChannelList = () => {
           <Box className={styles.account}>
             <ProfileAvatar />
           </Box>
-
           <Divider />
           <List>
             <ListItem disablePadding>
@@ -103,9 +94,7 @@ const ChannelList = () => {
                 <ListItemText primary="New Channel" onClick={openCreateChannel} />
               </ListItemButton>
             </ListItem>
-
             <Wallet />
-
             <ListItem disablePadding>
               <ListItemButton onClick={() => setOpen(true)} className={styles.listItemButton}>
                 <ListItemIcon className={styles.listItemIcon}>
@@ -114,7 +103,6 @@ const ChannelList = () => {
                 <ListItemText primary="Hidden Channels" />
               </ListItemButton>
             </ListItem>
-
             <ModalHiddenList open={open} onClose={() => setOpen(false)} />
             <ListItem disablePadding>
               <ListItemButton onClick={handleShareMetis} className={styles.listItemButton}>
@@ -154,13 +142,23 @@ const ChannelList = () => {
               Terms and Conditions
             </a>
           </Typography>
-
           <About title="About" message="This is Metis Web App. It is still under construction." />
         </Box>
       </Drawer>
-      <Container maxWidth="xl" component="main">
-        <Grid container columnSpacing={5}>
-          <Grid item xs={2} className={styles.iconContainer}>
+      <Container
+        maxWidth="xl"
+        component="main"
+        sx={{
+          display: 'flex',
+          alignContent: 'center',
+          paddingTop: '1%',
+          paddingRight: '4% !important',
+          paddingBottom: '1%',
+          paddingLeft: '4% !important',
+        }}
+      >
+        <Grid container columnSpacing={0}>
+          <Grid item xs={0} md={2} className={styles.iconContainer}>
             <IconButton onClick={() => setDrawer(true)}>
               <MenuIcon />
             </IconButton>
@@ -176,7 +174,6 @@ const ChannelList = () => {
           </Grid>
         </Grid>
       </Container>
-
       <Modal open={isOpenUnlink}>
         <div className={styles.iconContainerUnlink}>
           <WarningIcon className={styles.icon} color="primary" />
@@ -184,11 +181,9 @@ const ChannelList = () => {
           <span>This action is irreversible.</span>
           <span>You could lose your Metis account.</span>
         </div>
-
         <IconButton aria-label="close" onClick={handleUnlink} className={styles.closeButton}>
           <CloseIcon />
         </IconButton>
-
         <LoadingButton
           fullWidth
           variant="contained"
@@ -203,5 +198,4 @@ const ChannelList = () => {
     </>
   );
 };
-
 export default ChannelList;
