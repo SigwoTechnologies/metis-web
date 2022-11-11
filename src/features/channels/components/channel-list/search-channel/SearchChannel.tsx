@@ -76,7 +76,7 @@ const ChannelList = () => {
   const onSearchChannel = debounce(({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
     dispatch(searchChannel(value));
   }, 1000);
-  
+
   return (
     <>
       <Drawer anchor="left" open={drawer} onClose={() => setDrawer(false)}>
