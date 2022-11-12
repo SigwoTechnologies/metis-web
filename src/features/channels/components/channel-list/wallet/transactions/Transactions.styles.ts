@@ -14,6 +14,10 @@ const useStyles = makeStyles((theme: Theme) =>
         cursor: 'pointer',
       },
     },
+    transaction: {
+      fontSize: '1.2rem',
+      fontWeight: '400',
+    },
     button: {
       width: '100%',
       marginBottom: '1rem',

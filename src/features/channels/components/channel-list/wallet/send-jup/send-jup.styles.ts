@@ -13,6 +13,8 @@ const useStyles = makeStyles(() =>
       width: '100%',
       marginBottom: '1rem',
       textTransform: 'capitalize',
+      fontSize: '1.5rem',
+      fontWeight: '700',
     },
     infoBox: {
       width: '25rem',
