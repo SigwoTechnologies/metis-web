@@ -7,8 +7,7 @@ const useStyles = makeStyles((theme: Theme) =>
       height: '80px',
       position: 'relative',
       '@media (max-width:900px)': {
-        // eslint-disable-line no-useless-computed-key
-        height: '40px',
+        height: '41px',
       },
     },
     iconContainer: {
