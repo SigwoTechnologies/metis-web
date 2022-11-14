@@ -12,9 +12,10 @@ import { IChannel } from '../types/channel.interface';
 import { IMessage } from '../types/message.interface';
 import { INewChannel } from '../types/new.channel.interface';
 import { IReply } from '../types/reply.interface';
-import { findMembers } from './channel.actions';
+import { findMembers, findImageChannel } from './channel.actions';
 
 const initialChannelState = {
+  imageChannel: '',
   channelAddress: '',
   channelPublicKey: '',
   channelName: '',
@@ -89,6 +90,7 @@ const slice = createSlice({
           messages: [],
           members: [],
           lastMessage: {} as IMessage,
+          imageChannel: '',
         };
 
         state.channels.unshift(channelCreated);
@@ -218,6 +220,17 @@ const slice = createSlice({
 
     builder.addCase(findMembers.fulfilled, (state, { payload }) => {
       state.selectedChannel.members = payload;
+    });
+    builder.addCase(findImageChannel.fulfilled, (state, { payload }) => {
+      state.selectedChannel.imageChannel = payload;
+      state.channels = state.channels.map((channel) => {
+        if (channel.channelAddress === state.selectedChannel.channelAddress)
+          return {
+            ...channel,
+            imageChannel: payload,
+          };
+        return channel;
+      });
     });
   },
 });

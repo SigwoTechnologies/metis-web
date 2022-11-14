@@ -1,5 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import httpService from '@metis/common/services/http.service';
+import BusinessError from '@metis/common/exceptions/business-error';
 import appConfig from '@metis/common/configuration/app.config';
 import { IMembers } from '../types/members.interface';
 
@@ -14,6 +15,23 @@ const getImageProfile = async (address: string) => {
     return '';
   }
 };
+
+export const findImageChannel = createAsyncThunk(
+  'channel/findImageChannel',
+  async (url: string, { rejectWithValue }) => {
+    try {
+      const { data } = await httpService.get(url, {
+        responseType: 'blob',
+      });
+      return URL.createObjectURL(data);
+    } catch (err: unknown) {
+      if (err instanceof BusinessError) {
+        return rejectWithValue(err.getError());
+      }
+      throw err;
+    }
+  }
+);
 
 export const findMembers = createAsyncThunk(
   'channel/findMembers',

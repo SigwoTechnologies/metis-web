@@ -9,6 +9,7 @@ describe('Channel Slice', () => {
 
   beforeEach(() => {
     const initialChannelState = {
+      imageChannel: '',
       channelAddress: '',
       channelPublicKey: '',
       channelName: '',

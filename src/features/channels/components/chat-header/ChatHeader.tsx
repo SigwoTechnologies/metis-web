@@ -75,7 +75,7 @@ const ChatHeader = () => {
         <Box display="flex" justifyContent="center" alignItems="center" fontSize="0.2rem">
           <Avatar
             alt={selectedChannel.channelName}
-            src={selectedChannel.channelName}
+            src={selectedChannel.imageChannel}
             className={classes.avatar}
           />
 

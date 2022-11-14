@@ -22,7 +22,7 @@ type Props = {
   avatar?: string;
 };
 
-export const ChannelListItem = ({ channel, avatar = channel.channelName }: Props) => {
+export const ChannelListItem = ({ channel, avatar = channel.imageChannel }: Props) => {
   const classes = useStyles();
   const {
     channel: { mutedChannels, selectedChannel },

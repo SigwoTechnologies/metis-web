@@ -2,7 +2,7 @@ import PlaceholderAvatar from '@metis/assets/images/avatars/astronaut.png';
 import connectSocket from '@metis/common/services/socket.service';
 import { SpinnerContainer } from '@metis/common/components/ui/spinner-container/SpinnerContainer';
 import { findImage } from '@metis/features/auth/store/auth.actions';
-import { useUploadImageProfile } from '@metis/features/channels/hooks/useUploadImageProfile';
+import { useUploadImage } from '@metis/features/channels/hooks/useUploadImage';
 import { useAppDispatch, useAppSelector } from '@metis/store/hooks';
 import { openToast } from '@metis/store/ui/ui.slice';
 import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
@@ -61,7 +61,7 @@ const ProfileAvatar = () => {
     if (file) {
       setUploadingImage(true);
       dispatch(openToast({ text: 'Uploading image, please wait', type: 'info' }));
-      useUploadImageProfile({ file, address });
+      useUploadImage({ file, address, fileCategory: 'public-profile' });
     }
   };
 
