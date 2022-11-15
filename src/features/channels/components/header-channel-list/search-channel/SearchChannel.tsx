@@ -19,7 +19,7 @@ export const SearchChannel = () => {
   }, 500);
 
   return (
-    <Grid item xs={10} className={styles.iconContainer}>
+    <Grid item xs={10} className={styles.iconContainer} sx={{ height: '0 !important' }}>
       <TextField
         autoComplete="off"
         variant="standard"
@@ -27,6 +27,7 @@ export const SearchChannel = () => {
         type="text"
         onChange={({ target }) => handleChange(target.value)}
         className={styles.inputSearch}
+        sx={{ display: 'flex', height: '100%' }}
       />
     </Grid>
   );
