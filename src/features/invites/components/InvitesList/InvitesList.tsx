@@ -81,18 +81,20 @@ const InvitesList = () => {
           </Box>
         </AccordionSummary>
         <AccordionDetails>
-          <SpinnerContainer isLoading={isLoadingInvites}>
-            {invites.map((invite) => (
-              <InviteListItem
-                key={invite.invitationId}
-                acceptInvite={acceptInvite}
-                proccessInvite={proccessInvite}
-                invite={invite}
-              />
-            ))}
-            {!invites.length && (
-              <Typography variant="body2">There are no pending invites</Typography>
-            )}
+          <SpinnerContainer isLoading={proccessInvite}>
+            <SpinnerContainer isLoading={proccessInvite}>
+              {invites.map((invite) => (
+                <InviteListItem
+                  key={invite.invitationId}
+                  acceptInvite={acceptInvite}
+                  proccessInvite={proccessInvite}
+                  invite={invite}
+                />
+              ))}
+              {!invites.length && (
+                <Typography variant="body2">There are no pending invites</Typography>
+              )}
+            </SpinnerContainer>
           </SpinnerContainer>
         </AccordionDetails>
       </Accordion>
