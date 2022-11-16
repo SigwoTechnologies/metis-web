@@ -174,7 +174,21 @@ const MessageInput = () => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} style={{ position: 'relative' }}>
-      {selectedFile && <img src={preview} alt="Alo" style={{ width: '100px', height: '100px' }} />}
+      {selectedFile && (
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            backgroundColor: '#232323',
+            width: '100%',
+            height: 'auto',
+            padding: '3% 4%',
+          }}
+        >
+          <img src={preview} alt="Alo" style={{ maxWidth: '80%', maxHeight: '260px' }} />
+        </div>
+      )}
       <IconButton
         disabled={loading}
         edge="start"
