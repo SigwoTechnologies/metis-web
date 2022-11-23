@@ -37,7 +37,7 @@ const Main = () => {
         component="main"
         className={classes.container}
         sx={{
-          backgroundColor: 'black',
+          backgroundColor: '#181818',
         }}
       >
         <Grid container columnSpacing={5} className={classes.grid}>
