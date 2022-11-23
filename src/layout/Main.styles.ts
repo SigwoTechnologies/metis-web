@@ -5,6 +5,8 @@ const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     wrapper: {
       backgroundColor: theme.palette.background.default,
+      // eslint-disable-line no-useless-computed-key
+      fontSize: '62.5%',
     },
     container: {
       height: '100%',

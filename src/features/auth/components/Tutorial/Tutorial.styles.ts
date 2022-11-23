@@ -15,6 +15,7 @@ const useStyles = makeStyles((theme: Theme) =>
       borderRadius: '10px',
     },
     span: {
+      fontSize: '1rem',
       fontWeight: 700,
       textTransform: 'none',
     },
@@ -23,11 +24,20 @@ const useStyles = makeStyles((theme: Theme) =>
       display: 'block',
     },
     button: {
-      margin: '20px 20px',
+      height: '40px',
+      width: '110px',
+      margin: '40px 40px',
       justifyContent: 'center',
       position: 'absolute',
       top: 0,
       left: 0,
+      borderRadius: '10px',
+      backgroundColor: '#61D90C',
+      '@media (max-width:500px)': {
+        // eslint-disable-line no-useless-computed-key
+        margin: '20px 20px',
+        width: '80px',
+      },
     },
     closeButton: {
       position: 'absolute',
