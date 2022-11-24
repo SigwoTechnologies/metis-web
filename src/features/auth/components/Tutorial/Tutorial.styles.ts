@@ -20,8 +20,8 @@ const useStyles = makeStyles((theme: Theme) =>
       textTransform: 'none',
     },
     subtitle: {
-      paddingBottom: '20px',
       display: 'block',
+      minHeight: '50px',
     },
     button: {
       height: '40px',
