@@ -51,7 +51,7 @@ const useStyles = makeStyles((theme: Theme) =>
       },
     },
     associate: {
-      maxWidth: '280px',
+      minWidth: '280px',
       color: '#ccc',
       textDecoration: 'none',
     },
