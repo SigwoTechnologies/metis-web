@@ -6,13 +6,12 @@ import { useAppDispatch, useAppSelector } from '@metis/store/hooks';
 import { openToast } from '@metis/store/ui/ui.slice';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import IndeterminateCheckBoxIcon from '@mui/icons-material/IndeterminateCheckBox';
-import MenuIcon from '@mui/icons-material/Menu';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import Box from '@mui/material/Box';
 import Divider from '@mui/material/Divider';
 import Drawer from '@mui/material/Drawer';
-import Grid from '@mui/material/Grid';
 import IconButton from '@mui/material/IconButton/IconButton';
+import hamburgerMenu from '@metis/assets/images/misc/hamburger.svg';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
@@ -49,11 +48,23 @@ export const ChannelDrawer = () => {
 
   return (
     <>
-      <Grid item xs={0} md={2} className={styles.iconContainer}>
-        <IconButton onClick={handleOpenDrawer}>
-          <MenuIcon />
+      <Box className={styles.iconContainer}>
+        <IconButton
+          onClick={handleOpenDrawer}
+          sx={{
+            '&:hover': {
+              backgroundColor: 'transparent',
+            },
+          }}
+        >
+          <Box
+            component="img"
+            src={hamburgerMenu}
+            alt="hamburger-menu"
+            sx={{ height: '24px', width: '24px' }}
+          />
         </IconButton>
-      </Grid>
+      </Box>
 
       <Drawer anchor="left" open={isOpenChannelDrawer} onClose={handleOpenDrawer}>
         {/* TODO fixed values are not good for responsive design */}
