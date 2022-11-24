@@ -134,12 +134,26 @@ const useStyles = makeStyles((theme: Theme) =>
       transition: 'all 1s ease',
     },
     inputSearch: {
-      paddingTop: '.8rem',
+      display: 'flex',
+      height: '100%',
       width: '100%',
-      height: '90%',
       top: '0',
       '& input::placeholder': {
-        fontSize: '15px',
+        fontSize: '16px',
+      },
+    },
+    textInput: {
+      '&::before': {
+        border: '0px !important',
+      },
+      borderRadius: '10px',
+      borderBottom: '1px solid transparent',
+      transition: 'linear 200ms',
+      '&:hover': {
+        borderBottom: '1px solid #61D90C',
+      },
+      '&::after': {
+        border: '0px !important',
       },
     },
   })
