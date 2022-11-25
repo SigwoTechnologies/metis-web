@@ -4,7 +4,7 @@ import addChannelBtn from '@metis/assets/images/misc/add-channel-btn.svg';
 import Form from '@metis/common/components/ui/Form/Form';
 import TextInput from '@metis/common/components/ui/TextInput/TextInput';
 import httpService from '@metis/common/services/http.service';
-import GroupsIcon from '@mui/icons-material/Groups';
+import createChannelIcon from '@metis/assets/images/misc/createChannelIcon.svg';
 import {
   createChannel,
   setOpenCreateChannelDrawer,
@@ -16,6 +16,7 @@ import { openToast } from '@metis/store/ui/ui.slice';
 import CloseIcon from '@mui/icons-material/Close';
 import { LoadingButton } from '@mui/lab';
 import { Drawer, IconButton } from '@mui/material';
+import AddIcon from '@mui/icons-material/Add';
 import Box from '@mui/material/Box';
 import emojiRegex from 'emoji-regex';
 import { useState } from 'react';
@@ -78,13 +79,20 @@ export const CreateChannel = () => {
           </IconButton>
 
           <Box className={classes.avatarBox}>
-            <GroupsIcon className={classes.avatar} />
-
-            <p>To create a channel enter their name</p>
+            <Box component="img" src={createChannelIcon} alt="Create Channel Icon" />
+            <p>Create New Channel</p>
           </Box>
 
           <Form<IChannelDTO> onSubmit={createNewChannel} form={{ resolver: yupResolver(schema) }}>
-            <TextInput label="Channel name here" name="channelName" />
+            <TextInput
+              name="channelName"
+              placeholder="Channel Name"
+              // // className={classes.inputSearch}
+              // sx={{
+              //   borderRadius: '10px',
+              //   backgroundColor: '#232323',
+              // }}
+            />
             <LoadingButton
               loading={loading}
               type="submit"
@@ -92,6 +100,7 @@ export const CreateChannel = () => {
               variant="contained"
             >
               Create new channel
+              <AddIcon />
             </LoadingButton>
           </Form>
         </Box>

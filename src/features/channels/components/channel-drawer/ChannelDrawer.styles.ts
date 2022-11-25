@@ -40,21 +40,25 @@ const useStyles = makeStyles((theme: Theme) =>
       marginBottom: '1rem',
     },
     account: {
+      display: 'flex',
       position: 'relative',
-      paddingLeft: '0.75rem',
       width: '100%',
       height: '5.6rem',
-      display: 'flex',
       alignItems: 'center',
+      justifyContent: 'flex-start',
+      borderBottom: '1px solid #61D90C',
+      paddingBottom: '10px 0',
     },
     accountAvatar: {
-      width: '4rem',
-      height: '4rem',
+      width: '60px',
+      height: '60px',
       justifyContent: 'flex-start',
     },
     termPosition: {
       display: 'flex',
       justifyContent: 'flex-start',
+      borderTop: '1px solid #61D90C',
+      paddingTop: '10px',
     },
     term: {
       size: '2rem',
@@ -138,8 +142,11 @@ const useStyles = makeStyles((theme: Theme) =>
       right: '0',
     },
     listItemButton: {
-      padding: '.8rem',
-      transition: 'all 1s ease',
+      borderRadius: '10px',
+      height: '60px',
+      minHeight: '60px',
+      marginBottom: '10px',
+      transition: 'ease-in-out 200ms',
     },
     inputSearch: {
       paddingTop: '.8rem',

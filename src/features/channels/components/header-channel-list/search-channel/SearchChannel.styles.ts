@@ -138,6 +138,7 @@ const useStyles = makeStyles((theme: Theme) =>
       height: '40px',
       width: '100%',
       top: '0',
+      marginBottom: '10px',
       '& input::placeholder': {
         fontSize: '16px',
       },
@@ -156,6 +157,10 @@ const useStyles = makeStyles((theme: Theme) =>
         border: '0px !important',
         borderRadius: '10px',
       },
+    },
+    textInputTxt: {
+      padding: '0 !important',
+      paddingLeft: '0 !important',
     },
   })
 );

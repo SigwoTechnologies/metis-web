@@ -4,14 +4,14 @@ import {
 } from '@metis/features/channels/store/channel.slice';
 import { useAppDispatch, useAppSelector } from '@metis/store/hooks';
 import { openToast } from '@metis/store/ui/ui.slice';
-import AddCircleIcon from '@mui/icons-material/AddCircle';
-import IndeterminateCheckBoxIcon from '@mui/icons-material/IndeterminateCheckBox';
-import PersonAddIcon from '@mui/icons-material/PersonAdd';
+import shareIcon from '@metis/assets/images/misc/shareIcon.svg';
 import Box from '@mui/material/Box';
-import Divider from '@mui/material/Divider';
 import Drawer from '@mui/material/Drawer';
 import IconButton from '@mui/material/IconButton/IconButton';
 import hamburgerMenu from '@metis/assets/images/misc/hamburger.svg';
+import newChannelIcon from '@metis/assets/images/misc/newChannelIcon.svg';
+import hiddenChannelIcon from '@metis/assets/images/misc/hiddenChannelIcon.svg';
+import CloseIcon from '@mui/icons-material/Close';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
@@ -68,55 +68,94 @@ export const ChannelDrawer = () => {
 
       <Drawer anchor="left" open={isOpenChannelDrawer} onClose={handleOpenDrawer}>
         {/* TODO fixed values are not good for responsive design */}
-        <Box sx={{ width: 300 }} role="presentation" className={styles.upperGroup}>
-          <Box className={styles.account}>
-            <ProfileAvatar />
-          </Box>
-          <Divider />
-          <List>
-            <ListItem disablePadding>
-              <ListItemButton className={styles.listItemButton}>
-                <ListItemIcon className={styles.listItemIcon}>
-                  <AddCircleIcon />
-                </ListItemIcon>
-                <ListItemText primary="New Channel" onClick={openCreateChannel} />
-              </ListItemButton>
-            </ListItem>
-            <Wallet />
-            <ListItem disablePadding>
-              <ListItemButton onClick={() => setOpen(true)} className={styles.listItemButton}>
-                <ListItemIcon className={styles.listItemIcon}>
-                  <IndeterminateCheckBoxIcon />
-                </ListItemIcon>
-                <ListItemText primary="Hidden Channels" />
-              </ListItemButton>
-            </ListItem>
-            <ModalHiddenList open={open} onClose={() => setOpen(false)} />
-            <ListItem disablePadding>
-              <ListItemButton onClick={handleShareMetis} className={styles.listItemButton}>
-                <ListItemIcon className={styles.listItemIcon}>
-                  <PersonAddIcon />
-                </ListItemIcon>
-                <ListItemText primary="Share Metis with friends!" />
-              </ListItemButton>
-            </ListItem>
-          </List>
-        </Box>
-        <UnlinkButton />
-        <SignOutButton />
-        <Divider />
-        <Box className={styles.termPosition}>
-          <Typography variant="caption" display="block" className={styles.term}>
-            <a
-              href="https://jup.io/terms"
-              target="_blank"
-              rel="noreferrer noopener"
-              style={{ color: '#555b6e' }}
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            height: '100%',
+            width: '300px',
+            padding: '4%',
+          }}
+        >
+          <Box sx={{ width: '100%' }} role="presentation" className={styles.upperGroup}>
+            <Box
+              sx={{
+                display: 'flex',
+                flexDirection: 'row',
+                width: '100%',
+                justifyContent: 'flex-end',
+                opacity: '0.6',
+                transition: 'ease-in-out 200ms',
+                '&:hover': {
+                  opacity: '1',
+                  cursor: 'pointer',
+                },
+              }}
             >
-              Terms and Conditions
-            </a>
-          </Typography>
-          <About title="About" message="This is Metis Web App. It is still under construction." />
+              <CloseIcon onClick={handleOpenDrawer} />
+            </Box>
+            <Box className={styles.account}>
+              <ProfileAvatar />
+            </Box>
+            <List>
+              <Wallet />
+              <ListItem disablePadding>
+                <ListItemButton className={styles.listItemButton}>
+                  <ListItemIcon className={styles.listItemIcon}>
+                    <Box
+                      component="img"
+                      src={newChannelIcon}
+                      alt="wallet icon"
+                      sx={{ height: '24px', width: '24px' }}
+                    />
+                  </ListItemIcon>
+                  <ListItemText primary="New Channel" onClick={openCreateChannel} />
+                </ListItemButton>
+              </ListItem>
+              <ListItem disablePadding>
+                <ListItemButton onClick={() => setOpen(true)} className={styles.listItemButton}>
+                  <ListItemIcon className={styles.listItemIcon}>
+                    <Box
+                      component="img"
+                      src={hiddenChannelIcon}
+                      alt="wallet icon"
+                      sx={{ height: '24px', width: '24px' }}
+                    />
+                  </ListItemIcon>
+                  <ListItemText primary="Hidden Channels" />
+                </ListItemButton>
+              </ListItem>
+              <ModalHiddenList open={open} onClose={() => setOpen(false)} />
+              <ListItem disablePadding>
+                <ListItemButton onClick={handleShareMetis} className={styles.listItemButton}>
+                  <ListItemIcon className={styles.listItemIcon}>
+                    <Box
+                      component="img"
+                      src={shareIcon}
+                      alt="wallet icon"
+                      sx={{ height: '24px', width: '24px' }}
+                    />
+                  </ListItemIcon>
+                  <ListItemText primary="Share Metis" />
+                </ListItemButton>
+              </ListItem>
+            </List>
+          </Box>
+          <UnlinkButton />
+          <SignOutButton />
+          <Box className={styles.termPosition}>
+            <Typography variant="caption" display="block" className={styles.term}>
+              <a
+                href="https://jup.io/terms"
+                target="_blank"
+                rel="noreferrer noopener"
+                style={{ color: '#555b6e' }}
+              >
+                Terms and Conditions
+              </a>
+            </Typography>
+            <About title="About" message="This is Metis Web App. It is still under construction." />
+          </Box>
         </Box>
       </Drawer>
     </>

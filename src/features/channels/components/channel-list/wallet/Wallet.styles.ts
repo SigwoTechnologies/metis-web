@@ -41,9 +41,6 @@ const useStyles = makeStyles((theme: Theme) =>
       flexGrow: 1,
       justifySelf: '',
     },
-    listItemIcon: {
-      color: `${theme.colors.green5}`,
-    },
   })
 );
 

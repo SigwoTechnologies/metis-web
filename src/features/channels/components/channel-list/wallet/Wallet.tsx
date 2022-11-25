@@ -1,7 +1,6 @@
 import { fetchBalance } from '@metis/features/wallet/store/wallet.actions';
 import { setIsOpenWallet } from '@metis/features/wallet/store/wallet.slice';
 import { useAppDispatch, useAppSelector } from '@metis/store/hooks';
-import AllInboxIcon from '@mui/icons-material/AllInbox';
 import CloseIcon from '@mui/icons-material/Close';
 import {
   Drawer,
@@ -12,6 +11,7 @@ import {
   ListItemText,
 } from '@mui/material';
 import Box from '@mui/material/Box';
+import walletIcon from '@metis/assets/images/misc/walletIcon.svg';
 import { useEffect } from 'react';
 import ReceiveJup from './receive-jup/receive-jup';
 import SendJup from './send-jup/send-jup';
@@ -60,9 +60,23 @@ const Wallet = () => {
       </Drawer>
 
       <ListItem disablePadding>
-        <ListItemButton onClick={() => openDrawer()}>
-          <ListItemIcon className={classes.listItemIcon}>
-            <AllInboxIcon />
+        <ListItemButton
+          onClick={() => openDrawer()}
+          sx={{
+            borderRadius: '10px',
+            height: '60px',
+            minHeight: '60px',
+            marginBottom: '10px',
+            transition: 'ease-in-out 200ms',
+          }}
+        >
+          <ListItemIcon>
+            <Box
+              component="img"
+              src={walletIcon}
+              alt="wallet icon"
+              sx={{ height: '24px', width: '24px' }}
+            />
           </ListItemIcon>
           <ListItemText primary="Wallet" />
         </ListItemButton>

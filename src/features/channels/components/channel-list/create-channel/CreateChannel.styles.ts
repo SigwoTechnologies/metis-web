@@ -10,18 +10,20 @@ const useStyles = makeStyles((theme: Theme) =>
       margin: '1rem',
       bottom: '10px',
       right: '10px',
-      opacity: '1',
       transition: 'ease-in-out 300ms',
       '&:hover': {
         cursor: 'pointer',
-        opacity: '0.8',
         transform: 'rotate(180deg)',
       },
     },
     button: {
+      display: 'flex',
+      flexDirection: 'row',
+      alignItems: 'center',
       width: '100%',
       marginBottom: '1rem',
       textTransform: 'capitalize',
+      fontWeight: '600',
     },
     textField: {
       width: '100%',
@@ -34,7 +36,7 @@ const useStyles = makeStyles((theme: Theme) =>
       width: 400,
       height: '100%',
       flexDirection: 'column',
-      padding: '0 1rem 0 1rem',
+      padding: '0 4% 0 4%',
     },
     closeButton: {
       position: 'absolute',
@@ -55,6 +57,35 @@ const useStyles = makeStyles((theme: Theme) =>
       alignItems: 'center',
       gap: '1rem',
       fontSize: '1.2rem',
+    },
+    inputSearch: {
+      display: 'flex',
+      height: '40px',
+      width: '100%',
+      top: '0',
+      marginBottom: '25px',
+      '& input::placeholder': {
+        fontSize: '16px',
+      },
+    },
+    textInput: {
+      '&::before': {
+        border: '0px !important',
+      },
+      borderRadius: '10px',
+      borderBottom: '1px solid transparent',
+      transition: 'linear 200ms',
+      '&:hover': {
+        borderBottom: '1px solid #61D90C',
+      },
+      '&::after': {
+        border: '0px !important',
+        borderRadius: '10px',
+      },
+    },
+    textInputTxt: {
+      padding: '0 !important',
+      paddingLeft: '0 !important',
     },
   })
 );

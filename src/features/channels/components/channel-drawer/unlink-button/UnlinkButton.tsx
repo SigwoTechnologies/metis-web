@@ -1,6 +1,6 @@
 import Modal from '@metis/common/components/ui/Modal';
 import CloseIcon from '@mui/icons-material/Close';
-import PhonelinkEraseIcon from '@mui/icons-material/PhonelinkErase';
+import unlinkIcon from '@metis/assets/images/misc/unlink.svg';
 import WarningIcon from '@mui/icons-material/Warning';
 import { LoadingButton } from '@mui/lab';
 import IconButton from '@mui/material/IconButton/IconButton';
@@ -8,6 +8,7 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
+import Box from '@mui/material/Box';
 import { useState } from 'react';
 import useStyles from './UnlinkButton.styles';
 
@@ -28,7 +29,12 @@ export const UnlinkButton = () => {
       <ListItem disablePadding>
         <ListItemButton onClick={handleUnlink} className={styles.listItemButton}>
           <ListItemIcon className={styles.unlink}>
-            <PhonelinkEraseIcon />
+            <Box
+              component="img"
+              src={unlinkIcon}
+              alt="wallet icon"
+              sx={{ height: '24px', width: '24px' }}
+            />
           </ListItemIcon>
           <ListItemText className={styles.unlink} primary="Unlink Account" />
         </ListItemButton>

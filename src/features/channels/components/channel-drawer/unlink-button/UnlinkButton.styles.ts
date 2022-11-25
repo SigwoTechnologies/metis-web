@@ -90,8 +90,9 @@ const useStyles = makeStyles((theme: Theme) =>
       textAlign: 'left',
     },
     unlink: {
-      color: 'yellow',
+      color: '#FFF',
       textAlign: 'left',
+      fontWeight: '400',
     },
     wrapper: {
       backgroundColor: theme.palette.background.default,
@@ -130,8 +131,11 @@ const useStyles = makeStyles((theme: Theme) =>
       right: '0',
     },
     listItemButton: {
-      padding: '.8rem',
-      transition: 'all 1s ease',
+      borderRadius: '10px',
+      height: '60px',
+      minHeight: '60px',
+      marginBottom: '5px',
+      transition: 'ease-in-out 200ms',
     },
     inputSearch: {
       paddingTop: '.8rem',
