@@ -80,6 +80,10 @@ const InvitesList = () => {
             borderRadius: '10px',
             minHeight: '58px !important',
             maxHeight: '58px !important',
+            transition: 'ease-in-out 200ms',
+            '&:hover': {
+              backgroundColor: '#332F2E',
+            },
           }}
         >
           <Box display="flex" gap="1rem">

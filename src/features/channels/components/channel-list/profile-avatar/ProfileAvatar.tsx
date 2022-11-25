@@ -6,11 +6,12 @@ import { useUploadImage } from '@metis/features/channels/hooks/useUploadImage';
 import { useAppDispatch, useAppSelector } from '@metis/store/hooks';
 import { openToast } from '@metis/store/ui/ui.slice';
 import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
-import { Avatar, Grid, IconButton } from '@mui/material';
+import { Avatar, IconButton } from '@mui/material';
 import { useEffect, useState } from 'react';
 import Files from 'react-files';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import appConfig from '@metis/common/configuration/app.config';
+import Box from '@mui/material/Box';
 import useStyles from './ProfileAvatar.styles';
 
 type TFile = {
@@ -93,7 +94,7 @@ const ProfileAvatar = () => {
           onError={onFilesError}
           clickable
         >
-          <IconButton edge="start" size="medium" sx={{ p: 1.3 }}>
+          <IconButton size="medium">
             <Avatar
               alt="Profile Picture"
               src={imageAccount || PlaceholderAvatar}
@@ -103,39 +104,30 @@ const ProfileAvatar = () => {
           </IconButton>
         </Files>
       </SpinnerContainer>
-      <Grid>
-        <Grid sx={{ paddingLeft: '1.5rem' }}>
-          <button
-            type="button"
-            onClick={() => copyToClipboard(alias, 'Alias')}
-            className={styles.buttonID}
-          >
-            <Grid className={styles.buttonLayout}>
-              <Grid className={styles.buttonLeftAlias}>
-                <ContentCopyIcon className={styles.iconTwo} />
-              </Grid>
-              <Grid className={styles.alias}>Alias </Grid>
-            </Grid>
-            <Grid className={styles.buttonRightAlias}> &nbsp; {alias}</Grid>
-          </button>
-        </Grid>
-
-        <Grid sx={{ paddingLeft: '1.5rem' }}>
-          <button
-            type="button"
-            onClick={() => copyToClipboard(address, 'Account ID')}
-            className={styles.buttonID}
-          >
-            <Grid className={styles.buttonLayout}>
-              <Grid className={styles.buttonLeftID}>
-                <ContentCopyIcon className={styles.iconTwo} />
-              </Grid>
-              <Grid className={styles.id}>Account ID </Grid>
-            </Grid>
-            <Grid className={styles.buttonRightID}> &nbsp; {address}</Grid>
-          </button>
-        </Grid>
-      </Grid>
+      <Box className={styles.btnContainer}>
+        <button
+          type="button"
+          onClick={() => copyToClipboard(alias, 'Alias')}
+          className={styles.buttonID}
+        >
+          <Box className={styles.Btn}>
+            <Box>Alias</Box>
+            <Box sx={{ display: 'none' }}> &nbsp; {alias}</Box>
+            <ContentCopyIcon className={styles.btnIcons} />
+          </Box>
+        </button>
+        <button
+          type="button"
+          onClick={() => copyToClipboard(address, 'Account ID')}
+          className={styles.buttonID}
+        >
+          <Box className={styles.Btn}>
+            <Box>Account ID </Box>
+            <Box style={{ display: 'none' }}>&nbsp; {address}</Box>
+            <ContentCopyIcon className={styles.btnIcons} />
+          </Box>
+        </button>
+      </Box>
     </>
   );
 };

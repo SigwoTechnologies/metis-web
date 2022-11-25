@@ -86,7 +86,7 @@ const useStyles = makeStyles((theme: Theme) =>
       color: `${theme.colors.green5}`,
     },
     logout: {
-      color: '#ec5151',
+      color: '#FFF',
       textAlign: 'left',
     },
     unlink: {
@@ -130,8 +130,11 @@ const useStyles = makeStyles((theme: Theme) =>
       right: '0',
     },
     listItemButton: {
-      padding: '.8rem',
-      transition: 'all 1s ease',
+      borderRadius: '10px',
+      height: '60px',
+      minHeight: '60px',
+      marginBottom: '10px',
+      transition: 'ease-in-out 200ms',
     },
     inputSearch: {
       paddingTop: '.8rem',

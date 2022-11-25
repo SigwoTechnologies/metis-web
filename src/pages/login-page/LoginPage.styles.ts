@@ -83,7 +83,7 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     eth: {
       textAlign: 'center',
-      fontSize: '1.4rem',
+      fontSize: '1.2rem',
       color: 'gray',
       '&:hover': {
         cursor: 'pointer',

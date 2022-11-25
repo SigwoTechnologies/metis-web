@@ -3,8 +3,8 @@ import { createStyles, makeStyles } from '@mui/styles';
 const useStyles = makeStyles(() =>
   createStyles({
     accountAvatar: {
-      width: '4rem',
-      height: '4rem',
+      width: '60px',
+      height: '60px',
       justifyContent: 'flex-start',
     },
     icon: {
@@ -22,51 +22,41 @@ const useStyles = makeStyles(() =>
         opacity: '1',
       },
     },
-    buttonLayout: {
-      display: 'flex',
-      flex: '2',
-    },
     buttonID: {
       border: 'none',
       background: 'none',
-      color: '#fff',
+      color: '#f2f2f2',
       padding: '0',
-      fontSize: '11px',
+      fontSize: '0.8rem',
       cursor: 'pointer',
+      opacity: '0.8',
+      transition: 'ease-in-out 200ms',
+      '&:hover': {
+        opacity: '1',
+      },
     },
-    iconTwo: {
-      flex: '1',
+    btnContainer: {
       display: 'flex',
-      justifyContent: 'flex-end',
-      fontSize: '1rem',
+      flexDirection: 'column',
+      width: '100%',
+      marginLeft: '10px',
     },
-    alias: {
-      color: 'grey',
-      fontSize: '1rem',
-      paddingLeft: '0.8rem',
-    },
-    buttonLeftAlias: {
+    Btn: {
       display: 'flex',
-      justifyContent: 'flex-start ',
-    },
-    buttonRightAlias: {
-      display: 'none',
-      justifyContent: 'flex-end',
-      flex: '1',
-    },
-    id: {
-      color: 'grey',
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
       fontSize: '1rem',
-      paddingLeft: '0.8rem',
+      marginBottom: '10px',
     },
-    buttonLeftID: {
-      display: 'flex',
-      justifyContent: 'flex-start ',
-    },
-    buttonRightID: {
-      display: 'none',
-      justifyContent: 'flex-end',
-      flex: '1',
+    btnIcons: {
+      fontSize: '1.4rem',
+      color: '#61D90C',
+      opacity: '0.8',
+      transition: 'ease-in-out 200ms',
+      '&:hover': {
+        opacity: '1',
+      },
     },
   })
 );
