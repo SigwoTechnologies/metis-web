@@ -70,6 +70,7 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     spinner: {
       alignSelf: 'center',
+      color: '#61D90C',
     },
     accountLetter: {
       textAlign: 'center',

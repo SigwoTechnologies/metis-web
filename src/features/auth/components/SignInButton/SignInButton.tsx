@@ -44,6 +44,9 @@ export const SignInButton = () => {
           {isConnectingToMetamask ? (
             <Box
               sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
                 height: '41px',
                 width: '601px',
                 backgroundColor: '#403B36',

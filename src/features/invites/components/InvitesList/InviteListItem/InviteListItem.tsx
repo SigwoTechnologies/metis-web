@@ -37,18 +37,16 @@ const InviteListItem = ({ invite, acceptInvite, proccessInvite }: Props) => {
 
   return (
     <ListItem
-      secondaryAction={
-        <Box display="flex" gap="0.3rem">
-          <SpinnerContainer isLoading={proccessInvite}>
-            <IconButton onClick={handleAcceptInvite} color="success">
-              <DoneIcon />
-            </IconButton>
-            <IconButton onClick={declineInvite} color="error">
-              <CloseIcon />
-            </IconButton>
-          </SpinnerContainer>
-        </Box>
-      }
+      sx={{
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        backgroundColor: '#0dc7fa2b',
+        borderRadius: '10px',
+        marginBottom: '10px ',
+        position: 'relative !important',
+      }}
     >
       <ListItemAvatar>
         <Badge
@@ -75,6 +73,16 @@ const InviteListItem = ({ invite, acceptInvite, proccessInvite }: Props) => {
           </Typography>
         }
       />
+      <Box display="flex" gap="0.3rem">
+        <SpinnerContainer isLoading={proccessInvite}>
+          <IconButton onClick={handleAcceptInvite} color="success">
+            <DoneIcon />
+          </IconButton>
+          <IconButton onClick={declineInvite} color="error">
+            <CloseIcon />
+          </IconButton>
+        </SpinnerContainer>
+      </Box>
     </ListItem>
   );
 };

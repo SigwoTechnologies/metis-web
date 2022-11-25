@@ -8,7 +8,8 @@ const useStyles = makeStyles(
       justifyItems: 'space-between',
       alignItems: 'center',
       width: '100%',
-      padding: '3%',
+      padding: '5% 4%',
+      backgroundColor: '#181818',
     },
   })
 );

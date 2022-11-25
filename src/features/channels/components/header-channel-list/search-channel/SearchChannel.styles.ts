@@ -135,7 +135,7 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     inputSearch: {
       display: 'flex',
-      height: '100%',
+      height: '40px',
       width: '100%',
       top: '0',
       '& input::placeholder': {
@@ -154,6 +154,7 @@ const useStyles = makeStyles((theme: Theme) =>
       },
       '&::after': {
         border: '0px !important',
+        borderRadius: '10px',
       },
     },
   })
