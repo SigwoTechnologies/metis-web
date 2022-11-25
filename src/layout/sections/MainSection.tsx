@@ -9,7 +9,16 @@ type Props = {
 const MainSection = ({ children }: Props) => {
   const classes = useStyles();
   return (
-    <Paper className={classes.main} square>
+    <Paper
+      className={classes.main}
+      square
+      sx={{
+        borderLeft: '0px !important',
+        borderRight: '0px !important',
+        boxShadow: 'none !important',
+        transition: 'none !important',
+      }}
+    >
       {children}
     </Paper>
   );

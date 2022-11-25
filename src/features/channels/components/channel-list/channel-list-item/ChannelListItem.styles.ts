@@ -6,7 +6,6 @@ const useStyles = makeStyles(() =>
       width: '48px',
       height: '48px',
       marginRight: '1rem',
-
       '@media (max-width:900px)': {
         // eslint-disable-line no-useless-computed-key
         height: '30px',
@@ -28,7 +27,9 @@ const useStyles = makeStyles(() =>
     },
     listItemButton: {
       height: '75px',
-      padding: '3%',
+      padding: '3% 4%',
+      borderRadius: '10px',
+      marginBottom: '10px',
       transition: 'all 1s ease',
       '@media (max-width:900px)': {
         // eslint-disable-line no-useless-computed-key

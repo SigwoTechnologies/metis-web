@@ -17,7 +17,9 @@ const useStyles = makeStyles((theme: Theme) =>
       textAlign: 'center',
     },
     grid: {
-      height: '100vh',
+      height: '100%',
+      borderRadius: '10px',
+      margin: '0 !important',
       '@media (max-width:900px)': {
         // eslint-disable-line no-useless-computed-key
         height: 'auto',
@@ -28,6 +30,9 @@ const useStyles = makeStyles((theme: Theme) =>
       display: 'flex',
       flexDirection: 'column',
       maxHeight: '100%',
+      // paddingLeft: '36px !important',
+      backgroundColor: '#332F2E',
+      borderRadius: '10px 0 0 10px',
       '@media (max-width:900px)': {
         height: '40vh',
       },

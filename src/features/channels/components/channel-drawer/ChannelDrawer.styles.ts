@@ -12,6 +12,7 @@ const useStyles = makeStyles((theme: Theme) =>
       },
     },
     iconContainer: {
+      height: '40px',
       display: 'flex',
       justifyContent: 'center',
       alignItems: 'end',

@@ -31,17 +31,18 @@ const Main = () => {
   }, [getHttpService, requestInterceptor, responseInterceptor]);
 
   return (
-    <Box height="100%" className={classes.wrapper}>
+    <Box height="100vh" className={classes.wrapper}>
       <Container
         maxWidth="xl"
         component="main"
         className={classes.container}
         sx={{
-          backgroundColor: '#181818',
+          backgroundColor: '#332F2E',
+          padding: '18px !important',
         }}
       >
-        <Grid container columnSpacing={5} className={classes.grid}>
-          <Grid item xs={12} md={4} className={classes.gridRowL}>
+        <Grid container className={classes.grid}>
+          <Grid item xs={12} md={4} className={classes.gridRowL} sx={{ padding: '0 !important' }}>
             <LeftColumn />
           </Grid>
           <Grid item xs={12} md={8} className={classes.gridRowR}>

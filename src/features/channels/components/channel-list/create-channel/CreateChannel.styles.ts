@@ -4,14 +4,18 @@ import { createStyles, makeStyles } from '@mui/styles';
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     createButton: {
-      width: '3rem',
-      height: '3rem',
+      width: '60px',
+      height: '60px',
       position: 'absolute',
       margin: '1rem',
-      bottom: 0,
-      right: 0,
+      bottom: '10px',
+      right: '10px',
+      opacity: '1',
+      transition: 'ease-in-out 300ms',
       '&:hover': {
         cursor: 'pointer',
+        opacity: '0.8',
+        transform: 'rotate(180deg)',
       },
     },
     button: {

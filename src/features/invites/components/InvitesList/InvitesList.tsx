@@ -21,7 +21,7 @@ import InviteListItem from './InviteListItem/InviteListItem';
 
 const InvitesList = () => {
   const { alias, address } = useAppSelector((state) => state.auth.jupAccount);
-  const { invites, isLoadingInvites } = useAppSelector((state) => state.channel);
+  const { invites } = useAppSelector((state) => state.channel);
   const [proccessInvite, setProccessInvite] = useState(false);
   const dispatch = useAppDispatch();
 
@@ -55,12 +55,32 @@ const InvitesList = () => {
   });
 
   return (
-    <List>
-      <Accordion>
+    <List
+      sx={{
+        padding: '0 !important',
+      }}
+    >
+      <Accordion
+        sx={{
+          padding: '0 4%',
+          borderRadius: '0 !important',
+          borderLeft: '0px !important',
+          borderRight: '0px !important',
+          boxShadow: 'none !important',
+          transition: 'none !important',
+        }}
+      >
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
           aria-controls="panel1a-content"
           id="panel1a-header"
+          sx={{
+            padding: '1% 4% !important',
+            border: '1px solid #61D90C',
+            borderRadius: '10px',
+            minHeight: '58px !important',
+            maxHeight: '58px !important',
+          }}
         >
           <Box display="flex" gap="1rem">
             {(invites.length && (
@@ -80,7 +100,7 @@ const InvitesList = () => {
             <Typography>Invites</Typography>
           </Box>
         </AccordionSummary>
-        <AccordionDetails>
+        <AccordionDetails sx={{ padding: '0 !important', margin: '10px 5px' }}>
           <SpinnerContainer isLoading={proccessInvite}>
             <SpinnerContainer isLoading={proccessInvite}>
               {invites.map((invite) => (
@@ -92,7 +112,9 @@ const InvitesList = () => {
                 />
               ))}
               {!invites.length && (
-                <Typography variant="body2">There are no pending invites</Typography>
+                <Box sx={{ border: '1px solid #0DC7FA', borderRadius: '10px', padding: '3% 4%' }}>
+                  <Typography variant="body2">You have no invites</Typography>
+                </Box>
               )}
             </SpinnerContainer>
           </SpinnerContainer>

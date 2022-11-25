@@ -1,6 +1,6 @@
 /* eslint-disable no-restricted-syntax */
 import { yupResolver } from '@hookform/resolvers/yup';
-import PlusButton from '@metis/assets/images/misc/plus-button.png';
+import addChannelBtn from '@metis/assets/images/misc/add-channel-btn.svg';
 import Form from '@metis/common/components/ui/Form/Form';
 import TextInput from '@metis/common/components/ui/TextInput/TextInput';
 import httpService from '@metis/common/services/http.service';
@@ -99,7 +99,7 @@ export const CreateChannel = () => {
       <Box
         onClick={() => openDrawer()}
         component="img"
-        src={PlusButton}
+        src={addChannelBtn}
         alt="Create Channel"
         className={classes.createButton}
       />
