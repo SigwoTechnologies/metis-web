@@ -1,6 +1,7 @@
 import React from 'react';
-import QuestionAnswerIcon from '@mui/icons-material/QuestionAnswer';
 import { Typography } from '@mui/material';
+import Box from '@mui/material/Box';
+import metisChatIcon from '@metis/assets/images/misc/metis-chat-icon.svg';
 import useStyles from './EmptyStateChannel.styles';
 
 const EmptyStateChannel: React.FC = () => {
@@ -9,8 +10,23 @@ const EmptyStateChannel: React.FC = () => {
   return (
     <div className={classes.container}>
       <div style={{ margin: 'auto' }}>
-        <QuestionAnswerIcon fontSize="large" className={classes.icon} />
-        <Typography variant="body2" color="text.secondary">
+        <Typography
+          variant="body2"
+          color="text.secondary"
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            alignItems: 'center',
+            color: '#FFF',
+          }}
+        >
+          <Box
+            component="img"
+            src={metisChatIcon}
+            alt="metis chat icon"
+            sx={{ marginBottom: '10px' }}
+          />
           Select a channel and start chatting!
         </Typography>
       </div>

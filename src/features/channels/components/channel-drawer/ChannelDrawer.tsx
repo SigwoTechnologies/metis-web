@@ -73,8 +73,11 @@ export const ChannelDrawer = () => {
             display: 'flex',
             flexDirection: 'column',
             height: '100%',
-            width: '300px',
+            width: '400px',
             padding: '4%',
+            '@media(max-width: 768px)': {
+              width: '300px',
+            },
           }}
         >
           <Box sx={{ width: '100%' }} role="presentation" className={styles.upperGroup}>

@@ -4,12 +4,13 @@ import connectSocket from '@metis/common/services/socket.service';
 import { getToken } from '@metis/common/services/token.service';
 import { useAppDispatch } from '@metis/store/hooks';
 import { openToast } from '@metis/store/ui/ui.slice';
-import AttachFileIcon from '@mui/icons-material/AttachFile';
-import EmojiEmotions from '@mui/icons-material/EmojiEmotions';
-import SendIcon from '@mui/icons-material/Send';
+import clipIcon from '@metis/assets/images/misc/clipIcon.svg';
+import emoticonIcon from '@metis/assets/images/misc/emoticonIcon.svg';
+import sendIcon from '@metis/assets/images/misc/sendIcon.svg';
 import { FilledInput } from '@mui/material';
 import IconButton from '@mui/material/IconButton/IconButton';
 import InputAdornment from '@mui/material/InputAdornment';
+import Box from '@mui/material/Box';
 import Picker from 'emoji-picker-react';
 import { MouseEvent, useEffect, useState } from 'react';
 import Files from 'react-files';
@@ -173,7 +174,17 @@ const MessageInput = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} style={{ position: 'relative' }}>
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      style={{
+        display: 'block',
+        position: 'relative',
+        margin: '0 auto 10px',
+        width: '95%',
+        borderRadius: '10px',
+      }}
+      className={classes.formInput}
+    >
       {selectedFile && (
         <div
           style={{
@@ -193,11 +204,23 @@ const MessageInput = () => {
         disabled={loading}
         edge="start"
         size="medium"
-        sx={{ padding: 1.5 }}
+        sx={{
+          padding: 1.5,
+          backgroundColor: 'transparent !important',
+        }}
         onClick={() => setEmojiPickerVisible(!emojiPickerVisible)}
         className={classes.emojiIcon}
       >
-        <EmojiEmotions />
+        <Box
+          component="img"
+          src={emoticonIcon}
+          alt="emojis"
+          sx={{
+            height: '24px',
+            width: '24px',
+            backgroundColor: 'transparent !important',
+          }}
+        />
       </IconButton>
       {emojiPickerVisible && (
         <div className={classes.emojiPicker}>
@@ -216,7 +239,7 @@ const MessageInput = () => {
         aria-label="send message"
         edge="start"
         size="medium"
-        sx={{ p: 1.5 }}
+        sx={{ p: 1.5, backgroundColor: 'transparent !important' }}
         className={classes.attachmenIcon}
       >
         <Files
@@ -229,10 +252,31 @@ const MessageInput = () => {
           minFileSize={0}
           clickable
         >
-          <AttachFileIcon />
+          <Box
+            component="img"
+            src={clipIcon}
+            alt="emojis"
+            sx={{
+              height: '23px',
+              width: '24px',
+              transform: 'rotate(30deg)',
+            }}
+          />
         </Files>
       </IconButton>
       <FilledInput
+        sx={{
+          '&:hover': {
+            borderBottom: '1px solid #61D90C',
+          },
+          '&::before': {
+            borderRadius: '10px',
+            borderBottom: '1px solid #61D90C',
+          },
+          '&::after': {
+            borderRadius: '10px',
+          },
+        }}
         autoComplete="off"
         disabled={uploadingImage}
         className={classes.button}
@@ -245,9 +289,20 @@ const MessageInput = () => {
               aria-label="send message"
               edge="start"
               size="medium"
-              sx={{ padding: 1.5 }}
+              sx={{
+                padding: 1.5,
+                backgroundColor: 'transparent !important',
+              }}
             >
-              <SendIcon />
+              <Box
+                component="img"
+                src={sendIcon}
+                alt="emojis"
+                sx={{
+                  height: '23px',
+                  width: '24px',
+                }}
+              />
             </IconButton>
           </InputAdornment>
         }

@@ -41,7 +41,7 @@ const ChatFooter = () => {
         </Box>
       )}
 
-      <FormControl fullWidth variant="standard">
+      <FormControl fullWidth variant="standard" sx={{ backgroundColor: '#000' }}>
         <MessageInput />
       </FormControl>
     </>

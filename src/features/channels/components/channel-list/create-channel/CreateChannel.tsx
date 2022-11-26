@@ -84,15 +84,7 @@ export const CreateChannel = () => {
           </Box>
 
           <Form<IChannelDTO> onSubmit={createNewChannel} form={{ resolver: yupResolver(schema) }}>
-            <TextInput
-              name="channelName"
-              placeholder="Channel Name"
-              // // className={classes.inputSearch}
-              // sx={{
-              //   borderRadius: '10px',
-              //   backgroundColor: '#232323',
-              // }}
-            />
+            <TextInput name="channelName" placeholder="Channel Name" />
             <LoadingButton
               loading={loading}
               type="submit"

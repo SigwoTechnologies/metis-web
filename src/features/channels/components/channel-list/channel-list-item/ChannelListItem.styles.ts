@@ -34,7 +34,7 @@ const useStyles = makeStyles(() =>
       '@media (max-width:900px)': {
         // eslint-disable-line no-useless-computed-key
         height: '60px',
-        padding: '1% 4%',
+        padding: '0 !important',
       },
     },
   })
