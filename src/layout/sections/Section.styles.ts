@@ -5,10 +5,6 @@ const useStyles = makeStyles(() =>
     header: {
       height: '80px',
       position: 'relative',
-      '@media (max-width:900px)': {
-        // eslint-disable-line no-useless-computed-key
-        height: '40px',
-      },
     },
     '@global': {
       '*::-webkit-scrollbar': {

@@ -45,7 +45,6 @@ const useStyles = makeStyles((theme: Theme) =>
       paddingLeft: '0 !important',
       '@media (max-width:900px)': {
         height: '60vh',
-        paddingLeft: '40px !important',
       },
     },
   })

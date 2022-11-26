@@ -13,9 +13,6 @@ const HeaderSection = ({ children }: Props) => {
       square
       sx={{
         paddingLeft: '0 !important',
-        '@media (max-width:900px)': {
-          height: '40px',
-        },
       }}
     >
       {children}

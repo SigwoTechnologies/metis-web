@@ -15,6 +15,10 @@ const useStyles = makeStyles((theme: Theme) =>
         cursor: 'pointer',
         transform: 'rotate(180deg)',
       },
+      '@media(max-width:768px)': {
+        width: '40px',
+        height: '40px',
+      },
     },
     button: {
       display: 'flex',
@@ -33,10 +37,13 @@ const useStyles = makeStyles((theme: Theme) =>
       display: 'flex',
       justifyContent: 'center',
       alignContent: 'center',
-      width: 400,
+      width: '400px',
       height: '100%',
       flexDirection: 'column',
       padding: '0 4% 0 4%',
+      '@media(max-width: 768px)': {
+        width: '300px',
+      },
     },
     closeButton: {
       position: 'absolute',

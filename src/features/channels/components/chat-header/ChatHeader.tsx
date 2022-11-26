@@ -82,7 +82,19 @@ const ChatHeader = () => {
           <ChannelInfo selectedChannel={selectedChannel} />
         </Box>
         <Box display="flex">
-          <IconButton onClick={hideChannel} aria-label="channel settings" size="large">
+          <IconButton
+            onClick={hideChannel}
+            aria-label="channel settings"
+            size="large"
+            sx={{
+              backgroundColor: 'transparent !important',
+              color: '#FFF',
+              transition: 'ease-in-out 200ms',
+              '&:hover': {
+                color: '#61D90C',
+              },
+            }}
+          >
             <VisibilityOffIcon
               sx={{
                 '@media (max-width:900px)': {
@@ -92,7 +104,19 @@ const ChatHeader = () => {
               }}
             />
           </IconButton>
-          <IconButton onClick={openInviteUserModal} aria-label="channel settings" size="large">
+          <IconButton
+            onClick={openInviteUserModal}
+            aria-label="channel settings"
+            size="large"
+            sx={{
+              backgroundColor: 'transparent !important',
+              color: '#FFF',
+              transition: 'ease-in-out 200ms',
+              '&:hover': {
+                color: '#61D90C',
+              },
+            }}
+          >
             <GroupAddIcon
               sx={{
                 '@media (max-width:900px)': {

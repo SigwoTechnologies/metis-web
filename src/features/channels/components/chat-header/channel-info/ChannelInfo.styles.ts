@@ -22,10 +22,10 @@ const useStyles = makeStyles((theme: Theme) =>
     title: {
       marginLeft: '1rem',
       cursor: 'pointer',
-      transition: 'all ease .5s',
+      transition: 'ease-in-out 200ms',
       '&:hover': {
         cursor: 'pointer',
-        transform: 'scale(1.2)',
+        color: '#61D90C',
       },
     },
     textField: {

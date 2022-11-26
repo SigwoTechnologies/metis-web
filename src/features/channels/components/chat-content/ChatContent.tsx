@@ -71,9 +71,22 @@ export const ChatContent = () => {
 
   return (
     <>
-      <Paper onScroll={onScroll} ref={containerRef} className={classes.main} square>
+      <Paper
+        onScroll={onScroll}
+        ref={containerRef}
+        className={classes.main}
+        sx={{ backgroundColor: '#000' }}
+        square
+      >
         {isLoadingMessages && (
-          <Box style={{ display: 'flex', justifyContent: 'center' }}>
+          <Box
+            style={{
+              display: 'flex',
+              justifyContent: 'center',
+              backgroundColor: '#000',
+              opacity: '0.6',
+            }}
+          >
             <CircularProgress />
           </Box>
         )}

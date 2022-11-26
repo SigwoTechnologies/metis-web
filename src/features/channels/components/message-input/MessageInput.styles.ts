@@ -26,7 +26,8 @@ const useStyles = makeStyles((theme: Theme) =>
       display: 'flex',
       justifyContent: 'center',
       alignItems: 'center',
-      borderRadius: 0,
+      borderRadius: '10px',
+      transition: 'ease-in-out 200ms',
     },
     replyContainer: {
       display: 'flex',
@@ -45,6 +46,14 @@ const useStyles = makeStyles((theme: Theme) =>
       left: '50%',
       transform: 'translate(-50%, -50%)',
       color: theme.palette.grey[500],
+    },
+    formInput: {
+      '&::before': {
+        borderRadius: '10px',
+      },
+      '&::after': {
+        borderRadius: '10px',
+      },
     },
   })
 );
