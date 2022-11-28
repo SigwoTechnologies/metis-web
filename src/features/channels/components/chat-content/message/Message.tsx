@@ -82,7 +82,7 @@ const Message = ({
           variant="body2"
           fontWeight="bold"
           className={classes.userName}
-          sx={{ color: '#A36300' }}
+          sx={{ color: '#757575' }}
         >
           {senderAlias}
         </Typography>
@@ -90,7 +90,7 @@ const Message = ({
           <MessageReply
             name={replyRecipientAlias}
             message={decryptedReplyMessage}
-            color="#A36300"
+            color="#181818"
           />
         )}
         <Box className={classes.message}>
@@ -104,7 +104,7 @@ const Message = ({
             className={classes.date}
             title={dayjs(createdAt).format('MM/DD/YYYY hh:mm:ssa')}
           >
-            {dayjs(createdAt).format('hh:mm:ssa')}
+            {dayjs(createdAt).format('hh:mm')}
           </Typography>
         </Box>
       </Box>

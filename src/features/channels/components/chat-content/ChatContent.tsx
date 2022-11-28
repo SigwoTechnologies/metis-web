@@ -102,7 +102,6 @@ export const ChatContent = () => {
                   color="primary"
                   variant="contained"
                   component="label"
-                  sx={{ height: '30px' }}
                 >
                   <ArrowDownwardIcon />
                 </Button>

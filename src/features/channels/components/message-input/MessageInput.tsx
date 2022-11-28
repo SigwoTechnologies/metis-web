@@ -9,7 +9,7 @@ import emoticonIcon from '@metis/assets/images/misc/emoticonIcon.svg';
 import sendIcon from '@metis/assets/images/misc/sendIcon.svg';
 import { FilledInput } from '@mui/material';
 import IconButton from '@mui/material/IconButton/IconButton';
-import InputAdornment from '@mui/material/InputAdornment';
+// import InputAdornment from '@mui/material/InputAdornment';
 import Box from '@mui/material/Box';
 import Picker from 'emoji-picker-react';
 import { MouseEvent, useEffect, useState } from 'react';
@@ -181,7 +181,6 @@ const MessageInput = () => {
         position: 'relative',
         margin: '0 auto 10px',
         width: '95%',
-        borderRadius: '10px',
       }}
       className={classes.formInput}
     >
@@ -264,16 +263,40 @@ const MessageInput = () => {
           />
         </Files>
       </IconButton>
+      <IconButton
+        disabled={loading}
+        type="submit"
+        aria-label="send message"
+        edge="end"
+        size="medium"
+        className={classes.sendIcon}
+        sx={{
+          padding: 1.5,
+          backgroundColor: 'transparent !important',
+        }}
+      >
+        <Box
+          component="img"
+          src={sendIcon}
+          alt="send"
+          sx={{
+            height: '23px',
+            width: '24px',
+          }}
+        />
+      </IconButton>
       <FilledInput
         sx={{
+          transition: 'ease-in-out 200ms',
           '&:hover': {
-            borderBottom: '1px solid #61D90C',
+            borderBottom: 'none !important',
           },
           '&::before': {
             borderRadius: '10px',
-            borderBottom: '1px solid #61D90C',
+            borderBottom: 'none !important',
           },
           '&::after': {
+            border: 'none !important',
             borderRadius: '10px',
           },
         }}
@@ -281,31 +304,7 @@ const MessageInput = () => {
         disabled={uploadingImage}
         className={classes.button}
         inputProps={{ className: classes.footerInputStyle }}
-        endAdornment={
-          <InputAdornment position="end">
-            <IconButton
-              disabled={loading}
-              type="submit"
-              aria-label="send message"
-              edge="start"
-              size="medium"
-              sx={{
-                padding: 1.5,
-                backgroundColor: 'transparent !important',
-              }}
-            >
-              <Box
-                component="img"
-                src={sendIcon}
-                alt="emojis"
-                sx={{
-                  height: '23px',
-                  width: '24px',
-                }}
-              />
-            </IconButton>
-          </InputAdornment>
-        }
+        // endAdornment={}
         {...register('message')}
       />
     </form>

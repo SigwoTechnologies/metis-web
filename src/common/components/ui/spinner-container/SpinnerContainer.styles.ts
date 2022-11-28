@@ -7,7 +7,9 @@ const useStyles = makeStyles(() =>
       display: 'flex',
       justifyContent: 'center',
       alignItems: 'center',
-      height: '50%',
+      height: '100%',
+      widht: '100%',
+      backgroundColor: '#181818',
     },
   })
 );

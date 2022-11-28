@@ -36,9 +36,12 @@ const useStyles = makeStyles((theme: Theme) =>
       display: 'flex',
       justifyContent: 'center',
       flexDirection: 'column',
-      width: 400,
-      padding: '0 1rem 0 1rem',
+      width: '300px',
+      padding: '2% 4%',
       gap: '.5rem',
+      '@media(max-width:768px)': {
+        width: '400px',
+      },
     },
     closeBox: {
       display: 'flex',
@@ -80,6 +83,8 @@ const useStyles = makeStyles((theme: Theme) =>
       alignItems: 'center',
       gap: '1rem',
       fontSize: '1.4rem',
+      borderBottom: '1px solid #61D90C',
+      paddingBottom: '20px',
     },
     member: {
       width: '15rem',
