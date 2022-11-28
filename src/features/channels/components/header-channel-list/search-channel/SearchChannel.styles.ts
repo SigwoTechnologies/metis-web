@@ -138,6 +138,10 @@ const useStyles = makeStyles((theme: Theme) =>
       height: '40px',
       width: '100%',
       top: '0',
+      '&:focus': {
+        borderBottom: '1px solid #61D90C',
+        borderRadius: '10px',
+      },
       marginBottom: '10px',
       '& input::placeholder': {
         fontSize: '16px',

@@ -15,6 +15,7 @@ const useStyles = makeStyles(() =>
     scrollToBottomButton: {
       position: 'fixed',
       alignSelf: 'flex-end',
+      height: '30px',
     },
     isLoadingMessages: {
       height: '100%',

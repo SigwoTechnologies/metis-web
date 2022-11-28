@@ -3,11 +3,17 @@ import { createStyles, makeStyles } from '@mui/styles';
 const useStyles = makeStyles(() =>
   createStyles({
     term: {
-      size: '2rem',
-      padding: '0.5rem',
+      fontSize: '0.8rem',
       cursor: 'pointer',
+      textDecoration: 'none',
       color: '#555b6e',
-      textDecoration: 'underline',
+      padding: '10px',
+      borderRadius: '8px',
+      transition: 'ease-in-out 200ms',
+      '&:hover': {
+        color: '#f2f2f2',
+        backgroundColor: '#232323',
+      },
     },
     infoBox: {
       width: '25rem',

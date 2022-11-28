@@ -27,7 +27,11 @@ export const SearchChannel = () => {
       type="text"
       onChange={({ target }) => handleChange(target.value)}
       className={styles.inputSearch}
-      sx={{ paddingTop: '0 !important', marginLeft: '20px', borderRadius: '10px' }}
+      sx={{
+        paddingTop: '0 !important',
+        marginLeft: '20px',
+        borderRadius: '10px',
+      }}
       InputProps={{
         className: styles.textInput,
         startAdornment: (

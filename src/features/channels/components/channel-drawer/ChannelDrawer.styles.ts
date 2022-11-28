@@ -60,17 +60,26 @@ const useStyles = makeStyles((theme: Theme) =>
       borderTop: '1px solid #61D90C',
       paddingTop: '10px',
     },
-    term: {
-      size: '2rem',
-      padding: '0.5rem',
-      cursor: 'pointer',
-      color: '#555b6e',
-      textDecoration: 'underline',
-    },
-
     term2: {
       size: '2rem',
       padding: '0.5rem',
+    },
+    term: {
+      marginTop: '10px',
+    },
+    link: {
+      fontSize: '0.8rem',
+      cursor: 'pointer',
+      textDecoration: 'none',
+      color: '#555b6e',
+      padding: '15px',
+      marginTop: '10px',
+      borderRadius: '8px',
+      transition: 'ease-in-out 200ms',
+      '&:hover': {
+        color: '#f2f2f2',
+        backgroundColor: '#232323',
+      },
     },
     drawerLetters: {
       fontSize: '0.5rem !important',

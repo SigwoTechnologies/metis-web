@@ -29,7 +29,14 @@ const TextInput = ({ register, name, label, error, placeholder, type, ...rest }:
       helperText={error?.message}
       {...registerProp}
       {...rest}
-      sx={{ borderRadius: '10px', backgroundColor: '#232323' }}
+      sx={{
+        borderRadius: '10px',
+        backgroundColor: '#232323',
+        '&:focus': {
+          borderBottom: '1px solid #61D90C',
+          borderRadius: '10px',
+        },
+      }}
       InputProps={{
         className: classes.textInput,
         startAdornment: (

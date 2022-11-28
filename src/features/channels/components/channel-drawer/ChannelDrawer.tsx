@@ -152,7 +152,7 @@ export const ChannelDrawer = () => {
                 href="https://jup.io/terms"
                 target="_blank"
                 rel="noreferrer noopener"
-                style={{ color: '#555b6e' }}
+                className={styles.link}
               >
                 Terms and Conditions
               </a>

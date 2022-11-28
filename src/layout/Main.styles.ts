@@ -18,7 +18,7 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     grid: {
       height: '100%',
-      borderRadius: '10px',
+      borderRadius: '20px',
       margin: '0 !important',
       '@media (max-width:900px)': {
         // eslint-disable-line no-useless-computed-key

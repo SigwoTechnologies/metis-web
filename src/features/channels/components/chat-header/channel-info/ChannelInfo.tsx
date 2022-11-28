@@ -9,9 +9,10 @@ import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
 import { IChannel } from '@metis/features/channels/types/channel.interface';
 import { openToast } from '@metis/store/ui/ui.slice';
 import CloseIcon from '@mui/icons-material/Close';
+import descriptionIcon from '@metis/assets/images/misc/descriptionIcon.svg';
+import participantsIcon from '@metis/assets/images/misc/participantsIcon.svg';
 import {
   Avatar,
-  Divider,
   Drawer,
   IconButton,
   List,
@@ -111,11 +112,25 @@ const ChannelInfo = ({ selectedChannel }: Props) => {
 
   return (
     <>
-      <Drawer anchor="right" open={isOpenWallet} onClose={closeDrawer}>
+      <Drawer
+        anchor="right"
+        open={isOpenWallet}
+        onClose={closeDrawer}
+        sx={{ padding: '0 !important' }}
+      >
         <Box role="presentation" className={classes.drawerContainer}>
           <Box className={classes.closeBox}>
-            <span>Channel Info</span>
-            <IconButton aria-label="close" onClick={closeDrawer}>
+            <span style={{ fontSize: '1rem' }}>Channel Info</span>
+            <IconButton
+              aria-label="close"
+              onClick={closeDrawer}
+              sx={{
+                backgroundColor: 'transparent !important',
+                transition: 'ease-in-out 200ms',
+                opacity: '0.8',
+                '&:hover': { opacity: '1' },
+              }}
+            >
               <CloseIcon />
             </IconButton>
           </Box>
@@ -142,36 +157,48 @@ const ChannelInfo = ({ selectedChannel }: Props) => {
               </Files>
             </SpinnerContainer>
 
-            <Box>
-              Channel {selectedChannel.channelName} · {members?.length} participants
+            <Box sx={{ textAlign: 'center' }}>
+              Channel {selectedChannel.channelName} <br />{' '}
+              <span style={{ color: '#0DC7FA' }}>{members?.length}</span> participants
             </Box>
           </Box>
+          <Box sx={{ padding: '20px 0', borderBottom: '1px solid #61D90C' }}>
+            <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+              Description
+              <Box
+                component="img"
+                src={descriptionIcon}
+                alt="description icon"
+                sx={{ marginLeft: '10px' }}
+              />
+            </Box>
 
-          <Divider />
-          <br />
-          <br />
-          <Box>
-            Description
-            <br />
-            <br />
-            <Box>
-              Channel created by {selectedChannel.createdBy}, on{' '}
+            <Box sx={{ padding: '20px 0', fontSize: '0.8rem' }}>
+              Channel created by{' '}
+              <span style={{ color: '#0DC7FA' }}>{selectedChannel.createdBy}</span>, on{' '}
               {dayjs(selectedChannel.createdAt).format('MM/DD/YYYY')} at{' '}
               {dayjs(selectedChannel.createdAt).format('hh:mm A')}
             </Box>
           </Box>
-
-          <Divider />
-          <br />
-          <br />
-          <Box>
-            Participants
+          <Box sx={{ padding: '20px 0' }}>
+            <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+              Participants
+              <Box
+                component="img"
+                src={participantsIcon}
+                alt="description icon"
+                sx={{ marginLeft: '10px' }}
+              />
+            </Box>
             <List>
               {members &&
                 members.map((account) => (
                   <Fragment key={account.memberAccountAddress}>
-                    <ListItem disablePadding>
-                      <ListItemButton>
+                    <ListItem
+                      disablePadding
+                      sx={{ borderBottom: '1px solid #61D90C', marginBottom: '10px' }}
+                    >
+                      <ListItemButton sx={{ borderRadius: '10px' }}>
                         <ListItemAvatar>
                           <Avatar
                             alt={account.memberAccountAddress}
@@ -185,7 +212,6 @@ const ChannelInfo = ({ selectedChannel }: Props) => {
                         />
                       </ListItemButton>
                     </ListItem>
-                    <Divider />
                   </Fragment>
                 ))}
             </List>

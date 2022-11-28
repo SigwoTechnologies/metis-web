@@ -7,6 +7,10 @@ const useStyles = makeStyles(() =>
       marginBottom: '1.5rem',
     },
     textInput: {
+      '&:focus': {
+        borderBottom: '1px solid #61D90C',
+        borderRadius: '10px',
+      },
       '&::before': {
         border: '0px !important',
       },
