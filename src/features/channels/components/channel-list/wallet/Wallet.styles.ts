@@ -1,7 +1,6 @@
-import { Theme } from '@mui/material';
 import { createStyles, makeStyles } from '@mui/styles';
 
-const useStyles = makeStyles((theme: Theme) =>
+const useStyles = makeStyles(
   createStyles({
     createButton: {
       width: '3.7rem',
@@ -15,6 +14,7 @@ const useStyles = makeStyles((theme: Theme) =>
       },
     },
     button: {
+      height: '40px',
       width: '100%',
       marginBottom: '1rem',
       textTransform: 'capitalize',
@@ -27,15 +27,21 @@ const useStyles = makeStyles((theme: Theme) =>
       display: 'flex',
       justifyContent: 'center',
       flexDirection: 'column',
-      width: 400,
-      padding: '0 1rem 0 1rem',
-      gap: '.5rem',
+      width: '400px',
+      padding: '0 4% 0 4%',
+      '@media(max-width:768px)': {
+        width: '300px',
+      },
     },
     closeButton: {
       flexGrow: 1,
       alignSelf: 'flex-end',
-      paddingBottom: '1rem',
-      color: theme.palette.grey[500],
+      paddingBottom: '10px',
+      backgroundColor: 'transparent !important',
+      opacity: '1',
+      '&:hover': {
+        opacity: '0.8',
+      },
     },
     jupQuantity: {
       flexGrow: 1,

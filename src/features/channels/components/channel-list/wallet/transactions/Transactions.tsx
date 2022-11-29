@@ -6,7 +6,10 @@ import httpService from '@metis/common/services/http.service';
 import { convertNQTToJup } from '@metis/common/utils/utils';
 import { TTransaction } from '@metis/features/wallet/types/TTransaction';
 import { useAppSelector } from '@metis/store/hooks';
-import SendIcon from '@mui/icons-material/Send';
+import sendJUPIcon from '@metis/assets/images/misc/sendJUPIcon.svg';
+import receiveJUPIcon from '@metis/assets/images/misc/receiveJUPIcon.svg';
+import Typography from '@mui/material/Typography';
+import transactionsIcon from '@metis/assets/images/misc/transactionsIcon.svg';
 import {
   Avatar,
   CircularProgress,
@@ -30,29 +33,66 @@ const Transactions = () => {
 
   return (
     <Box className={classes.transaction}>
-      <Divider>Transactions</Divider>
-      <List>
+      <Typography
+        sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', padding: '10px 0' }}
+      >
+        Transactions
+        <Box
+          component="img"
+          src={transactionsIcon}
+          alt="transactions icon"
+          sx={{ marginLeft: '5px' }}
+        />
+      </Typography>
+      <List sx={{ padding: '0 !important' }}>
         <SpinnerContainer isLoading={!data}>
           {data?.transactions.map((e) => (
             <Fragment key={e.block}>
-              <ListItem disablePadding>
+              <ListItem disablePadding className={classes.listItem}>
                 <ListItemButton className={classes.listItemButton}>
-                  <ListItemAvatar className={classes.listItemIcon}>
-                    <Avatar>
-                      <SendIcon />
-                    </Avatar>
-                  </ListItemAvatar>
-                  <ListItemText
-                    primary={e.senderRS === jupAccount.address ? 'Sent JUP' : 'Received JUP'}
-                    secondary={`You has ${
-                      e.senderRS === jupAccount.address ? 'Sent' : 'Received'
-                    } ${convertNQTToJup(Number(e.amountNQT))} JUP ${
-                      e.senderRS === jupAccount.address ? 'to' : 'from'
-                    } ${e.senderRS === jupAccount.address ? e.recipientRS : e.senderRS} `}
-                  />
+                  {e.senderRS === jupAccount.address ? (
+                    <Box className={classes.renderedItem} sx={{ backgroundColor: '#243716' }}>
+                      <ListItemAvatar className={classes.listItemIcon}>
+                        <Avatar>
+                          <Box
+                            component="img"
+                            src={sendJUPIcon}
+                            alt="send JUP Icon"
+                            sx={{ marginLeft: '5px' }}
+                          />
+                        </Avatar>
+                      </ListItemAvatar>
+                      <Typography sx={{ fontSize: '0.8rem' }}>
+                        <Typography sx={{ color: '#61D90C', fontSize: '1rem' }}>
+                          Sent JUP
+                        </Typography>
+                        You have sent {convertNQTToJup(Number(e.amountNQT))} JUP <br />
+                        to {e.senderRS === jupAccount.address ? e.recipientRS : e.senderRS}
+                      </Typography>
+                    </Box>
+                  ) : (
+                    <Box className={classes.renderedItem} sx={{ backgroundColor: '#0dc7fa29' }}>
+                      <ListItemAvatar className={classes.listItemIcon}>
+                        <Avatar>
+                          <Box
+                            component="img"
+                            src={receiveJUPIcon}
+                            alt="send JUP Icon"
+                            sx={{ marginLeft: '5px' }}
+                          />
+                        </Avatar>
+                      </ListItemAvatar>
+                      <Typography sx={{ fontSize: '0.8rem' }}>
+                        <Typography sx={{ color: '#0DC7FA', fontSize: '1rem' }}>
+                          Received JUP
+                        </Typography>
+                        You have received {convertNQTToJup(Number(e.amountNQT))} JUP <br />
+                        from {e.senderRS === jupAccount.address ? e.recipientRS : e.senderRS}
+                      </Typography>
+                    </Box>
+                  )}
                 </ListItemButton>
               </ListItem>
-              <Divider />
             </Fragment>
           ))}
         </SpinnerContainer>

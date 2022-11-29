@@ -75,7 +75,17 @@ export const CreateChannel = () => {
       <Drawer anchor="left" open={isOpenCreateChannelDrawer} onClose={closeDrawer}>
         <Box role="presentation" className={classes.drawerContainer}>
           <IconButton aria-label="close" onClick={closeDrawer} className={classes.closeButton}>
-            <CloseIcon />
+            <CloseIcon
+              sx={{
+                color: '#FFF',
+                opacity: '0.8',
+                transition: 'ease-in-out 200ms',
+                '&:hover': {
+                  backgroundColor: 'transparent !important',
+                  opacity: '1',
+                },
+              }}
+            />
           </IconButton>
 
           <Box className={classes.avatarBox}>

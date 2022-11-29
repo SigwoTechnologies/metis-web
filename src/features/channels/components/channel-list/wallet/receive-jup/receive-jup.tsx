@@ -2,12 +2,13 @@ import { useAppDispatch, useAppSelector } from '@metis/store/hooks';
 import { openToast } from '@metis/store/ui/ui.slice';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import { LoadingButton } from '@mui/lab';
-import { Grid } from '@mui/material';
+import { Box } from '@mui/material';
+import receiveJUPIcon from '@metis/assets/images/misc/receiveJUPIcon.svg';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
-import Divider from '@mui/material/Divider';
 import Typography from '@mui/material/Typography';
+import CloseIcon from '@mui/icons-material/Close';
 import { useState } from 'react';
 import useStyles from './receive-jup.styles';
 
@@ -42,8 +43,10 @@ const ReceiveJup = () => {
         className={classes.button}
         variant="contained"
         onClick={handleClickOpen}
+        sx={{ margin: '0 !important' }}
       >
         Receive
+        <Box component="img" src={receiveJUPIcon} alt="send JUP Icon" sx={{ marginLeft: '5px' }} />
       </LoadingButton>
 
       <Dialog
@@ -52,51 +55,40 @@ const ReceiveJup = () => {
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
+        <Box className={classes.closeIconContainer}>
+          <CloseIcon onClick={handleClose} className={classes.closeIcon} />
+        </Box>
         <DialogTitle id="alert-dialog-title" className={classes.idTitle}>
-          ACCOUNT ID
+          ACCOUNT <span style={{ color: '#61D90C' }}>ID</span>
         </DialogTitle>
         <DialogContent>
           <Typography className={classes.paragraph}>
-            This ID is only for you and it will always be the same. For payments within the app you
-            can also share your alias. To receive JUP you can enter either your alias or account ID.
-            <br />
+            This is your personal ID and it will never change. For payments within the app you can
+            also share your alias. To receive JUP you can enter either your alias or account ID.
           </Typography>
+          <Box>
+            <Box sx={{ color: '#757575', fontSize: '1rem', padding: '10px 0' }}>Alias: </Box>
 
-          <Divider />
-          <Grid>
-            <Grid style={{ color: 'grey', fontSize: '1rem' }}>Alias: </Grid>
-            <Grid>
-              <button
-                type="button"
-                onClick={() => copyToClipboard(jupAccount.alias)}
-                className={classes.buttonID}
-              >
-                <Grid className={classes.buttonLayout}>
-                  <Grid className={classes.buttonLeft}>
-                    <ContentCopyIcon className={classes.icon} />
-                  </Grid>
-                  <Grid className={classes.buttonRight}> &nbsp; {jupAccount.alias}</Grid>
-                </Grid>
-              </button>
-            </Grid>
-          </Grid>
-          <Grid>
-            <Grid style={{ color: 'grey', fontSize: '1rem' }}>Account ID: </Grid>
-            <Grid>
-              <button
-                type="button"
-                onClick={() => copyToClipboard(jupAccount.address)}
-                className={classes.buttonID}
-              >
-                <Grid className={classes.buttonLayout}>
-                  <Grid className={classes.buttonLeft}>
-                    <ContentCopyIcon className={classes.icon} />
-                  </Grid>
-                  <Grid className={classes.buttonRight}> &nbsp; {jupAccount.address}</Grid>
-                </Grid>
-              </button>
-            </Grid>
-          </Grid>
+            <button
+              type="button"
+              onClick={() => copyToClipboard(jupAccount.alias)}
+              className={classes.btn}
+            >
+              <ContentCopyIcon className={classes.icon} />
+              <Typography> &nbsp; {jupAccount.alias}</Typography>
+            </button>
+          </Box>
+          <Box>
+            <Box sx={{ color: '#757575', fontSize: '1rem', padding: '10px 0' }}>Account ID: </Box>
+            <button
+              type="button"
+              onClick={() => copyToClipboard(jupAccount.address)}
+              className={classes.btn}
+            >
+              <ContentCopyIcon className={classes.icon} />
+              <Typography> &nbsp; {jupAccount.address}</Typography>
+            </button>
+          </Box>
         </DialogContent>
       </Dialog>
     </>
