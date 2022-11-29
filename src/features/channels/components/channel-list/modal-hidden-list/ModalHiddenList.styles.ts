@@ -3,33 +3,47 @@ import { createStyles, makeStyles } from '@mui/styles';
 const useStyles = makeStyles(() =>
   createStyles({
     cardContainer: {
-      all: 'unset',
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'space-between',
-      padding: '0.01rem',
+      paddingTop: '20px',
+      opacity: '0.8',
+      transition: 'ease-in-out 200ms',
+      '&:hover': {
+        opacity: '1',
+      },
     },
     cardContent: {
       justifyContent: 'flex-start',
       alignItems: 'center',
-      fontSize: '1.5rem',
+      fontSize: '1.4rem',
       pointerEvents: 'none',
       width: '100%',
     },
-    // info: {
-    //   display: 'flex',
-    //   justifyContent: 'space-between',
-    //   alignItems: 'center',
-    // },
+    closeIconContainer: {
+      display: 'flex',
+      justifyContent: 'flex-end',
+      padding: '0 !important',
+    },
+    closeIcon: {
+      transition: 'ease-in-out 200ms',
+      opacity: '0.8',
+      '&:hover': {
+        cursor: 'pointer',
+        opacity: '1',
+      },
+    },
     actionContainer: {
       justifyContent: 'flex-end',
       padding: '0.8rem',
+      paddingRight: '0 !important',
     },
     nothingMessage: {
       display: 'flex',
       justifyContent: 'center',
       fontSize: '1rem',
       color: 'grey',
+      padding: '20px 0',
     },
     glow: {
       display: 'flex',
@@ -42,30 +56,10 @@ const useStyles = makeStyles(() =>
       borderRadius: '50%',
       fontSize: '1rem',
       color: '#666',
-      transition: '.5s',
-
-      '&:before': {
-        content: '',
-        position: 'absolute',
-        top: '0rem',
-        left: '0rem',
-        width: '100%',
-        height: '100%',
-        borderRadius: '50%',
-        background: 'green',
-        transition: '.5s',
-        transform: 'scale(.9)',
-        zIndex: '-1',
-      },
-      '&:hover:before': {
-        transform: 'scale(1.2)',
-        boxShadow: '0 0 20px green',
-        filter: 'blur(3px)',
-      },
+      transition: 'ease-in-out 200ms',
       '&:hover': {
-        color: '#AAFF00',
-        boxShadow: '0 0 15px white',
-        textShadow: '0 0 15px white',
+        cursor: 'pointer',
+        color: '#53b30f',
       },
     },
   })

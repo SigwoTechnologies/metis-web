@@ -3,9 +3,13 @@ import { createStyles, makeStyles } from '@mui/styles';
 const useStyles = makeStyles(() =>
   createStyles({
     button: {
+      display: 'flex',
+      flexDirection: 'row',
+      aligntItems: 'center',
       width: '100%',
       marginBottom: '1rem',
       textTransform: 'capitalize',
+      fontSize: '1rem',
     },
     textField: {
       width: '100%',

@@ -2,13 +2,13 @@ import { findMembers } from '@metis/features/channels/store/channel.actions';
 import { yupResolver } from '@hookform/resolvers/yup';
 import appConfig from '@metis/common/configuration/app.config';
 import Form from '@metis/common/components/ui/Form/Form';
-import Modal from '@metis/common/components/ui/Modal';
+import Dialog from '@mui/material/Dialog';
 import TextInput from '@metis/common/components/ui/TextInput/TextInput';
 import { ethers } from 'ethers';
 import { useAppDispatch, useAppSelector } from '@metis/store/hooks';
 import { openNotification } from '@metis/store/ui/ui.slice';
 import createChannelIcon from '@metis/assets/images/misc/createChannelIcon.svg';
-import AddIcon from '@mui/icons-material/Add';
+import GroupAddIcon from '@mui/icons-material/GroupAdd';
 import { LoadingButton } from '@mui/lab';
 import { Box, Button } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
@@ -104,31 +104,48 @@ const InviteUserModal: React.FC<Props> = ({ closeModal, open }) => {
   };
 
   return (
-    <Modal onClose={closeModal} open={open}>
-      <Box className={classes.closeIconContainer}>
-        <CloseIcon onClick={closeModal} className={classes.closeIcon} />
+    <Dialog onClose={closeModal} open={open}>
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          padding: '2% 4%',
+          width: '500px',
+          '@media (max-width: 768px)': { width: '300px' },
+        }}
+      >
+        <Box className={classes.closeIconContainer}>
+          <CloseIcon onClick={closeModal} className={classes.closeIcon} />
+        </Box>
+        <div className={classes.iconContainer}>
+          <Box
+            component="img"
+            src={createChannelIcon}
+            alt="Create Channel Icon"
+            sx={{ height: '40px', width: '40px' }}
+          />
+        </div>
+        <p style={{ textAlign: 'center' }}>
+          To invite another user to this channel enter their ENS, Alias, or Account ID
+        </p>
+        <Form onSubmit={onSubmit} form={{ resolver: yupResolver(schema) }}>
+          <TextInput name="inviteAccount" />
+          <LoadingButton
+            loading={loading}
+            type="submit"
+            className={classes.button}
+            variant="contained"
+            sx={{ fontWeight: '600' }}
+          >
+            Invite
+            <GroupAddIcon sx={{ marginLeft: '5px', height: '18px', width: '18px' }} />
+          </LoadingButton>
+          <Button color="error" onClick={closeModal} className={classes.button}>
+            Cancel
+          </Button>
+        </Form>
       </Box>
-      <div className={classes.iconContainer}>
-        <Box component="img" src={createChannelIcon} alt="Create Channel Icon" />
-      </div>
-      <p>To invite another user to this channel enter their ENS, Alias, or Account ID</p>
-      <Form onSubmit={onSubmit} form={{ resolver: yupResolver(schema) }}>
-        <TextInput name="inviteAccount" />
-        <LoadingButton
-          loading={loading}
-          type="submit"
-          className={classes.button}
-          variant="contained"
-          sx={{ fontWeight: '600' }}
-        >
-          Invite
-          <AddIcon />
-        </LoadingButton>
-        <Button color="error" onClick={closeModal} className={classes.button}>
-          Cancel
-        </Button>
-      </Form>
-    </Modal>
+    </Dialog>
   );
 };
 
