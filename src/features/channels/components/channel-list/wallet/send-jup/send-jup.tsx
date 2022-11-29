@@ -8,10 +8,13 @@ import { useAppDispatch, useAppSelector } from '@metis/store/hooks';
 import { openToast, openNotification } from '@metis/store/ui/ui.slice';
 import { LoadingButton } from '@mui/lab';
 import { Box } from '@mui/material';
+import sendJUPIcon from '@metis/assets/images/misc/sendJUPIcon.svg';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import Divider from '@mui/material/Divider';
+import { Typography } from '@material-ui/core';
+import CloseIcon from '@mui/icons-material/Close';
 import { useState } from 'react';
 import * as yup from 'yup';
 import useStyles from './send-jup.styles';
@@ -101,8 +104,10 @@ const SendJup = () => {
         className={classes.button}
         variant="contained"
         onClick={handleClickOpen}
+        sx={{ margin: '0 !important' }}
       >
         Send
+        <Box component="img" src={sendJUPIcon} alt="send JUP Icon" sx={{ marginLeft: '5px' }} />
       </LoadingButton>
 
       <Dialog
@@ -111,12 +116,24 @@ const SendJup = () => {
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle
-          id="alert-dialog-title"
-          style={{ display: 'flex', justifyContent: 'space-between' }}
-        >
-          <Box>Send JUP</Box>
-          <Box fontSize={14}>Balance: {balance} JUP</Box>
+        <DialogTitle id="alert-dialog-title" sx={{ padding: '2% 4% !important' }}>
+          <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+            <Box className={classes.closeIconContainer}>
+              <CloseIcon onClick={handleClose} className={classes.closeIcon} />
+            </Box>
+            <Box
+              sx={{
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+              }}
+            >
+              <Typography>
+                <span style={{ color: '#61D90C', fontSize: '1.2rem' }}>Send </span>JUP
+              </Typography>
+              <span style={{ fontSize: '1rem' }}> Balance: {balance} JUP</span>
+            </Box>
+          </Box>
         </DialogTitle>
         <Divider />
         <DialogContent>
@@ -125,6 +142,12 @@ const SendJup = () => {
             <TextInput placeholder="Enter JUP Destination Address" name="recipient" />
             <LoadingButton type="submit" className={classes.button} variant="contained">
               Send
+              <Box
+                component="img"
+                src={sendJUPIcon}
+                alt="send JUP Icon"
+                sx={{ marginLeft: '5px' }}
+              />
             </LoadingButton>
           </Form>
         </DialogContent>

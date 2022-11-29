@@ -36,11 +36,11 @@ const useStyles = makeStyles((theme: Theme) =>
       display: 'flex',
       justifyContent: 'center',
       flexDirection: 'column',
-      width: '300px',
+      width: '400px',
       padding: '2% 4%',
       gap: '.5rem',
       '@media(max-width:768px)': {
-        width: '400px',
+        width: '300px',
       },
     },
     closeBox: {

@@ -7,9 +7,12 @@ import TextInput from '@metis/common/components/ui/TextInput/TextInput';
 import { ethers } from 'ethers';
 import { useAppDispatch, useAppSelector } from '@metis/store/hooks';
 import { openNotification } from '@metis/store/ui/ui.slice';
-import PeopleIcon from '@mui/icons-material/People';
+import createChannelIcon from '@metis/assets/images/misc/createChannelIcon.svg';
+import AddIcon from '@mui/icons-material/Add';
 import { LoadingButton } from '@mui/lab';
-import { Button } from '@mui/material';
+import { Box, Button } from '@mui/material';
+import CloseIcon from '@mui/icons-material/Close';
+
 import React, { useState, useEffect } from 'react';
 import * as yup from 'yup';
 import { useSendInvitation } from '../../hooks/useSendInvitation';
@@ -102,19 +105,24 @@ const InviteUserModal: React.FC<Props> = ({ closeModal, open }) => {
 
   return (
     <Modal onClose={closeModal} open={open}>
+      <Box className={classes.closeIconContainer}>
+        <CloseIcon onClick={closeModal} className={classes.closeIcon} />
+      </Box>
       <div className={classes.iconContainer}>
-        <PeopleIcon className={classes.icon} color="primary" />
+        <Box component="img" src={createChannelIcon} alt="Create Channel Icon" />
       </div>
       <p>To invite another user to this channel enter their ENS, Alias, or Account ID</p>
       <Form onSubmit={onSubmit} form={{ resolver: yupResolver(schema) }}>
-        <TextInput name="inviteAccount" label="Enter ENS, alias or Account ID here" />
+        <TextInput name="inviteAccount" />
         <LoadingButton
           loading={loading}
           type="submit"
           className={classes.button}
           variant="contained"
+          sx={{ fontWeight: '600' }}
         >
           Invite
+          <AddIcon />
         </LoadingButton>
         <Button color="error" onClick={closeModal} className={classes.button}>
           Cancel

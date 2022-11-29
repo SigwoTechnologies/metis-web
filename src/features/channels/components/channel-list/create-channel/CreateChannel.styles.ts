@@ -1,7 +1,6 @@
-import { Theme } from '@mui/material';
 import { createStyles, makeStyles } from '@mui/styles';
 
-const useStyles = makeStyles((theme: Theme) =>
+const useStyles = makeStyles(
   createStyles({
     createButton: {
       width: '60px',
@@ -49,7 +48,6 @@ const useStyles = makeStyles((theme: Theme) =>
       position: 'absolute',
       right: 8,
       top: 8,
-      color: theme.palette.grey[500],
     },
     avatar: {
       flexGrow: 1,

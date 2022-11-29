@@ -43,14 +43,22 @@ const Wallet = () => {
             <CloseIcon />
           </IconButton>
 
-          <Box>
+          <Box sx={{ padding: '10px 0' }}>
             <span style={{ color: 'grey' }}>Total Value (JUP) </span>
             <br />
 
             <span style={{ fontSize: '3rem' }}>{balance}</span>
           </Box>
 
-          <Box style={{ display: 'flex', gap: '1rem', width: '100%' }}>
+          <Box
+            style={{
+              display: 'flex',
+              gap: '1rem',
+              width: '100%',
+              borderBottom: '1px solid #61D90C',
+              paddingBottom: '20px',
+            }}
+          >
             <SendJup />
             <ReceiveJup />
           </Box>
