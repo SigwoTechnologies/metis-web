@@ -28,7 +28,7 @@ const useStyles = makeStyles(
       justifyContent: 'center',
       flexDirection: 'column',
       width: '400px',
-      padding: '0 4% 0 4%',
+      padding: '2% 4%',
       '@media(max-width:768px)': {
         width: '300px',
       },
@@ -46,6 +46,18 @@ const useStyles = makeStyles(
     jupQuantity: {
       flexGrow: 1,
       justifySelf: '',
+    },
+    closeIconContainer: {
+      display: 'flex',
+      padding: '0 !important',
+    },
+    closeIcon: {
+      transition: 'ease-in-out 200ms',
+      opacity: '0.8',
+      '&:hover': {
+        cursor: 'pointer',
+        opacity: '1',
+      },
     },
   })
 );

@@ -74,7 +74,7 @@ export const ChannelDrawer = () => {
             flexDirection: 'column',
             height: '100%',
             width: '400px',
-            padding: '4%',
+            padding: '2% 4%',
             '@media(max-width: 768px)': {
               width: '300px',
             },
@@ -82,20 +82,10 @@ export const ChannelDrawer = () => {
         >
           <Box sx={{ width: '100%' }} role="presentation" className={styles.upperGroup}>
             <Box
-              sx={{
-                display: 'flex',
-                flexDirection: 'row',
-                width: '100%',
-                justifyContent: 'flex-end',
-                opacity: '0.6',
-                transition: 'ease-in-out 200ms',
-                '&:hover': {
-                  opacity: '1',
-                  cursor: 'pointer',
-                },
-              }}
+              className={styles.closeIconContainer}
+              sx={{ width: '100%', justifyContent: 'flex-end', paddingBottom: '20px' }}
             >
-              <CloseIcon onClick={handleOpenDrawer} />
+              <CloseIcon onClick={handleOpenDrawer} className={styles.closeIcon} />
             </Box>
             <Box className={styles.account}>
               <ProfileAvatar />
@@ -108,7 +98,7 @@ export const ChannelDrawer = () => {
                     <Box
                       component="img"
                       src={newChannelIcon}
-                      alt="wallet icon"
+                      alt="new channel icon"
                       sx={{ height: '24px', width: '24px' }}
                     />
                   </ListItemIcon>
@@ -121,7 +111,7 @@ export const ChannelDrawer = () => {
                     <Box
                       component="img"
                       src={hiddenChannelIcon}
-                      alt="wallet icon"
+                      alt="hidden icon"
                       sx={{ height: '24px', width: '24px' }}
                     />
                   </ListItemIcon>
@@ -135,7 +125,7 @@ export const ChannelDrawer = () => {
                     <Box
                       component="img"
                       src={shareIcon}
-                      alt="wallet icon"
+                      alt="share icon"
                       sx={{ height: '24px', width: '24px' }}
                     />
                   </ListItemIcon>

@@ -1,13 +1,12 @@
-import Modal from '@metis/common/components/ui/Modal';
 import { useAppDispatch, useAppSelector } from '@metis/store/hooks';
 import { openToast } from '@metis/store/ui/ui.slice';
 import VisibilityIcon from '@mui/icons-material/Visibility';
+import CloseIcon from '@mui/icons-material/Close';
+import Dialog from '@mui/material/Dialog';
 import { Typography } from '@mui/material';
 import Box from '@mui/material/Box';
-import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
-import CardContent from '@mui/material/CardContent';
-import Divider from '@mui/material/Divider';
+import hiddenChannelIcon from '@metis/assets/images/misc/hiddenChannelIcon.svg';
 import { useMemo } from 'react';
 import { selectState, unhideChannel } from '../../../store/channel.slice';
 import { ChannelListItem } from '../channel-list-item/ChannelListItem';
@@ -37,35 +36,57 @@ const ModalHiddenList = ({ open, onClose }: Props) => {
     );
   };
   return (
-    <Modal open={open} onClose={onClose} title="Hidden Channels">
-      {!hiddenChannelsAddreses.length ? (
-        <Typography className={styles.nothingMessage}>There are no hidden channels</Typography>
-      ) : (
-        <Card sx={{ minWidth: 400 }}>
-          {channels.map(
-            (channel) =>
-              hiddenChannelsAddreses.includes(channel.channelAddress) && (
-                <Box key={channel.channelName}>
-                  <Divider />
-                  <Box className={styles.cardContainer}>
-                    <CardContent className={styles.cardContent}>
-                      <ChannelListItem channel={channel} key={channel.channelAddress} />
-                    </CardContent>
-                    <CardActions
-                      className={styles.actionContainer}
-                      onClick={() => showChannel(channel.channelAddress, channel.channelName)}
-                    >
-                      <Typography className={styles.glow}>
-                        <VisibilityIcon sx={{ position: 'relative', alignContent: 'center' }} />
-                      </Typography>
-                    </CardActions>
+    <Dialog open={open} onClose={onClose}>
+      <Box sx={{ padding: '4%', width: '500px', '@media(max-width:768px)': { width: '300px' } }}>
+        <Box className={styles.closeIconContainer}>
+          <CloseIcon onClick={onClose} className={styles.closeIcon} />
+        </Box>
+        <Typography
+          sx={{
+            display: 'flex',
+            flexDirection: 'row',
+            alignItems: 'center',
+            padding: '10px 0',
+            fontSize: '1.4rem',
+            borderBottom: '1px solid #61D90C',
+          }}
+        >
+          Hidden Channels
+          <Box
+            component="img"
+            src={hiddenChannelIcon}
+            alt="hidden icon"
+            sx={{ height: '24px', width: '24px', marginLeft: '5px' }}
+          />
+        </Typography>
+        {!hiddenChannelsAddreses.length ? (
+          <Typography className={styles.nothingMessage}>There are no hidden channels</Typography>
+        ) : (
+          <Box>
+            {channels.map(
+              (channel) =>
+                hiddenChannelsAddreses.includes(channel.channelAddress) && (
+                  <Box key={channel.channelName}>
+                    <Box className={styles.cardContainer}>
+                      <Box className={styles.cardContent}>
+                        <ChannelListItem channel={channel} key={channel.channelAddress} />
+                      </Box>
+                      <CardActions
+                        className={styles.actionContainer}
+                        onClick={() => showChannel(channel.channelAddress, channel.channelName)}
+                      >
+                        <Typography className={styles.glow}>
+                          <VisibilityIcon sx={{ position: 'relative', alignContent: 'center' }} />
+                        </Typography>
+                      </CardActions>
+                    </Box>
                   </Box>
-                </Box>
-              )
-          )}
-        </Card>
-      )}
-    </Modal>
+                )
+            )}
+          </Box>
+        )}
+      </Box>
+    </Dialog>
   );
 };
 

@@ -34,20 +34,25 @@ const useStyles = makeStyles(
     },
     drawerContainer: {
       display: 'flex',
-      justifyContent: 'center',
-      alignContent: 'center',
       width: '400px',
       height: '100%',
       flexDirection: 'column',
-      padding: '0 4% 0 4%',
+      padding: '2% 4% 0 4%',
       '@media(max-width: 768px)': {
         width: '300px',
       },
     },
-    closeButton: {
-      position: 'absolute',
-      right: 8,
-      top: 8,
+    closeIconContainer: {
+      display: 'flex',
+      padding: '0 !important',
+    },
+    closeIcon: {
+      transition: 'ease-in-out 200ms',
+      opacity: '0.8',
+      '&:hover': {
+        cursor: 'pointer',
+        opacity: '1',
+      },
     },
     avatar: {
       flexGrow: 1,

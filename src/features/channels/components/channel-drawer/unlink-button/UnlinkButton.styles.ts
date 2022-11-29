@@ -105,8 +105,11 @@ const useStyles = makeStyles((theme: Theme) =>
       alignItems: 'center',
     },
     span: {
-      fontWeight: 700,
-      fontSize: '.8rem',
+      display: 'flex',
+      flexDirection: 'row',
+      alignItems: 'center',
+      fontWeight: '600',
+      fontSize: '1rem',
       textTransform: 'none',
     },
     associate: {
@@ -144,6 +147,18 @@ const useStyles = makeStyles((theme: Theme) =>
       top: '0',
       '& input::placeholder': {
         fontSize: '15px',
+      },
+    },
+    closeIconContainer: {
+      display: 'flex',
+      padding: '0 !important',
+    },
+    closeIcon: {
+      transition: 'ease-in-out 200ms',
+      opacity: '0.8',
+      '&:hover': {
+        cursor: 'pointer',
+        opacity: '1',
       },
     },
   })

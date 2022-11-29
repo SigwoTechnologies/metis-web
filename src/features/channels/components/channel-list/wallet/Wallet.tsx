@@ -2,14 +2,7 @@ import { fetchBalance } from '@metis/features/wallet/store/wallet.actions';
 import { setIsOpenWallet } from '@metis/features/wallet/store/wallet.slice';
 import { useAppDispatch, useAppSelector } from '@metis/store/hooks';
 import CloseIcon from '@mui/icons-material/Close';
-import {
-  Drawer,
-  IconButton,
-  ListItem,
-  ListItemButton,
-  ListItemIcon,
-  ListItemText,
-} from '@mui/material';
+import { Drawer, ListItem, ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
 import Box from '@mui/material/Box';
 import walletIcon from '@metis/assets/images/misc/walletIcon.svg';
 import { useEffect } from 'react';
@@ -39,9 +32,12 @@ const Wallet = () => {
     <>
       <Drawer anchor="left" open={isOpenWallet} onClose={closeDrawer}>
         <Box role="presentation" className={classes.drawerContainer}>
-          <IconButton aria-label="close" onClick={closeDrawer} className={classes.closeButton}>
-            <CloseIcon />
-          </IconButton>
+          <Box
+            className={classes.closeIconContainer}
+            sx={{ width: '100%', justifyContent: 'flex-end' }}
+          >
+            <CloseIcon onClick={closeDrawer} className={classes.closeIcon} />
+          </Box>
 
           <Box sx={{ padding: '10px 0' }}>
             <span style={{ color: 'grey' }}>Total Value (JUP) </span>

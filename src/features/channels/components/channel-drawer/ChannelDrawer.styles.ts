@@ -166,6 +166,17 @@ const useStyles = makeStyles((theme: Theme) =>
         fontSize: '15px',
       },
     },
+    closeIconContainer: {
+      display: 'flex',
+    },
+    closeIcon: {
+      transition: 'ease-in-out 200ms',
+      opacity: '0.8',
+      '&:hover': {
+        cursor: 'pointer',
+        opacity: '1',
+      },
+    },
   })
 );
 

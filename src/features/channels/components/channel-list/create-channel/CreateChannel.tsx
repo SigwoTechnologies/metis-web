@@ -15,7 +15,7 @@ import { useAppDispatch, useAppSelector } from '@metis/store/hooks';
 import { openToast } from '@metis/store/ui/ui.slice';
 import CloseIcon from '@mui/icons-material/Close';
 import { LoadingButton } from '@mui/lab';
-import { Drawer, IconButton } from '@mui/material';
+import { Drawer } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import Box from '@mui/material/Box';
 import emojiRegex from 'emoji-regex';
@@ -74,19 +74,12 @@ export const CreateChannel = () => {
     <>
       <Drawer anchor="left" open={isOpenCreateChannelDrawer} onClose={closeDrawer}>
         <Box role="presentation" className={classes.drawerContainer}>
-          <IconButton aria-label="close" onClick={closeDrawer} className={classes.closeButton}>
-            <CloseIcon
-              sx={{
-                color: '#FFF',
-                opacity: '0.8',
-                transition: 'ease-in-out 200ms',
-                '&:hover': {
-                  backgroundColor: 'transparent !important',
-                  opacity: '1',
-                },
-              }}
-            />
-          </IconButton>
+          <Box
+            className={classes.closeIconContainer}
+            sx={{ width: '100%', justifyContent: 'flex-end' }}
+          >
+            <CloseIcon onClick={closeDrawer} className={classes.closeIcon} />
+          </Box>
 
           <Box className={classes.avatarBox}>
             <Box component="img" src={createChannelIcon} alt="Create Channel Icon" />
