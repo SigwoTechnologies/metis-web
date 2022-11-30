@@ -9,7 +9,6 @@ import emoticonIcon from '@metis/assets/images/misc/emoticonIcon.svg';
 import sendIcon from '@metis/assets/images/misc/sendIcon.svg';
 import { FilledInput } from '@mui/material';
 import IconButton from '@mui/material/IconButton/IconButton';
-// import InputAdornment from '@mui/material/InputAdornment';
 import Box from '@mui/material/Box';
 import Picker from 'emoji-picker-react';
 import { MouseEvent, useEffect, useState } from 'react';
