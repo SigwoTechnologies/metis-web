@@ -18,12 +18,15 @@ import {
 import { useState } from 'react';
 import { useAcceptInvite, useGetUsersInvites } from '../../services/invite.service';
 import InviteListItem from './InviteListItem/InviteListItem';
+import useStyles from './InvitesList.styles';
 
 const InvitesList = () => {
   const { alias, address } = useAppSelector((state) => state.auth.jupAccount);
   const { invites } = useAppSelector((state) => state.channel);
   const [proccessInvite, setProccessInvite] = useState(false);
   const dispatch = useAppDispatch();
+  const classes = useStyles();
+  const [openAccor, setOpenAccor] = useState(false);
 
   const acceptInvite = async (channelAddress: string) => {
     try {
@@ -54,6 +57,15 @@ const InvitesList = () => {
     dispatch(useGetUsersInvites());
   });
 
+  const accorStyle = () => {
+    setOpenAccor(!openAccor);
+    const accordionSum = document.getElementById('panel1a-header') as HTMLDivElement;
+    if (openAccor === false) {
+      accordionSum.setAttribute('style', 'border: 1px solid #61D90C !important');
+    } else {
+      accordionSum.setAttribute('style', '');
+    }
+  };
   return (
     <List
       sx={{
@@ -74,15 +86,11 @@ const InvitesList = () => {
           expandIcon={<ExpandMoreIcon />}
           aria-controls="panel1a-content"
           id="panel1a-header"
+          className={classes.accordionSum}
+          onClick={accorStyle}
           sx={{
-            padding: '1% 4% !important',
-            border: '1px solid #61D90C',
-            borderRadius: '10px',
-            minHeight: '58px !important',
-            maxHeight: '58px !important',
-            transition: 'ease-in-out 200ms',
             '&:hover': {
-              backgroundColor: '#332F2E',
+              border: '1px solid #61D90C',
             },
           }}
         >

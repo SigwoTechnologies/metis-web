@@ -18,7 +18,7 @@ const useStyles = makeStyles(() =>
       alignItems: 'center',
     },
     listItemButton: {
-      padding: '1rem',
+      padding: '6% 8% 0',
     },
   })
 );

@@ -7,7 +7,6 @@ import {
   CircularProgress,
   ListItemAvatar,
   ListItemButton,
-  ListItemText,
   Typography,
 } from '@mui/material';
 import { useEffect } from 'react';
@@ -70,30 +69,33 @@ const PendingChannelsList = () => {
             <ListItemAvatar>
               <Avatar alt={channel.channelName} className={classes.avatar} />
             </ListItemAvatar>
-            <ListItemText
-              disableTypography
-              primary={
-                <Box display="flex" justifyContent="space-between">
-                  <Box className={classes.channelName}>
-                    <Typography component="span" variant="caption" color="text.primary">
-                      {channel.channelName}
-                    </Typography>
-                  </Box>
-                  <Box className={classes.channelDescription}>
-                    <Box display="flex">
-                      <CircularProgress size="1.4285714285714284rem" />
-                    </Box>
-                  </Box>
-                </Box>
-              }
-              secondary={
+            <Box
+              sx={{
+                display: 'flex',
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                width: '100%',
+              }}
+            >
+              <Box className={classes.channelName}>
+                <Typography component="span" variant="caption" color="text.primary">
+                  {channel.channelName}
+                </Typography>
                 <Box display="flex">
                   <Typography noWrap component="span" variant="caption" color="text.secondary">
                     <i>We&apos;re creating your new channel!</i>
                   </Typography>
                 </Box>
-              }
-            />
+              </Box>
+              <Box display="flex" justifyContent="space-between">
+                <Box className={classes.channelDescription}>
+                  <Box display="flex">
+                    <CircularProgress size="1rem" />
+                  </Box>
+                </Box>
+              </Box>
+            </Box>
           </ListItemButton>
         </Box>
       ))}

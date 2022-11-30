@@ -5,10 +5,11 @@ const useStyles = makeStyles(
     container: {
       display: 'flex',
       flexDirection: 'row',
-      justifyItems: 'space-between',
+      justifyContent: 'space-between',
       alignContent: 'center',
       width: '100%',
       padding: '5% 4%',
+      paddingRight: 'calc(4% + 6px) !important',
       backgroundColor: '#181818',
     },
   })

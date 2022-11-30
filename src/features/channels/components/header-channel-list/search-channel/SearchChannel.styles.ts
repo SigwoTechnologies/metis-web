@@ -1,170 +1,67 @@
 import { createStyles, makeStyles } from '@mui/styles';
-import { Theme } from '@mui/material/styles';
 
-const useStyles = makeStyles((theme: Theme) =>
+const useStyles = makeStyles(
   createStyles({
-    header: {
-      height: '80px',
-      position: 'relative',
-      '@media (max-width:900px)': {
-        // eslint-disable-line no-useless-computed-key
-        height: '40px',
-      },
-    },
-    iconContainer: {
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'end',
-    },
-    textField: {
-      width: '100%',
-      marginBottom: '0',
-      size: '2rem',
-    },
-    button: {
-      alignItems: 'end',
-    },
-    iconContainerUnlink: {
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-      flexDirection: 'column',
-      marginBottom: '1rem',
-    },
-    account: {
-      position: 'relative',
-      paddingLeft: '0.75rem',
-      width: '100%',
-      height: '5.6rem',
-      display: 'flex',
-      alignItems: 'center',
-    },
-    accountAvatar: {
-      width: '4rem',
-      height: '4rem',
-      justifyContent: 'flex-start',
-    },
-    termPosition: {
-      display: 'flex',
-      justifyContent: 'flex-start',
-    },
-    term: {
-      size: '2rem',
-      padding: '0.5rem',
-      cursor: 'pointer',
-      color: '#555b6e',
-      textDecoration: 'underline',
-    },
-
-    term2: {
-      size: '2rem',
-      padding: '0.5rem',
-    },
-    drawerLetters: {
-      fontSize: '0.5rem !important',
-    },
-    upperGroup: {
-      flexGrow: 1,
-    },
-    inputText: {
-      borderRadius: '1rem',
-    },
-    cardContainer: {
-      display: 'flex',
-      justifyContent: 'space-between',
-      padding: '0.01rem',
-    },
-    cardContent: {
-      justifyContent: 'flex-start',
-      fontSize: '2rem',
-    },
-    actionContainer: {
-      justifyContent: 'flex-end',
-      padding: '0.8rem',
-    },
-    listItemIcon: {
-      color: `${theme.colors.green5}`,
-    },
-    logout: {
-      color: '#ec5151',
-      textAlign: 'left',
-    },
-    unlink: {
-      color: 'yellow',
-      textAlign: 'left',
-    },
-    wrapper: {
-      backgroundColor: theme.palette.background.default,
-    },
-    container: {
-      height: '100%',
-      display: 'flex',
-      flexDirection: 'column',
-      justifyContent: 'center',
-      alignItems: 'center',
-    },
-    span: {
-      fontWeight: 700,
-      fontSize: '.8rem',
-      textTransform: 'none',
-    },
-    associate: {
-      color: '#ccc',
-      textDecoration: 'none',
-    },
-    loading: {
-      clipPath: 'inset(0 1ch 0 0)',
-      animation: '$l 1s steps(4) infinite',
-    },
-    '@keyframes l': {
-      to: {
-        clipPath: 'inset(0 -1ch 0 0)',
-      },
-    },
-    icon: {
-      fontSize: '6rem',
-    },
-    closeButton: {
-      position: 'absolute',
-      top: '0',
-      right: '0',
-    },
-    listItemButton: {
-      padding: '.8rem',
-      transition: 'all 1s ease',
-    },
-    inputSearch: {
-      display: 'flex',
+    textInput: {
       height: '40px',
       width: '100%',
-      top: '0',
+      display: 'flex',
+      alignItems: 'center',
+      borderRadius: '10px',
+      padding: '0 !important',
+      transition: 'ease-in-out 200ms',
+      '&:hover': {
+        borderBottom: 'none !important',
+      },
+      '&::before': {
+        borderRadius: '10px',
+        borderBottom: 'none !important',
+      },
+      '&::after': {
+        border: 'none !important',
+        borderRadius: '10px',
+      },
+    },
+    formInput: {
+      height: '40px',
+      minWidth: '320px',
+      borderRadius: '10px',
+      borderBottom: '1px solid transparent',
+      padding: '0',
+      paddingLeft: '40px',
+      transition: 'ease all 200ms',
       '&:focus': {
         borderBottom: '1px solid #61D90C',
         borderRadius: '10px',
       },
-      marginBottom: '10px',
-      '& input::placeholder': {
-        fontSize: '16px',
-      },
-    },
-    textInput: {
-      '&::before': {
-        border: '0px !important',
-      },
-      borderRadius: '10px',
-      borderBottom: '1px solid transparent',
-      transition: 'linear 200ms',
       '&:hover': {
         borderBottom: '1px solid #61D90C',
       },
-      '&::after': {
-        border: '0px !important',
+      '&::before': {
         borderRadius: '10px',
       },
+      '&::after': {
+        borderRadius: '10px',
+      },
+      '@media(max-width:1024px)': {
+        minWidth: '180px',
+        paddingLeft: '40px',
+      },
+      '@media(max-width:768px)': {
+        minWidth: '600px',
+        paddingLeft: '10%',
+      },
+      '@media(max-width:500px)': {
+        minWidth: '200px',
+        paddingLeft: '40px',
+      },
     },
-    textInputTxt: {
-      padding: '0 !important',
-      paddingLeft: '0 !important',
+    searchIcon: {
+      height: '24px',
+      width: '24px',
+      position: 'absolute',
+      left: '10px',
+      color: '#16343c',
     },
   })
 );

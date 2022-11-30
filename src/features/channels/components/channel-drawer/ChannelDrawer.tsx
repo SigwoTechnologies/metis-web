@@ -48,9 +48,8 @@ export const ChannelDrawer = () => {
 
   return (
     <>
-      <Box className={styles.iconContainer}>
+      <Box className={styles.iconContainer} onClick={handleOpenDrawer}>
         <IconButton
-          onClick={handleOpenDrawer}
           sx={{
             '&:hover': {
               backgroundColor: 'transparent',
@@ -75,6 +74,7 @@ export const ChannelDrawer = () => {
             height: '100%',
             width: '400px',
             padding: '2% 4%',
+            paddingLeft: '4% + 6px !important',
             '@media(max-width: 768px)': {
               width: '300px',
             },

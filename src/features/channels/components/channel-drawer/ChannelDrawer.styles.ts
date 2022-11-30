@@ -16,12 +16,13 @@ const useStyles = makeStyles((theme: Theme) =>
       display: 'flex',
       justifyContent: 'center',
       alignItems: 'end',
-      border: 'solid 1px #61D90C',
+      border: '1px solid transparent',
       borderRadius: '10px',
       transition: 'ease-in-out 200ms',
+      backgroundColor: '#332F2E',
       '&:hover': {
         cursor: 'pointer',
-        backgroundColor: '#332F2E',
+        border: '1px solid #61D90C',
       },
     },
     textField: {
