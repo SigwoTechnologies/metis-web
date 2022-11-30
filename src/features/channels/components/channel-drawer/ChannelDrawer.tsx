@@ -48,7 +48,7 @@ export const ChannelDrawer = () => {
 
   return (
     <>
-      <Box id="hamburgerMenu" className={styles.iconContainer} onClick={handleOpenDrawer}>
+      <Box className={styles.iconContainer} onClick={handleOpenDrawer}>
         <IconButton
           sx={{
             '&:hover': {
