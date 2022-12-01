@@ -193,6 +193,8 @@ const MessageInput = () => {
             width: '100%',
             height: 'auto',
             padding: '3% 4%',
+            borderRadius: '10px',
+            marginBottom: '10px',
           }}
         >
           <img src={preview} alt="Alo" style={{ maxWidth: '80%', maxHeight: '260px' }} />
