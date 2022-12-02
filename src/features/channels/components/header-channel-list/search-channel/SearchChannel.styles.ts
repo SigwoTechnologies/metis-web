@@ -24,7 +24,6 @@ const useStyles = makeStyles(
     },
     formInput: {
       height: '40px',
-      minWidth: '320px',
       borderRadius: '10px',
       borderBottom: '1px solid transparent',
       padding: '0',
@@ -42,18 +41,6 @@ const useStyles = makeStyles(
       },
       '&::after': {
         borderRadius: '10px',
-      },
-      '@media(max-width:1024px)': {
-        minWidth: '180px',
-        paddingLeft: '40px',
-      },
-      '@media(max-width:768px)': {
-        minWidth: '600px',
-        paddingLeft: '10%',
-      },
-      '@media(max-width:500px)': {
-        minWidth: '200px',
-        paddingLeft: '40px',
       },
     },
     searchIcon: {
