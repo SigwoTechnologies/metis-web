@@ -18,7 +18,11 @@ export const SyncAccount = () => {
   const dispatch = useAppDispatch();
   const [syncDeviceRequested, setSyncDeviceRequested] = useState(false);
   const [socketConnected, setSocketConnected] = useState<Socket>();
-  const { ethAccount, isAlreadyRegistered } = useAppSelector((state) => state.auth);
+  const {
+    ethAccount,
+    isAlreadyRegistered,
+    userData: { privateKeyArmored, publicKeyArmored },
+  } = useAppSelector((state) => state.auth);
   const [credentials, setCredentials] = useState(false);
   const [synchronized, setSynchronized] = useState(false);
   const [modalSynchronized, setModalSynchronized] = useState(true);
@@ -131,6 +135,7 @@ export const SyncAccount = () => {
       hiddenChannels,
       declinedInvites,
       recoveryCreds,
+      keys: { privateKeyArmored, publicKeyArmored },
     });
     setSyncDeviceRequested(false);
     setModalSecurityStep(false);
