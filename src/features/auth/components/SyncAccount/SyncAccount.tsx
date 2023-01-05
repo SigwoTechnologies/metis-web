@@ -21,7 +21,7 @@ export const SyncAccount = () => {
   const {
     ethAccount,
     isAlreadyRegistered,
-    userData: { privateKeyArmored, publicKeyArmored },
+    userData: { privateKeyArmored, publicKeyArmored, passphrase, password },
   } = useAppSelector((state) => state.auth);
   const [credentials, setCredentials] = useState(false);
   const [synchronized, setSynchronized] = useState(false);
@@ -135,6 +135,8 @@ export const SyncAccount = () => {
       hiddenChannels,
       declinedInvites,
       recoveryCreds,
+      passphrase,
+      password,
       keys: { privateKeyArmored, publicKeyArmored },
     });
     setSyncDeviceRequested(false);
