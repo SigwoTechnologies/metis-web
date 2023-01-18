@@ -8,6 +8,7 @@ import { openNotification } from '@metis/store/ui/ui.slice';
 import { randomNumbers, browserFeatures } from '@metis/common/utils/utils';
 import connectSocket from '@metis/common/services/socket.service';
 import constants from '@metis/common/configuration/constants';
+import { getToken } from '@metis/common/services/token.service';
 import { AccountSynchronized } from './SyncModals/AccountSynchronized';
 import { EnterCode } from './SyncModals/EnterCode';
 import { SyncRequest } from './SyncModals/SyncRequest';
@@ -131,7 +132,7 @@ export const SyncAccount = () => {
     const declinedInvites = localStorage.getItem(localStorageKeyDeclinedInvites);
     const hiddenChannels = localStorage.getItem(localStorageKeyHiddenChannel);
     const recoveryCreds = localStorage.getItem(constants.RECOVERY_CREDS);
-    const token = localStorage.getItem(constants.TOKEN);
+    const token = getToken();
     socketConnected?.emit('sync-devices-grant', {
       credentials: credentialsFound,
       hiddenChannels,
