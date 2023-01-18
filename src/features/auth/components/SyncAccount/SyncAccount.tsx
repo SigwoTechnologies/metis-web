@@ -22,6 +22,7 @@ export const SyncAccount = () => {
     ethAccount,
     isAlreadyRegistered,
     userData: { privateKeyArmored, publicKeyArmored, passphrase, password },
+    jupAccount,
   } = useAppSelector((state) => state.auth);
   const [credentials, setCredentials] = useState(false);
   const [synchronized, setSynchronized] = useState(false);
@@ -130,6 +131,7 @@ export const SyncAccount = () => {
     const declinedInvites = localStorage.getItem(localStorageKeyDeclinedInvites);
     const hiddenChannels = localStorage.getItem(localStorageKeyHiddenChannel);
     const recoveryCreds = localStorage.getItem(constants.RECOVERY_CREDS);
+    const token = localStorage.getItem(constants.TOKEN);
     socketConnected?.emit('sync-devices-grant', {
       credentials: credentialsFound,
       hiddenChannels,
@@ -138,6 +140,8 @@ export const SyncAccount = () => {
       passphrase,
       password,
       keys: { privateKeyArmored, publicKeyArmored },
+      token,
+      jupAccount,
     });
     setSyncDeviceRequested(false);
     setModalSecurityStep(false);
