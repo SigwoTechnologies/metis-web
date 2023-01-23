@@ -22,10 +22,10 @@ const useStyles = makeStyles((theme: Theme) =>
     title: {
       marginLeft: '1rem',
       cursor: 'pointer',
-      transition: 'all ease .5s',
+      transition: 'ease-in-out 200ms',
       '&:hover': {
         cursor: 'pointer',
-        transform: 'scale(1.2)',
+        color: '#61D90C',
       },
     },
     textField: {
@@ -36,9 +36,12 @@ const useStyles = makeStyles((theme: Theme) =>
       display: 'flex',
       justifyContent: 'center',
       flexDirection: 'column',
-      width: 400,
-      padding: '0 1rem 0 1rem',
+      width: '400px',
+      padding: '2% 4%',
       gap: '.5rem',
+      '@media(max-width:768px)': {
+        width: '300px',
+      },
     },
     closeBox: {
       display: 'flex',
@@ -56,6 +59,22 @@ const useStyles = makeStyles((theme: Theme) =>
       width: '11rem',
       height: '11rem',
       fontSize: '5rem',
+      cursor: 'pointer',
+    },
+    icon: {
+      color: 'white',
+      fontSize: '96%',
+      position: 'absolute',
+      top: '50%',
+      left: '50%',
+      transform: 'translate(-50%, -50%)',
+      '-ms-transform': 'translate(-50%, -50%)',
+      textAlign: 'center',
+      opacity: '0',
+      transition: 'all 0.2s ease',
+      '&:hover': {
+        opacity: '1',
+      },
     },
     avatarBox: {
       display: 'flex',
@@ -64,6 +83,8 @@ const useStyles = makeStyles((theme: Theme) =>
       alignItems: 'center',
       gap: '1rem',
       fontSize: '1.4rem',
+      borderBottom: '1px solid #61D90C',
+      paddingBottom: '20px',
     },
     member: {
       width: '15rem',

@@ -1,7 +1,6 @@
-import { Theme } from '@mui/material/styles';
 import { createStyles, makeStyles } from '@mui/styles';
 
-const useStyles = makeStyles((theme: Theme) =>
+const useStyles = makeStyles(() =>
   createStyles({
     container: {
       display: 'flex',
@@ -34,7 +33,7 @@ const useStyles = makeStyles((theme: Theme) =>
       display: 'flex',
       flexDirection: 'column',
       alignItems: 'flex-start',
-      backgroundColor: theme.colors.black1,
+      backgroundColor: '#0dc7fa3f',
       padding: '0.5rem 0.7rem',
       maxWidth: '80%',
       minWidth: '25%',
@@ -43,7 +42,7 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     userMessageContainer: {
       // TODO: add this color to the theme
-      backgroundColor: '#1C6758 !important',
+      backgroundColor: '#61d90c70!important',
     },
     message: {
       display: 'flex',

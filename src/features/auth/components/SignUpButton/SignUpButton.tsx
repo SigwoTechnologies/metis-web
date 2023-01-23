@@ -19,6 +19,8 @@ import { openToast } from '@metis/store/ui/ui.slice';
 import PeopleIcon from '@mui/icons-material/People';
 import { LoadingButton } from '@mui/lab';
 import { CircularProgress } from '@mui/material';
+import metamaskIcon from '@metis/assets/images/misc/metamask-logo.png';
+import Box from '@mui/material/Box';
 import { useEffect, useState } from 'react';
 import useStyles from './SignUpButton.styles';
 
@@ -131,12 +133,28 @@ export const SignUpButton = () => {
         variant="contained"
         onClick={onClicked}
         style={{
-          width: '20rem',
+          height: '40px',
+          width: '600px',
         }}
       >
         <span className={classes.span}>
           {isConnectingToMetamask ? 'Connecting to Metamask' : 'Sign up with Metamask'}
         </span>
+        <Box
+          component="img"
+          sx={{
+            height: '35px',
+            width: '35px',
+            marginLeft: '5px',
+            '@media (max-width:500px)': {
+              // eslint-disable-line no-useless-computed-key
+              height: '25px',
+              width: '25px',
+            },
+          }}
+          alt="metamask-logo"
+          src={metamaskIcon}
+        />
       </LoadingButton>
 
       <Modal open={isCreatingAccount}>

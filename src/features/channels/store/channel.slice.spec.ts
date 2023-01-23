@@ -9,6 +9,7 @@ describe('Channel Slice', () => {
 
   beforeEach(() => {
     const initialChannelState = {
+      imageChannel: '',
       channelAddress: '',
       channelPublicKey: '',
       channelName: '',
@@ -23,7 +24,9 @@ describe('Channel Slice', () => {
       isLoading: false,
       isLoadingMessages: false,
       isLoadingInvites: false,
+      failedSearch: false,
       channels: [],
+      filteredChannels: [],
       declinedInvites: [],
       invites: [],
       hiddenChannels: [],
@@ -37,6 +40,7 @@ describe('Channel Slice', () => {
       mutedChannels: [],
       pendingChannels: [],
       isOpenCreateChannelDrawer: false,
+      isOpenChannelDrawer: false,
     };
   });
 

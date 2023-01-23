@@ -4,12 +4,12 @@ import connectSocket from '@metis/common/services/socket.service';
 import { getToken } from '@metis/common/services/token.service';
 import { useAppDispatch } from '@metis/store/hooks';
 import { openToast } from '@metis/store/ui/ui.slice';
-import AttachFileIcon from '@mui/icons-material/AttachFile';
-import EmojiEmotions from '@mui/icons-material/EmojiEmotions';
-import SendIcon from '@mui/icons-material/Send';
+import clipIcon from '@metis/assets/images/misc/clipIcon.svg';
+import emoticonIcon from '@metis/assets/images/misc/emoticonIcon.svg';
+import sendIcon from '@metis/assets/images/misc/sendIcon.svg';
 import { FilledInput } from '@mui/material';
 import IconButton from '@mui/material/IconButton/IconButton';
-import InputAdornment from '@mui/material/InputAdornment';
+import Box from '@mui/material/Box';
 import Picker from 'emoji-picker-react';
 import { MouseEvent, useEffect, useState } from 'react';
 import Files from 'react-files';
@@ -51,50 +51,54 @@ const MessageInput = () => {
   const [uploadingImage, setUploadingImage] = useState(false);
 
   useEffect(() => {
-    clearInput();
-    const socket = connectSocket({
-      query: {
-        room: `upload-${channelAddress}`, // address of the current user
-        user: channelAddress, // address of the current user
-      },
-    }).socket('/upload');
+    if (uploadingImage) {
+      clearInput();
+      const socket = connectSocket({
+        query: {
+          room: `upload-${channelAddress}`, // address of the current user
+          user: channelAddress, // address of the current user
+        },
+      }).socket('/upload');
 
-    if (channelAddress) {
-      socket.on(
-        'uploadCreated',
-        async ({
-          url,
-          fileName,
-          mimeType,
-          size,
-          originalFileType,
-        }: {
-          url: string;
-          fileName: string;
-          mimeType: string;
-          size: number;
-          originalFileType: string;
-        }) => {
-          sendEncryptedMessageWithAttachment({
-            attachmentObj: {
-              url,
-              originalname: fileName,
-              mimetype: originalFileType || mimeType,
-              size,
-            },
-          }).then(() => {
-            dispatch(discardReply());
-            clearInput();
-            setUploadingImage(false);
-          });
-        }
-      );
-      socket.on('uploadFailed', async ({ errorMessage }: { errorMessage: string }) => {
-        setUploadingImage(false);
-        dispatch(openToast({ text: errorMessage, type: 'error' }));
-      });
+      if (channelAddress) {
+        socket.on(
+          'uploadCreated',
+          async ({
+            url,
+            fileName,
+            mimeType,
+            size,
+            originalFileType,
+          }: {
+            url: string;
+            fileName: string;
+            mimeType: string;
+            size: number;
+            originalFileType: string;
+          }) => {
+            sendEncryptedMessageWithAttachment({
+              attachmentObj: {
+                url,
+                originalname: fileName,
+                mimetype: originalFileType || mimeType,
+                size,
+              },
+            }).then(() => {
+              dispatch(discardReply());
+              clearInput();
+              setUploadingImage(false);
+            });
+            socket.close();
+          }
+        );
+        socket.on('uploadFailed', async ({ errorMessage }: { errorMessage: string }) => {
+          setUploadingImage(false);
+          dispatch(openToast({ text: errorMessage, type: 'error' }));
+          socket.close();
+        });
+      }
     }
-  }, [channelAddress]);
+  }, [uploadingImage]);
 
   const sendFileMessage = async (file: TFile) => {
     if (!file) {
@@ -169,17 +173,54 @@ const MessageInput = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} style={{ position: 'relative' }}>
-      {selectedFile && <img src={preview} alt="Alo" style={{ width: '100px', height: '100px' }} />}
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      style={{
+        display: 'block',
+        position: 'relative',
+        margin: '0 auto 10px',
+        width: '95%',
+      }}
+      className={classes.formInput}
+    >
+      {selectedFile && (
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            backgroundColor: '#232323',
+            width: '100%',
+            height: 'auto',
+            padding: '3% 4%',
+            borderRadius: '10px',
+            marginBottom: '10px',
+          }}
+        >
+          <img src={preview} alt="Alo" style={{ maxWidth: '80%', maxHeight: '260px' }} />
+        </div>
+      )}
       <IconButton
         disabled={loading}
         edge="start"
         size="medium"
-        sx={{ padding: 1.5 }}
+        sx={{
+          padding: 1.5,
+          backgroundColor: 'transparent !important',
+        }}
         onClick={() => setEmojiPickerVisible(!emojiPickerVisible)}
         className={classes.emojiIcon}
       >
-        <EmojiEmotions />
+        <Box
+          component="img"
+          src={emoticonIcon}
+          alt="emojis"
+          sx={{
+            height: '24px',
+            width: '24px',
+            backgroundColor: 'transparent !important',
+          }}
+        />
       </IconButton>
       {emojiPickerVisible && (
         <div className={classes.emojiPicker}>
@@ -198,7 +239,7 @@ const MessageInput = () => {
         aria-label="send message"
         edge="start"
         size="medium"
-        sx={{ p: 1.5 }}
+        sx={{ p: 1.5, backgroundColor: 'transparent !important' }}
         className={classes.attachmenIcon}
       >
         <Files
@@ -211,28 +252,60 @@ const MessageInput = () => {
           minFileSize={0}
           clickable
         >
-          <AttachFileIcon />
+          <Box
+            component="img"
+            src={clipIcon}
+            alt="emojis"
+            sx={{
+              height: '23px',
+              width: '24px',
+              transform: 'rotate(30deg)',
+            }}
+          />
         </Files>
       </IconButton>
+      <IconButton
+        disabled={loading}
+        type="submit"
+        aria-label="send message"
+        edge="end"
+        size="medium"
+        className={classes.sendIcon}
+        sx={{
+          padding: 1.5,
+          backgroundColor: 'transparent !important',
+        }}
+      >
+        <Box
+          component="img"
+          src={sendIcon}
+          alt="send"
+          sx={{
+            height: '23px',
+            width: '24px',
+          }}
+        />
+      </IconButton>
       <FilledInput
+        sx={{
+          transition: 'ease-in-out 200ms',
+          '&:hover': {
+            borderBottom: 'none !important',
+          },
+          '&::before': {
+            borderRadius: '10px',
+            borderBottom: 'none !important',
+          },
+          '&::after': {
+            border: 'none !important',
+            borderRadius: '10px',
+          },
+        }}
         autoComplete="off"
         disabled={uploadingImage}
         className={classes.button}
         inputProps={{ className: classes.footerInputStyle }}
-        endAdornment={
-          <InputAdornment position="end">
-            <IconButton
-              disabled={loading}
-              type="submit"
-              aria-label="send message"
-              edge="start"
-              size="medium"
-              sx={{ padding: 1.5 }}
-            >
-              <SendIcon />
-            </IconButton>
-          </InputAdornment>
-        }
+        // endAdornment={}
         {...register('message')}
       />
     </form>

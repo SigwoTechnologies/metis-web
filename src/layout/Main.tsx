@@ -32,12 +32,20 @@ const Main = () => {
 
   return (
     <Box height="100vh" className={classes.wrapper}>
-      <Container maxWidth="xl" component="main" className={classes.container}>
-        <Grid container columnSpacing={5} className={classes.grid}>
-          <Grid item xs={12} md={4} className={classes.gridRow}>
+      <Container
+        maxWidth="xl"
+        component="main"
+        className={classes.container}
+        sx={{
+          backgroundColor: '#332F2E',
+          padding: '18px !important',
+        }}
+      >
+        <Grid container className={classes.grid}>
+          <Grid item xs={12} md={4} className={classes.gridRowL} sx={{ padding: '0 !important' }}>
             <LeftColumn />
           </Grid>
-          <Grid item md={8} className={classes.gridRow} sx={{ paddingLeft: '0px !important' }}>
+          <Grid item xs={12} md={8} className={classes.gridRowR}>
             <RightColumn />
           </Grid>
         </Grid>

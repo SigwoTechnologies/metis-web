@@ -3,7 +3,8 @@ import { createStyles, makeStyles } from '@mui/styles';
 const useStyles = makeStyles(() =>
   createStyles({
     container: {
-      padding: '1rem',
+      padding: '2rem',
+      paddingBottom: '2rem',
     },
   })
 );

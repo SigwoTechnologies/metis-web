@@ -12,9 +12,10 @@ import { IChannel } from '../types/channel.interface';
 import { IMessage } from '../types/message.interface';
 import { INewChannel } from '../types/new.channel.interface';
 import { IReply } from '../types/reply.interface';
-import { findMembers } from './channel.actions';
+import { findMembers, findImageChannel } from './channel.actions';
 
 const initialChannelState = {
+  imageChannel: '',
   channelAddress: '',
   channelPublicKey: '',
   channelName: '',
@@ -29,22 +30,27 @@ export type ChannelState = {
   isLoading: boolean;
   isLoadingMessages: boolean;
   isLoadingInvites: boolean;
+  failedSearch: boolean;
   declinedInvites: number[];
   invites: TInvite[];
   hiddenChannels: IChannel[];
   reply: IReply;
   mutedChannels: string[];
   channels: IChannel[];
+  filteredChannels: IChannel[];
   selectedChannel: IChannel;
   pendingChannels: INewChannel[];
   isOpenCreateChannelDrawer: boolean;
+  isOpenChannelDrawer: boolean;
 };
 
 const initialState: ChannelState = {
   isLoading: false,
   isLoadingMessages: false,
   isLoadingInvites: false,
+  failedSearch: false,
   channels: [],
+  filteredChannels: [],
   hiddenChannels: [],
   invites: [],
   declinedInvites: [],
@@ -58,6 +64,7 @@ const initialState: ChannelState = {
   mutedChannels: [],
   pendingChannels: [],
   isOpenCreateChannelDrawer: false,
+  isOpenChannelDrawer: false,
 };
 
 const slice = createSlice({
@@ -83,6 +90,7 @@ const slice = createSlice({
           messages: [],
           members: [],
           lastMessage: {} as IMessage,
+          imageChannel: '',
         };
 
         state.channels.unshift(channelCreated);
@@ -96,6 +104,16 @@ const slice = createSlice({
         (channel) => channel.channelAddress === channelAddress
       );
       state.selectedChannel = targetChannel || initialChannelState;
+    },
+    setFilteredChannels: (state: ChannelState, { payload: key }) => {
+      if (key.length) {
+        const filteredChannels = state.channels.filter(({ channelName }) =>
+          channelName.toLocaleLowerCase().includes(key)
+        );
+        state.filteredChannels = filteredChannels;
+      } else {
+        state.filteredChannels = state.channels;
+      }
     },
     updateReply: (state: ChannelState, { payload }) => {
       state.reply = payload;
@@ -137,8 +155,11 @@ const slice = createSlice({
 
       state.selectedChannel.messages.push(message);
     },
-    setOpenDrawer: (state: ChannelState, { payload: status }) => {
+    setOpenCreateChannelDrawer: (state: ChannelState, { payload: status }) => {
       state.isOpenCreateChannelDrawer = status;
+    },
+    setIsOpenChannelDrawer: (state: ChannelState, { payload }) => {
+      state.isOpenChannelDrawer = payload;
     },
     setLoading: (state: ChannelState, { payload: status }) => {
       state.isLoading = status;
@@ -200,6 +221,17 @@ const slice = createSlice({
     builder.addCase(findMembers.fulfilled, (state, { payload }) => {
       state.selectedChannel.members = payload;
     });
+    builder.addCase(findImageChannel.fulfilled, (state, { payload }) => {
+      state.selectedChannel.imageChannel = payload;
+      state.channels = state.channels.map((channel) => {
+        if (channel.channelAddress === state.selectedChannel.channelAddress)
+          return {
+            ...channel,
+            imageChannel: payload,
+          };
+        return channel;
+      });
+    });
   },
 });
 
@@ -213,6 +245,25 @@ export const {
   unhideChannel,
   addNewMessage,
   setSelectedChannel,
-  setOpenDrawer: setOpenCreateChannelDrawer,
+  setFilteredChannels,
+  setOpenCreateChannelDrawer,
+  setIsOpenChannelDrawer,
 } = slice.actions;
 export const channelReducer = slice.reducer;
+
+export const selectChannelsVisibles = (state: RootState, key = '') => {
+  const { channels, hiddenChannels } = state.channel;
+  return channels
+    .filter(
+      (e) => !hiddenChannels.find(({ channelAddress }) => channelAddress === e.channelAddress)
+    )
+    .filter(Boolean);
+};
+
+/* export const selectChannelsFiltered = (state: RootState, key: string) => {
+  const { channels } = state.channel;
+  return channels.filter((e) =>
+    e.channelName.toLocaleLowerCase().includes(key.toLocaleLowerCase())
+  );
+};
+ */

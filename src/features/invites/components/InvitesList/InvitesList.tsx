@@ -18,12 +18,15 @@ import {
 import { useState } from 'react';
 import { useAcceptInvite, useGetUsersInvites } from '../../services/invite.service';
 import InviteListItem from './InviteListItem/InviteListItem';
+import useStyles from './InvitesList.styles';
 
 const InvitesList = () => {
   const { alias, address } = useAppSelector((state) => state.auth.jupAccount);
-  const { invites, isLoadingInvites } = useAppSelector((state) => state.channel);
+  const { invites } = useAppSelector((state) => state.channel);
   const [proccessInvite, setProccessInvite] = useState(false);
   const dispatch = useAppDispatch();
+  const classes = useStyles();
+  const [openAccor, setOpenAccor] = useState(false);
 
   const acceptInvite = async (channelAddress: string) => {
     try {
@@ -54,13 +57,42 @@ const InvitesList = () => {
     dispatch(useGetUsersInvites());
   });
 
+  const accorStyle = () => {
+    setOpenAccor(!openAccor);
+    const accordionSum = document.getElementById('panel1a-header') as HTMLDivElement;
+    if (openAccor === false) {
+      accordionSum.setAttribute('style', 'border: 1px solid #61D90C !important');
+    } else {
+      accordionSum.setAttribute('style', '');
+    }
+  };
   return (
-    <List>
-      <Accordion>
+    <List
+      sx={{
+        padding: '0 !important',
+      }}
+    >
+      <Accordion
+        sx={{
+          padding: '0 4%',
+          borderRadius: '0 !important',
+          borderLeft: '0px !important',
+          borderRight: '0px !important',
+          boxShadow: 'none !important',
+          transition: 'none !important',
+        }}
+      >
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
           aria-controls="panel1a-content"
           id="panel1a-header"
+          className={classes.accordionSum}
+          onClick={accorStyle}
+          sx={{
+            '&:hover': {
+              border: '1px solid #61D90C',
+            },
+          }}
         >
           <Box display="flex" gap="1rem">
             {(invites.length && (
@@ -80,19 +112,23 @@ const InvitesList = () => {
             <Typography>Invites</Typography>
           </Box>
         </AccordionSummary>
-        <AccordionDetails>
-          <SpinnerContainer isLoading={isLoadingInvites}>
-            {invites.map((invite) => (
-              <InviteListItem
-                key={invite.invitationId}
-                acceptInvite={acceptInvite}
-                proccessInvite={proccessInvite}
-                invite={invite}
-              />
-            ))}
-            {!invites.length && (
-              <Typography variant="body2">There are no pending invites</Typography>
-            )}
+        <AccordionDetails sx={{ padding: '0 !important', margin: '10px 5px' }}>
+          <SpinnerContainer isLoading={proccessInvite}>
+            <SpinnerContainer isLoading={proccessInvite}>
+              {invites.map((invite) => (
+                <InviteListItem
+                  key={invite.invitationId}
+                  acceptInvite={acceptInvite}
+                  proccessInvite={proccessInvite}
+                  invite={invite}
+                />
+              ))}
+              {!invites.length && (
+                <Box sx={{ border: '1px solid #0DC7FA', borderRadius: '10px', padding: '3% 4%' }}>
+                  <Typography variant="body2">You have no invites</Typography>
+                </Box>
+              )}
+            </SpinnerContainer>
           </SpinnerContainer>
         </AccordionDetails>
       </Accordion>

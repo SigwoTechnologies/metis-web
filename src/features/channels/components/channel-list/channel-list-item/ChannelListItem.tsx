@@ -22,7 +22,7 @@ type Props = {
   avatar?: string;
 };
 
-export const ChannelListItem = ({ channel, avatar = channel.channelName }: Props) => {
+export const ChannelListItem = ({ channel, avatar = channel.imageChannel }: Props) => {
   const classes = useStyles();
   const {
     channel: { mutedChannels, selectedChannel },
@@ -76,7 +76,6 @@ export const ChannelListItem = ({ channel, avatar = channel.channelName }: Props
       <ListItemButton
         className={classes.listItemButton}
         onClick={onSelectChannel}
-        alignItems="flex-start"
         selected={channel.channelAddress === selectedChannel.channelAddress}
       >
         <ListItemAvatar>

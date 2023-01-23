@@ -18,15 +18,28 @@ const useStyles = makeStyles((theme: Theme) =>
       zIndex: '1',
       fontSize: '1px',
     },
+    sendIcon: {
+      position: 'absolute',
+      right: '12px',
+      bottom: '5px',
+      zIndex: '1',
+      fontSize: '1px',
+    },
     footerInputStyle: {
-      padding: '1rem 1rem 1rem 5.5rem',
+      padding: '1rem 2rem 1rem 5.5rem',
       position: 'relative',
+      // transition: 'ease all 200ms',
+      '&:focus': {
+        borderBottom: '1px solid #61D90C',
+        borderRadius: '10px',
+      },
     },
     button: {
       display: 'flex',
       justifyContent: 'center',
       alignItems: 'center',
-      borderRadius: 0,
+      borderRadius: '10px',
+      transition: 'ease-in-out 200ms',
     },
     replyContainer: {
       display: 'flex',
@@ -45,6 +58,20 @@ const useStyles = makeStyles((theme: Theme) =>
       left: '50%',
       transform: 'translate(-50%, -50%)',
       color: theme.palette.grey[500],
+    },
+    formInput: {
+      borderRadius: '10px',
+      borderBottom: '1px solid transparent',
+      transition: 'ease all 200ms',
+      '&:hover': {
+        borderBottom: '1px solid #61D90C',
+      },
+      '&::before': {
+        borderRadius: '10px',
+      },
+      '&::after': {
+        borderRadius: '10px',
+      },
     },
   })
 );

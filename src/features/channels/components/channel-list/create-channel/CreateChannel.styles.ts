@@ -1,23 +1,32 @@
-import { Theme } from '@mui/material';
 import { createStyles, makeStyles } from '@mui/styles';
 
-const useStyles = makeStyles((theme: Theme) =>
+const useStyles = makeStyles(
   createStyles({
     createButton: {
-      width: '3rem',
-      height: '3rem',
+      width: '60px',
+      height: '60px',
       position: 'absolute',
       margin: '1rem',
-      bottom: 0,
-      right: 0,
+      bottom: '10px',
+      right: '10px',
+      transition: 'ease-in-out 300ms',
       '&:hover': {
         cursor: 'pointer',
+        transform: 'rotate(180deg)',
+      },
+      '@media(max-width:768px)': {
+        width: '40px',
+        height: '40px',
       },
     },
     button: {
+      display: 'flex',
+      flexDirection: 'row',
+      alignItems: 'center',
       width: '100%',
       marginBottom: '1rem',
       textTransform: 'capitalize',
+      fontWeight: '600',
     },
     textField: {
       width: '100%',
@@ -25,18 +34,25 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     drawerContainer: {
       display: 'flex',
-      justifyContent: 'center',
-      alignContent: 'center',
-      width: 400,
+      width: '400px',
       height: '100%',
       flexDirection: 'column',
-      padding: '0 1rem 0 1rem',
+      padding: '2% 4% 0 4%',
+      '@media(max-width: 768px)': {
+        width: '300px',
+      },
     },
-    closeButton: {
-      position: 'absolute',
-      right: 8,
-      top: 8,
-      color: theme.palette.grey[500],
+    closeIconContainer: {
+      display: 'flex',
+      padding: '0 !important',
+    },
+    closeIcon: {
+      transition: 'ease-in-out 200ms',
+      opacity: '0.8',
+      '&:hover': {
+        cursor: 'pointer',
+        opacity: '1',
+      },
     },
     avatar: {
       flexGrow: 1,
@@ -51,6 +67,35 @@ const useStyles = makeStyles((theme: Theme) =>
       alignItems: 'center',
       gap: '1rem',
       fontSize: '1.2rem',
+    },
+    inputSearch: {
+      display: 'flex',
+      height: '40px',
+      width: '100%',
+      top: '0',
+      marginBottom: '25px',
+      '& input::placeholder': {
+        fontSize: '16px',
+      },
+    },
+    textInput: {
+      '&::before': {
+        border: '0px !important',
+      },
+      borderRadius: '10px',
+      borderBottom: '1px solid transparent',
+      transition: 'linear 200ms',
+      '&:hover': {
+        borderBottom: '1px solid #61D90C',
+      },
+      '&::after': {
+        border: '0px !important',
+        borderRadius: '10px',
+      },
+    },
+    textInputTxt: {
+      padding: '0 !important',
+      paddingLeft: '0 !important',
     },
   })
 );

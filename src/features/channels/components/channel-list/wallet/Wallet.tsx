@@ -1,17 +1,10 @@
 import { fetchBalance } from '@metis/features/wallet/store/wallet.actions';
 import { setIsOpenWallet } from '@metis/features/wallet/store/wallet.slice';
 import { useAppDispatch, useAppSelector } from '@metis/store/hooks';
-import AllInboxIcon from '@mui/icons-material/AllInbox';
 import CloseIcon from '@mui/icons-material/Close';
-import {
-  Drawer,
-  IconButton,
-  ListItem,
-  ListItemButton,
-  ListItemIcon,
-  ListItemText,
-} from '@mui/material';
+import { Drawer, ListItem, ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
 import Box from '@mui/material/Box';
+import walletIcon from '@metis/assets/images/misc/walletIcon.svg';
 import { useEffect } from 'react';
 import ReceiveJup from './receive-jup/receive-jup';
 import SendJup from './send-jup/send-jup';
@@ -39,18 +32,29 @@ const Wallet = () => {
     <>
       <Drawer anchor="left" open={isOpenWallet} onClose={closeDrawer}>
         <Box role="presentation" className={classes.drawerContainer}>
-          <IconButton aria-label="close" onClick={closeDrawer} className={classes.closeButton}>
-            <CloseIcon />
-          </IconButton>
+          <Box
+            className={classes.closeIconContainer}
+            sx={{ width: '100%', justifyContent: 'flex-end' }}
+          >
+            <CloseIcon onClick={closeDrawer} className={classes.closeIcon} />
+          </Box>
 
-          <Box>
+          <Box sx={{ padding: '10px 0' }}>
             <span style={{ color: 'grey' }}>Total Value (JUP) </span>
             <br />
 
             <span style={{ fontSize: '3rem' }}>{balance}</span>
           </Box>
 
-          <Box style={{ display: 'flex', gap: '1rem', width: '100%' }}>
+          <Box
+            style={{
+              display: 'flex',
+              gap: '1rem',
+              width: '100%',
+              borderBottom: '1px solid #61D90C',
+              paddingBottom: '20px',
+            }}
+          >
             <SendJup />
             <ReceiveJup />
           </Box>
@@ -60,9 +64,23 @@ const Wallet = () => {
       </Drawer>
 
       <ListItem disablePadding>
-        <ListItemButton onClick={() => openDrawer()}>
-          <ListItemIcon className={classes.listItemIcon}>
-            <AllInboxIcon />
+        <ListItemButton
+          onClick={() => openDrawer()}
+          sx={{
+            borderRadius: '10px',
+            height: '60px',
+            minHeight: '60px',
+            marginBottom: '10px',
+            transition: 'ease-in-out 200ms',
+          }}
+        >
+          <ListItemIcon>
+            <Box
+              component="img"
+              src={walletIcon}
+              alt="wallet icon"
+              sx={{ height: '24px', width: '24px' }}
+            />
           </ListItemIcon>
           <ListItemText primary="Wallet" />
         </ListItemButton>

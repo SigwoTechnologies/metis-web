@@ -72,21 +72,59 @@ const ChatHeader = () => {
       </Modal>
       <InviteUserModal closeModal={() => setOpen(false)} open={open} />
       <Box className={classes.titleContainer}>
-        <Box display="flex" justifyContent="center" alignItems="center">
+        <Box display="flex" justifyContent="center" alignItems="center" fontSize="0.2rem">
           <Avatar
             alt={selectedChannel.channelName}
-            src={selectedChannel.channelName}
+            src={selectedChannel.imageChannel}
             className={classes.avatar}
           />
 
           <ChannelInfo selectedChannel={selectedChannel} />
         </Box>
         <Box display="flex">
-          <IconButton onClick={hideChannel} aria-label="channel settings" size="large">
-            <VisibilityOffIcon />
+          <IconButton
+            onClick={hideChannel}
+            aria-label="channel settings"
+            size="large"
+            sx={{
+              backgroundColor: 'transparent !important',
+              color: '#FFF',
+              transition: 'ease-in-out 200ms',
+              '&:hover': {
+                color: '#61D90C',
+              },
+            }}
+          >
+            <VisibilityOffIcon
+              sx={{
+                '@media (max-width:900px)': {
+                  height: '20px',
+                  width: '20px',
+                },
+              }}
+            />
           </IconButton>
-          <IconButton onClick={openInviteUserModal} aria-label="channel settings" size="large">
-            <GroupAddIcon />
+          <IconButton
+            onClick={openInviteUserModal}
+            aria-label="channel settings"
+            size="large"
+            sx={{
+              backgroundColor: 'transparent !important',
+              color: '#FFF',
+              transition: 'ease-in-out 200ms',
+              '&:hover': {
+                color: '#61D90C',
+              },
+            }}
+          >
+            <GroupAddIcon
+              sx={{
+                '@media (max-width:900px)': {
+                  height: '20px',
+                  width: '20px',
+                },
+              }}
+            />
           </IconButton>
         </Box>
       </Box>

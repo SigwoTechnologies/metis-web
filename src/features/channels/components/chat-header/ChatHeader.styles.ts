@@ -4,24 +4,36 @@ import { Theme } from '@mui/material/styles';
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     titleContainer: {
-      paddingLeft: '1rem',
+      height: '80px',
+      padding: '2% 4%',
       display: 'flex',
       justifyContent: 'space-between',
       alignItems: 'center',
-      height: '100%',
       backgroundColor: theme.colors.black1,
+      '@media (max-width:768px)': {
+        height: '60px',
+      },
     },
     avatar: {
-      width: '2.8rem',
-      height: '2.8rem',
+      width: '40px',
+      height: '40px',
+      '@media (max-width:900px)': {
+        // eslint-disable-line no-useless-computed-key
+        width: '25px',
+        height: '25px',
+      },
     },
     button: {
       width: '100%',
-      marginBottom: '1rem',
+      marginBottom: '16px',
     },
     textField: {
       width: '100%',
-      marginBottom: '1rem',
+      marginBottom: '16px',
+      '@media (max-width:900px)': {
+        // eslint-disable-line no-useless-computed-key
+        fontSize: '0.5rem',
+      },
     },
   })
 );

@@ -1,45 +1,65 @@
-import Modal from '@metis/common/components/ui/Modal';
-// import Modal from '@mui/material/Modal';
-import connectSocket from '@metis/common/services/socket.service';
-import constants from '@metis/common/configuration/constants';
 import { verifyAlreadyRegistered } from '@metis/features/auth/store/auth.actions';
-import { LoadingButton } from '@mui/lab';
-import { SpinnerContainer } from '@metis/common/components/ui/spinner-container/SpinnerContainer';
 import { useEffect, useState, useLayoutEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { Socket } from 'socket.io-client';
 import { localStorageKeyDeclinedInvites } from '@metis/features/channels/hooks/useGetDeclinedInvites';
 import { useAppSelector, useAppDispatch } from '@metis/store/hooks';
 import { localStorageKeyHiddenChannel } from '@metis/features/channels/hooks/useGetHiddenChannels';
-import { openToast } from '@metis/store/ui/ui.slice';
-import Box from '@mui/material/Box';
-import useStyles from './SyncAccount.styles';
+import { openNotification } from '@metis/store/ui/ui.slice';
+import { randomNumbers, browserFeatures } from '@metis/common/utils/utils';
+import connectSocket from '@metis/common/services/socket.service';
+import constants from '@metis/common/configuration/constants';
+import { getToken } from '@metis/common/services/token.service';
+import { AccountSynchronized } from './SyncModals/AccountSynchronized';
+import { EnterCode } from './SyncModals/EnterCode';
+import { SyncRequest } from './SyncModals/SyncRequest';
+import { SyncRequested } from './SyncModals/SyncRequested';
+import { ICode } from '../../types/code.inteface';
 
 export const SyncAccount = () => {
+  const dispatch = useAppDispatch();
   const [syncDeviceRequested, setSyncDeviceRequested] = useState(false);
   const [socketConnected, setSocketConnected] = useState<Socket>();
-  const { ethAccount, isAlreadyRegistered } = useAppSelector((state) => state.auth);
+  const {
+    ethAccount,
+    isAlreadyRegistered,
+    userData: { privateKeyArmored, publicKeyArmored, passphrase, password },
+    jupAccount,
+  } = useAppSelector((state) => state.auth);
   const [credentials, setCredentials] = useState(false);
-  const dispatch = useAppDispatch();
-  const navigate = useNavigate();
-  const classes = useStyles();
+  const [synchronized, setSynchronized] = useState(false);
+  const [modalSynchronized, setModalSynchronized] = useState(true);
+  const [modalSecurityStep, setModalSecurityStep] = useState(false);
+  const [deviceFeatureRequest, setDeviceFeatureRequest] = useState('');
+  const [codeSecurityRequest, setCodeSecurityRequest] = useState(0);
 
   useLayoutEffect(() => {
     if (ethAccount) {
       dispatch(verifyAlreadyRegistered(ethAccount));
     }
 
-    const credentialsFound = window.localStorage.getItem(constants.CREDENTIALS);
+    const credentialsFound = localStorage.getItem(constants.CREDENTIALS);
     if (credentialsFound) {
       setCredentials(true);
     }
   }, [ethAccount]);
 
+  const timeExpired = () => {
+    if (credentials || synchronized) return;
+    dispatch(
+      openNotification({
+        text: 'Time expired for synchronization',
+        type: 'error',
+      })
+    );
+    setSyncDeviceRequested(false);
+    setModalSecurityStep(false);
+  };
+
   useEffect(() => {
     const socket = connectSocket({
       query: {
-        room: `sync-devices-${ethAccount}`, // address of the current user
-        user: ethAccount, // address of the current user
+        room: `sync-devices-${ethAccount}`,
+        user: ethAccount,
       },
     }).socket('/sync-devices');
 
@@ -47,123 +67,118 @@ export const SyncAccount = () => {
       setSocketConnected(socket);
     }
 
-    socket.on('sync-devices-requested', () => {
+    socket.on('sync-devices-requested', ({ deviceFeatures, codeSecurity }) => {
       setSyncDeviceRequested(true);
+      setDeviceFeatureRequest(deviceFeatures);
+      setCodeSecurityRequest(codeSecurity);
+      setTimeout(() => timeExpired(), 60_000);
     });
 
     socket.on('sync-devices-granted', (data) => {
-      window.localStorage.setItem(constants.CREDENTIALS, data.credentials);
-      window.localStorage.setItem(localStorageKeyDeclinedInvites, data.hiddenChannels);
-      window.localStorage.setItem(localStorageKeyHiddenChannel, data.declinedInvites);
+      localStorage.setItem(constants.CREDENTIALS, data.credentials);
+      localStorage.setItem(localStorageKeyDeclinedInvites, data.hiddenChannels);
+      localStorage.setItem(localStorageKeyHiddenChannel, data.declinedInvites);
+      localStorage.setItem(constants.RECOVERY_CREDS, data.recoveryCreds);
       dispatch(
-        openToast({
-          text: 'Devices synced successfully',
+        openNotification({
+          text: 'Sync request granted',
           type: 'success',
         })
       );
-      window.location.reload();
+      setSyncDeviceRequested(false);
+      setSynchronized(true);
     });
 
     socket.on('sync-devices-rejected', () => {
-      setSyncDeviceRequested(false);
       dispatch(
-        openToast({
+        openNotification({
           text: 'Sync request rejected',
           type: 'error',
         })
       );
+      setSyncDeviceRequested(false);
     });
   }, [ethAccount]);
 
   const sendSyncRequest = () => {
-    socketConnected?.emit('sync-devices-request', { ethAccount });
-  };
-
-  const sendGrantSync = () => {
-    const credentialsFound = window.localStorage.getItem(constants.CREDENTIALS);
-    const declinedInvites = window.localStorage.getItem(localStorageKeyDeclinedInvites);
-    const hiddenChannels = window.localStorage.getItem(localStorageKeyHiddenChannel);
-    socketConnected?.emit('sync-devices-grant', {
-      credentials: credentialsFound,
-      hiddenChannels,
-      declinedInvites,
+    const code = randomNumbers(5);
+    socketConnected?.emit('sync-devices-request', {
+      ethAccount,
+      deviceFeatures: browserFeatures(),
+      codeSecurity: code,
     });
+    setCodeSecurityRequest(code);
+    setTimeout(() => timeExpired(), 60_000);
   };
 
   const sendRejectSync = () => {
     socketConnected?.emit('sync-devices-reject');
+    setSyncDeviceRequested(false);
+    setModalSecurityStep(false);
   };
+
+  const sendGrantSync = ({ code }: ICode) => {
+    if (!code || Math.floor(Number(code)) !== codeSecurityRequest) {
+      sendRejectSync();
+      dispatch(
+        openNotification({
+          text: 'Incorrect security code',
+          type: 'error',
+        })
+      );
+      return;
+    }
+    const credentialsFound = localStorage.getItem(constants.CREDENTIALS);
+    const declinedInvites = localStorage.getItem(localStorageKeyDeclinedInvites);
+    const hiddenChannels = localStorage.getItem(localStorageKeyHiddenChannel);
+    const recoveryCreds = localStorage.getItem(constants.RECOVERY_CREDS);
+    const token = getToken();
+    socketConnected?.emit('sync-devices-grant', {
+      credentials: credentialsFound,
+      hiddenChannels,
+      declinedInvites,
+      recoveryCreds,
+      passphrase,
+      password,
+      keys: { privateKeyArmored, publicKeyArmored },
+      token,
+      jupAccount,
+    });
+    setSyncDeviceRequested(false);
+    setModalSecurityStep(false);
+  };
+
   return (
     <>
       {syncDeviceRequested && credentials && (
-        <Modal open>
-          <Box style={{ textAlign: 'center', textTransform: 'none' }}>
-            <span>Someone wants to log in to this account through another device</span>
-            <br />
-            <br />
-            <Box style={{ display: 'flex', gap: '1rem' }}>
-              <LoadingButton
-                fullWidth
-                variant="contained"
-                onClick={sendRejectSync}
-                className={classes.reject}
-              >
-                <span className={classes.span}>Reject</span>
-              </LoadingButton>
-              <LoadingButton
-                fullWidth
-                variant="contained"
-                onClick={sendGrantSync}
-                className={classes.grant}
-              >
-                <span className={classes.span}>Grant</span>
-              </LoadingButton>
-            </Box>
-          </Box>
-        </Modal>
+        <SyncRequested
+          deviceFeatureRequest={deviceFeatureRequest}
+          setModalSecurityStep={setModalSecurityStep}
+          sendRejectSync={sendRejectSync}
+        />
       )}
 
       {isAlreadyRegistered && !credentials && (
-        <Modal open>
-          <Box style={{ textAlign: 'center' }}>
-            <span>
-              We have detected this account is already registered in another device, to proceed go
-              to your other device to grant permission.
-            </span>
-            <br />
-            <br />
-
-            <SpinnerContainer isLoading={syncDeviceRequested}>
-              <Box style={{ display: 'flex', gap: '1rem' }}>
-                <LoadingButton
-                  fullWidth
-                  variant="contained"
-                  style={{
-                    width: '25rem',
-                  }}
-                  onClick={sendSyncRequest}
-                >
-                  <span className={classes.span}>Sync with Another Device</span>
-                </LoadingButton>
-
-                <LoadingButton
-                  fullWidth
-                  variant="contained"
-                  style={{
-                    width: '25rem',
-                  }}
-                  onClick={() => navigate('/auth/legacy')}
-                >
-                  <span className={classes.span}>Associate Legacy Account</span>
-                </LoadingButton>
-              </Box>
-            </SpinnerContainer>
-            <br />
-            <span>
-              If you cannot recover your account by any of these ways, your account will be lost.
-            </span>
-          </Box>
-        </Modal>
+        <SyncRequest
+          synchronized={synchronized}
+          syncDeviceRequested={syncDeviceRequested}
+          sendSyncRequest={sendSyncRequest}
+          codeSecurityRequest={codeSecurityRequest}
+        />
+      )}
+      {credentials && (
+        <EnterCode
+          modalSecurityStep={modalSecurityStep}
+          sendGrantSync={sendGrantSync}
+          sendRejectSync={sendRejectSync}
+        />
+      )}
+      {!syncDeviceRequested && synchronized && (
+        <AccountSynchronized
+          credentials={credentials}
+          modalSynchronized={modalSynchronized}
+          setModalSynchronized={setModalSynchronized}
+        />
       )}
     </>
   );

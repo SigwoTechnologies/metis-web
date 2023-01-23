@@ -8,25 +8,56 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     container: {
       height: '100%',
+      width: '100%',
       display: 'flex',
       flexDirection: 'column',
       justifyContent: 'center',
       alignItems: 'center',
     },
+    txtContainer: {
+      width: '100%',
+      textAlign: 'center',
+    },
+    title: {
+      color: '#FFF',
+      fontSize: '2.2rem',
+      letterSpacing: '1px',
+      marginBottom: '5px',
+      '@media (max-width:500px)': {
+        // eslint-disable-line no-useless-computed-key
+        fontSize: '1.8rem',
+      },
+    },
+    text: {
+      color: '#f2f2f2',
+      fontSize: '1.2rem',
+      fontWeight: '300',
+      marginBottom: '25px',
+      '@media (max-width:500px)': {
+        // eslint-disable-line no-useless-computed-key
+        fontSize: '0.8rem',
+      },
+    },
     image: {
-      height: '10rem',
-      width: '10rem',
-      marginBottom: '3rem',
+      height: '200px',
+      width: '200px',
+      marginBottom: '50px',
       objectFit: 'cover',
       borderRadius: '100%',
+      '@media (max-width:500px)': {
+        // eslint-disable-line no-useless-computed-key
+        height: '100px',
+        width: '100px',
+      },
     },
     associate: {
+      minWidth: '280px',
       color: '#ccc',
       textDecoration: 'none',
     },
     span: {
       fontWeight: 700,
-      fontSize: '14px',
+      fontSize: '1.4rem',
     },
     loading: {
       clipPath: 'inset(0 1ch 0 0)',
@@ -39,26 +70,28 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     spinner: {
       alignSelf: 'center',
+      color: '#61D90C',
     },
     accountLetter: {
       textAlign: 'center',
-      fontSize: '1rem',
-      color: 'gray',
+      fontSize: '1.2rem',
+      color: '#F2F2F2',
+      '@media (max-width:500px)': {
+        // eslint-disable-line no-useless-computed-key
+        fontSize: '1.2rem',
+      },
     },
     eth: {
       textAlign: 'center',
-      fontSize: '0.85rem',
+      fontSize: '1.2rem',
       color: 'gray',
-      transition: 'all 0.3s ease',
-      '&:hover:before': {
-        transform: 'scale(1.2)',
-        boxShadow: '0 0 20px green',
-        filter: 'blur(3px)',
-      },
       '&:hover': {
-        color: '#AAFF00',
-        textShadow: '0 0 15px white',
-        fontSize: '1rem',
+        cursor: 'pointer',
+        color: '#0DC7FA',
+      },
+      '@media (max-width:500px)': {
+        // eslint-disable-line no-useless-computed-key
+        fontSize: '0.8rem',
       },
     },
   })
